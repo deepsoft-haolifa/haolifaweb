@@ -1,0 +1,4 @@
+vue.config.js
+babel.config.js
+src/components/imageView/lib/*.js
+src/common/

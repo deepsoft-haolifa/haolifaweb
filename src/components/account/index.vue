@@ -1,6 +1,6 @@
 <template>
 <div class="account flex-v-center c-4">
-  <notification/>
+  <notification v-if="logined"/>
   <div class="relative" tabindex="1">
     <avatar
       v-if="logined"

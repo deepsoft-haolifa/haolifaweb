@@ -16,7 +16,7 @@
 
 <script>
 import TreeNode from './TreeNode'
-import WorkerCode from './tree.worker.js'
+import getTree from './treeFormat.js'
 
 export default {
   name: 'tree',
@@ -52,16 +52,7 @@ export default {
   methods: {
     analytical () {
       let { data, idTxt, pidTxt, childrenTxt, rootId } = this
-      const worker = new WorkerCode()
-      worker.postMessage({ data, idTxt, pidTxt, childrenTxt, rootId })
-      worker.addEventListener('message', e => {
-        // console.log(e.data)
-        this.model = e.data
-        worker.terminate()
-      })
-      worker.addEventListener('error', e => {
-        worker.terminate()
-      })
+      this.model = getTree(data, rootId, idTxt, pidTxt, childrenTxt)
     }
   }
 }

@@ -1,12 +1,13 @@
 html, body{width: 100%;height: 100%;overflow: hidden;}
 body{
+  /* line-height: 1em; */
   margin: 0;
   font-family: 'SFNSText', 'Helvetica Neue', sans-serif, 'Microsoft Yahei';
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
   transform: translate3d(0,0,0);
   background: #f1f1f1;
-  line-height: 1.45em;
+  line-height: 1em;
 }
 a{text-decoration: none;}
 input{outline: none;padding: 0;}

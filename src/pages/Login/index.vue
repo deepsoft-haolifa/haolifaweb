@@ -2,8 +2,9 @@
 <div class="abs page-login flex-center">
   <div>
     <div class="card">
-      <div>
-        <img src="../../assets/img/logo_land.png" class="login-logo">
+      <div class="flex-v-center">
+        <img src="../../assets/img/logo_full.png" class="login-logo">
+        <span class="flex-item c-a">山西好利智能化管理系统</span>
       </div>
       <div class="login-form">
         <div class="flex-v-center login-account" v-if="useCache">
@@ -35,8 +36,8 @@ export default {
     return {
       loading: false,
       useCache: true,
-      username: '',
-      password: ''
+      username: 'admin',
+      password: 'admin'
     }
   },
   computed: {
@@ -50,6 +51,18 @@ export default {
         username: 'haolifa'
       }
     }
+  },
+  methods: {
+    login () {
+      const { username, password } = this
+      this.loading = true
+      this.$http.post('/api/login', { username, password }).then(res => {
+        this.$router.replace('/')
+      }).catch(e => {
+        this.loading = false
+        this.$toast(e.message)
+      })
+    }
   }
 }
 </script>
@@ -58,7 +71,7 @@ export default {
 .page-login{
   background: url('../../assets/img/bg.svg') center / cover;
   .avatar{margin-right: 15px;}
-  .login-logo{height: 20px;filter: grayscale(100%);opacity: .5;}
+  .login-logo{height: 30px;filter: grayscale(100%);opacity: .5;margin-right: 10px;}
   .login-account{padding: 20px 0;}
   .login-form{padding: 30px 0 10px 0;}
   .card{padding: 40px 35px;width: 420px;margin-bottom: 10px;}

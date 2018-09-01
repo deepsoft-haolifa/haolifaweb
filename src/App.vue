@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="f-14 relative c-5">
     <router-view/>
   </div>
 </template>
@@ -17,9 +17,12 @@ export default {
 </script>
 
 <style lang="less">
+body{overflow: auto;}
 #app {
+  width: 100%;height: 100%;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-width: 800px;
 }
 </style>

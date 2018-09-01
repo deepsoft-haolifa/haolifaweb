@@ -1,15 +1,7 @@
 <template>
 <div class="tree-node">
-  <div class="tree-title" v-if="!hideLeaf || isFolder" :style="{paddingLeft: padding + 'px'}" @click="$emit('select', model)">
-    <icon-btn
-      class="tree-icon"
-      v-if="model.avatar === undefined || model.avatar === null"
-      small
-      :disabled="!isFolder"
-      @click.native="toggle($event)">{{icon}}</icon-btn>
-    <avatar v-if="model.avatar !== undefined && model.avatar !== null" :src="model.avatar" size="20"/>
-    <span class="tree-name" v-html="format(model.name)"></span>
-    <!-- <icon-btn small class="tree-icon tree-menu-icon">more_vert</icon-btn> -->
+  <div class="tree-title flex-v-center" v-if="!hideLeaf || isFolder" :style="{paddingLeft: padding + 'px'}" @click="$emit('select', model)">
+    <slot></slot>
   </div>
   <div class="tree-child" v-if="isFolder && open">
     <tree-node

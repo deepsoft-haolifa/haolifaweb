@@ -42,7 +42,7 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-router.addRoutes(routes.filter(r => r.meta.open))
+// router.addRoutes(routes.filter(r => r.meta.open))
 
 router.beforeEach((to, from, next) => {
   if (to.meta.open) {
@@ -54,7 +54,6 @@ router.onError(err => { console.log(err) })
 
 export function resetRouter () {
   router.matcher = createRouter().matcher
-  router.addRoutes(routes.filter(r => r.meta.open))
 }
 
 export default router

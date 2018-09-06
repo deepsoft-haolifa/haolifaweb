@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     getList () {
-      this.$http.get('/api/dept/list').then(res => {
+      this.$http.get('/haolifa/dept/list').then(res => {
         res.unshift({ id: 0, deptName: '根目录' })
         // console.log(res)
         this.list = res

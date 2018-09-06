@@ -15,7 +15,9 @@
       <main-left/>
     </div>
     <div class="flex-item relative" style="width: 0;">
-      <router-view/>
+      <transition name="slide-y">
+        <router-view class="abs"/>
+      </transition>
     </div>
   </div>
 </div>

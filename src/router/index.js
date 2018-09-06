@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
+// import getUserInfo from './getUserInfo'
+import axios from 'axios'
 
 Vue.use(Router)
 
@@ -29,14 +32,13 @@ const createRouter = () => new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [{
+    path: '*',
+    component: () => import(/* webpackChunkName: "login" */ '../pages/404/index.vue'),
+    meta: { level: 1, title: '' }
+  }, {
     path: '/login',
     component: () => import(/* webpackChunkName: "login" */ '../pages/Login/index.vue'),
     meta: { level: 1, title: '登录', open: true }
-  }, {
-    path: '/',
-    component: () => import(/* webpackChunkName: "main" */ '../pages/Main/index.vue'),
-    meta: { level: 2, title: 'HAOLIFA', open: true },
-    children: routes
   }]
 })
 
@@ -46,14 +48,35 @@ const router = createRouter()
 
 router.beforeEach((to, from, next) => {
   if (to.meta.open) {
-    return next()
+    next()
+    return
   }
+  if (store.state.account.menus) {
+    next()
+    return
+  }
+  axios.get('/haolifa/self/info').then(res => {
+    res = res.data.result
+    res.menus.push('home')
+    store.commit('LOGIN', res)
+    resetRouter(res.menus)
+    router.replace({ path: to.path, query: to.query })
+  }).catch(e => {
+    console.log(e)
+    router.replace('/login')
+  })
 })
 
 router.onError(err => { console.log(err) })
 
-export function resetRouter () {
+export function resetRouter (menus) {
   router.matcher = createRouter().matcher
+  router.addRoutes([{
+    path: '/',
+    component: () => import(/* webpackChunkName: "main" */ '../pages/Main/index.vue'),
+    meta: { level: 2, title: 'HAOLIFA', open: false },
+    children: routes.filter(r => r.meta.id && menus.includes(r.meta.id))
+  }])
 }
 
 export default router

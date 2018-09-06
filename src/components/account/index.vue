@@ -13,9 +13,9 @@
     <bubble v-if="accountShow && logined" pos="bottom" align="end" @close="accountShow=false" class="account-bubble" >
       <div class="account-ctn t-center">
         <avatar class="account-avatar-big" size="80" :src="account.avatar" />
-        <div class="f-18 account-name">{{account.name | username}}</div>
-        <div class="f-12 c-8 account-info">{{account.position}}</div>
-        <div class="f-12 c-8 account-info">{{account.email}}</div>
+        <div class="f-18 account-name">{{account.realName}}</div>
+        <div class="f-12 c-8 account-info">{{roles}}</div>
+        <div class="f-12 c-8 account-info">{{account.username}}</div>
         <btn flat @click="logOut" :loading="loading">退出登录</btn>
       </div>
     </bubble>
@@ -42,33 +42,34 @@ export default {
       return this.$store.state.account
     },
     logined () {
-      return this.account.userid
+      return this.account.username
+    },
+    roles () {
+      return this.account.roles.map(item => item.roleName).toString()
     }
   },
   methods: {
     logOut () {
-      let token = localStorage.token || ''
       this.loading = true
-      this.$http.get(`/eversec/user/logout?token=${token}`).then(res => {
+      this.$http.post(`/haolifa/logout`).then(res => {
         this.clearUserInfo()
       }).catch(e => {
         this.clearUserInfo()
-        this.$toast(e.message || e)
+        this.$toast(e.msg || e)
       })
     },
     clearUserInfo () {
-      localStorage.token = ''
       this.loading = false
       this.$store.commit('LOGOUT')
-      this.$store.commit('CLEAR_PERMISSIONS')
-      resetRouter()
+      // this.$store.commit('CLEAR_PERMISSIONS')
+      resetRouter([])
       if (!this.$route.meta.open) {
         this.toLogin()
       }
     },
     toLogin () {
       // 刷新页面，以清空路由
-      this.$router.replace(`/login?t=${this.$route.path}`)
+      this.$router.replace(`/login`)
     }
   }
 }
@@ -81,7 +82,7 @@ export default {
   .account-ctn{padding: 15px;}
   .account-ctn button{margin-top: 15px;}
   /* .icon-btn{margin: 0 15px;} */
-  .account-avatar-sm{cursor: pointer;}
+  .account-avatar-sm{cursor: pointer;filter: brightness(2);}
   .account-avatar-big{margin-bottom: 15px;}
   .notifications-icon{margin-right: 15px;}
   .account-name{margin-bottom: 10px;}

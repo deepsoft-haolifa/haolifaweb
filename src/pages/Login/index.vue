@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { resetRouter } from '@/router'
+
 export default {
   name: 'page-login',
   data () {
@@ -56,11 +58,17 @@ export default {
     login () {
       const { username, password } = this
       this.loading = true
-      this.$http.post('/api/login', { username, password }).then(res => {
+      const fd = new FormData()
+      fd.append('username', username)
+      fd.append('password', password)
+      this.$http.post('/haolifa/login', fd).then(res => {
+        res.menus.push('home')
+        this.$store.commit('LOGIN', res)
+        resetRouter(res.menus)
         this.$router.replace('/')
       }).catch(e => {
         this.loading = false
-        this.$toast(e.message)
+        this.$toast(e.message || e.msg || e)
       })
     }
   }

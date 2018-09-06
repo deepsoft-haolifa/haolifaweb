@@ -3,25 +3,19 @@
   <div class="nav-group" v-for="item in list" :key="item.name">
     <div
       class="flex-v-center nav-item nav-toggle a"
-      v-if="item.children && item.children.length"
       @click="item.open = !item.open">
       <i class="icon">arrow_drop_{{item.open ? 'up' : 'down'}}</i>
       <span class="flex-item b">{{item.name}}</span>
     </div>
-    <router-link
-      class="nav-item b flex-v-center c-6"
-      v-else
-      :to="item.url"
-    >{{item.name}}</router-link>
-
     <div v-if="item.open">
       <router-link
         class="nav-item flex-v-center c-6"
         replace
         v-for="m in item.children"
-        :key="m.name"
+        :key="m.id"
         :title="m.name"
         :to="m.url"
+        :class="{'on': $route.meta.id === m.id}"
       >{{m.name}}</router-link>
     </div>
   </div>
@@ -36,24 +30,28 @@ export default {
   name: 'main-left',
   data () {
     return {
-      list: menu
+      list: []
     }
   },
   created () {
-    // this.getList()
+    let menus = this.$store.state.account.menus
+    menu.forEach(m => {
+      m.children = m.children.filter(item => menus.includes(item.id))
+    })
+    this.list = menu.filter(m => m.children.length)
     // 默认展开对应的菜单
-    let path = this.$route.path
+    let id = this.$route.meta.id
     this.list.forEach(group => {
       let open = false
       group.children && group.children.forEach(item => {
-        if (item.path === path) open = true
+        if (item.id === id) open = true
       })
       this.$set(group, 'open', open)
     })
   },
   methods: {
     getList () {
-      this.$http.get('/api/menu').then(res => {
+      this.$http.get('/haolifa/menu').then(res => {
         res.forEach(item => {
           item.open = false
         })
@@ -72,7 +70,7 @@ export default {
     .icon{margin-right: 10px;}
     &:hover{background: #eee;}
     &.nav-toggle{padding: 5px 20px;}
-    &.router-link-exact-active{background: #e0f0ff;color: #0175d4;}
+    &.on{background: #e0f0ff;color: #0175d4;}
   }
 }
 </style>

@@ -28,6 +28,7 @@ axios.interceptors.response.use(function (response) {
   if (response.data) {
     if (response.data.code === '0000') return response.data.result
     if (response.data.code === '1') router.replace('/login')
+    else return Promise.reject(response.data || response)
   } else {
     return Promise.reject(response.data || response)
   }

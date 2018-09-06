@@ -10,26 +10,27 @@ import './common'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 
-const app = new Vue({
+new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
 
 // axios.interceptors.request.use(function (config) {
+//   console.log(config)
+//   // config.
 //   // if (!config.headers.Authorization && token) config.headers.Authorization = `Bearer ${token}`
-//   if (config.method === 'post') config.data = obj2FormData(config.data)
+//   // if (config.method === 'post') config.data = obj2FormData(config.data)
 //   return config
 // })
 
 axios.interceptors.response.use(function (response) {
-  if (response.data && (response.data.code === '0000')) {
-    return response.data.result
+  if (response.data) {
+    if (response.data.code === '0000') return response.data.result
+    if (response.data.code === '1') router.replace('/login')
   } else {
-    app.$toast(response.data.message || response)
     return Promise.reject(response.data || response)
   }
-}, function (error) {
-  app.$toast(error.message)
-  return Promise.reject(error)
+}, function (e) {
+  return Promise.reject(e)
 })

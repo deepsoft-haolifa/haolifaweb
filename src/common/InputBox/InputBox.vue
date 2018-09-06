@@ -83,13 +83,13 @@ export default {
 </script>
 
 <style lang="less">
-.input-box{padding: 18px 0;
+.input-box{padding: 14px 0;
   input{height: 30px;}
   textarea{vertical-align: top;min-height: 100px;resize: none;}
   input, textarea{padding: 0;width: 100%;font-size: 14px;border: none;box-sizing: border-box;border-bottom: 1px solid rgba(0, 0, 0, .2);padding-left: 0;transition: all .3s;outline: none;background: transparent;}
-  label{position: absolute;color: rgba(0, 0, 0, .4);line-height: 30px;left: 0;top: 18px;pointer-events: none;transform-origin: left top;transition: all .3s ease;}
-  input:focus+.label, textarea:focus+.label{transform: scale(.85) translateY(-26px);color: #0199ff;}
-  input:not(:placeholder-shown)+.label, textarea:not(:placeholder-shown)+.label{transform: scale(.85) translateY(-26px);}
+  label{position: absolute;color: rgba(0, 0, 0, .4);line-height: 30px;left: 0;top: 14px;pointer-events: none;transform-origin: left top;transition: all .3s ease;}
+  input:focus+.label, textarea:focus+.label{transform: scale(.85) translateY(-20px);color: #0199ff;}
+  input:not(:placeholder-shown)+.label, textarea:not(:placeholder-shown)+.label{transform: scale(.85) translateY(-20px);}
   input:focus+label+.input-line,
   input:focus+label+.prefix+.input-line,
   textarea:focus+label+.input-line,

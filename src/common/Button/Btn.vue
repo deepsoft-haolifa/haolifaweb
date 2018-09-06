@@ -4,7 +4,8 @@
   'btn-big': big,
   'btn-flat': flat,
   'btn-disabled': disabled,
-  'btn-outline': outline
+  'btn-outline': outline,
+  'btn-bg': bg
 }"
 @click="$emit('click')"
 :style="style"
@@ -33,7 +34,8 @@ export default {
     prependIcon: String,
     appendIcon: String,
     loading: Boolean,
-    outline: Boolean
+    outline: Boolean,
+    bg: Boolean
   },
   computed: {
     style () {
@@ -53,6 +55,7 @@ export default {
 .btn-small .icon{font-size: 20px;padding: 6px 12px;line-height: 14px;}
 .btn-big{font-size: 16px;padding: 8px 14px;line-height: 18px;}
 .btn-flat{background: transparent;color: #444;}
+.btn-bg.btn-flat{background: rgba(0, 0, 0, .06)}
 .btn-flat:hover{background: rgba(0, 0, 0, .1)}
 .btn-flat:active{background: rgba(0, 0, 0, .2)}
 .btn[disabled]{opacity: .7;pointer-events: none;}

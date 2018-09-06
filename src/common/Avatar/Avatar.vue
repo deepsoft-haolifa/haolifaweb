@@ -8,6 +8,7 @@
 export default {
   name: 'avatar',
   props: {
+    name: String,
     src: { type: String, default: '' },
     size: { type: String, default: '40' }
   },
@@ -25,6 +26,6 @@ export default {
 </script>
 
 <style>
-.avatar{display: inline-block;vertical-align: top;background: url('/static/img/default_avatar.png');background-size: 100% 100%;}
+.avatar{display: inline-block;vertical-align: top;background: url('/img/default_avatar.png');background-size: 100% 100%;}
 .avatar img{width: 100%;height: 100%;vertical-align: top;border-radius: 50%;outline: none;border: none;}
 </style>

@@ -79,6 +79,11 @@
 .bg-light-rgb-1{background-color: rgba(255, 255, 255, .1);}
 .bg-light-rgb-0{background-color: rgba(255, 255, 255,  0);}
 
+.mr-20{margin-right: 20px;}
+.mr-15{margin-right: 15px;}
+.mr-10{margin-right: 10px;}
+.mr-5 {margin-right: 5px;}
+
 .blue{color: #008eff;}
 .red{color: #ff4100;}
 .orange{color: #ffa200;}

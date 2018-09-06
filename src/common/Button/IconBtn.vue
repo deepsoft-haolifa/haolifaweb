@@ -5,7 +5,8 @@
   :class="{
     'icon-btn-big': big,
     'icon-btn-small': small,
-    'icon-btn-disabled': disabled
+    'icon-btn-disabled': disabled,
+    'icon-btn-bg': bg
   }"
   :style="{color}"
   @click="$emit('click')">
@@ -20,7 +21,8 @@ export default {
     big: Boolean,
     small: Boolean,
     disabled: Boolean,
-    color: String
+    color: String,
+    bg: Boolean
     // tag: {type: String, default: 'button'}
   }
 }
@@ -28,6 +30,7 @@ export default {
 
 <style>
 .icon-btn{background: rgba(0, 0, 0, 0);padding: 6px;border-radius: 50%;transition: background .3s;user-select: none;}
+.icon-btn-bg{background: rgba(0, 0, 0, 0.06);}
 .icon-btn:hover{background: rgba(0, 0, 0, .12);}
 .icon-btn:active{background: rgba(0, 0, 0, .2);}
 .icon-btn-big{padding: 8px;}

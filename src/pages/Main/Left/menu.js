@@ -61,6 +61,10 @@ export default [
       name: '入库管理',
       url: '/permission',
       id: 'rkgl'
+    }, {
+      name: '库房管理',
+      url: '/roomlist',
+      id: 'kfgl'
     }]
   },
   {

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
     "module": "^1.2.5",
     "vue": "^2.5.17",
     "vue-draggable-nested-tree": "^2.1.5",

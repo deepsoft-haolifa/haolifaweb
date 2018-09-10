@@ -35,12 +35,15 @@
 </template>
 
 <script>
+import obj2QueryStr from '@/utils/obj2QueryStr'
+
 export default {
   name: 'data-list',
   props: {
     method: { type: String, default: 'get' },
     url: { type: String, default: '' },
-    pageSize: { type: Number, default: 20 }
+    pageSize: { type: Number, default: 20 },
+    param: { type: Object, default: () => {} }
   },
   data () {
     return {
@@ -50,21 +53,24 @@ export default {
       list: []
     }
   },
+  watch: {
+    url () { this.update() },
+    mehtod () { this.update() },
+    pageSize () { this.update() },
+    param () { this.update() }
+  },
   created () {
     this.pageNum = this.$route.query.page || 1
     this.getList(this.pageNum)
   },
   methods: {
     getList (pageNum) {
-      const { method, url, pageSize } = this
+      const { method, url, pageSize, param } = this
       if (!url) return
       this.loading = true
-      this.$http[method](url, {
-        pageNum,
-        pageSize,
-        materialGraphNo: '',
-        materialType: 0
-      }).then(res => {
+      const params = Object.assign({ pageNum, pageSize }, param)
+      const path = method === 'get' ? url + obj2QueryStr(params) : url
+      this.$http[method](path, params).then(res => {
         this.list = res.list || []
         this.pageNum = res.pageNum
         let query = this.$route.query
@@ -76,6 +82,9 @@ export default {
         this.loading = false
         this.$toast(e.message || e.msg || e)
       })
+    },
+    update (resetPageNum) {
+      this.getList(resetPageNum ? 1 : this.pageNum)
     }
   }
 }
@@ -83,7 +92,7 @@ export default {
 
 <style lang="less">
 .data-list{
-//
+  padding: 0 15px;
 }
 .data-table{
   th, td{padding: 0 10px;height: 36px;}
@@ -91,5 +100,6 @@ export default {
   tr:hover{background: #f2f2f2;}
   tr td .icon-btn{opacity: 0.2;}
   tr:hover td .icon-btn{opacity: 1;}
+  td a:hover{color: #008eff;}
 }
 </style>

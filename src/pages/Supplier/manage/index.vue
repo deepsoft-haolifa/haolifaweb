@@ -11,7 +11,7 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list method="post" url="/haolifa/supplier/list">
+    <data-list ref="list" method="post" url="/haolifa/supplier/list">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>企业名称</th>
@@ -66,9 +66,9 @@ export default {
         yes: () => {
           this.$http.get(`/haolifa/supplier/delete?id=${item.id}`).then(res => {
             this.$toast('删除成功')
-            this.getList(this.pageNum)
+            this.$refs.list.update()
           }).catch(e => {
-            this.$toast(e.msg)
+            this.$toast(e.msg || e.message)
           })
         }
       })
@@ -80,7 +80,5 @@ export default {
 <style lang="less">
 .page-supplier-manage{
   height: 100%;
-  .scroll-y{margin: 0 15px;}
-  td a:hover{color: #008eff;}
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-<div class="page-room-list flex-col">
+<div class="page-rack flex-col">
   <div class="flex-v-center tool-bar">
     <div class="flex-v-center search-bar" style="margin-right: 20px;">
       <i class="icon f-20 c-8">search</i>
@@ -16,22 +16,16 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/pageInfo" method="get">
+    <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/rack/pageInfo" method="get">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
-        <th>库房名称</th>
-        <th>库房编号</th>
-        <th>类型</th>
-        <th>位置</th>
+        <th>库未编号</th>
         <th>描述</th>
         <th class="t-right" style="width: 80px;">操作</th>
       </tr>
       <template slot="item" slot-scope="{ item, index }">
         <td class="c-a">{{index}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.roomNo}}</td>
-        <td>{{types[item.type] || '-'}}</td>
-        <td>{{item.address}}</td>
+        <td>{{item.rackNo}}</td>
         <td>{{item.remark}}</td>
         <td class="t-right">
           <icon-btn small @click="edit(item)">edit</icon-btn>
@@ -46,7 +40,7 @@
 <script>
 import DataList from '@/components/datalist'
 export default {
-  name: 'page-room-list',
+  name: 'page-rack',
   components: { DataList },
   data () {
     return {
@@ -81,7 +75,7 @@ export default {
 </script>
 
 <style lang="less">
-.page-room-list{
+.page-rack{
   select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
   .scroll-y{padding-bottom: 40px;}
 }

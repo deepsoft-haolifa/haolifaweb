@@ -1,6 +1,6 @@
 export default [{
-  path: '/roomlist',
-  name: 'roomlist',
+  path: '/room',
+  name: 'room-list',
   component: () => import(/* webpackChunkName: "roomlist" */ './index.vue'),
   meta: { level: 2, title: '库房管理', open: false, id: 'kfgl' }
 }, {

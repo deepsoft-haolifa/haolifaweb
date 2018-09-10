@@ -22,21 +22,19 @@
 </template>
 
 <script>
-const form = {
-  id: '',
-  name: '',
-  roomNo: '',
-  address: '',
-  remark: '',
-  type: 0
-}
-
 export default {
   name: 'page-room-add',
   data () {
     return {
       typeList: [{text: '原料库', value: 1}, {text: '成品库', value: 2}],
-      form
+      form: {
+        id: '',
+        name: '',
+        roomNo: '',
+        address: '',
+        remark: '',
+        type: 0
+      }
     }
   },
   computed: {

@@ -51,7 +51,7 @@ export default [
       id: 'ljgl'
     }, {
       name: '库位管理',
-      url: '/permission',
+      url: '/rack',
       id: 'kwgl'
     }, {
       name: '成品管理',
@@ -63,7 +63,7 @@ export default [
       id: 'rkgl'
     }, {
       name: '库房管理',
-      url: '/roomlist',
+      url: '/room',
       id: 'kfgl'
     }]
   },

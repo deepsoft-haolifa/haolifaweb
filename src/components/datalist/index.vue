@@ -43,7 +43,8 @@ export default {
     method: { type: String, default: 'get' },
     url: { type: String, default: '' },
     pageSize: { type: Number, default: 20 },
-    param: { type: Object, default: () => {} }
+    param: { type: Object, default: () => {} },
+    pageNumStr: { type: String, default: 'pageNum' }
   },
   data () {
     return {
@@ -68,7 +69,9 @@ export default {
       const { method, url, pageSize, param } = this
       if (!url) return
       this.loading = true
-      const params = Object.assign({ pageNum, pageSize }, param)
+      const pageParam = { pageSize }
+      pageParam[this.pageNumStr] = pageNum
+      const params = Object.assign(pageParam, param)
       const path = method === 'get' ? url + obj2QueryStr(params) : url
       this.$http[method](path, params).then(res => {
         this.list = res.list || []

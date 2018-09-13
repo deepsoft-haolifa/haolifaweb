@@ -3,7 +3,7 @@
   <div class="form-content">
     <div class="title b f-18 mb-10">{{form.id ? '编辑' : '新增'}}库位</div>
 
-    <input-box v-model="form.name" label="库位编号"></input-box>
+    <input-box v-model="form.rackNo" label="库位编号"></input-box>
     <select-box v-model="form.status" :list="statusList" label="状态"></select-box>
     <select-box v-model="form.storeRoomId" :list="roomList" label="所属库房"></select-box>
     <input-box v-model="form.remark" label="备注" multi-line></input-box>
@@ -26,7 +26,7 @@ export default {
       form: {
         id: '',
         remark: '',
-        stackNo: '',
+        rackNo: '',
         status: '',
         storeRoomId: ''
       }
@@ -40,7 +40,7 @@ export default {
   },
   created () {
     let { id } = this.$route.query
-    if (id !== undefined && this.$route.name === 'room-edit') this.getInfo(id)
+    if (id !== undefined && this.$route.name === 'rack-edit') this.getInfo(id)
     this.getRoomList()
   },
   methods: {
@@ -52,7 +52,7 @@ export default {
       })
     },
     getInfo (id) {
-      this.$http.get(`/haolifa/store-room/getInfo/${id}`).then(res => {
+      this.$http.delete(`/haolifa/store-room/rack/getInfo/${id}`).then(res => {
         for (let key in this.form) {
           if (this.form[key] !== undefined) this.form[key] = res[key]
         }

@@ -1,18 +1,13 @@
 <template>
-<div class="page-room-add abs scroll-y">
+<div class="page-rack-add">
   <div class="form-content">
-    <div class="title b f-18">{{form.id ? '编辑' : '新增'}}库房</div>
-    <div class="flex-v-center">
-      <input-box v-model="form.name" class="flex-item mr-10" label="库房名称"></input-box>
-      <input-box v-model="form.roomNo" class="mr-10" label="编号" style="width: 25%"></input-box>
-      <select-box v-model="form.type" :list="typeList" style="width: 25%" label="类型"></select-box>
-    </div>
-    <div class="flex-v-center">
-      <input-box v-model="form.address" class="flex-item mr-10" label="地址"></input-box>
-    </div>
-    <div class="flex-v-center">
-      <input-box v-model="form.remark" class="flex-item mr-10" multi-line label="描述"></input-box>
-    </div>
+    <div class="title b f-18 mb-10">{{form.id ? '编辑' : '新增'}}库位</div>
+
+    <input-box v-model="form.name" label="库位编号"></input-box>
+    <select-box v-model="form.status" :list="statusList" label="状态"></select-box>
+    <select-box v-model="form.storeRoomId" :list="roomList" label="所属库房"></select-box>
+    <input-box v-model="form.remark" label="备注" multi-line></input-box>
+
     <div class="flex-v-center" style="margin: 20px 0;">
       <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>
       <btn big flat bg class="mr-20" @click="cancel">取消</btn>
@@ -23,17 +18,17 @@
 
 <script>
 export default {
-  name: 'page-room-add',
+  name: 'page-rack-add',
   data () {
     return {
-      typeList: [{text: '原料库', value: 1}, {text: '成品库', value: 2}],
+      statusList: [{value: 0, text: '删除'}, {value: 1, text: '正常'}],
+      roomList: [],
       form: {
         id: '',
-        name: '',
-        roomNo: '',
-        address: '',
         remark: '',
-        type: 0
+        stackNo: '',
+        status: '',
+        storeRoomId: ''
       }
     }
   },
@@ -46,8 +41,16 @@ export default {
   created () {
     let { id } = this.$route.query
     if (id !== undefined && this.$route.name === 'room-edit') this.getInfo(id)
+    this.getRoomList()
   },
   methods: {
+    getRoomList () {
+      this.$http.get('/haolifa/store-room/listInfo?type=0').then(res => {
+        this.roomList = res.filter(item => !item.isDelete).map(item => {
+          return { value: item.id, text: item.name }
+        })
+      })
+    },
     getInfo (id) {
       this.$http.get(`/haolifa/store-room/getInfo/${id}`).then(res => {
         for (let key in this.form) {
@@ -85,8 +88,7 @@ export default {
 </script>
 
 <style lang="less">
-.page-room-add{
+.page-rack-add{
   padding: 30px 20px;
-  .title{margin-bottom: 20px;}
 }
 </style>

@@ -10,7 +10,6 @@
     <div v-if="item.open">
       <router-link
         class="nav-item flex-v-center c-6"
-        replace
         v-for="m in item.children"
         :key="m.id"
         :title="m.name"

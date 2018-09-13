@@ -1,6 +1,6 @@
 <template>
 <div class="page-supplier-info abs scroll-y">
-  <div class="content">
+  <div class="form-content">
     <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
       <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
       <div class="flex-item">供应商详情</div>
@@ -225,7 +225,6 @@ export default {
 <style lang="less">
 .page-supplier-info{
   padding: 30px 20px;
-  .content{max-width: 1000px;margin: 0 auto;}
   tr:first-child td{padding: 0;border: none;}
   th{font-weight: normal;color: #888;}
   td{color: #444;}

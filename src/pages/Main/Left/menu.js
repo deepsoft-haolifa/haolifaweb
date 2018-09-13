@@ -43,11 +43,11 @@ export default [
       id: 'kcgl'
     }, {
       name: '零件设置',
-      url: '/permission',
+      url: '/entryout',
       id: 'ljsz'
     }, {
       name: '零件管理',
-      url: '/permission',
+      url: '/entryout',
       id: 'ljgl'
     }, {
       name: '库位管理',

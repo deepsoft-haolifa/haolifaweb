@@ -1,6 +1,6 @@
 <template>
 <div class="page-supplier-add abs scroll-y">
-  <div class="content">
+  <div class="form-content">
     <div class="title b f-18">{{form.id ? '编辑' : '新增'}}供应商</div>
     <div class="flex-v-center">
       <input-box v-model="form.suppilerName" class="flex-item" label="企业名称"></input-box>
@@ -211,7 +211,6 @@ export default {
 .page-supplier-add{
   padding: 30px 20px;
   .title{margin-bottom: 20px;}
-  .content{max-width: 1000px;margin: 0 auto;}
   .credentials-form{
     .check-box{margin-bottom: 8px;width: 150px;}
   }

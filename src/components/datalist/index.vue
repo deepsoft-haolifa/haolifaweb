@@ -1,5 +1,5 @@
 <template>
-<div class="data-list relative">
+<div class="data-list relative f-12">
   <transition name="slide-y">
     <table v-if="list.length" class="data-table">
       <slot name="header">

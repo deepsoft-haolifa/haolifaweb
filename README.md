@@ -16,7 +16,7 @@
 - [ ] 权限管理
 - [ ] 菜单管理
 - [ ] 人员管理
-- [ ] 部门管理
+- [x] 部门管理
 ---
 ## 接口问题
 ### 供应商管理
@@ -29,3 +29,6 @@
 - ~~登录、菜单接口菜单应返回登录人可访问的模块标识。~~
 ### 系统管理
 - ~~人员管理 `/user` 接口无法获取 返回 `code:"0003", message:"", result:""`~~
+- 角色管理获取列表提示 `Source must not be null`
+- 人员无法删除 提示 `code: 003, message: Handler dispatch failed; nested exception is java.lang.StackOverflowError`
+- 人员修改提示 `用户id不能为空` 实际上传了用户id

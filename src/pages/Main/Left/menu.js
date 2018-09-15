@@ -18,7 +18,7 @@ export default [
       url: '/user',
       id: 'rygl'
     }, {
-      name: '部门',
+      name: '部门管理',
       url: '/department',
       id: 'bmgl'
     }]

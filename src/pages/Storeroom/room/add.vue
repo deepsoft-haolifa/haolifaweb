@@ -74,7 +74,7 @@ export default {
       const method = form.id ? 'put' : 'post'
       this.$http[method](`/haolifa/store-room/${form.id ? 'update' : 'save'}`, form).then(res => {
         this.loading = false
-        this.$router.replace('/roomlist')
+        this.$router.replace('/room')
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)

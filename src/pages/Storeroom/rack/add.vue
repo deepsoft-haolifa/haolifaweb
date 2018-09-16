@@ -4,12 +4,13 @@
     <div class="title b f-18 mb-10">{{form.id ? '编辑' : '新增'}}库位</div>
 
     <input-box v-model="form.rackNo" label="库位编号"></input-box>
-    <select-box v-model="form.status" :list="statusList" label="状态"></select-box>
-    <select-box v-model="form.storeRoomId" :list="roomList" label="所属库房"></select-box>
+    <input-box v-model="form.rackName" label="库位名称"></input-box>
+    <!-- <select-box v-model="form.status" :list="statusList" label="状态"></select-box> -->
+    <select-box v-model="form.storeRoomNo" :list="roomList" label="所属库房"></select-box>
     <input-box v-model="form.remark" label="备注" multi-line></input-box>
 
     <div class="flex-v-center" style="margin: 20px 0;">
-      <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>
+      <btn big class="mr-20" @click="submit" >提交</btn><!--:disabled="!canSubmit"-->
       <btn big flat bg class="mr-20" @click="cancel">取消</btn>
     </div>
   </div>
@@ -21,14 +22,15 @@ export default {
   name: 'page-rack-add',
   data () {
     return {
-      statusList: [{value: 0, text: '删除'}, {value: 1, text: '正常'}],
+      statusList: [{value: 0, text: '正常'}, {value: 1, text: '删除'}],
       roomList: [],
       form: {
         id: '',
         remark: '',
         rackNo: '',
-        status: '',
-        storeRoomId: ''
+        rackName:'',
+        // status: '',
+        storeRoomNo: ''
       }
     }
   },
@@ -47,7 +49,7 @@ export default {
     getRoomList () {
       this.$http.get('/haolifa/store-room/listInfo?type=0').then(res => {
         this.roomList = res.filter(item => !item.isDelete).map(item => {
-          return { value: item.id, text: item.name }
+          return { value: item.roomNo, text: item.name }
         })
       })
     },
@@ -75,9 +77,9 @@ export default {
       const { form } = this
       this.loading = true
       const method = form.id ? 'put' : 'post'
-      this.$http[method](`/haolifa/store-room/${form.id ? 'update' : 'save'}`, form).then(res => {
+      this.$http[method](`/haolifa/store-room/rack/${form.id ? 'update' : 'save'}`, form).then(res => {
         this.loading = false
-        this.$router.replace('/roomlist')
+        this.$router.replace('/rack')
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)

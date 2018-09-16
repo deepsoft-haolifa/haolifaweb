@@ -65,6 +65,10 @@ export default [
       name: '库房管理',
       url: '/room',
       id: 'kfgl'
+    }, {
+      name: '零件类别管理',
+      url: '/partype',
+      id: 'ljflgl'
     }]
   },
   {

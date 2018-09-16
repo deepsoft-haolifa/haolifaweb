@@ -17,19 +17,25 @@
   </div>
   <div class="flex-item scroll-y">
     <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/rack/pageInfo" method="get">
-      <tr slot="header">
+      <!-- <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th style="width: 200px;">库未编号</th>
         <th>状态</th>
         <th>库房ID</th>
         <th>描述</th>
         <th class="t-right" style="width: 80px;">操作</th>
+      </tr> -->
+      <tr slot="header">
+        <th style="width: 60px;">序号</th>
+        <th style="width: 200px;">库位名称</th>
+        <th>所属库房</th>
+        <th>描述</th>
+        <th class="t-right" style="width: 80px;">操作</th>
       </tr>
       <template slot="item" slot-scope="{ item, index }">
         <td class="c-a">{{index}}</td>
-        <td>{{item.rackNo}}</td>
-        <td>{{status[item.status]}}</td>
-        <td>{{item.storeRoomId}}</td>
+        <td>{{item.rackName}}</td>
+        <td>{{item.storeRoomNo}}</td>
         <td>{{item.remark}}</td>
         <td class="t-right">
           <icon-btn small @click="edit(item)">edit</icon-btn>

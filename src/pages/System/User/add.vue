@@ -52,6 +52,7 @@ export default {
       this.$http.get('/haolifa/user/' + id).then(res => {
         for (let key in this.form) {
           if (key === 'entryTime') this.form[key] = moment(res[key]).format('YYYY-MM-DD')
+          // if (key === 'password') this.
           else this.form[key] = res[key]
         }
       })

@@ -8,14 +8,14 @@
     <table class="data-table">
       <tr>
         <th style="width: 60px">序号</th>
-        <th>部门名称</th>
-        <th>备注</th>
+        <th>角色名称</th>
+        <th>标识</th>
         <td style="width: 100px;text-align: right;">操作</td>
       </tr>
       <tr v-for="(item, i) in list" :key="item.id">
-        <td>{{i}}</td>
-        <td>{{item.roleName}}</td>
-        <td>{{item.description || '-'}}</td>
+        <td>{{i+1}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.roleName || '-'}}</td>
         <td class="t-right">
           <icon-btn small @click="edit(item)">edit</icon-btn>
           <icon-btn small @click="remove(item)">delete</icon-btn>
@@ -111,7 +111,7 @@ export default {
 
 <style lang="less">
 .page-role{
-  .scroll-y{padding: 0 10px;}
+  .scroll-y{padding: 0 10px 30px 10px;}
 }
 </style>
 

@@ -4,6 +4,7 @@
     <h1>404</h1>
     <p>找不到此页面：<span>{{$route.path}}</span></p>
     <p>
+      <router-link class="c-8 mr-15" @click="$router.back()">返回</router-link>
       <router-link class="c-8" to="/">回到首页</router-link>
     </p>
   </div>
@@ -19,6 +20,6 @@ export default {
 <style lang="less">
 .page-404{
   .content{width: 500px;height: 300px;}
-  h1{font-size: 60px;}
+  h1{font-size: 60px;line-height: 40px;}
 }
 </style>

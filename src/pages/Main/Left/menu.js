@@ -1,6 +1,7 @@
 export default [
   {
     name: '系统管理',
+    id: 'parent-xtgl',
     children: [{
       name: '角色管理',
       url: '/role',
@@ -18,13 +19,14 @@ export default [
       url: '/user',
       id: 'rygl'
     }, {
-      name: '部门',
+      name: '部门管理',
       url: '/department',
       id: 'bmgl'
     }]
   },
   {
     name: '流程管理',
+    id: 'parent-lcgl',
     children: [{
       name: '流程管理',
       url: '/process',
@@ -37,6 +39,7 @@ export default [
   },
   {
     name: '库房管理',
+    id: 'parent-kfgl',
     children: [{
       name: '库存预警',
       url: '/earlywarning',
@@ -73,6 +76,7 @@ export default [
   },
   {
     name: '供应商管理',
+    id: 'parent-gysgl',
     children: [{
       name: '供应商管理',
       url: '/supplier/list',
@@ -81,6 +85,7 @@ export default [
   },
   {
     name: '财务管理',
+    id: 'parent-cwgl',
     children: [{
       name: '资产管理',
       url: '/role',
@@ -105,6 +110,7 @@ export default [
   },
   {
     name: '公告管理',
+    id: 'parent-gggl',
     children: [{
       name: '新闻管理',
       url: '/role',

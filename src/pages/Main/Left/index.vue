@@ -1,6 +1,10 @@
 <template>
 <div class="main-left c-6 f-14">
-  <div class="nav-group" v-for="item in list" :key="item.name">
+  <div
+    class="nav-group"
+    v-for="item in list"
+    v-if="menus.includes(item.id)"
+    :key="item.name">
     <div
       class="flex-v-center nav-item nav-toggle a"
       @click="item.open = !item.open">
@@ -11,6 +15,7 @@
       <router-link
         class="nav-item flex-v-center c-6"
         v-for="m in item.children"
+        v-if="menus.includes(m.id)"
         :key="m.id"
         :title="m.name"
         :to="m.url"
@@ -32,8 +37,13 @@ export default {
       list: []
     }
   },
+  computed: {
+    menus () {
+      return this.$store.state.account.menus
+    }
+  },
   created () {
-    let menus = this.$store.state.account.menus
+    let { menus } = this
     menu.forEach(m => {
       m.children = m.children.filter(item => menus.includes(item.id))
     })

@@ -45,33 +45,38 @@ export default [
       url: '/earlywarning',
       id: 'kcgl'
     }, {
-      name: '零件设置',
-      url: '/entryout',
-      id: 'ljsz'
-    }, {
-      name: '零件管理',
-      url: '/entryout',
-      id: 'ljgl'
+      name: '库房管理',
+      url: '/room',
+      id: 'kfgl'
     }, {
       name: '库位管理',
       url: '/rack',
       id: 'kwgl'
     }, {
+      name: '零件管理',
+      url: '/material',
+      id: 'ljgl'
+    }, {
       name: '成品管理',
-      url: '/permission',
+      url: '/storeproduct',
       id: 'cpgl'
+    }]
+  },
+  {
+    name: '配套管理',
+    id: 'parent-ptgl',
+    children: [{
+      name: '零件设置',
+      url: '/part',
+      id: 'ljsz'
     }, {
-      name: '入库管理',
-      url: '/permission',
-      id: 'rkgl'
+      name: '成品设置',
+      url: '/product',
+      id: 'cpsz'
     }, {
-      name: '库房管理',
-      url: '/room',
-      id: 'kfgl'
-    }, {
-      name: '零件类别管理',
-      url: '/partype',
-      id: 'ljflgl'
+      name: '零件分类设置',
+      url: '/parttype',
+      id: 'ljflsz'
     }]
   },
   {

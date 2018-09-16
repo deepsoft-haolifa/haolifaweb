@@ -1,17 +1,17 @@
 <template>
-<div class="page-room-add abs scroll-y">
+<div class="page-product-add abs scroll-y">
   <div class="form-content">
-    <div class="title b f-18">{{form.id ? '编辑' : '新增'}}库房</div>
+    <div class="title b f-18">{{form.id ? '编辑' : '新增'}}成品</div>
     <div class="flex-v-center">
-      <input-box v-model="form.name" class="flex-item mr-10" label="库房名称"></input-box>
-      <input-box v-model="form.roomNo" class="mr-10" label="编号" style="width: 25%"></input-box>
-      <select-box v-model="form.type" :list="typeList" style="width: 25%" label="类型"></select-box>
+      <input-box v-model="form.name" class="flex-item mr-10" label="成品名称"></input-box>
+      <input-box v-model="form.productNo" class="flex-item mr-10" label="成品编号（全局唯一）"></input-box>
     </div>
     <div class="flex-v-center">
-      <input-box v-model="form.address" class="flex-item mr-10" label="地址"></input-box>
+      <input-box v-model="form.fitComponent" class="flex-item mr-10" label="适配组件"></input-box>
+      <input-box v-model="form.specifications" class="flex-item mr-10" label="成品规格（如：DN65，DN80）"></input-box>
     </div>
     <div class="flex-v-center">
-      <input-box v-model="form.remark" class="flex-item mr-10" multi-line label="描述"></input-box>
+      <input-box v-model="form.remark" class="flex-item mr-10" multi-line label="备注"></input-box>
     </div>
     <div class="flex-v-center" style="margin: 20px 0;">
       <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>
@@ -23,36 +23,36 @@
 
 <script>
 export default {
-  name: 'page-room-add',
+  name: 'page-product-add',
   data () {
     return {
-      typeList: [{text: '原料库', value: 1}, {text: '成品库', value: 2}],
       form: {
         id: '',
         name: '',
-        roomNo: '',
-        address: '',
-        remark: '',
-        type: 0
+        productNo: '',
+        specifications: '',
+        fitComponent: '',
+        remark: ''
       }
     }
   },
   computed: {
     canSubmit () {
       const { form } = this
-      return form.name && form.roomNo && form.address
+      return form.name && form.productNo
     }
   },
   created () {
     let { id } = this.$route.query
-    if (id !== undefined && this.$route.name === 'room-edit') this.getInfo(id)
+    if (id !== undefined && this.$route.name === 'product-edit') this.getInfo(id)
   },
   methods: {
     getInfo (id) {
-      this.$http.get(`/haolifa/store-room/getInfo/${id}`).then(res => {
+      this.$http.get(`/haolifa/product/getInfo/${id}`).then(res => {
         for (let key in this.form) {
           if (this.form[key] !== undefined) this.form[key] = res[key]
         }
+        console.dir(res)
       }).catch(e => {
         this.$toast(e.msg || e.message)
       })
@@ -72,9 +72,9 @@ export default {
       const { form } = this
       this.loading = true
       const method = form.id ? 'put' : 'post'
-      this.$http[method](`/haolifa/store-room/${form.id ? 'update' : 'save'}`, form).then(res => {
+      this.$http[method](`/haolifa/product/${form.id ? 'update' : 'save'}`, form).then(res => {
         this.loading = false
-        this.$router.replace('/room')
+        this.$router.replace('/product')
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style lang="less">
-.page-room-add{
+.page-product-add{
   padding: 30px 20px;
   .title{margin-bottom: 20px;}
 }

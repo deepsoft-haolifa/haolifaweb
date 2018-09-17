@@ -93,23 +93,23 @@ export default [
     id: 'parent-cwgl',
     children: [{
       name: '资产管理',
-      url: '/role',
+      url: '/assets',
       id: 'zcgl'
     }, {
       name: '费用管理',
-      url: '/role',
+      url: '/cost',
       id: 'fygl'
     }, {
       name: '报表管理',
-      url: '/role',
+      url: '/report',
       id: 'bbgl'
     }, {
       name: '合同管理',
-      url: '/role',
+      url: '/contract',
       id: 'htgl'
     }, {
       name: '发票管理',
-      url: '/role',
+      url: '/invoice',
       id: 'fpgl'
     }]
   },
@@ -118,11 +118,11 @@ export default [
     id: 'parent-gggl',
     children: [{
       name: '新闻管理',
-      url: '/role',
+      url: '/news',
       id: 'xwgl'
     }, {
       name: '通知管理',
-      url: '/role',
+      url: '/notification',
       id: 'tzgl'
     }]
   }

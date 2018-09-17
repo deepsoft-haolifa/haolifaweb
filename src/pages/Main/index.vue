@@ -43,7 +43,7 @@ export default {
   .logo{line-height:20px;margin-left: 5px;color: #d42101;
     img{height: 26px;vertical-align: top;margin-right: 15px;margin-bottom: 2px;}
   }
-  .left{width: 220px;border-right: 1px solid rgba(0,0,0,.1);}
+  .left{width: 250px;border-right: 1px solid rgba(0,0,0,.1);}
   td, th{white-space: nowrap;}
 }
 </style>

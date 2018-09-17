@@ -20,9 +20,11 @@
 ---
 ## 接口问题
 ### 系统管理
-- 角色管理获取列表提示 `Source must not be null`
-- 人员无法删除 提示 `code: 003, message: Handler dispatch failed; nested exception is java.lang.StackOverflowError`
 - 人员修改提示 `用户id不能为空` 实际上传了用户id
+- 角色管理新增提交时保存成功后部门信息字段均为空
+- 角色管理修改提交提示 `0002 参数错误`
+- ~~角色管理获取列表提示 `Source must not be null`~~
+- ~~人员无法删除 提示 `code: 003, message: Handler dispatch failed; nested exception is java.lang.StackOverflowError`~~
 - ~~人员管理 `/user` 接口无法获取 返回 `code:"0003", message:"", result:""`~~
 ### 供应商管理
 - ~~供应商信息获取和提交字段名称应当保持一致（如 `credentialsInfo` 在提交时叫 `credentials`）。~~

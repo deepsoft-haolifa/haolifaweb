@@ -11,7 +11,7 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list url="/haolifa/user" method="get" class="f-14">
+    <data-list ref="datalist" url="/haolifa/user" method="get" class="f-14">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>姓名</th>
@@ -58,7 +58,7 @@ export default {
         yes: () => {
           this.$http.delete(`haolifa/user/${id}`).then(res => {
             this.$toast('删除成功')
-            this.getList()
+            this.$refs.datalist.update()
           }).catch(e => {
             this.$toast(e.message || e.msg)
           })

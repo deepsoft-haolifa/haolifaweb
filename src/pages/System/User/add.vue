@@ -11,7 +11,10 @@
     </div>
     <div class="flex-v-center">
       <input-box v-model="form.username" class="flex-item mr-10" label="用户名"></input-box>
-      <input-box v-model="form.password" class="flex-item" label="密码"></input-box>
+      <input-box v-if="editPwd" v-model="form.password" class="flex-item" label="密码"></input-box>
+      <div v-else class="flex-item">
+        <btn @click="editPwd=true">点击修改密码</btn>
+      </div>
     </div>
     <div class="flex-v-center">
       <input-box v-model="form.nativePlace" class="flex-item mr-10" label="籍贯"></input-box>
@@ -40,21 +43,23 @@ export default {
   name: 'page-user-add',
   data () {
     return {
+      editPwd: true,
       form: JSON.parse(JSON.stringify(form))
     }
   },
   created () {
-    if (this.$route.query.id && this.$route.name === 'user-edit') this.getUser()
+    if (this.$route.query.id && this.$route.name === 'user-edit') {
+      this.editPwd = false
+      this.getUser()
+    }
   },
   methods: {
     getUser () {
       const id = this.$route.query.id
       this.$http.get('/haolifa/user/' + id).then(res => {
-        for (let key in this.form) {
-          if (key === 'entryTime') this.form[key] = moment(res[key]).format('YYYY-MM-DD')
-          // if (key === 'password') this.
-          else this.form[key] = res[key]
-        }
+        for (let key in this.form) this.form[key] = res[key]
+        this.form.entryTime = moment(res.entryTime).format('YYYY-MM-DD')
+        this.form.password = ''
       })
     },
     clear () {
@@ -67,16 +72,18 @@ export default {
       const { form } = this
       let res = true
       for (let key in form) {
-        if (form[key] === '' && key !== 'id') {
+        if (form[key] === '' && key !== 'id' && key !== 'password') {
           this.$toast(`请输入 ${key}`)
           res = false
         }
       }
+      if (this.editPwd && !form.password) res = false
       return res
     },
     submit () {
       if (!this.verify()) return
-      const { form } = this
+      const form = JSON.parse(JSON.stringify(this.form))
+      if (!this.editPwd) delete form.password
       const method = form.id ? 'put' : 'post'
       this.$http[method]('/haolifa/user', obj2FormData(form)).then(res => {
         this.$router.push('/user')

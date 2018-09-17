@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     getInfo (id) {
-      this.$http.get(`/haolifa/product/getInfo/${id}`).then(res => {
+      this.$http.get(`/haolifa/material/classify/getInfo/${id}`).then(res => {
         for (let key in this.form) {
           if (this.form[key] !== undefined) this.form[key] = res[key]
         }

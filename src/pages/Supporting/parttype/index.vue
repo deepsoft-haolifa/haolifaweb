@@ -16,7 +16,7 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/product/pageInfo" method="get">
+    <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/material/classify/pageInfo" method="get">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>分类名称</th>
@@ -52,12 +52,12 @@ export default {
   },
   methods: {
     edit (item) {
-      this.$router.push(`/product/edit?id=${item.id}`)
+      this.$router.push(`/parttype/edit?id=${item.id}`)
     },
     remove (item) {
       this.$confirm({
         title: '删除确认',
-        text: `您确定要删除以下零件类别吗？<br><b>${item.name}</b>`,
+        text: `您确定要删除以下零件类别吗？<br><b>${item.classifyName}</b>`,
         color: 'red',
         btns: ['取消', '删除'],
         yes: () => {

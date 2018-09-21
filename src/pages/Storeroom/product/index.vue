@@ -10,10 +10,11 @@
       </select>
       <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
     </div> -->
-    <div class="flex-item"></div>
+    <!-- <div class="flex-item"></div>
     <router-link to="/product/add">
       <btn class="b" flat color="#008eff">新增成品</btn>
-    </router-link>
+    </router-link> -->
+    <span class="f-16" style="margin-left: 10px;">{{this.$route.meta.title}}</span>
   </div>
   <div class="flex-item scroll-y">
     <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/product/pageInfo" method="get">
@@ -37,6 +38,9 @@
         <td class="t-right">
           <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
           <icon-btn small @click="remove(item)">delete</icon-btn> -->
+          <a href="javascript:;" class="blue" @click="entryProduct(item)">入库</a> |
+          <a href="javascript:;" class="blue" @click="outProduct(item)">出库</a> |
+          <a href="javascript:;" class="blue" @click="dellist(item)">详情</a>
         </td>
       </template>
     </data-list>
@@ -57,8 +61,17 @@ export default {
     }
   },
   methods: {
+    entryProduct (item) {
+      this.$router.push(`/storeproduct/entryProduct?productNo=${item.productNo}&name=${item.name}`)
+    },
+    outProduct (item) {
+      this.$router.push(`/storeproduct/outProduct?productNo=${item.productNo}&name=${item.name}`)
+    },
+    dellist (item) {
+      this.$router.push(`/storeproduct/info?productNo=${item.productNo}`)
+    },
     edit (item) {
-      this.$router.push(`/product/edit?id=${item.id}`)
+      this.$router.push(`/storeproduct/edit?id=${item.id}`)
     },
     remove (item) {
       this.$confirm({

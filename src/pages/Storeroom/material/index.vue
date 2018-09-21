@@ -10,10 +10,11 @@
       </select>
       <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
     </div> -->
-    <div class="flex-item"></div>
+    <!-- <div class="flex-item"></div>
     <router-link to="/material/add">
       <btn class="b" flat color="#008eff">新增零件</btn>
-    </router-link>
+    </router-link> -->
+    <span class="f-16" style="margin-left: 10px;">{{this.$route.meta.title}}</span>
   </div>
   <div class="flex-item scroll-y">
     <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/material/pageInfo" method="get">
@@ -24,7 +25,7 @@
         <th>库存</th>
         <th>单位</th>
         <th>图号</th>
-        <th class="t-right" style="width: 80px;">操作</th>
+        <th class="t-center" style="width: 80px;">操作</th>
       </tr>
       <!-- item: 当前行数据; index: 当前行数 -->
       <template slot="item" slot-scope="{ item, index }">
@@ -34,9 +35,12 @@
         <td>{{item.currentQuantity}}</td>
         <td>{{item.unit}}</td>
         <td>{{item.graphNo}}</td>
-        <td class="t-right">
+        <td>
           <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
           <icon-btn small @click="remove(item)">delete</icon-btn> -->
+          <a href="javascript:;" class="blue" @click="entryMaterial(item)">入库</a> |
+          <a href="javascript:;" class="blue" @click="outMaterial(item)">出库</a> |
+          <a href="javascript:;" class="blue" @click="dellist(item)">详情</a>
         </td>
       </template>
     </data-list>
@@ -56,7 +60,18 @@ export default {
       }
     }
   },
+  created: {
+  },
   methods: {
+    entryMaterial (item) {
+      this.$router.push(`/material/entryMaterial?graphNo=${item.graphNo}&name=${item.name}`)
+    },
+    outMaterial (item) {
+      this.$router.push(`/material/outMaterial?graphNo=${item.graphNo}&name=${item.name}`)
+    },
+    dellist (item) {
+      this.$router.push(`/material/info?graphNo=${item.graphNo}`)
+    },
     edit (item) {
       this.$router.push(`/material/edit?id=${item.id}`)
     },

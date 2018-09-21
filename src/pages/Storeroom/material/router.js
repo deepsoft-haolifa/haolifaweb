@@ -13,4 +13,19 @@ export default [{
   name: 'material-edit',
   component: () => import(/* webpackChunkName: "materialedit" */ './add.vue'),
   meta: { level: 3, title: '编辑零件', open: false, id: 'ljgl' }
+}, {
+  path: '/material/entryMaterial',
+  name: 'entryMaterial-list',
+  component: () => import(/* webpackChunkName: "entryMateriallist" */ './entryMaterial.vue'),
+  meta: { level: 3, title: '零件入库详情', open: false, id: 'ljgl' }
+}, {
+  path: '/material/outMaterial',
+  name: 'outMaterial-list',
+  component: () => import(/* webpackChunkName: "outMateriallist" */ './outMaterial.vue'),
+  meta: { level: 3, title: '零件出库详情', open: false, id: 'ljgl' }
+}, {
+  path: '/material/info',
+  name: 'info-list',
+  component: () => import(/* webpackChunkName: "infolist" */ './info.vue'),
+  meta: { level: 3, title: '零件详情', open: false, id: 'ljgl' }
 }]

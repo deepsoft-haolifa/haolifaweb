@@ -1,13 +1,7 @@
 <template>
 <div class="page-contract flex-col">
-  <div class="flex-v-center tool-bar">
-    <div class="flex-item"></div>
-    <router-link to="/supplier/add">
-      <btn class="b" flat color="#008eff">新增合同</btn>
-    </router-link>
-  </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" method="get" url="/haolifa/contract/list">
+    <data-list ref="list" method="get" url="/haolifa/contract/list" style="margin-top: 20px;">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>合同名称</th>
@@ -16,7 +10,6 @@
         <th>合同当事人</th>
         <th>合同摘要</th>
         <th>合同金额</th>
-        <th class="t-right" style="width: 80px;">操作</th>
       </tr>
       <template slot="item" slot-scope="{ item, index }">
         <td>{{index}}</td>
@@ -28,10 +21,6 @@
         <td>{{item.contractParty}}</td>
         <td>{{item.contractSummary}}</td>
         <td>￥{{item.totalAmount}}</td>
-        <td class="t-right">
-          <icon-btn small @click="edit(item)">edit</icon-btn>
-          <icon-btn small @click="remove(item)">delete</icon-btn>
-        </td>
       </template>
     </data-list>
   </div>
@@ -40,7 +29,6 @@
 
 <script>
 import DataList from '@/components/datalist'
-// import obj2FormData from '@/utils/obj2FormData'
 export default {
   name: 'page-contract',
   components: { DataList },

@@ -40,7 +40,8 @@
           <icon-btn small @click="remove(item)">delete</icon-btn> -->
           <a href="javascript:;" class="blue" @click="entryMaterial(item)">入库</a> |
           <a href="javascript:;" class="blue" @click="outMaterial(item)">出库</a> |
-          <a href="javascript:;" class="blue" @click="dellist(item)">详情</a>
+          <a href="javascript:;" class="blue" @click="entryInfo(item)">入库详情</a> |
+          <a href="javascript:;" class="blue" @click="outInfo(item)">出库详情</a>
         </td>
       </template>
     </data-list>
@@ -60,7 +61,8 @@ export default {
       }
     }
   },
-  created: {
+  created () {
+    console.log('')
   },
   methods: {
     entryMaterial (item) {
@@ -69,8 +71,11 @@ export default {
     outMaterial (item) {
       this.$router.push(`/material/outMaterial?graphNo=${item.graphNo}&name=${item.name}`)
     },
-    dellist (item) {
-      this.$router.push(`/material/info?graphNo=${item.graphNo}`)
+    entryInfo (item) {
+      this.$router.push(`/material/entryInfo?graphNo=${item.graphNo}`)
+    },
+    outInfo (item) {
+      this.$router.push(`/material/outInfo?graphNo=${item.graphNo}`)
     },
     edit (item) {
       this.$router.push(`/material/edit?id=${item.id}`)

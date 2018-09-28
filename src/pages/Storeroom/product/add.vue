@@ -44,7 +44,7 @@ export default {
   },
   created () {
     let { id } = this.$route.query
-    if (id !== undefined && this.$route.name === 'product-edit') this.getInfo(id)
+    if (id !== undefined && this.$route.name === 'storeproduct-edit') this.getInfo(id)
   },
   methods: {
     getInfo (id) {

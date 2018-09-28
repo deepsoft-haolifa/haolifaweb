@@ -28,6 +28,7 @@
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th style="width: 200px;">库位名称</th>
+        <th style="width: 100px;">库位编号</th>
         <th>所属库房</th>
         <th>描述</th>
         <th class="t-right" style="width: 80px;">操作</th>
@@ -35,6 +36,7 @@
       <template slot="item" slot-scope="{ item, index }">
         <td class="c-a">{{index}}</td>
         <td>{{item.rackName}}</td>
+        <td>{{item.rackNo }}</td>
         <td>{{item.storeRoomNo}}</td>
         <td>{{item.remark}}</td>
         <td class="t-right">

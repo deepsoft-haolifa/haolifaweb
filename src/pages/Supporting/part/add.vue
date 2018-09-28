@@ -4,8 +4,9 @@
     <div class="title b f-18">{{form.id ? '编辑' : '新增'}}零件</div>
     <div class="flex-v-center">
       <input-box v-model="form.name" class="mr-10" label="名称" style="width: 50%"></input-box>
-      <input-box v-model="form.materialClassifyName" class="mr-10" label="分类名称" style="width: 25%"></input-box>
-      <input-box v-model="form.materialClassifyId" class="mr-10" label="分类Id" style="width: 25%"></input-box>
+      <select-box v-model="form.materialClassifyName" @change="typeId" :list="parttypeList" label="分类名称"></select-box>
+      <!-- <input-box v-model="form.materialClassifyName" class="mr-10" label="分类名称" style="width: 25%"></input-box> -->
+      <!-- <input-box v-model="form.materialClassifyId" class="mr-10" label="分类Id" style="width: 25%"></input-box> -->
     </div>
     <div class="flex-v-center">
       <input-box v-model="form.graphNo" class="mr-10" label="图号" style="width: 50%"></input-box>
@@ -43,6 +44,7 @@ export default {
   name: 'page-part-add',
   data () {
     return {
+      parttypeList: [],
       form: {
         id: '',
         actualWeight: '',
@@ -73,8 +75,21 @@ export default {
   created () {
     let { id } = this.$route.query
     if (id !== undefined && this.$route.name === 'part-edit') this.getInfo(id)
+    this.getparttypeList()
+    this.typeId()
   },
   methods: {
+    typeId () {
+      let item = this.parttypeList.find(item => item.value === this.form.materialClassifyName)
+      this.form.materialClassifyId = item ? item.id : ''
+    },
+    getparttypeList () {
+      this.$http.get('/haolifa/material/classify/pageInfo').then(res => {
+        this.parttypeList = res.list.filter(item => !item.isDelete).map(item => {
+          return { value: item.classifyName, text: item.classifyName, id: item.id }
+         })
+      })
+    },
     getInfo (id) {
       this.$http.get(`/haolifa/material/getInfo/${id}`).then(res => {
         for (let key in this.form) {

@@ -24,8 +24,13 @@ export default [{
   component: () => import(/* webpackChunkName: "outMateriallist" */ './outMaterial.vue'),
   meta: { level: 3, title: '零件出库详情', open: false, id: 'ljgl' }
 }, {
-  path: '/material/info',
-  name: 'info-list',
-  component: () => import(/* webpackChunkName: "infolist" */ './info.vue'),
-  meta: { level: 3, title: '零件详情', open: false, id: 'ljgl' }
+  path: '/material/entryInfo',
+  name: 'entryInfo-list',
+  component: () => import(/* webpackChunkName: "entryInfolist" */ './entryInfo.vue'),
+  meta: { level: 3, title: '零件入库详情', open: false, id: 'ljgl' }
+}, {
+  path: '/material/outInfo',
+  name: 'outInfo-list',
+  component: () => import(/* webpackChunkName: "outInfolist" */ './outInfo.vue'),
+  meta: { level: 3, title: '零件出库详情', open: false, id: 'ljgl' }
 }]

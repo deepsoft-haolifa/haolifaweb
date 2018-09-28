@@ -40,7 +40,8 @@
           <icon-btn small @click="remove(item)">delete</icon-btn> -->
           <a href="javascript:;" class="blue" @click="entryProduct(item)">入库</a> |
           <a href="javascript:;" class="blue" @click="outProduct(item)">出库</a> |
-          <a href="javascript:;" class="blue" @click="dellist(item)">详情</a>
+          <a href="javascript:;" class="blue" @click="entryList(item)">入库详情</a> |
+          <a href="javascript:;" class="blue" @click="outList(item)">出库详情</a>
         </td>
       </template>
     </data-list>
@@ -67,8 +68,11 @@ export default {
     outProduct (item) {
       this.$router.push(`/storeproduct/outProduct?productNo=${item.productNo}&name=${item.name}`)
     },
-    dellist (item) {
-      this.$router.push(`/storeproduct/info?productNo=${item.productNo}`)
+    entryList (item) {
+      this.$router.push(`/storeproduct/entryList?productNo=${item.productNo}`)
+    },
+    outList (item) {
+      this.$router.push(`/storeproduct/outList?productNo=${item.productNo}`)
     },
     edit (item) {
       this.$router.push(`/storeproduct/edit?id=${item.id}`)

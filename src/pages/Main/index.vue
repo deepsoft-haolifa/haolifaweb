@@ -11,7 +11,7 @@
     <account/>
   </div>
   <div class="flex-item flex" style="width: 100%;overflow: hidden;">
-    <div class="left scroll-y" v-if="leftOpen">
+    <div class="left scroll-y" v-if="leftOpen" style="background: #f8f8f8;">
       <main-left/>
     </div>
     <div class="flex-item relative" style="width: 0;">

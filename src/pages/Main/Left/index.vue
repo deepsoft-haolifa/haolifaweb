@@ -2,14 +2,15 @@
 <div class="main-left c-6 f-14">
   <div
     class="nav-group"
-    v-for="item in list"
+    v-for="(item,index) in list"
     v-if="menus.includes(item.id)"
     :key="item.name">
     <div
       class="flex-v-center nav-item nav-toggle a"
       @click="item.open = !item.open">
-      <i class="icon">arrow_drop_{{item.open ? 'up' : 'down'}}</i>
+      <i class="icon" style="">{{iconList[index]}}</i>
       <span class="flex-item b">{{item.name}}</span>
+      <i class="icon">arrow_drop_{{item.open ? 'up' : 'down'}}</i>
     </div>
     <div v-if="item.open">
       <router-link
@@ -34,7 +35,8 @@ export default {
   name: 'main-left',
   data () {
     return {
-      list: []
+      list: [],
+      iconList: ['settings','assessment','account_balance','extension','supervisor_account','euro_symbol','volume_up']
     }
   },
   computed: {
@@ -74,9 +76,9 @@ export default {
 <style lang="less">
 .main-left{
   line-height: 1em;padding: 20px 0;white-space: nowrap;
-  .nav-group{margin-top: 5px;}
-  .nav-item{height: 32px;padding: 5px 54px;box-sizing: border-box;
-    .icon{margin-right: 10px;}
+  .nav-group{ border-bottom: 1px solid #eaeaea;}
+  .nav-item{height: 45px;padding: 5px 54px;box-sizing: border-box;
+    .icon{margin-right: 10px;font-size: 20px;}
     &:hover{background: #eee;}
     &.nav-toggle{padding: 5px 20px;}
     &.on{background: #e0f0ff;color: #0175d4;}

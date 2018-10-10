@@ -1,8 +1,35 @@
 <template>
-<div class="abs page-login flex-center">
-  <div>
-    <div class="card">
-      <div class="flex-v-center">
+<div class="abs page-login flex-center" style="justify-content: normal;">
+  <div style="margin-top:60px;">
+    <img src="../../assets/img/logo_title.png"/>
+  </div>
+  <div style="margin-top:50px;">
+    <div class="loginBox">
+      <h3 class="title">用户登录</h3>
+      <form>
+      <div class="t-inputWrap">
+          <input type="text" v-model="username" placeholder="请输入用户名">
+          <div class="inputIcon t-user"></div>
+      </div>
+      <div class="t-inputWrap">
+          <input type="password" v-model="password" @keydown.enter.native="login" placeholder="请输入密码">
+          <div class="inputIcon t-password"></div>
+      </div>
+      <div class="t-inputWrap">
+          <input type="text" class="inputCode" v-model="imageCode" placeholder="请输入验证码">
+          <div class="codeImg">
+              <img @click="getImageCode()" :src="authImg" alt="">
+          </div>
+          <div class="inputIcon t-codeIcon"></div>
+      </div>
+      </form>
+      <div class="t-inputWrap">
+          <a href="javascript:;" class="loginBtn" :loading="loading" @click="login">登录</a>
+      </div>
+      <div class="t-inputWrap" style="text-align:right;">
+          <a class="a f-13" v-tooltip:top="'请联系管理员修改密码'" style="color:rgb(178, 204, 239);">忘记密码？</a><span class="flex-item"></span>
+        </div>
+      <!-- <div class="flex-v-center">
         <img src="../../assets/img/logo_full.png" class="login-logo">
         <span class="flex-item c-a">山西好利智能化管理系统</span>
       </div>
@@ -23,7 +50,7 @@
           <a class="a f-13 c-a" v-tooltip:top="'请联系管理员修改密码'">忘记密码？</a><span class="flex-item"></span>
           <btn big :loading="loading" @click="login">登录</btn>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -39,7 +66,9 @@ export default {
       loading: false,
       useCache: true,
       username: 'admin',
-      password: 'admin'
+      password: 'admin',
+      imageCode: '',
+      authImg: ''
     }
   },
   computed: {
@@ -54,13 +83,17 @@ export default {
       }
     }
   },
+  created () {
+    this.getImageCode()
+  },
   methods: {
     login () {
-      const { username, password } = this
+      const { username, password, imageCode } = this
       this.loading = true
       const fd = new FormData()
       fd.append('username', username)
       fd.append('password', password)
+      fd.append('imageCode', imageCode)
       this.$http.post('/haolifa/login', fd).then(res => {
         res.menus.push('home')
         this.$store.commit('LOGIN', res)
@@ -70,6 +103,10 @@ export default {
         this.loading = false
         this.$toast(e.message || e.msg || e)
       })
+    },
+    getImageCode () {
+      let randomNum = Math.random()
+      this.authImg = '/haolifa/code/image?'+  randomNum
     }
   }
 }
@@ -77,14 +114,87 @@ export default {
 
 <style lang="less">
 .page-login{
-  background: url('../../assets/img/bg.svg') center / cover;
+  background: url('../../assets/img/login_bg.jpg') center / cover;
+  flex-direction: column;
   .avatar{margin-right: 15px;}
   .login-logo{height: 30px;filter: grayscale(100%);opacity: .5;margin-right: 10px;}
   .login-account{padding: 20px 0;}
   .login-form{padding: 30px 0 10px 0;}
-  .card{padding: 40px 35px;width: 420px;margin-bottom: 10px;}
-  .input-box{margin-bottom: 15px;}
-  input{border-color: #ddd;}
-  input:-webkit-autofill{box-shadow: 0 0 0px 100px white inset;}
+  .loginBox{
+    background: url('../../assets/img/login.png') no-repeat;
+    width:495px;
+    height:551px;
+    margin-left:655px;
+    overflow: hidden;
+    h3{ font-size: 30px; color: #fff; padding: 50px 90px 20px;}
+    .t-inputWrap {
+        width:310px;
+        margin:30px auto;
+        position: relative;
+        
+    }
+    .t-inputWrap input {
+        width:100%;
+        height:45px;
+        border:1px solid #71a4e3;
+        line-height:45px;
+        text-indent:40px;
+        font-size:16px;
+        color:#fff;
+        outline: none;
+        background-color: rgba(40,111,203,0);
+    }
+    .t-inputWrap .inputIcon {
+        width:15px;
+        height:15px;
+        position: absolute;
+        left:12px;
+        top:16px;
+        background-image:url('../../assets/img/login_bg.png');
+        background-repeat: no-repeat;
+    }
+    .t-inputWrap .t-user {
+        background-position:left top;
+    }
+    .t-inputWrap .t-password {
+        background-position:left -19px;
+    }
+    .t-inputWrap .t-codeIcon {
+        background-position:left -37px;
+    }
+    .t-inputWrap .inputCode {
+        width:214px;
+    }
+    .t-inputWrap .codeImg {
+        width:74px;
+        height:43px;
+        margin-top:2px;
+        float:right;
+        background:#f1f1f1;
+    }
+    .t-inputWrap .codeImg img {
+        width:100%;
+        height:100%;
+    }
+    .t-inputWrap a.loginBtn {
+        width:100%;
+        display: block;
+        text-align: center;
+        line-height:45px;
+        text-decoration: none;
+        height:45px;
+        background:#46c0ff;
+        color:#fff;
+        font-size:16px;
+        transition: background .3s;
+        -webkit-transition: background .3s;
+    }
+    .t-inputWrap a.loginBtn:hover {
+        background:#32b4f7;
+    }
+  }
+  input::-webkit-input-placeholder{
+    color: #92bff9;    
+  }
 }
 </style>

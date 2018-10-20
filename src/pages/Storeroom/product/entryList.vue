@@ -1,7 +1,7 @@
 <template>
 <div class="page-entryList-list">
   <div class="flex-v-center tool-bar">
-    
+
   </div>
   <div class="flex-item scroll-y">
     <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/entryOut/pageInfo" method="get">
@@ -51,7 +51,7 @@ export default {
         storeRoomId: '',
         storeRoomRackId: '',
         storeRoomRackNo: '',
-        supplier: '',
+        supplier: ''
       }
     }
   },
@@ -60,7 +60,7 @@ export default {
     if (productNo !== undefined && this.$route.name === 'entryList-list') this.filter.productNo = productNo
   },
   methods: {
-    
+
   }
 }
 </script>

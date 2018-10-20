@@ -28,7 +28,7 @@ export default {
         id: '',
         remark: '',
         rackNo: '',
-        rackName:'',
+        rackName: '',
         // status: '',
         storeRoomNo: ''
       }

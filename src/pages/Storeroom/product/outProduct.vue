@@ -42,7 +42,7 @@ export default {
         quantity: '',
         storeRoomId: '',
         storeRoomRackId: '',
-        storeRoomRackNo: '',
+        storeRoomRackNo: ''
       },
       name: '',
       roomList: [],
@@ -57,8 +57,8 @@ export default {
     }
   },
   created () {
-    let { productNo,name } = this.$route.query
-    if (productNo !== undefined && this.$route.name === 'outProduct') this.getInfo(productNo,name)
+    let { productNo, name } = this.$route.query
+    if (productNo !== undefined && this.$route.name === 'outProduct') this.getInfo(productNo, name)
     this.getRoomList()
     this.getRoomRackList()
     this.getRoomId()
@@ -87,13 +87,12 @@ export default {
         })
       })
     },
-    getInfo (productNo,name) {
+    getInfo (productNo, name) {
       this.$http.get(`/haolifa/product/getInfo/${productNo}`).then(res => {
-        //this.form[materialGraphNo] = res[graphNo]
+        // this.form[materialGraphNo] = res[graphNo]
         for (let key in this.form) {
-          if (this.form[key] !== undefined)
-            this.form.productNo = productNo
-            this.name = name
+          if (this.form[key] !== undefined) { this.form.productNo = productNo }
+          this.name = name
         }
       }).catch(e => {
         this.$toast(e.msg || e.message)

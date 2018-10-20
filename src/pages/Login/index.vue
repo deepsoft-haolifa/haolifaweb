@@ -106,7 +106,7 @@ export default {
     },
     getImageCode () {
       let randomNum = Math.random()
-      this.authImg = '/haolifa/code/image?'+  randomNum
+      this.authImg = '/haolifa/code/image?' + randomNum
     }
   }
 }
@@ -131,7 +131,7 @@ export default {
         width:310px;
         margin:30px auto;
         position: relative;
-        
+
     }
     .t-inputWrap input {
         width:100%;
@@ -194,7 +194,7 @@ export default {
     }
   }
   input::-webkit-input-placeholder{
-    color: #92bff9;    
+    color: #92bff9;
   }
 }
 </style>

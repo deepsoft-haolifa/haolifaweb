@@ -62,7 +62,7 @@ export default {
         specifications: '',
         taxRate: '',
         theoreticalWeight: '',
-        unit: '',
+        unit: ''
       }
     }
   },
@@ -87,7 +87,7 @@ export default {
       this.$http.get('/haolifa/material/classify/pageInfo').then(res => {
         this.parttypeList = res.list.filter(item => !item.isDelete).map(item => {
           return { value: item.classifyName, text: item.classifyName, id: item.id }
-         })
+        })
       })
     },
     getInfo (id) {

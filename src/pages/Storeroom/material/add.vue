@@ -60,7 +60,7 @@ export default {
         specifications: '',
         taxRate: '',
         theoreticalWeight: '',
-        unit: '',
+        unit: ''
       }
     }
   },

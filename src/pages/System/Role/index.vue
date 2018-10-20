@@ -41,7 +41,7 @@
 
 <script>
 import DataList from '@/components/datalist'
-import obj2FormData from '@/utils/obj2FormData'
+// import obj2FormData from '@/utils/obj2FormData'
 
 export default {
   name: 'page-role',
@@ -149,4 +149,3 @@ export default {
   .scroll-y{padding: 0 10px 30px 10px;}
 }
 </style>
-

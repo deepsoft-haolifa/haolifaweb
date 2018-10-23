@@ -1,0 +1,16 @@
+export default [{
+  path: '/supplierproduct',
+  name: 'supplierproduct-list',
+  component: () => import(/* webpackChunkName: "supplierproductlist" */ './index.vue'),
+  meta: { level: 2, title: '供应商产品', open: false, id: 'gyscp' }
+}, {
+  path: '/supplierproduct/add',
+  name: 'supplierproduct-add',
+  component: () => import(/* webpackChunkName: "supplierproductadd" */ './add.vue'),
+  meta: { level: 2, title: '新增供应商产品', open: false, id: 'gyscp' }
+}, {
+  path: '/supplierproduct/edit',
+  name: 'supplierproduct-edit',
+  component: () => import(/* webpackChunkName: "supplierproductedit" */ './add.vue'),
+  meta: { level: 2, title: '编辑供应商产品', open: false, id: 'gyscp' }
+}]

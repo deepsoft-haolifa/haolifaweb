@@ -12,7 +12,7 @@
       <span class="flex-item b">{{item.name}}</span>
       <i class="icon">arrow_drop_{{item.open ? 'up' : 'down'}}</i>
     </div>
-    <div v-if="item.open">
+    <div v-if="item.open" class="openMenu">
       <router-link
         class="nav-item flex-v-center c-6"
         v-for="m in item.children"
@@ -76,7 +76,9 @@ export default {
 <style lang="less">
 .main-left{
   line-height: 1em;padding: 20px 0;white-space: nowrap;
-  .nav-group{ border-bottom: 1px solid #eaeaea;}
+  .nav-group{ border-bottom: 1px solid #eaeaea;
+    div.openMenu{background-color: #fff;}  
+  }
   .nav-item{height: 45px;padding: 5px 54px;box-sizing: border-box;
     .icon{margin-right: 10px;font-size: 20px;}
     &:hover{background: #eee;}

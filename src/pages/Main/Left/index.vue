@@ -77,7 +77,7 @@ export default {
 .main-left{
   line-height: 1em;padding: 20px 0;white-space: nowrap;
   .nav-group{ border-bottom: 1px solid #eaeaea;
-    div.openMenu{background-color: #fff;}  
+    div.openMenu{background-color: #fff;}
   }
   .nav-item{height: 45px;padding: 5px 54px;box-sizing: border-box;
     .icon{margin-right: 10px;font-size: 20px;}

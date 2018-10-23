@@ -76,14 +76,13 @@ export default {
     removeProductMaterialList (index) {
       this.form.productMaterialList.splice(index, 1)
     },
-    getMaterialList(id, i){
+    getMaterialList (id, i) {
       console.log(1)
       this.$http.get(`/haolifa/material/getListByClassifyId/${id}`).then(res => {
         this.$set(this.materialList, id, res.filter(item => !item.isDelete).map(item => {
           return { value: item.graphNo, text: item.graphNo }
-          console.dir(item)
         }))
-        if(this.changeFlag[i] || !this.$route.query.id){
+        if (this.changeFlag[i] || !this.$route.query.id) {
           this.form.productMaterialList[i].materialCount = ''
           this.form.productMaterialList[i].materialGraphNo = ''
           this.form.productMaterialList[i].replaceMaterialGraphNo = ''

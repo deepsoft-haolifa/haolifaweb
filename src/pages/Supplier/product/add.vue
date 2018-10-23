@@ -42,7 +42,7 @@ export default {
   computed: {
     canSubmit () {
       const { form } = this
-      return form.annualProduction && form.mainCustomer && form.materialName  && form.supplierNo 
+      return form.annualProduction && form.mainCustomer && form.materialName && form.supplierNo
     }
   },
   created () {

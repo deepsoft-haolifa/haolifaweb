@@ -58,7 +58,7 @@ export default {
       filter: {
         type: '1'
       },
-      typeList: ['制造设备','检测设备']
+      typeList: ['制造设备', '检测设备']
     }
   },
   created () {

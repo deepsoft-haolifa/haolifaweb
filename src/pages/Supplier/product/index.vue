@@ -55,7 +55,7 @@ export default {
     return {
       filter: {
       },
-      materialTypeList: ['供货原料','其他原料']
+      materialTypeList: ['供货原料', '其他原料']
     }
   },
   created () {

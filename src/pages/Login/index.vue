@@ -106,7 +106,7 @@ export default {
     },
     getImageCode () {
       let randomNum = Math.random()
-      this.authImg = '/haolifa/code/image?'+  randomNum
+      this.authImg = '/haolifa/code/image?' + randomNum
     }
   }
 }
@@ -193,7 +193,7 @@ export default {
     }
   }
   input::-webkit-input-placeholder{
-    color: #92bff9;    
+    color: #92bff9;
   }
   .t-mt10{margin-top:8%;}
   .t-mt5{margin-top:5%;}

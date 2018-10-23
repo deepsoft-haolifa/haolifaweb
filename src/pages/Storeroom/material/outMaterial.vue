@@ -41,7 +41,7 @@ export default {
         receiveDepartment: '',
         storeRoomId: '',
         storeRoomRackId: '',
-        storeRoomRackNo: '',
+        storeRoomRackNo: ''
       },
       name: '',
       roomList: [],
@@ -56,8 +56,8 @@ export default {
     }
   },
   created () {
-    let { graphNo,name } = this.$route.query
-    if (graphNo !== undefined && this.$route.name === 'outMaterial-list') this.getInfo(graphNo,name)
+    let { graphNo, name } = this.$route.query
+    if (graphNo !== undefined && this.$route.name === 'outMaterial-list') this.getInfo(graphNo, name)
     this.getRoomList()
     this.getRoomRackList()
     this.getRoomId()
@@ -86,13 +86,12 @@ export default {
         })
       })
     },
-    getInfo (graphNo,name) {
+    getInfo (graphNo, name) {
       this.$http.get(`/haolifa/material/getInfo/${graphNo}`).then(res => {
-        //this.form[materialGraphNo] = res[graphNo]
+        // this.form[materialGraphNo] = res[graphNo]
         for (let key in this.form) {
-          if (this.form[key] !== undefined)
-            this.form.materialGraphNo = graphNo
-            this.name = name
+          if (this.form[key] !== undefined) { this.form.materialGraphNo = graphNo }
+          this.name = name
         }
       }).catch(e => {
         this.$toast(e.msg || e.message)

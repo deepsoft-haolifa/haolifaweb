@@ -36,7 +36,6 @@
 
 <script>
 import form from './form'
-import obj2FormData from '@/utils/obj2FormData'
 import moment from 'moment'
 
 export default {
@@ -85,7 +84,7 @@ export default {
       const form = JSON.parse(JSON.stringify(this.form))
       if (!this.editPwd) delete form.password
       const method = form.id ? 'put' : 'post'
-      this.$http[method]('/haolifa/user', obj2FormData(form)).then(res => {
+      this.$http[method]('/haolifa/user', form).then(res => {
         this.$router.push('/user')
         this.$toast('保存成功')
       }).catch(e => {

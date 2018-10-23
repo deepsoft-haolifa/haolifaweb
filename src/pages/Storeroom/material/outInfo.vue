@@ -1,7 +1,7 @@
 <template>
 <div class="page-outInfo-list">
   <div class="flex-v-center tool-bar">
-    
+
   </div>
   <div class="flex-item scroll-y">
     <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/entryOut/pageInfo" method="get">
@@ -53,7 +53,7 @@ export default {
         storeRoomId: '',
         storeRoomRackId: '',
         storeRoomRackNo: '',
-        supplier: '',
+        supplier: ''
       }
     }
   },
@@ -62,7 +62,7 @@ export default {
     if (graphNo !== undefined && this.$route.name === 'outInfo-list') this.filter.materialGraphNo = graphNo
   },
   methods: {
-    
+
   }
 }
 </script>

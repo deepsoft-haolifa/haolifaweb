@@ -114,4 +114,3 @@ export default {
   .scroll-y{padding: 0 10px;}
 }
 </style>
-

@@ -10,7 +10,7 @@
       <input-box v-model="form.orderNo" class="mr-10" label="订单号" style="width: 20%"></input-box>
       <input-box v-model="form.price" class="mr-10" label="零件购买单价" style="width: 20%"></input-box>
       <!-- <input-box v-model="form.storeRoomRackNo" class="mr-10" label="库房货位号" style="width: 20%"></input-box> -->
-      
+
       <!-- <select-box v-model="form.supplier" class="mr-10" :list="supplierList" label="供应商" style="width: 20%"></select-box> -->
       <input-box v-model="form.supplier" class="mr-10" label="供应商" style="width: 40%"></input-box>
     </div>
@@ -60,8 +60,8 @@ export default {
     }
   },
   created () {
-    let { graphNo,name } = this.$route.query
-    if (graphNo !== undefined && this.$route.name === 'entryMaterial-list') this.getInfo(graphNo,name)
+    let { graphNo, name } = this.$route.query
+    if (graphNo !== undefined && this.$route.name === 'entryMaterial-list') this.getInfo(graphNo, name)
     this.getRoomList()
     this.getRoomRackList()
     this.getRoomId()
@@ -86,17 +86,16 @@ export default {
     getRoomRackList () {
       this.$http.get('/haolifa/store-room/rack/pageInfo').then(res => {
         this.rackList = res.list.filter(item => !item.isDelete).map(item => {
-          return { value: item.rackNo, text: item.rackName, roomId: item.storeRoomNo, id: item.id}
+          return { value: item.rackNo, text: item.rackName, roomId: item.storeRoomNo, id: item.id }
         })
       })
     },
-    getInfo (graphNo,name) {
+    getInfo (graphNo, name) {
       this.$http.get(`/haolifa/material/getInfo/${graphNo}`).then(res => {
-        //this.form[materialGraphNo] = res[graphNo]
+        // this.form[materialGraphNo] = res[graphNo]
         for (let key in this.form) {
-          if (this.form[key] !== undefined)
-            this.form.materialGraphNo = graphNo
-            this.name = name
+          if (this.form[key] !== undefined) { this.form.materialGraphNo = graphNo }
+          this.name = name
         }
       }).catch(e => {
         this.$toast(e.msg || e.message)

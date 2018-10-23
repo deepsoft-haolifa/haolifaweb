@@ -29,7 +29,7 @@
     <div class="layer-text" style="padding-bottom: 50px;">
       <input-box v-model="form.roleName" label="角色名称" hint="示例: ROLE_ADMIN"></input-box>
       <input-box v-model="form.description" label="角色描述" hint="示例: 管理员"></input-box>
-      <select-box filterable :list="depts" v-model="form.department" label="部门"></select-box>
+      <select-box filterable :list="depts" v-model="form.department.id" label="部门"></select-box>
     </div>
     <div class="layer-btns">
       <btn flat @click="cancel">取消</btn>
@@ -41,7 +41,7 @@
 
 <script>
 import DataList from '@/components/datalist'
-import obj2FormData from '@/utils/obj2FormData'
+// import obj2FormData from '@/utils/obj2FormData'
 
 export default {
   name: 'page-role',
@@ -55,8 +55,9 @@ export default {
         id: '',
         roleName: '',
         description: '',
-        pid: 0,
-        department: ''
+        department: {
+          id: ''
+        }
       }
     }
   },
@@ -88,9 +89,10 @@ export default {
       })
     },
     edit (item) {
+      console.log(item)
       for (let key in this.form) {
         if (key !== 'department') this.form[key] = item[key]
-        else this.form.department = item.department.id
+        else this.form.department = { id: item.department.id }
       }
       this.layer = true
     },
@@ -128,9 +130,6 @@ export default {
       const method = form.id === '' ? 'post' : 'put'
       if (!this.vertify()) return
       let fd = JSON.parse(JSON.stringify(form))
-      fd.department = JSON.parse(JSON.stringify(this.depts.filter(item => item.id === fd.department)[0]))
-      delete fd.department.text
-      delete fd.department.value
       console.log(fd)
       this.$http[method]('/haolifa/role', fd).then(res => {
         this.getList()
@@ -149,4 +148,3 @@ export default {
   .scroll-y{padding: 0 10px 30px 10px;}
 }
 </style>
-

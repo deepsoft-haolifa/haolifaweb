@@ -18,7 +18,7 @@ import RadioBox from './RadioBox'
 import SelectBox from './SelectBox'
 import Slider from './Slider'
 import StarRate from './StarRate'
-import Switcher from './Switcher'
+// import Switcher from './Switcher'
 import Tab from './Tab'
 import Tag from './Tag'
 import Toast from './Toast'
@@ -45,7 +45,7 @@ Vue.use(RadioBox)
 Vue.use(SelectBox)
 Vue.use(Slider)
 Vue.use(StarRate)
-Vue.use(Switcher)
+// Vue.use(Switcher)
 Vue.use(Tab)
 Vue.use(Tag)
 Vue.use(Toast)

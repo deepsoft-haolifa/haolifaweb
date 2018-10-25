@@ -86,6 +86,14 @@ export default [
       name: '供应商管理',
       url: '/supplier/list',
       id: 'gysgl'
+    }, {
+      name: '供应商产品',
+      url: '/supplierproduct',
+      id: 'gyscp'
+    }, {
+      name: '供应商设备',
+      url: '/supplierequipment',
+      id: 'gyssb'
     }]
   },
   {

@@ -1,9 +1,9 @@
 <template>
 <div class="abs page-login flex-center" style="justify-content: normal;">
-  <div style="margin-top:60px;">
-    <img src="../../assets/img/logo_title.png"/>
+  <div class="t-mt5" style="text-align:center;">
+    <img src="../../assets/img/logo_title.png" style="width:80%;"/>
   </div>
-  <div style="margin-top:50px;">
+  <div class="t-mt10">
     <div class="loginBox">
       <h3 class="title">用户登录</h3>
       <form>
@@ -122,16 +122,15 @@ export default {
   .login-form{padding: 30px 0 10px 0;}
   .loginBox{
     background: url('../../assets/img/login.png') no-repeat;
-    width:495px;
-    height:551px;
+    width:400px;
+    height:445px;
     margin-left:655px;
     overflow: hidden;
-    h3{ font-size: 30px; color: #fff; padding: 50px 90px 20px;}
+    h3{ font-size: 24px; color: #fff; margin-top:60px; margin-bottom: 30px; text-align:center;}
     .t-inputWrap {
-        width:310px;
-        margin:30px auto;
+        width:280px;
+        margin:15px auto;
         position: relative;
-
     }
     .t-inputWrap input {
         width:100%;
@@ -163,7 +162,7 @@ export default {
         background-position:left -37px;
     }
     .t-inputWrap .inputCode {
-        width:214px;
+        width:200px;
     }
     .t-inputWrap .codeImg {
         width:74px;
@@ -195,6 +194,23 @@ export default {
   }
   input::-webkit-input-placeholder{
     color: #92bff9;
+  }
+  .t-mt10{margin-top:8%;}
+  .t-mt5{margin-top:5%;}
+  @media screen and (min-width:960px) and (max-width:1366px){
+    .t-mt5{margin-top:3%;}
+    .t-mt10{margin-top:2%;}
+
+  }
+  @media screen and (min-width:1367px) and (max-width:1440px){
+    .t-mt5{margin-top:5%;}
+    .t-mt10{margin-top:5%;}
+
+  }
+  @media screen and (width:1600px){
+    .t-mt5{margin-top:5%;}
+    .t-mt10{margin-top:5%;}
+
   }
 }
 </style>

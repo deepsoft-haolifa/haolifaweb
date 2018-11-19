@@ -60,47 +60,14 @@
         <a class="home-tab-item a on">快捷入口</a>
       </div>
       <div class="flex-item flex scroll-y quick-start">
-        <div class="quick-item a">
-          <div class="quick-icon" style="background: #21d0b8;">
-            <i class="icon">build</i>
+        <div class="quick-item a"
+          :title="item.description"
+          @click="$router.push(`/${quickIcons[item.flowId].path}/add/`)"
+          v-for="(item) in quick" :key="item.flowId">
+          <div class="quick-icon" :style="{background: quickIcons[item.flowId].color}">
+            <i class="icon">{{quickIcons[item.flowId].icon || 'people'}}</i>
           </div>
-          <div class="f-12 quick-label">发起生产流程</div>
-        </div>
-        <div class="quick-item a">
-          <div class="quick-icon" style="background: #ffa114">
-            <i class="icon">shopping_cart</i>
-          </div>
-          <div class="f-12 quick-label">发起采购流程</div>
-        </div>
-        <div class="quick-item a">
-          <div class="quick-icon" style="background: #ca83dc">
-            <i class="icon">check_circle</i>
-          </div>
-          <div class="f-12 quick-label">发起质检流程</div>
-        </div>
-        <div class="quick-item a">
-          <div class="quick-icon" style="background: #e2c223">
-            <i class="icon">local_shipping</i>
-          </div>
-          <div class="f-12 quick-label">发起发货流程</div>
-        </div>
-        <div class="quick-item a">
-          <div class="quick-icon" style="background: #51c4e6">
-            <i class="icon">receipt</i>
-          </div>
-          <div class="f-12 quick-label">发起发票流程</div>
-        </div>
-        <div class="quick-item a">
-          <div class="quick-icon" style="background: #e86db7">
-            <i class="icon">people</i>
-          </div>
-          <div class="f-12 quick-label">人事管理</div>
-        </div>
-        <div class="quick-item a">
-          <div class="quick-icon" style="background: #e86d6d">
-            <i class="icon">extension</i>
-          </div>
-          <div class="f-12 quick-label">供应商管理</div>
+          <div class="f-12 quick-label">{{item.name}}</div>
         </div>
       </div>
     </div>
@@ -115,15 +82,28 @@ export default {
     return {
       tab1: true,
       tab2: true,
+      quickIcons: [
+        {},
+        { color: '#21d0b8', icon: 'directions_walk', path: 'applybuy' },
+        { color: '#ffa114', icon: 'shopping_cart', path: '' },
+        { color: '#ca83dc', icon: 'check_circle', path: '' },
+        { color: '#e2c223', icon: 'local_shipping', path: '' },
+        { color: '#51c4e6', icon: 'receipt', path: '' },
+        { color: '#e86db7', icon: 'build', path: '' },
+        { color: '#6d89e8', icon: 'add_shopping_cart', path: 'applybuy' },
+        { color: '#e86d6d', icon: 'check_box', path: '' }
+      ],
       todo: [],
       done: [],
       notice: [],
-      news: []
+      news: [],
+      quick: []
     }
   },
   created () {
     this.getTodo()
     this.getNews()
+    this.getQuickStart()
   },
   methods: {
     getTodo () {
@@ -137,6 +117,11 @@ export default {
       })
       this.$http.get('/haolifa/message/news').then(res => {
         this.news = res.list
+      })
+    },
+    getQuickStart () {
+      this.$http.get('/haolifa/quick-start').then(res => {
+        this.quick = res
       })
     }
   }
@@ -161,7 +146,7 @@ export default {
     .date-time{margin-right: 20px;}
   }
   .quick-start{flex-wrap: wrap;padding: 10px;}
-  .quick-item{text-align: center;padding: 10px;}
+  .quick-item{text-align: center;padding: 10px;max-width: 100px;}
   .quick-icon{padding: 15px;background: orange;display: inline-block;border-radius: 12px;
     .icon{font-size: 40px;color: #fff;}
   }

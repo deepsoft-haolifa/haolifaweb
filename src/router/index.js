@@ -75,7 +75,7 @@ export function resetRouter (menus) {
     path: '/',
     component: () => import(/* webpackChunkName: "main" */ '../pages/Main/index.vue'),
     meta: { level: 2, title: 'HAOLIFA', open: false },
-    children: routes.filter(r => r.meta.id && menus.includes(r.meta.id))
+    children: routes.filter(r => r.meta.open || (r.meta.id && menus.includes(r.meta.id)))
   }])
 }
 

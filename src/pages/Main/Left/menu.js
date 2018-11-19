@@ -29,7 +29,7 @@ export default [
     id: 'parent-lcgl',
     children: [{
       name: '流程管理',
-      url: '/process',
+      url: '/process-manager',
       id: 'lcgl'
     }, {
       name: '节点管理',

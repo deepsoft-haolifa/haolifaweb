@@ -1,7 +1,7 @@
 <template>
 <div class="abs page-login flex-center" style="justify-content: normal;">
   <div class="t-mt5" style="text-align:center;">
-    <img src="../../assets/img/logo_title.png" style="width:80%;"/>
+    <img src="../../assets/img/logo_title-1.png" style="width:80%;"/>
   </div>
   <div class="t-mt10">
     <div class="loginBox">

@@ -49,8 +49,7 @@ export default {
 
 <style>
 .tab {
-  width:100%;
-   position:relative;
+  position:relative;
   border-bottom:1px solid #ddd;
   min-height:50px;
   overflow: visible;

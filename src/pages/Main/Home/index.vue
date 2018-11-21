@@ -9,9 +9,8 @@
       <div class="home-list flex-item scroll-y" v-if="tab1">
         <div class="home-list-item a flex-v-center" v-for="item in todo" :key="item.id">
           <i class="icon f-16 c-a">hourglass_full</i>
-          <div class="c-8 date-time">{{item.flowName}}</div>
-          <div class="flex-item text-ellipsis">发起人：{{item.createUserRealName}}</div>
-          <div class="flex-item text-ellipsis">{{item.createTime}}</div>
+          <div class="c-8 date-time" @click="$router.push('/invoiceflow?instanceId=15')">发起人：{{item.createUserRealName}}</div>
+          <div class="flex-item text-ellipsis">发起时间：{{item.createTime}}</div>
         </div>
         <div v-if="!todo.length" style="pointer-events:none;" class="abs flex-center"><no-data></no-data></div>
       </div>
@@ -89,7 +88,7 @@ export default {
         { color: '#ffa114', icon: 'shopping_cart', path: '' },
         { color: '#ca83dc', icon: 'check_circle', path: '' },
         { color: '#e2c223', icon: 'local_shipping', path: '' },
-        { color: '#51c4e6', icon: 'receipt', path: 'invoice' },
+        { color: '#51c4e6', icon: 'receipt', path: 'invoiceflow' },
         { color: '#e86db7', icon: 'build', path: '' },
         { color: '#6d89e8', icon: 'add_shopping_cart', path: 'applybuy' },
         { color: '#e86d6d', icon: 'check_box', path: '' }

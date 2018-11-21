@@ -43,6 +43,7 @@ export default {
       }).catch(e => {
         this.$toast(e.message || e.msg)
       })
+        this.$toast(data.initUserName)
       this.$http.get('/haolifa/applyBuy/list?pageNum=1&pageSize=100')
     }
   }

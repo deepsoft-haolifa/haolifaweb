@@ -3,23 +3,26 @@
   <div class="node">
     <div class="node-title b mb-10">
       <!-- <span class="mr-15">销售</span> -->
-      <span class="mr-15">{{data.initUserName}}</span>
+      <span class="mr-15">发起人：{{data.initUserName}}</span>
       <span>{{data.createTime}}</span>
-    </div>
-    <div class="node-content">
-      <div class="flex-v-center">
-        <input-box label="接单日期" class="flex-item mr-20"></input-box>
-        <input-box label="评审日期" class="flex-item mr-20"></input-box>
-        <input-box label="编号" class="flex-item"></input-box>
-      </div>
-      <div class="flex-v-center">
-        <input-box label="交货日期" class="flex-item mr-20"></input-box>
-        <input-box label="订单上传" class="flex-item mr-20"></input-box>
-        <input-box label="合同附件" class="flex-item"></input-box>
-      </div>
     </div>
   </div>
 </div>
+  <div class="p-p-base" v-else-if="invoice">
+    <div class="node">
+
+      <div class="node-title b mb-10">
+        <!-- 发起人填写的表单-->
+
+        <span class="mr-15">{{invoice.company}}</span>
+        <span class="mr-15">{{invoice.linkman}}</span>
+        <span class="mr-15">{{invoice.orderNo}}</span>
+        <span class="mr-15">{{invoice.totalAmount}}</span>
+        <span class="mr-15">{{invoice.mialingAddress}}</span>
+
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -32,18 +35,41 @@ export default {
       data: null
     }
   },
+  invoice () {
+      return {
+        invoice: null
+      }
+  },
   created () {
     this.getData()
+
+  },
+  updated(){
+      this.getInvoice()
   },
   methods: {
     getData () {
       this.$http.get(`/haolifa/flowInstance/flow-history/${this.$route.query.instanceId}`).then(res => {
         res.createTime = moment(res.createTime).format('YYYY-MM-DD HH:mm')
+
         this.data = res
       }).catch(e => {
         this.$toast(e.message || e.msg)
       })
-      this.$http.get('/haolifa/applyBuy/list?pageNum=1&pageSize=100')
+      // this.$http.get('/haolifa/applyBuy/list?pageNum=1&pageSize=100')
+    },
+    getInvoice(){
+        alert("infos:"+this.data.initUserName)
+        this.data.historyInfos.forEach(function(item){
+
+            if(item.formType==7){
+                alert("item invoice ok:"+item.stepName);
+                this.$http.get('/haolifa/invoice/info/${item.formId}').then(res => {
+                    alert("fanhui:"+res)
+                    this.invoice = res
+                })
+            }
+        });
     }
   }
 }

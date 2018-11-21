@@ -1,18 +1,18 @@
 export default [{
-  path: '/applybuy',
+  path: '/invoiceflow',
   component: () => import(/* webpackChunkName: "process" */ './index.vue'),
-  meta: { level: 2, title: '请购流程', id: 'sclc', open: true },
+  meta: { level: 2, title: '发票流程', id: 'fplc', open: true },
   children: [{
     path: '',
-    name: 'applybuybase',
+    name: 'invoiceflowbase',
     component: () => import(/* webpackChunkName: "applybuybase" */ './base.vue')
   }, {
     path: 'nodes',
-    name: 'applybuynodes',
+    name: 'invoiceflownodes',
     component: () => import(/* webpackChunkName: "applybuynodes" */ './nodes.vue')
   }]
 }, {
-  path: '/applybuy/add',
+  path: '/invoiceflow/add',
   component: () => import(/* webpackChunkName: "process" */ './add.vue'),
-  meta: { level: 2, title: '发起请购流程', id: 'sclc', open: true }
+  meta: { level: 2, title: '发起发票流程', id: 'fplc', open: true }
 }]

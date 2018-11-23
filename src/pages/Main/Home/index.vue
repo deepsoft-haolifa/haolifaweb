@@ -9,7 +9,7 @@
       <div class="home-list flex-item scroll-y" v-if="tab1">
         <div class="home-list-item a flex-v-center" v-for="item in todo" :key="item.id">
           <i class="icon f-16 c-a">hourglass_full</i>
-          <div class="c-8 date-time" @click="$router.push('/invoiceflow?instanceId=15')">发起人：{{item.createUserRealName}}</div>
+          <div class="c-8 date-time" @click="$router.push({path:'/invoiceflow',query:{instanceId:item.instanceId,stepId:item.stepId}})">发起人：{{item.createUserRealName}}</div>
           <div class="flex-item text-ellipsis">发起时间：{{item.createTime}}</div>
         </div>
         <div v-if="!todo.length" style="pointer-events:none;" class="abs flex-center"><no-data></no-data></div>

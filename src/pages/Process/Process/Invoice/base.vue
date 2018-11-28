@@ -31,7 +31,7 @@
             <div class="node-title b mb-10">
                 <!-- 发起人填写的表单-->
 
-                节点处理角色：经管中心</span></div>
+                <span>节点处理角色：经管中心</span></div>
             <div class="flex">
                 <input-box v-model="jgzx.auditInfo" class="flex-item mr-10" label="审核意见"></input-box>
             </div>
@@ -87,7 +87,7 @@
                 this.data.historyInfos.forEach(item => {
                     if (item.formType == 7) {
                         // alert("item invoice ok:"+item.stepName);
-                        // console.dir(item.formId)
+                         console.dir(item.formId)
                         this.$http.get(`/haolifa/invoice/info/${item.formId}`).then(res => {
                             this.invoice = res
                             console.dir(this.invoice)
@@ -102,14 +102,17 @@
                 const jgsp = Object.assign({}, this.jgzx, {
                     auditResult: 1,//发票流程id
                     condition: true,
-                    id:${this.$route.query.instanceId},
-                    stepId:${this.$route.query.stepId}
-                }
+                    id:this.$route.query.instanceId,
+                    formId:0,
+                    formType:0,
+                    stepId:this.$route.query.stepId
+                })
+                 console.dir(jgsp)
                 this.$http.post('/haolifa/flowInstance/handleStep', jgsp).then(r => {
                     this.$router.push(`/invoiceflow?instanceId=${r.instanceId}`)
                 }).catch(e => {
                     this.$toast(e.message || e.msg)
-                }
+                })
             }
         }
     }

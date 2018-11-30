@@ -36,7 +36,7 @@ export default {
   data () {
     return {
       list: [],
-      iconList: ['settings', 'assessment', 'account_balance', 'extension', 'supervisor_account', 'euro_symbol', 'volume_up']
+      iconList: ['settings', 'assessment', 'account_balance', 'extension', 'supervisor_account', '', 'euro_symbol', 'volume_up']
     }
   },
   computed: {

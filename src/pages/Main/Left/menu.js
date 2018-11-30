@@ -60,6 +60,22 @@ export default [
       name: '成品管理',
       url: '/storeproduct',
       id: 'cpgl'
+    }, {
+      name: '零件待入库',
+      url: '/storeproduct',
+      id: 'ljdrk'
+    }, {
+      name: '成品待入库',
+      url: '/storeproduct',
+      id: 'cpdrl'
+    }, {
+      name: '订单领料表',
+      url: '/storeproduct',
+      id: 'ddllb'
+    }, {
+      name: '待换料表',
+      url: '/storeproduct',
+      id: 'dhlb'
     }]
   },
   {
@@ -95,6 +111,22 @@ export default [
       url: '/supplierequipment',
       id: 'gyssb'
     }]
+  },{
+    name: '采购管理',
+    id: 'parent-cggl',
+    children: [{
+      name: '零件报检单',
+      url: '/supplier/list',
+      id: 'ljbjd'
+    }, {
+      name: '加工报检单',
+      url: '/supplierproduct',
+      id: 'jjgbjd'
+    }, {
+      name: '生产待采购列表',
+      url: '/supplierequipment',
+      id: 'scdcglb'
+    }]
   },
   {
     name: '财务管理',
@@ -119,6 +151,14 @@ export default [
       name: '发票管理',
       url: '/invoice',
       id: 'fpgl'
+    }, {
+      name: '发货申请列表',
+      url: '/contract',
+      id: 'fhsqlb'
+    }, {
+      name: '待开发票管理',
+      url: '/invoice',
+      id: 'dkfpgl'
     }]
   },
   {

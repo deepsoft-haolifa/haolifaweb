@@ -111,7 +111,7 @@ export default [
       url: '/supplierequipment',
       id: 'gyssb'
     }]
-  },{
+  }, {
     name: '采购管理',
     id: 'parent-cggl',
     children: [{
@@ -126,6 +126,15 @@ export default [
       name: '生产待采购列表',
       url: '/supplierequipment',
       id: 'scdcglb'
+    }]
+  },
+  {
+    name: '发货管理',
+    id: 'parent-fhgl',
+    children: [{
+      name: '发货单列表',
+      url: '/dilivery-bills',
+      id: 'fhdgl'
     }]
   },
   {

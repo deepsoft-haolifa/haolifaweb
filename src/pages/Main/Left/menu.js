@@ -182,5 +182,14 @@ export default [
       url: '/notification',
       id: 'tzgl'
     }]
-  }
+  },
+    {
+        name: '经管中心',
+        id: 'parent-jgzx',
+        children: [{
+            name: '发票管理',
+            url: '/jgzx-invoice',
+            id: 'fpgl'
+        }]
+    }
 ]

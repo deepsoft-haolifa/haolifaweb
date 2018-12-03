@@ -1,5 +1,5 @@
 <template>
-<div class="page-part-list">
+<div class="page-invoice-list">
   <div class="flex-v-center tool-bar">
     <div class="flex-item"></div>
     <router-link to="/jgzx-invoice/add">
@@ -7,7 +7,7 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/invoice/list/0" method="post">
+    <data-list ref="list" page-num-str="currentPage" :page-size="10"  :param="filter" url="/haolifa/invoice/list/0" method="post">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>合同编号</th>
@@ -49,7 +49,8 @@ export default {
   data () {
     return {
       filter: {
-        type: ''
+        type:0,
+        status: 0
       }
     }
   },
@@ -60,11 +61,11 @@ export default {
     remove (item) {
       this.$confirm({
         title: '删除确认',
-        text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
+        text: `您确定要删除发票吗？<br>${item.orderNo}`,
         color: 'red',
         btns: ['取消', '删除'],
         yes: () => {
-          this.$http.delete(`/haolifa/material/delete/${item.id}`).then(res => {
+          this.$http.delete(`/haolifa/invoice/delete/${item.id}`).then(res => {
             this.$toast('删除成功')
             this.$refs.list.update()
           }).catch(e => {
@@ -78,7 +79,10 @@ export default {
 </script>
 
 <style lang="less">
-.page-part-list{
+.page-invoice-list{
+  select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
+  .scroll-y{padding-bottom: 40px;}
+
   //
 }
 .fixed-length{

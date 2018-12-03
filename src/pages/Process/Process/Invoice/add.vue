@@ -27,7 +27,6 @@
       <btn big flat @click="$router.back()">取消</btn>
     </div>
   </div>
-</div>
 </template>
 
 <script>

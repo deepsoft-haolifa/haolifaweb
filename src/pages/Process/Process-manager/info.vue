@@ -25,15 +25,26 @@
                     <td>{{item.roleName}}</td>
                     <td>{{item.userNames}}</td>
                     <td>
-                        <btn class="b" flat color="#008eff" @click="layer=true">编辑</btn>
+                        <btn class="b" flat color="#008eff" @click="allotRoles(item.stepId)">审批分配</btn>
                     </td>
                 </tr>
             </table>
         </div>
-        <layer v-if="layer" :title="审核权限分配" width="450px">
+        <layer v-if="layer" :title="'分配审核权限'" width="450px">
             <div class="layer-text" style="padding-bottom: 50px;">
-                <select-box filterable :list="roles" v-model="role.roleId" label="角色"></select-box>
-                <!--<select-box filterable :list="users" v-model="form.department.id" label="人员"></select-box>-->
+                <label >角色：</label>
+                <select v-model="role.id"  class="search-bar" @change="rolesChange()">
+                    <option v-for="(item,i) in roles" :value=item.id>{{item.description}}</option>
+                </select>
+                <div>
+                    <label>人员：</label>
+                    <ul>
+                        <li v-for="(item,i) in users">
+                            <input type="checkbox" v-model="checkUsers" :value=item.id />
+                            <label>{{item.realName}}</label>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
@@ -51,8 +62,17 @@
         components: {DataList},
         data() {
             return {
+                allotForm:{
+                    flowId:0,
+                    stepId:0,
+                    roleId:0,
+                    userIds:''
+                },
+                flowId:0,
                 layer:false,
                 roles:[],
+                users:[],
+                checkUsers: [],
                 role:{
                     id:'',
                     name:''
@@ -62,8 +82,10 @@
         },
         created() {
             let { itemId } = this.$route.query
-            console.log(itemId);
+            this.flowId = itemId;
+            this.allotForm.flowId = itemId;
             this.info(itemId);
+            this.roleList();
         },
         methods: {
             info: function (itemId) {
@@ -73,6 +95,53 @@
                         console.log(res)
                         this.infoList = res;
                         console.log('infoList', this.infoList)
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message)
+                    })
+            },
+            allotRoles:function(stepId){
+                this.layer = true;
+                this.allotForm.stepId=stepId;
+            },
+            roleList:function () {
+                this.$http
+                    .get(`/haolifa/flow/roles`)
+                    .then(res => {
+                        this.roles = res;
+                        this.role.id=res[0].id;
+                        this.rolesChange()
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message)
+                    })
+            },
+            rolesChange:function(){
+                this.$http
+                    .get(`/haolifa/flow/users/${this.role.id}`)
+                    .then(res => {
+                        this.users = res;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message)
+                    })
+            },
+            cancel:function () {
+                this.layer=false;
+            },
+            submit:function () {
+                this.allotForm.roleId = this.role.id;
+                let userIds = '';
+                for(let i=0;i<this.checkUsers.length;i++) {
+                    userIds +=this.checkUsers[i]+','
+                }
+                this.allotForm.userIds = userIds.substr(0,userIds.length-1);
+                console.log(this.allotForm);
+                this.$http
+                    .post(`/haolifa/flow/allotPersons/`,this.allotForm)
+                    .then(res => {
+                        this.layer=false;
+                        this.info(this.flowId);
                     })
                     .catch(e => {
                         this.$toast(e.msg || e.message)

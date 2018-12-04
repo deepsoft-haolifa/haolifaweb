@@ -1,11 +1,24 @@
 <template>
 <div class="page-invoice">
   <div class="flex-v-center tool-bar">
+    <div class="flex-v-center search-bar" style="margin-right: 20px;">
+      <i class="icon f-20 c-8">search</i>
+      <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+        <option value="0">开票状态</option>
+        <option value="1">待开票</option>
+      </select>
+      <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)">
+        <option value="0">合同类型状态</option>
+        <option value="1">订单合同编号</option>
+        <option value="2">已开票</option>
+      </select>
+      <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+    </div>
     <div class="flex-item"></div>
     <btn class="b" flat color="#008eff" @click="layer=true">添加发票</btn>
   </div>
   <div class="flex-item scroll-y">
-    <data-list class="f-14" ref="list" method="post" url="/haolifa/invoice/list">
+    <data-list class="f-14" ref="list" method="post" :page-size="10" :param="filter" url="/haolifa/invoice/list/1">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>发票编号</th>
@@ -53,6 +66,10 @@ export default {
   components: { DataList },
   data () {
     return {
+      filter: {
+        type:0,
+        status: 0
+      },
       allStatus: [
         {value: 0, text: '未收款'},
         {value: 1, text: '未打款'},
@@ -134,6 +151,7 @@ export default {
 
 <style lang="less">
 .page-invoice{
-  //
+  select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
+  .scroll-y{padding-bottom: 40px;}
 }
 </style>

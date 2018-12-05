@@ -5,12 +5,11 @@
       <i class="icon f-20 c-8">search</i>
       <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
         <option value="0">开票状态</option>
-        <option value="1">待开票</option>
+        <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
       </select>
       <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)">
         <option value="0">合同类型状态</option>
-        <option value="1">订单合同编号</option>
-        <option value="2">已开票</option>
+        <option v-for="item in allTypes" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
       </select>
       <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
     </div>
@@ -42,19 +41,22 @@
       </template>
     </data-list>
   </div>
-  <layer v-if="layer" :title="form.id ? '编辑发票' : '新增发票'" width="450px">
+
+  <layer v-if="layer" :title="form.id ? '编辑发票' : '新增发票'" width="600px">
     <div class="layer-text" style="padding-bottom: 50px;">
       <input-box v-model="form.invoiceNo" label="发票编号"></input-box>
-      <input-box v-model="form.orderNo" label="合同编号"></input-box>
+      <input-box v-model="form.orderNo" label="订单编号"></input-box>
       <select-box :list="allStatus" v-model="form.status" label="合同状态"></select-box>
       <select-box :list="allTypes" v-model="form.type" label="合同类型"></select-box>
       <input-box type="number" v-model="form.totalAmount" label="合同金额"></input-box>
+      <input-box  :multi-line="true" type="text" v-model="form.remark" label="备注"></input-box>
     </div>
     <div class="layer-btns">
       <btn flat @click="cancel">取消</btn>
       <btn flat color="#008eff" @click="submit">保存</btn>
     </div>
   </layer>
+
 </div>
 </template>
 
@@ -100,7 +102,7 @@ export default {
     vertify () {
       for (let key in this.form) {
         let item = this.form[key]
-        if (!item && item !== 0 && key !== 'id') {
+        if (!item && item !== 0 && key !== 'id' && key !== 'orderNo' && key !== 'remark') {
           this.$toast('请输入完整信息')
           return false
         }
@@ -110,7 +112,7 @@ export default {
     submit () {
       if (!this.vertify()) return
       const { form } = this
-      this.$http.post('/haolifa/invoice/' + (form.id ? 'update' : 'save'), form).then(res => {
+      this.$http.post('/haolifa/invoice/save', form).then(res => {
         this.$refs.list.update()
         this.cancel()
         this.$toast('保存成功')

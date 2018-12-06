@@ -32,8 +32,8 @@
         <td>{{item.createTime}}</td>
         <td>{{item.updateTime}}</td>
         <td class="t-right">
-          <icon-btn small @click="edit(item)">edit</icon-btn>
-          <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
+         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>-->
+          <icon-btn small @click="remove(item)">delete</icon-btn>
         </td>
       </template>
     </data-list>
@@ -58,22 +58,22 @@ export default {
     edit (item) {
       this.$router.push(`/jgzx-invoice/edit?id=${item.id}`)
     },
-    remove (item) {
-      this.$confirm({
-        title: '删除确认',
-        text: `您确定要删除发票吗？<br>${item.orderNo}`,
-        color: 'red',
-        btns: ['取消', '删除'],
-        yes: () => {
-          this.$http.delete(`/haolifa/invoice/delete/${item.id}`).then(res => {
-            this.$toast('删除成功')
-            this.$refs.list.update()
-          }).catch(e => {
-            this.$toast(e.msg)
+      remove (item) {
+          this.$confirm({
+              title: '删除确认',
+              text: `您确定要删除以下发票吗？<br><b>${item.invoiceNo}</b>`,
+              color: 'red',
+              btns: ['取消', '删除'],
+              yes: () => {
+                  this.$http.get(`/haolifa/invoice/delete/${item.id}`).then(res => {
+                      this.$toast('删除成功')
+                      this.$refs.list.update()
+                  }).catch(e => {
+                      this.$toast(e.msg || e.message)
+                  })
+              }
           })
-        }
-      })
-    }
+      }
   }
 }
 </script>

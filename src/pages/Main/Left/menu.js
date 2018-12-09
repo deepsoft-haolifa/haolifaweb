@@ -135,6 +135,10 @@ export default [
       name: '生产待采购列表',
       url: '/supplierequipment',
       id: 'scdcglb'
+    }, {
+        name: '采购列表',
+        url: '/purchsemanage-purchase/list',
+        id: 'cglb'
     }]
   },
   {

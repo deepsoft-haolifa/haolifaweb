@@ -1,0 +1,11 @@
+export default [{
+    path: '/purchsemanage-purchase/list',
+    name: 'purchsemanage-purchase',
+    component: () => import(/* webpackChunkName: "suppliermanage" */ './index.vue'),
+    meta: { level: 2, title: '供应商管理', open: false, id: 'cglb' }
+}, {
+    path: '/purchsemanage-purchase/add',
+    name: 'purchsemanage-purchaseadd',
+    component: () => import(/* webpackChunkName: "suppliermanage" */ './add.vue'),
+    meta: { level: 2, title: '供应商管理', open: false, id: 'cglb' }
+}]

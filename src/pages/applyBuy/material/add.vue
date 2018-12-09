@@ -8,7 +8,7 @@
             </div>
 
             <div class="b" style="margin: 20px 0 10px;">送检列表</div>
-            <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
+            <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
                 <div class="flex-item">
                     <div class="flex">
                         <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号" hint="必填"></input-box>
@@ -26,7 +26,7 @@
                         <input-box v-model="item.remark" class="flex-item" label="备注"></input-box>
                     </div>
                 </div>
-                <div v-if="form.itemList.length > 1"><icon-btn small @click="form.itemList.splice(i, 1)">close</icon-btn></div>
+                <div v-if="form.items.length > 1"><icon-btn small @click="form.items.splice(i, 1)">close</icon-btn></div>
             </div>
             <div class="card a flex-center" @click="addItem()">
                 <div class="flex-v-center">
@@ -50,7 +50,7 @@
                 form: {
                     arrivalTime: '',
                     supplierName: '',
-                    itemList: [{
+                    items: [{
                         deliveryNumber: '',
                         materialGraphNo: '',
                         materialName: '',
@@ -70,15 +70,18 @@
         methods: {
             getInfo (id) {
                 this.$http.get(`/haolifa/material-inspect/info/${id}`).then(res => {
+                    console.log(res)
+
                     for (let key in this.form) {
                         if (this.form[key] !== undefined) this.form[key] = res[key]
                     }
+                    console.log(this.form)
                 }).catch(e => {
                     this.$toast(e.msg || e.message)
                 })
             },
             addItem () {
-                this.form.itemList.push({
+                this.form.items.push({
                     deliveryNumber: '',
                     materialGraphNo: '',
                     materialName: '',
@@ -101,12 +104,12 @@
                     unit: '单位',
                     purchaseNo: '合同编号'
                 }
-                const { itemList, arrivalTime } = this.form
+                const { items, arrivalTime } = this.form
                 if (!arrivalTime) {
                     this.$toast('请填写到货时间')
                     return
                 }
-                itemList.forEach((item, i) => {
+                items.forEach((item, i) => {
                     for (let key in item) {
                         if (requireItem[key] && !item[key]) {
                             this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)

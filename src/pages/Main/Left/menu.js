@@ -121,22 +121,22 @@ export default [
       id: 'gyssb'
     }]
   }, {
-    name: '采购管理',
-    id: 'parent-cggl',
-    children: [{
-      name: '零件报检单',
-      url: '/supplier/list',
-      id: 'ljbjd'
-    }, {
-      name: '加工报检单',
-      url: '/supplierproduct',
-      id: 'jjgbjd'
-    }, {
-      name: '生产待采购列表',
-      url: '/supplierequipment',
-      id: 'scdcglb'
-    }]
-  },
+        name: '采购管理',
+        id: 'parent-cggl',
+        children: [{
+            name: '零件报检单',
+            url: '/applyBuy-material',
+            id: 'ljbjd'
+        }, {
+            name: '加工报检单',
+            url: '/applyBuy',
+            id: 'jjgbjd'
+        }, {
+            name: '生产待采购列表',
+            url: '/applyBuy',
+            id: 'scdcglb'
+        }]
+    },
   {
     name: '发货管理',
     id: 'parent-fhgl',

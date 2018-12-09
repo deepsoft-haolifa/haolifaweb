@@ -12,7 +12,7 @@
       <!-- <input-box v-model="form.storeRoomRackNo" class="mr-10" label="库房货位号" style="width: 20%"></input-box> -->
 
       <!-- <select-box v-model="form.supplier" class="mr-10" :list="supplierList" label="供应商" style="width: 20%"></select-box> -->
-      <input-box v-model="form.supplier" class="mr-10" label="供应商" style="width: 40%"></input-box>
+      <input-box v-model="form.supplier" class="mr-10" labemel="供应商" style="width: 40%"></input-box>
     </div>
     <div class="flex-v-center">
       <select-box v-model="form.storeRoomId" @change="getRoomId" class="mr-10" :list="roomList" label="所属库房" style="width: 20%"></select-box>

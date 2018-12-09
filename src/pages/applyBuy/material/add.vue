@@ -70,12 +70,14 @@
         methods: {
             getInfo (id) {
                 this.$http.get(`/haolifa/material-inspect/info/${id}`).then(res => {
-                    console.log(res)
+                    console.log(res.inspect.arrivalTime)
 
                     for (let key in this.form) {
                         if (this.form[key] !== undefined) this.form[key] = res[key]
+                        if(res[key]== undefined) this.form[key] = res.inspect[key]
+                        console.log(this.form.arrivalTime)
                     }
-                    console.log(this.form)
+
                 }).catch(e => {
                     this.$toast(e.msg || e.message)
                 })

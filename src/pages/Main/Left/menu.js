@@ -124,13 +124,13 @@ export default [
     name: '采购管理',
     id: 'parent-cggl',
     children: [{
-      name: '零件报检单',
-      url: '/supplier/list',
-      id: 'ljbjd'
+        name: '零件报检单',
+        url: '/applyBuy-material',
+        id: 'ljbjd'
     }, {
-      name: '加工报检单',
-      url: '/supplierproduct',
-      id: 'jjgbjd'
+        name: '加工报检单',
+        url: '/applyBuy-machining',
+        id: 'jjgbjd'
     }, {
       name: '生产待采购列表',
       url: '/supplierequipment',

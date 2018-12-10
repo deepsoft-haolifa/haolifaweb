@@ -133,7 +133,7 @@ export default [
         id: 'jjgbjd'
     }, {
       name: '生产待采购列表',
-      url: '/supplierequipment',
+      url: '/applyBuy-order',
       id: 'scdcglb'
     }, {
         name: '采购列表',
@@ -148,6 +148,10 @@ export default [
       name: '发货单列表',
       url: '/dilivery-bills',
       id: 'fhdgl'
+    },{
+        name: '发货记录',
+        url: '/dilivery-record',
+        id: 'fhjlgl'
     }]
   },
   {

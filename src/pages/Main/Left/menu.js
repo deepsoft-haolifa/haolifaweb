@@ -165,11 +165,11 @@ export default [
       name: '费用管理',
       url: '/cost',
       id: 'fygl'
-    }, {
+    }/*, {
       name: '报表管理',
       url: '/report',
       id: 'bbgl'
-    }, {
+    }*/, {
       name: '合同管理',
       url: '/contract',
       id: 'htgl'
@@ -179,7 +179,7 @@ export default [
       id: 'fpgl'
     }, {
       name: '发货申请列表',
-      url: '/contract',
+      url: '/finance-bills',
       id: 'fhsqlb'
     }, {
       name: '待开发票管理',

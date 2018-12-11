@@ -1,11 +1,16 @@
 <template>
 <div class="page-material-list">
-  <div class="flex-v-center tool-bar">
-    <div class="flex-item"></div>
 
-  </div>
+  <div class="flex-v-center tool-bar">
+  <div class="flex-v-center search-bar" style="margin-right: 20px;">
+    <i class="icon f-20 c-8">search</i>
+    <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+      <option value="0">未处理</option>
+      <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
+    </select>
+  </div></div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" :page-size="10" :status=0 :param="filter" url="/haolifa/applyBuy/list" method="get">
+    <data-list ref="list" :page-size="10"  :param="filter" url="/haolifa/applyBuy/list" method="get">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>订单号</th>
@@ -47,7 +52,12 @@ export default {
       filter: {
         type:0,
         status: 0
-      }
+      },
+      allStatus: [
+
+          {value: 1, text: '已处理'},
+          {value: 2, text: '全部'}
+      ]
     }
   },
   methods: {

@@ -40,7 +40,7 @@
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
-                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="updatePurchase(item.purchaseOrderNo)">编辑</a>
+                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a>
                         <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a>
                     </td>
                 </template>
@@ -97,8 +97,8 @@
                         this.$toast(e.msg || e.message)
                     })
             },
-            updatePurchase:function (orderNo) {
-
+            updatePurchase:function (orderId) {
+                this.$router.push(`/purchsemanage-purchase/add?formId=${orderId}`)
             },
             completePurchase:function (orderNo) {
                 this.completeLayer = true;

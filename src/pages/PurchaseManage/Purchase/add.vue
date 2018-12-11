@@ -1,7 +1,7 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <h1>创建采购单</h1>
+            <div class="title b f-18 mb-10">{{form.id ? '编辑' : '新增'}}采购订单</div>
             <div class="flex">
                 <input-box v-model="form.demander" class="flex-item" label="需方" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.demanderAddr" class="flex-item" label="需方地址" style="margin-right: 20px;"></input-box>
@@ -10,9 +10,10 @@
             </div>
             <div class="flex">
                 <select-box :list="supplierList" v-model="form.supplierNo" @change="changeSupplier()" label="供应商" style="margin-right: 20px;width: 240px;"></select-box>
-                <input-box v-model="form.demanderAddr" class="flex-item" label="供方地址" style="margin-right: 20px;"></input-box>
-                <input-box v-model="form.demanderLinkman" class="flex-item" label="供方联系人" style="margin-right: 20px;"></input-box>
-                <input-box v-model="form.demanderPhone" class="flex-item" label="供方联系电话" style="margin-right: 20px;"></input-box>
+                <input-box v-model="form.supplierAddr" class="flex-item" label="供方地址" style="margin-right: 20px;"></input-box>
+                <input-box v-model="form.supplierLinkman" class="flex-item" label="供方联系人" style="margin-right: 20px;"></input-box>
+                <input-box v-model="form.suppilerPhone" class="flex-item" label="供方联系电话" style="margin-right: 20px;"></input-box>
+                <input-box v-model="form.supplierConfirmer" class="flex-item" label="供方确认人" style="margin-right: 20px;"></input-box>
             </div>
             <div class="flex">
                 <date-picker v-model="form.confirmTime" class="flex-item" label="确认时间" style="margin-right: 20px;"></date-picker>
@@ -53,7 +54,7 @@
                 </div>
             </div>
             <div class="flex">
-                <btn big class="mr-20" @click="submit">提交</btn>
+                <btn big class="mr-20" @click="submit()">提交</btn>
                 <btn big flat @click="$router.back()">取消</btn>
             </div>
         </div>
@@ -65,8 +66,10 @@
         name: 'purchsemanage-purchaseadd',
         data () {
             return {
+                supplierInfoList:[],
                 supplierList:[],
                 form: {
+                    id:'',
                     confirmTime: "",
                     deliveryTime: "",
                     demander: "",
@@ -85,30 +88,42 @@
                     payType:'',
                     itemList: [],
                 },
-                item:{
-                    material: "",
-                    materialGraphNo: "",
-                    materialName: "",
-                    number: 0,
-                    remark: "",
-                    specification: "",
-                    unit: "",
-                    unitPrice: 0,
-                    unitWeight: 0
-                }
             }
         },
         created() {
+            let {formId}= this.$route.query
+            this.form.id = formId;
+            console.log(this.form.id)
             this.$http.get('/haolifa/supplier/list-all/').then(res=>{
                 console.log(res);
+                this.supplierList = res.map(item=>{
+                    return {value:item.suppilerNo,text:item.suppilerName}
+                })
+                this.supplierInfoList = res;
+            })
+            // 加载详情
+            this.$http.get('/haolifa/purchase-order/info/'+formId).then(res=>{
+                this.form = res.order;
+                this.form.orderNo = res.order.purchaseOrderNo;
+                this.form.itemList = res.items;
+
             })
         },
         methods: {
             changeSupplier:function(){
                 console.log(this.form.supplierNo)
+                this.supplierInfoList.forEach((item,i)=>{
+                    if(item.suppilerNo == this.form.supplierNo) {
+                        this.form.suppilerPhone = item.phone;
+                        this.form.supplierAddr = item.address;
+                        this.form.supplierLinkman = item.responsiblePerson;
+                        this.form.supplierName = item.suppilerName;
+                    }
+                })
             },
             addItem () {
                 this.form.itemList.push({
+                    id:'',
                     material: "",
                     materialGraphNo: "",
                     materialName: "",
@@ -121,36 +136,27 @@
                 })
             },
             submit () {
-                // const requireItem = {
-                //     materialName: '物料名称',
-                //     materialGraphNo: '物料图号',
-                //     number: '数量',
-                //     unit: '必填',
-                //     valuation: '估价'
-                // }
-                // const { itemList, targetDate } = this.form
-                // if (!targetDate) {
-                //     this.$toast('请填写预计完成时间')
-                //     return
-                // }
-                // itemList.forEach((item, i) => {
-                //     for (let key in item) {
-                //         if (requireItem[key] && !item[key]) {
-                //             this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
-                //             return
-                //         }
-                //     }
-                // })
+                const requireItem = {
+                    materialName: '物料名称',
+                    materialGraphNo: '物料图号',
+                    number: '数量',
+                    material: '材质',
+                    specification: '规格',
+                    unit:'单位',
+                    unitPrice:'单价',
+                    unitWeight:'单重'
+                }
+                this.form.itemList.forEach((item, i) => {
+                    for (let key in item) {
+                        if (requireItem[key] && !item[key]) {
+                            this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
+                            return
+                        }
+                    }
+                })
                 this.$http.post('/haolifa/purchase-order/save', this.form).then(res => {
-                    // const fd = Object.assign({}, res, {
-                    //     flowId: 7,
-                    //     summary: 'test'
-                    // })
-                    // this.$http.post('/haolifa/flowInstance/create', fd).then(r => {
-                    //     this.$router.push(`/applybuy?instanceId=${r.instanceId}`)
-                    // }).catch(e => {
-                    //     this.$toast(e.message || e.msg)
-                    // })
+                    this.$toast('创建成功');
+                    this.$router.push('/purchsemanage-purchase/list')
                 }).catch(e => {
                     this.$toast(e.message || e.msg)
                 })

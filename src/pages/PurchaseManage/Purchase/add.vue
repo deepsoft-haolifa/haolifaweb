@@ -93,7 +93,7 @@
         created() {
             let {formId}= this.$route.query
             this.form.id = formId;
-            console.log(this.form.id)
+            // console.log(this.form.id)
             this.$http.get('/haolifa/supplier/list-all/').then(res=>{
                 console.log(res);
                 this.supplierList = res.map(item=>{
@@ -105,6 +105,9 @@
             this.$http.get('/haolifa/purchase-order/info/'+formId).then(res=>{
                 this.form = res.order;
                 this.form.orderNo = res.order.purchaseOrderNo;
+                this.form.confirmTime = this.form.confirmTime.substring(0,10);
+                this.form.deliveryTime = this.form.deliveryTime.substring(0,10);
+                this.form.operateTime = this.form.operateTime.substring(0,10);
                 this.form.itemList = res.items;
 
             })
@@ -134,6 +137,7 @@
                     unitPrice: 0,
                     unitWeight: 0
                 })
+                console.log(this.form.itemList);
             },
             submit () {
                 const requireItem = {
@@ -154,8 +158,8 @@
                         }
                     }
                 })
-                this.$http.post('/haolifa/purchase-order/save', this.form).then(res => {
-                    this.$toast('创建成功');
+                this.$http.post(this.form.id == ''?'/haolifa/purchase-order/save':'/haolifa/purchase-order/update', this.form).then(res => {
+                    this.$toast(this.form.id==''?'创建成功':'更新成功');
                     this.$router.push('/purchsemanage-purchase/list')
                 }).catch(e => {
                     this.$toast(e.message || e.msg)

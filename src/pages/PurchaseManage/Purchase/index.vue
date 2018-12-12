@@ -39,8 +39,10 @@
                     <td>{{item.createUserId}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.id)">查看</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
-                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a>
+                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="deletePurchase(item.purchaseOrderNo)">删除</a>
                         <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a>
                     </td>
                 </template>
@@ -88,19 +90,34 @@
             this.filter.createUserId=0
         },
         methods: {
+            info:function (formId) {
+                this.$router.push(`/purchsemanage-purchase/info?formId=${formId}`);
+            },
             approve:function (orderNo) {
-                this.$http
-                    .get(`/haolifa/purchase-order/approve/${orderNo}`)
-                    .then(res => {
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message)
-                    })
+                this.$confirm({
+                    title:'发起审批',
+                    text: '确定发起审批？',
+                    color: 'blue',
+                    btns:['取消','确认'],
+                    yes:()=>{
+                        this.$http
+                            .get(`/haolifa/purchase-order/approve/${orderNo}`)
+                            .then(res => {
+                                this.$toast('发起成功')
+                                this.$refs.list.update();
+                            })
+                            .catch(e => {
+                                this.$toast(e.msg || e.message)
+                            })
+                    }
+                })
+
             },
             updatePurchase:function (orderId) {
                 this.$router.push(`/purchsemanage-purchase/add?formId=${orderId}`)
             },
             completePurchase:function (orderNo) {
+
                 this.completeLayer = true;
                 this.wreck.orderNo = orderNo;
             },
@@ -111,6 +128,23 @@
                 }).catch(e => {
                     this.$toast(e.msg || e.message)
                 })
+            },
+            deletePurchase:function (purchaseOrderNo) {
+                this.$confirm({
+                    title: '删除确认',
+                    text: `您确定要删除该订单么？`,
+                    color: 'red',
+                    btns: ['取消', '删除'],
+                    yes: () => {
+                        this.$http.get(`/haolifa//purchase-order/delete/${purchaseOrderNo}`).then(res=>{
+                            this.$toast('删除成功')
+                            this.$refs.list.update()
+                        }).catch(e => {
+                            this.$toast(e.msg)
+                        })
+                    }
+                })
+
             }
 
         }

@@ -3,8 +3,8 @@ module.exports = {
   devServer: {
     proxy: {
       '/haolifa': {
-        // target: 'http://47.105.36.56:8080/',
-        target: 'http://localhost:8088/',
+        target: 'http://47.105.36.56:8080/',
+        // target: 'http://localhost:8088/',
         changeOrigin: true
       }
     }

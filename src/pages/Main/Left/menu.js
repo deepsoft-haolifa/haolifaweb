@@ -6,15 +6,7 @@ export default [
       name: '角色管理',
       url: '/role',
       id: 'jsgl'
-    }, {
-      name: '权限管理',
-      url: '/permission',
-      id: 'qxgl'
-    }, {
-      name: '菜单管理',
-      url: '/menu',
-      id: 'cdgl'
-    }, {
+    },{
       name: '人员管理',
       url: '/user',
       id: 'rygl'
@@ -24,7 +16,7 @@ export default [
       id: 'bmgl'
     }]
   },
-  {
+  /*{
     name: '流程管理',
     id: 'parent-lcgl',
     children: [{
@@ -36,7 +28,7 @@ export default [
       url: '/node',
       id: 'jdgl'
     }]
-  },
+  },*/
     {
         name: '订单管理',
         id: 'parent-ddgl',
@@ -71,11 +63,11 @@ export default [
       id: 'cpgl'
     }, {
       name: '零件待入库',
-      url: '/storeproduct',
+      url: '/material-room',
       id: 'ljdrk'
     }, {
       name: '成品待入库',
-      url: '/storeproduct',
+      url: '/product-room',
       id: 'cpdrl'
     }, {
       name: '订单领料表',
@@ -140,7 +132,19 @@ export default [
         url: '/purchsemanage-purchase/list',
         id: 'cglb'
     }]
-  },
+  }, {
+        name: '质检管理',
+        id: 'parent-zjgl',
+        children: [{
+            name: '零件质检列表',
+            url: '/inspect-material',
+            id: 'ljzjlb'
+        }, {
+            name: '成品质检列表',
+            url: '/inspect-product',
+            id: 'cpzjlb'
+        }]
+    },
   {
     name: '发货管理',
     id: 'parent-fhgl',

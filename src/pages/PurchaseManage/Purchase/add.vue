@@ -27,9 +27,9 @@
             </div>
 
             <div class="b" style="margin: 20px 0 10px;">采购物料项</div>
-            <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
-                <div class="flex-item">
-                    <div class="flex">
+            <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i"> 
+                    <div class="flex-item"> 
+                        <div class="flex">
                         <input-box v-model="item.materialName" class="flex-item mr-10" label="物料名称" ></input-box>
                         <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号" ></input-box>
                         <input-box v-model="item.number" type="number" class=" mr-10" label="数量" ></input-box>
@@ -90,27 +90,28 @@
                 },
             }
         },
-        created() {
+        mounted() {
             let {formId}= this.$route.query
             this.form.id = formId;
             // console.log(this.form.id)
             this.$http.get('/haolifa/supplier/list-all/').then(res=>{
-                console.log(res);
                 this.supplierList = res.map(item=>{
                     return {value:item.suppilerNo,text:item.suppilerName}
                 })
                 this.supplierInfoList = res;
             })
-            // 加载详情
-            this.$http.get('/haolifa/purchase-order/info/'+formId).then(res=>{
-                this.form = res.order;
-                this.form.orderNo = res.order.purchaseOrderNo;
-                this.form.confirmTime = this.form.confirmTime.substring(0,10);
-                this.form.deliveryTime = this.form.deliveryTime.substring(0,10);
-                this.form.operateTime = this.form.operateTime.substring(0,10);
-                this.form.itemList = res.items;
-
-            })
+            
+            if(formId){
+                // 加载详情
+                this.$http.get('/haolifa/purchase-order/info/'+formId).then(res=>{
+                    this.form = res.order;
+                    this.form.orderNo = res.order.purchaseOrderNo;
+                    this.form.confirmTime = this.form.confirmTime.substring(0,10);
+                    this.form.deliveryTime = this.form.deliveryTime.substring(0,10);
+                    this.form.operateTime = this.form.operateTime.substring(0,10);
+                    this.form.itemList=res.items; 
+                })
+            }
         },
         methods: {
             changeSupplier:function(){
@@ -137,6 +138,7 @@
                     unitPrice: 0,
                     unitWeight: 0
                 })
+                this.$forceUpdate();
                 console.log(this.form.itemList);
             },
             submit () {

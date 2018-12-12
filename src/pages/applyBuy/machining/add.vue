@@ -57,8 +57,8 @@
                     materialGraphNo: '图号',
                     number:'数量'
 
-                }
-
+                } 
+   
                 this.$http.post('/haolifa/entrust/save', this.form).then(res => {
                     this.loading = false
                     this.$toast('提交成功')

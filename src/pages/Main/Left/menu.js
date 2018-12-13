@@ -6,15 +6,7 @@ export default [
       name: '角色管理',
       url: '/role',
       id: 'jsgl'
-    }, {
-      name: '权限管理',
-      url: '/permission',
-      id: 'qxgl'
-    }, {
-      name: '菜单管理',
-      url: '/menu',
-      id: 'cdgl'
-    }, {
+    },{
       name: '人员管理',
       url: '/user',
       id: 'rygl'
@@ -24,7 +16,7 @@ export default [
       id: 'bmgl'
     }]
   },
-  {
+  /*{
     name: '流程管理',
     id: 'parent-lcgl',
     children: [{
@@ -36,7 +28,16 @@ export default [
       url: '/node',
       id: 'jdgl'
     }]
-  },
+  },*/
+    {
+        name: '订单管理',
+        id: 'parent-ddgl',
+        children: [{
+            name: '订单列表',
+            url: '/orderList',
+            id: 'ddlb'
+        }]
+    },
   {
     name: '库房管理',
     id: 'parent-kfgl',
@@ -62,11 +63,11 @@ export default [
       id: 'cpgl'
     }, {
       name: '零件待入库',
-      url: '/storeproduct',
+      url: '/material-room',
       id: 'ljdrk'
     }, {
       name: '成品待入库',
-      url: '/storeproduct',
+      url: '/product-room',
       id: 'cpdrl'
     }, {
       name: '订单领料表',
@@ -115,19 +116,35 @@ export default [
     name: '采购管理',
     id: 'parent-cggl',
     children: [{
-      name: '零件报检单',
-      url: '/supplier/list',
-      id: 'ljbjd'
+        name: '零件报检单',
+        url: '/applyBuy-material',
+        id: 'ljbjd'
     }, {
-      name: '加工报检单',
-      url: '/supplierproduct',
-      id: 'jjgbjd'
+        name: '加工报检单',
+        url: '/applyBuy-machining',
+        id: 'jjgbjd'
     }, {
       name: '生产待采购列表',
-      url: '/supplierequipment',
+      url: '/applyBuy-order',
       id: 'scdcglb'
+    }, {
+        name: '采购列表',
+        url: '/purchsemanage-purchase/list',
+        id: 'cglb'
     }]
-  },
+  }, {
+        name: '质检管理',
+        id: 'parent-zjgl',
+        children: [{
+            name: '零件质检列表',
+            url: '/inspect-material',
+            id: 'ljzjlb'
+        }, {
+            name: '成品质检列表',
+            url: '/inspect-product',
+            id: 'cpzjlb'
+        }]
+    },
   {
     name: '发货管理',
     id: 'parent-fhgl',
@@ -135,6 +152,10 @@ export default [
       name: '发货单列表',
       url: '/dilivery-bills',
       id: 'fhdgl'
+    },{
+        name: '发货记录',
+        url: '/dilivery-record',
+        id: 'fhjlgl'
     }]
   },
   {
@@ -157,11 +178,11 @@ export default [
       name: '费用管理',
       url: '/cost',
       id: 'fygl'
-    }, {
+    }/*, {
       name: '报表管理',
       url: '/report',
       id: 'bbgl'
-    }, {
+    }*/, {
       name: '合同管理',
       url: '/contract',
       id: 'htgl'
@@ -171,7 +192,7 @@ export default [
       id: 'fpgl'
     }, {
       name: '发货申请列表',
-      url: '/contract',
+      url: '/finance-bills',
       id: 'fhsqlb'
     }, {
       name: '待开发票管理',

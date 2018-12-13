@@ -8,8 +8,8 @@
             </div>
             <div class='flex-v-center'>
                 <span class="mr-20">是否同意: </span>
-                <radio-box v-model="form.status" label="1" text="保存"></radio-box>
-                <radio-box v-model="form.status" label="2" text="保存并发起"></radio-box>
+                <radio-box v-model=form.status label=1 text="保存"></radio-box>
+                <radio-box v-model=form.status label=2 text="保存并发起"></radio-box>
 
             </div>
             <div class="b" style="margin: 20px 0 10px;">送检列表</div>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+    import moment from 'moment'
     export default {
         name: 'apply-buy-add',
         data () {
@@ -77,7 +78,7 @@
             getInfo (id) {
                 this.$http.get(`/haolifa/material-inspect/info/${id}`).then(res => {
                     console.log(res.inspect.arrivalTime)
-
+                    res.inspect.arrivalTime =  moment(res.inspect.arrivalTime).format('YYYY-MM-DD')
                     for (let key in this.form) {
                         if (this.form[key] !== undefined) this.form[key] = res[key]
                         if(res[key]== undefined) this.form[key] = res.inspect[key]
@@ -125,6 +126,7 @@
                         }
                     }
                 })
+                this.form.status = parseInt(this.form.status)
                 this.$http.post('/haolifa/material-inspect/save', this.form).then(res => {
                     this.loading = false
                     this.$toast('提交成功')

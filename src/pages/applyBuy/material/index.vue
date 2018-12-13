@@ -7,7 +7,7 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" :page-size="10"  :param="filter" url="/haolifa/material-inspect/purchase-list/0" method="post">
+    <data-list class="f-14" ref="list"  :page-size="2" :param="filter"   url="/haolifa/material-inspect/purchase-list/0" method="post">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>报检单号</th>
@@ -24,7 +24,7 @@
         <td>{{item.arrivalTime}}</td>
         <td>{{item.supplierName}}</td>
         <td>{{item.createTime}}</td>
-        <td>{{item.status}}</td>
+        <td>{{item.status==1?'未发起':'已发起'}}</td>
         <td class="t-right">
          <icon-btn small @click="edit(item)">edit</icon-btn>
           <icon-btn small @click="remove(item)">delete</icon-btn>
@@ -52,38 +52,30 @@ export default {
     edit (item) {
       this.$router.push(`/applyBuy-material/edit?id=${item.id}`)
     },
-      remove (item) {
-          this.$confirm({
-              title: '删除确认',
-              text: `您确定要删除以下送检单吗？<br><b>${item.inspectNo}</b>`,
-              color: 'red',
-              btns: ['取消', '删除'],
-              yes: () => {
-                  this.$http.get(`/haolifa/material-inspect/delete/${item.id}`).then(res => {
-                      this.$toast('删除成功')
-                      this.$refs.list.update()
-                  }).catch(e => {
-                      this.$toast(e.msg || e.message)
-                  })
-              }
-          })
-      }
+    remove (item) {
+        this.$confirm({
+            title: '删除确认',
+            text: `您确定要删除以下送检单吗？<br><b>${item.inspectNo}</b>`,
+            color: 'red',
+            btns: ['取消', '删除'],
+            yes: () => {
+                this.$http.get(`/haolifa/material-inspect/delete/${item.id}`).then(res => {
+                    this.$toast('删除成功')
+                    this.$refs.list.update()
+                }).catch(e => {
+                    this.$toast(e.msg || e.message)
+                })
+            }
+        })
+    }
   }
 }
 </script>
 
 <style lang="less">
-.page-invoice-list{
+.page-material-list{
   select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
   .scroll-y{padding-bottom: 40px;}
+}
 
-  //
-}
-.fixed-length{
-  width: 100px;
-  display: block;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
 </style>

@@ -28,7 +28,7 @@
   <layer v-if="layer" :title="form.id ? '编辑发票' : '新增发票'" width="450px">
     <div class="layer-text" style="padding-bottom: 50px;">
       <input-box v-model="form.commitUser" label="提交人"></input-box>
-      <input-box v-model="form.expensesClassify" label="费用类别"></input-box>
+      <select-box :list="expensesClassify" v-model="form.expensesClassify" label="费用类别"></select-box>
       <input-box type="number" v-model="form.totalAmount" label="总费用"></input-box>
     </div>
     <div class="layer-btns">
@@ -53,9 +53,18 @@ export default {
         commitUser: '',
         expensesClassify: '',
         totalAmount: ''
-      }
+      },
+        expensesClassify:[]
     }
   },
+    created(){
+      this.$http.get('/haolifa/expenses/classify').then(res=>{
+        this.expensesClassify = res.map(item=>{
+            return {value:item.classifyName,text:item.classifyName}
+        });
+        this.form.expensesClassify ==''?res[0].classifyName:this.form.expensesClassify;
+      });
+},
   methods: {
     edit (item) {
       for (let key in this.form) this.form[key] = item[key]

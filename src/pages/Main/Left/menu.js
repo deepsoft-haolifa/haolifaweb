@@ -138,6 +138,15 @@ export default [
     }]
   },
   {
+    name: '订单管理',
+    id: 'parent-ddgl',
+    children: [{
+      name: '订单列表',
+      url: '/order',
+      id: 'ddlb'
+    }]
+  },
+  {
     name: '财务管理',
     id: 'parent-cwgl',
     children: [{

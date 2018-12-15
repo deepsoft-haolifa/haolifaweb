@@ -29,15 +29,15 @@ export default [
       id: 'jdgl'
     }]
   },*/
-    {
-        name: '订单管理',
-        id: 'parent-ddgl',
-        children: [{
-            name: '订单列表',
-            url: '/orderList',
-            id: 'ddlb'
-        }]
-    },
+  {
+      name: '订单管理',
+      id: 'parent-ddgl',
+      children: [{
+          name: '订单列表',
+          url: '/order',
+          id: 'ddlb'
+      }]
+  },
   {
     name: '库房管理',
     id: 'parent-kfgl',
@@ -156,15 +156,6 @@ export default [
         name: '发货记录',
         url: '/dilivery-record',
         id: 'fhjlgl'
-    }]
-  },
-  {
-    name: '订单管理',
-    id: 'parent-ddgl',
-    children: [{
-      name: '订单列表',
-      url: '/order',
-      id: 'ddlb'
     }]
   },
   {

@@ -16,7 +16,7 @@ export default [
       id: 'bmgl'
     }]
   },
-  /*{
+  {
     name: '流程管理',
     id: 'parent-lcgl',
     children: [{
@@ -28,7 +28,7 @@ export default [
       url: '/node',
       id: 'jdgl'
     }]
-  },*/
+  },
   {
       name: '订单管理',
       id: 'parent-ddgl',

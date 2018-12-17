@@ -7,7 +7,7 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list class="f-14" ref="list"  :page-size="2" :param="filter"   url="/haolifa/material-inspect/purchase-list/0" method="post">
+    <data-list class="f-14" ref="list"  :page-size="10" :param="filter"   url="/haolifa/material-inspect/purchase-list/0" method="get">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>报检单号</th>

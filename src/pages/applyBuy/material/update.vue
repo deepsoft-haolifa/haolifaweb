@@ -1,0 +1,153 @@
+<template>
+    <div class="apply-buy-update">
+        <div class="content">
+            <div class="title b f-18">编辑送检单</div>
+            <div class="flex">
+                <date-picker v-model="form.arrivalTime" hint="必填" class="flex-item" label="到货时间" style="margin-right: 20px;"></date-picker>
+                <input-box v-model="form.supplierName" class="flex-item" label="供应商名称"></input-box>
+            </div>
+            <div class='flex-v-center'>
+                <span class="mr-20">是否同意: </span>
+                <radio-box v-model=form.status label=1 text="保存"></radio-box>
+                <radio-box v-model=form.status label=2 text="保存并发起"></radio-box>
+
+            </div>
+            <div class="b" style="margin: 20px 0 10px;">送检列表</div>
+            <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
+                <div class="flex-item">
+                    <div class="flex">
+                        <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号" hint="必填"></input-box>
+                        <input-box v-model="item.materialName" class="flex-item mr-10" label="物料名称" hint="必填"></input-box>
+                        <input-box v-model="item.deliveryNumber" type="number" class=" mr-10" label="送检数量" hint="必填"></input-box>
+                        <input-box v-model="item.purchaseNo" class=" mr-10" label="合同编号" hint="必填"></input-box>
+                        <input-box v-model="item.purchaseNumber" type="number" class=" mr-10" label="采购数量" hint="必填"></input-box>
+                    </div>
+                    <div class="flex">
+                        <input-box v-model="item.requirements" class="flex-item mr-10" label="材质要求" hint="选填"></input-box>
+                        <input-box v-model="item.specification" class="flex-item mr-10" label="规格" hint="选填"></input-box>
+                    </div>
+                    <div class="flex">
+                        <input-box v-model="item.unit" class="flex-item mr-10" label="单位" hint="选填"></input-box>
+                        <input-box v-model="item.remark" class="flex-item" label="备注"></input-box>
+                    </div>
+                </div>
+                <div v-if="form.items.length > 1"><icon-btn small @click="form.items.splice(i, 1)">close</icon-btn></div>
+            </div>
+            <div class="card a flex-center" @click="addItem()">
+                <div class="flex-v-center">
+                    <i class="icon mr-10">add</i>
+                    <span>添加送检物料</span>
+                </div>
+            </div>
+            <div class="flex">
+                <btn big class="mr-20" @click="submit()">提交</btn>
+                <btn big flat @click="$router.back()">取消</btn>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import moment from 'moment'
+    export default {
+        name: 'apply-buy-update',
+        data () {
+            return {
+                form: {
+                    arrivalTime: '',
+                    supplierName: '',
+                    status:1,
+                    inspectNo:'',
+                    id:1,
+                    items: [{
+                        deliveryNumber: '',
+                        materialGraphNo: '',
+                        materialName: '',
+                        purchaseNo: '',
+                        purchaseNumber: '',
+                        remark: '',
+                        specification: '',
+                        unit: ''
+                    }]
+                }
+            }
+        },
+        created () {
+            let { id } = this.$route.query
+            if (id !== undefined && this.$route.name === 'material-edit') this.getInfo(id)
+        },
+        methods: {
+            getInfo (id) {
+                this.$http.get(`/haolifa/material-inspect/info/${id}`).then(res => {
+                    console.log(res.inspect.arrivalTime)
+                    res.inspect.arrivalTime =  moment(res.inspect.arrivalTime).format('YYYY-MM-DD')
+                    for (let key in this.form) {
+                        if (this.form[key] !== undefined) this.form[key] = res[key]
+                        if(res[key]== undefined) this.form[key] = res.inspect[key]
+                        console.log(this.form.arrivalTime)
+                    }
+
+                }).catch(e => {
+                    this.$toast(e.msg || e.message)
+                })
+            },
+            addItem () {
+                this.form.items.push({
+                    deliveryNumber: '',
+                    materialGraphNo: '',
+                    materialName: '',
+                    purchaseNo: '',
+                    purchaseNumber: '',
+                    remark: '',
+                    specification: '',
+                    unit: ''
+                })
+            },
+            submit ( ) {
+                alert(this.form.id)
+                alert(this.form.inspectNo)
+                const requireItem = {
+                    arrivalTime: '到货日期',
+                    supplierName: '供应商名称',
+                    materialGraphNo: '物料图号',
+                    deliveryNumber: '送检数量',
+                    purchaseNumber: '采购数量',
+                    requirements: '材质要求',
+                    specification: '规格',
+                    unit: '单位',
+                    purchaseNo: '合同编号'
+                }
+                const { items, arrivalTime } = this.form
+                if (!arrivalTime) {
+                    this.$toast('请填写到货时间')
+                    return
+                }
+                items.forEach((item, i) => {
+                    for (let key in item) {
+                        if (requireItem[key] && !item[key]) {
+                            this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
+                            return
+                        }
+                    }
+                })
+                this.form.status = parseInt(this.form.status)
+                this.$http.post(`/haolifa/material-inspect/update/${this.form.id}`, this.form).then(res => {
+                    this.loading = false
+                    this.$toast('提交成功')
+                    this.$router.replace('/applyBuy-material')
+                }).catch(e => {
+                    this.$toast(e.message || e.msg)
+                })
+            }
+        }
+        // ap_20181115201511123488
+    }
+</script>
+
+<style lang="less">
+    .apply-buy-add{
+        padding: 20px;
+        .card{padding: 10px;margin: 20px 0;background: #f5f5f5;}
+        .content{max-width: 1000px;margin: 0 auto;}
+    }
+</style>

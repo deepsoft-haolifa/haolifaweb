@@ -58,9 +58,25 @@
                 }
             }
         },
-
+        created () {
+            let { id } = this.$route.query
+            if (id !== undefined && this.$route.name === 'product-edit') this.getInfo(id)
+        },
         methods: {
+            getInfo (id) {
+                console.log("---"+id)
+                this.$http.get(`/haolifa/pro-inspect-res/info/${id}`).then(res => {
+                    console.log("---"+id)
+                   console.log(res)
+                    for (let key in this.form) {
+                        if (this.form[key] !== undefined) this.form[key] = res[key]
 
+                    }
+
+                }).catch(e => {
+                    this.$toast(e.msg || e.message)
+                })
+            },
             addItem () {
                 this.form.items.push({
                     productModel: '',

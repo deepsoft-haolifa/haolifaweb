@@ -51,19 +51,19 @@ export default {
   },
   methods: {
     edit (item) {
-      this.$router.push(`/inspect-product/edit?id=${item.id}`)
+      this.$router.push(`/inspect-product/edit?id=${item.inspectNo}`)
     },
     add (item) {
         this.$router.push(`/inspect-product/addRecord?id=${item.inspectNo}`)
-    }
-      /*remove (item) {
+    },
+      remove (item) {
           this.$confirm({
               title: '删除确认',
               text: `您确定要删除以下送检单吗？<br><b>${item.inspectNo}</b>`,
               color: 'red',
               btns: ['取消', '删除'],
               yes: () => {
-                  this.$http.get(`/haolifa/material-inspect/delete/${item.id}`).then(res => {
+                  this.$http.get(`/haolifa/pro-inspect-res/delete/${item.id}`).then(res => {
                       this.$toast('删除成功')
                       this.$refs.list.update()
                   }).catch(e => {
@@ -71,7 +71,7 @@ export default {
                   })
               }
           })
-      }*/
+      }
   }
 }
 </script>

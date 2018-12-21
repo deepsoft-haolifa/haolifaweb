@@ -68,7 +68,7 @@ export default [
     }, {
       name: '成品待入库',
       url: '/product-room',
-      id: 'cpdrl'
+      id: 'cpdrk'
     }, {
       name: '订单领料表',
       url: '/storeproduct',

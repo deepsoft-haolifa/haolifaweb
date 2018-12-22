@@ -24,10 +24,12 @@
         <td>{{item.arrivalTime}}</td>
         <td>{{item.supplierName}}</td>
         <td>{{item.createTime}}</td>
-        <td>{{item.status==1?'未发起':'已发起'}}</td>
+        <td>{{statusList[item.status].name}}</td>
         <td class="t-right">
-         <icon-btn small @click="edit(item)">edit</icon-btn>
-          <icon-btn small @click="remove(item)">delete</icon-btn>
+          <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
+          <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
+          <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
+          <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="commit(item.id)">提交</a>
         </td>
       </template>
     </data-list>
@@ -45,7 +47,15 @@ export default {
       filter: {
         type:0,
         status: 0
-      }
+      },
+        statusList:[
+            {status:0,name:'全部'},
+            {status:1,name:'未提交'},
+            {status:2,name:'质检中'},
+            {status:3,name:'质检完成'},
+            {status:4,name:'入库中'},
+            {status:5,name:'入库完成'},
+        ]
     }
   },
   methods: {
@@ -67,7 +77,17 @@ export default {
                 })
             }
         })
-    }
+    },
+      commit(itemId) {
+        this.$http.post(`/haolifa/material-inspect/updateStatus/${itemId}?status=2`).then(res=>{
+          this.$refs.list.update();
+        }).catch(e=>{
+            this.$toast(e.msg || e.message)
+        })
+      },
+      info(item){
+          this.$router.push(`/applyBuy-material/info?id=${item.id}&inspectNo=${item.inspectNo}`);
+      }
   }
 }
 </script>

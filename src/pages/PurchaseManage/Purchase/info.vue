@@ -4,6 +4,9 @@
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
                 <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
                 <div class="flex-item">订单详情</div>
+                <div class="flex-item ml-20">
+                    <a class="a" flat style="color: #008eff" :href="orderUrl">合同下载</a>
+                </div>
             </div>
             <!--<no-data v-if="!info.id" style="margin: 50px 0;"/>-->
             <table class="f-14" >
@@ -135,7 +138,8 @@
             return {
                 loading: false,
                 info: {},
-                itemList:[]
+                itemList:[],
+                orderUrl:''
             }
         },
         created () {
@@ -144,6 +148,7 @@
         methods: {
             getInfo () {
                 let {formId}= this.$route.query
+                this.orderUrl = '/haolifa/export/purchaseOrder/'+formId
                 console.log(formId);
                 this.info.id = formId;
                 this.$http.get(`/haolifa//purchase-order/info/${formId}`).then(res => {
@@ -157,6 +162,12 @@
                     console.log('info',this.info)
                     console.log('itemList',this.itemList)
 
+                }).catch(e => {
+                    this.$toast(e.msg)
+                })
+            },
+            downloadOrder:function (id) {
+                this.$http.get(`/haolifa/export/purchaseOrder/${id}`).then(res => {
                 }).catch(e => {
                     this.$toast(e.msg)
                 })

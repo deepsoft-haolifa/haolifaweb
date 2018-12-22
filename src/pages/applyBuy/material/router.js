@@ -13,4 +13,9 @@ export default [{
   name: 'material-edit',
   component: () => import(/* webpackChunkName: "diliversyedit" */ './update.vue'),
   meta: { level: 3, title: '编辑报检单', open: false, id: 'ljbjd' }
+},{
+    path: '/applyBuy-material/info',
+    name: 'material-info',
+    component: () => import(/* webpackChunkName: "diliversyedit" */ './info.vue'),
+    meta: { level: 3, title: '报检单详情', open: false, id: 'ljbjd' }
 }]

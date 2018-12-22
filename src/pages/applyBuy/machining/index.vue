@@ -1,13 +1,21 @@
 <template>
 <div class="page-material-list">
   <div class="flex-v-center tool-bar">
+    <div class="flex-v-center search-bar" style="margin-right: 20px;">
+      <i class="icon f-20 c-8">search</i>
+      <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+        <option value="5">机加工状态</option>
+        <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
+      </select>
+      <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+    </div>
     <div class="flex-item"></div>
     <router-link to="/applyBuy-machining/add">
       <btn class="b" flat color="#008eff">创建机加工单</btn>
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" :page-size="2"  :param="filter" url="/haolifa/entrust/list" method="post">
+    <data-list ref="list" :page-size="10"  :param="filter" url="/haolifa/entrust/list" method="post">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>机加工单号</th>
@@ -26,10 +34,11 @@
         <td>{{item.materialGraphNo}}</td>
         <td>{{item.number}}</td>
         <td>{{item.createTime}}</td>
-        <td>{{item.status}}</td>
+        <td>{{statusList[item.status+1].name}}</td>
         <td class="t-right">
-         <icon-btn small @click="edit(item)">edit</icon-btn>
-          <icon-btn small @click="remove(item)">delete</icon-btn>
+          <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
+          <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
+          <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="initApprove(item.entrustNo)">发起审批</a>
         </td>
       </template>
     </data-list>
@@ -46,29 +55,42 @@ export default {
     return {
       filter: {
         type:0,
-        status: 0
-      }
+        status: 5
+      },
+        statusList:[
+            {status:5,name:'全部'},
+            {status:0,name:'未提交'},
+            {status:1,name:'审批中'},
+            {status:2,name:'处理中'},
+            {status:3,name:'处理完成'},
+            {status:4,name:'审批不通过'}
+            ]
     }
   },
   methods: {
     edit (item) {
       this.$router.push(`/applyBuy-machining/edit?entrustNo=${item.entrustNo}`)
     },
-      remove (item) {
-          this.$confirm({
-              title: '删除确认',
-              text: `您确定要删除以下送检单吗？<br><b>${item.entrustNo}</b>`,
-              color: 'red',
-              btns: ['取消', '删除'],
-              yes: () => {
-                  this.$http.get(`/haolifa/entrust/delete/${item.entrustNo}`).then(res => {
-                      this.$toast('删除成功')
-                      this.$refs.list.update()
-                  }).catch(e => {
-                      this.$toast(e.msg || e.message)
-                  })
-              }
-          })
+      remove (item) {this.$confirm({
+          title: '删除确认',
+          text: `您确定要删除以下送检单吗？<br><b>${item.entrustNo}</b>`,
+          color: 'red',
+          btns: ['取消', '删除'],
+          yes: () => {
+              this.$http.get(`/haolifa/entrust/delete/${item.entrustNo}`).then(res => {
+                  this.$toast('删除成功')
+                  this.$refs.list.update()
+              }).catch(e => {
+                  this.$toast(e.msg || e.message)
+              })
+          }
+      })},
+      initApprove(entrustNo) {
+        this.$http.get(`/haolifa/entrust/updateStatus/${entrustNo}/1`).then(res=>{
+          this.$refs.list.update();
+        }).catch(e=>{
+            this.$toast(e.msg || e.message)
+        })
       }
   }
 }
@@ -88,4 +110,6 @@ export default {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
+
 </style>

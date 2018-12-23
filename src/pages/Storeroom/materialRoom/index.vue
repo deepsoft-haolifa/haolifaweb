@@ -29,7 +29,7 @@
           <td>{{item.status==1?'待入库':'已入库'}}</td>
           <td class="t-right">
             <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="execStoreRoom(item)">入库</a>
-            <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="storeComplete(item)">入库完成</a>
+            <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="storeComplete(item.id)">入库完成</a>
           </td>
         </template>
       </data-list>
@@ -42,10 +42,10 @@
         </div>
         <div class="flex">
           <select-box class="ml-20" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
-          <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rockNo" label="库位"></select-box>
+          <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
         </div>
         <div class="flex">
-          <input-box v-model="storeRoom.supplier" class="flex-item mr-10" label="供应商"></input-box>
+          <input-box v-model="storeRoom.supplier" class="flex-item mr-10 ml-20" label="供应商"></input-box>
         </div>
       </div>
       <div class="layer-btns">
@@ -76,26 +76,43 @@
                     storeRoomRacks:[],
                     materialGraphNo:'',
                     roomNo:'',
-                    rockNo:'',
+                    rackNo:'',
                     quantity:0,
                     supplier:''
                 }
             }
         },
         methods: {
-            storeComplete(){
-
+            loadStoreRocks(){
+                this.$http.get(`/haolifa/store-room/rack/list/${this.storeRoom.roomNo}`).then(res=>{
+                    console.log('库位',res)
+                    this.storeRoom.storeRoomRacks = res.map(item=>{
+                        return {value:item.rackNo,text:item.rackName}
+                    })
+                    // 默认值
+                    this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
+                }).catch(e=>{
+                    this.$toast(e.msg || e.message)
+                })
+            },
+            storeComplete(id){
+              this.$http.put(`/haolifa/material-inspect/updateHistoryStatus/${id}`).then(res=>{
+                  this.$refs.list.update()
+              }).catch(e=>{
+                  this.$toast(e.msg || e.message)
+              })
             },
             complete(){
                 let save = {
                     materialGraphNo:this.storeRoom.materialGraphNo,
                     roomNo:this.storeRoom.roomNo,
-                    rockNo:this.storeRoom.rockNo,
+                    rackNo:this.storeRoom.rackNo,
                     quantity:this.storeRoom.quantity,
                     supplier:this.storeRoom.supplier
                 }
               this.$http.put(`/haolifa/store-room/entryOut/entryMaterial`,save).then(res=>{
                   this.$refs.list.update();
+                  this.storeRoom.layerShow = false;
               }).catch(e=>{
                   this.$toast(e.msg || e.message)
               })
@@ -113,7 +130,7 @@
                         return {value:item.rackNo,text:item.rackName}
                     })
                       // 默认值
-                      this.storeRoom.rockNo = this.storeRoom.storeRoomRacks[0].value;
+                      this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
                   }).catch(e=>{
                       this.$toast(e.msg || e.message)
                   })

@@ -118,7 +118,8 @@
               })
             },
             execStoreRoom(item){
-                this.$http.get(`/haolifa/store-room/listInfo?type=0`).then(res=>{
+                // 获取库房库位
+                this.$http.get(`/haolifa/store-room/listInfo?type=1`).then(res=>{
                   console.log(res);
                   this.storeRoom.selectStoreRooms = res.map(item=>{
                       return {value:item.roomNo,text:item.name};

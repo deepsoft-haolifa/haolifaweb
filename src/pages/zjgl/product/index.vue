@@ -16,7 +16,6 @@
         <th>合格数量</th>
         <th>不合格数量</th>
         <th>状态</th>
-        <th class="t-right" style="width: 80px;">操作</th>
       </tr>
       <!-- item: 当前行数据; index: 当前行数 -->
       <template slot="item" slot-scope="{ item, index }">
@@ -26,11 +25,7 @@
         <td>{{item.testingNumber}}</td>
         <td>{{item.qualifiedNumber}}</td>
         <td>{{item.unqualifiedNumber}}</td>
-        <td>{{item.storageStatus}}</td>
-        <td class="t-right">
-         <icon-btn small @click="edit(item)">edit</icon-btn>
-          <icon-btn small @click="remove(item)">delete</icon-btn>
-        </td>
+        <td>{{item.storageStatus==1 ?'待入库':'已入库'}}</td>
       </template>
     </data-list>
   </div>

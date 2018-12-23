@@ -11,12 +11,12 @@
       <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
     </div> -->
     <div class="flex-item"></div>
-    <router-link to="/dilivery-bills/add">
+    <router-link to="/delivery-bills/add">
       <btn class="b" flat color="#008eff">新增发货通知单</btn>
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/delivery/noticeList" method="post">
+    <data-list ref="list" page-num-str="pageNum" :param="filter" url="/haolifa/delivery/noticeList" method="post">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>发货通知单号</th>
@@ -60,13 +60,13 @@ export default {
   data () {
     return {
       filter: {
-        type: ''
+        // type: ''
       }
     }
   },
   methods: {
     edit (item) {
-      this.$router.push(`/dilivery-bills/edit?id=${item.id}`)
+      this.$router.push(`/delivery-bills/edit?id=${item.id}`)
     },
     remove (item) {
       this.$confirm({

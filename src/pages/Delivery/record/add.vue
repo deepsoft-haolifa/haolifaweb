@@ -3,32 +3,33 @@
         <div class='form-content'>
             <div class='title b f-18'>{{form.id ? '编辑' : '新增'}}发货记录</div>
             <div class='flex-v-center'>
-                <input-box v-model='form.contractOrderNo' class='flex-item' label='订单号'></input-box>
-                <input-box v-model="form.deliveryClassify" class="flex-item" label="发货分类"></input-box>
-                <input-box v-model="form.deliveryNoticeNo" class="flex-item" label="发货通知单号"></input-box>
-                <input-box v-model="form.deliveryTime" class="flex-item" label="发货日期/到货日期"></input-box>
-                <input-box v-model="form.operationNo" class="flex-item" label="运营单号"></input-box>
-                <input-box v-model="form.customerNo" class="flex-item" label="客户代号 "></input-box>
+                <input-box v-model='form.contractOrderNo' class='flex-item mr-10' label='订单号'></input-box>
+                <input-box v-model="form.deliveryNoticeNo" class="flex-item mr-10" label="发货通知单号"></input-box>
+                <select-box v-model="form.deliveryClassify" :list="classifyList" class="flex-item mr-10"
+                            label="发货分类"></select-box>
+                <date-picker v-model="form.deliveryTime" class="flex-item mr-10" label="发货日期/到货日期"></date-picker>
             </div>
             <div class='flex-v-center'>
-                <input-box v-model='form.productCount' class='flex-item' label='成品发货数量'></input-box>
-                <input-box v-model="form.packingMode" class="flex-item" label="包装方式"></input-box>
-                <input-box v-model="form.pieceCount" class="flex-item" label="件数"></input-box>
-                <input-box v-model="form.transportCompany" class="flex-item" label="承运单位"></input-box>
-                <input-box v-model="form.courierNo" class="flex-item" label="运单号"></input-box>
+                <input-box v-model="form.operationNo" class="flex-item mr-10" label="运营单号"></input-box>
+                <input-box v-model="form.customerNo" class="flex-item mr-10" label="客户代号 "></input-box>
+                <input-box v-model='form.productCount' class='flex-item mr-10' label='成品发货数量'></input-box>
+                <input-box v-model="form.packingMode" class="flex-item mr-10" label="包装方式"></input-box>
+                <input-box v-model="form.pieceCount" class="flex-item mr-10" label="件数"></input-box>
+                <input-box v-model="form.transportCompany" class="flex-item mr-10" label="承运单位"></input-box>
+                <input-box v-model="form.courierNo" class="flex-item mr-10" label="运单号"></input-box>
             </div>
             <div class='flex-v-center'>
-                <input-box v-model='form.collectProvince' class='flex-item' label='省市'></input-box>
-                <input-box v-model="form.collectAddress" class="flex-item" label="地址"></input-box>
-                <input-box v-model="form.collectName" class="flex-item" label="收货人"></input-box>
-                <input-box v-model="form.collectPhone" class="flex-item" label="收货人电话"></input-box>
+                <input-box v-model='form.collectProvince' class='flex-item mr-10' label='省市'></input-box>
+                <input-box v-model="form.collectAddress" class="flex-item mr-10" label="地址"></input-box>
+                <input-box v-model="form.collectName" class="flex-item mr-10" label="收货人"></input-box>
+                <input-box v-model="form.collectPhone" class="flex-item mr-10" label="收货人电话"></input-box>
             </div>
             <div class='flex-v-center'>
-                <input-box v-model='form.weightPiece' class='flex-item' label='重量/件数'></input-box>
-                <input-box v-model="form.pricePiece" class="flex-item" label="单价/计件"></input-box>
-                <input-box v-model="form.deliveryFee" class="flex-item" label="送货费"></input-box>
-                <input-box v-model="form.totalFee" class="flex-item" label="运费总金额"></input-box>
-                <input-box v-model="form.settlementWay" class="flex-item" label="结算方式"></input-box>
+                <input-box v-model='form.weightPiece' class='flex-item mr-10' label='重量/件数'></input-box>
+                <input-box v-model="form.pricePiece" class="flex-item mr-10" label="单价/计件"></input-box>
+                <input-box v-model="form.deliveryFee" class="flex-item mr-10" label="送货费"></input-box>
+                <input-box v-model="form.totalFee" class="flex-item mr-10" label="运费总金额"></input-box>
+                <input-box v-model="form.settlementWay" class="flex-item mr-10" label="结算方式"></input-box>
             </div>
             <div class="flex-v-center">
                 <input-box v-model="form.remark" class="flex-item mr-10" multi-line label="备注"></input-box>
@@ -55,10 +56,15 @@
                 loading: false,
                 loadingMsg: '',
                 fileList: [],
+                classifyList: [
+                    {value: 1, text: '销售订单'},
+                    {value: 2, text: '售后订单'},
+                    {value: 3, text: '外调货'},
+                    {value: 4, text: '调压箱'},
+                    {value: 5, text: '其他'}],
                 form: {
                     id: '',
                     contractOrderNo: '',
-                    deliveryUrl: '',
                     deliveryClassify: '',
                     deliveryNoticeNo: '',
                     deliveryTime: '',
@@ -85,7 +91,7 @@
         computed: {
             canSubmit() {
                 const {form} = this
-                return form.contractOrderNo && form.deliveryUrl
+                return form.contractOrderNo && form.deliveryClassify
             }
         },
         created() {
@@ -118,7 +124,7 @@
                 const {form} = this
                 this.loading = true
                 this.loadingMsg = '正在保存'
-                this.$http.post('/haolifa/delivery/save', form).then(res => {
+                this.$http.post(`/haolifa/delivery/${form.id ? 'update' : 'save'}`, form).then(res => {
                     this.loading = false
                     this.$router.replace('/delivery-record')
                 }).catch(e => {
@@ -133,6 +139,7 @@
 <style lang='less'>
     .page-part-add {
         padding: 30px 20px;
+
         .title {
             margin-bottom: 20px;
         }

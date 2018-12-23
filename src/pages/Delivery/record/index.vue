@@ -11,7 +11,7 @@
       <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
     </div> -->
     <div class="flex-item"></div>
-    <router-link to="/delivery-bills/add">
+    <router-link to="/delivery-record/add">
       <btn class="b" flat color="#008eff">新增发货记录</btn>
     </router-link>
   </div>
@@ -27,14 +27,14 @@
         <th>承运单位</th>
         <th>省市</th>
         <th>运费总金额</th>
-        <th>时间</th>
+        <th>创建时间</th>
         <th class="t-right" style="width: 80px;">操作</th>
       </tr>
       <!-- item: 当前行数据; index: 当前行数 -->
       <template slot="item" slot-scope="{ item }">
         <td>{{item.contractOrderNo}}</td>
         <td>{{item.deliveryNoticeNo}}</td>
-        <td>{{item.deliveryClassify}}</td>
+        <td>{{classifyList[item.deliveryClassify-1].text}}</td>
         <td>{{item.deliveryTime}}</td>
         <td>{{item.customerNo}}</td>
         <td>{{item.productCount}}</td>
@@ -59,9 +59,12 @@ export default {
   components: { DataList },
   data () {
     return {
-      filter: {
-        type: ''
-      }
+      classifyList:[
+        {value:1,text:'销售订单'},
+        {value:2,text:'售后订单'},
+        {value:3,text:'外调货'},
+        {value:4,text:'调压箱'},
+        {value:5,text:'其他'}]
     }
   },
   methods: {

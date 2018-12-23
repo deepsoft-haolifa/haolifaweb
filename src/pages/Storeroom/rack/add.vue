@@ -6,7 +6,7 @@
     <input-box v-model="form.rackNo" label="库位编号"></input-box>
     <input-box v-model="form.rackName" label="库位名称"></input-box>
     <!-- <select-box v-model="form.status" :list="statusList" label="状态"></select-box> -->
-    <select-box v-model="form.storeRoomNo" :list="roomList" label="所属库房"></select-box>
+    <select-box v-model="form.roomNo" :list="roomList" label="所属库房"></select-box>
     <input-box v-model="form.remark" label="备注" multi-line></input-box>
 
     <div class="flex-v-center" style="margin: 20px 0;">
@@ -30,7 +30,7 @@ export default {
         rackNo: '',
         rackName: '',
         // status: '',
-        storeRoomNo: ''
+        roomNo: ''
       }
     }
   },

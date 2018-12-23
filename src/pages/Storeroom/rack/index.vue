@@ -37,7 +37,7 @@
         <td class="c-a">{{index}}</td>
         <td>{{item.rackName}}</td>
         <td>{{item.rackNo }}</td>
-        <td>{{item.storeRoomNo}}</td>
+        <td>{{item.roomNo}}</td>
         <td>{{item.remark}}</td>
         <td class="t-right">
           <icon-btn small @click="edit(item)">edit</icon-btn>

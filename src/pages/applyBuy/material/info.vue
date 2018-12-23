@@ -1,6 +1,6 @@
 <template>
-    <div class="page-supplier-info abs scroll-y">
-        <div class="form-content">
+    <div class=" abs scroll-y">
+        <div class="form-content page-supplier-info">
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
                 <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
                 <div class="flex-item">详情</div>
@@ -62,14 +62,13 @@
                 </tr>
             </table>
         </div>
-        <div class="mt-15" v-if="inspectHistory.length">
-            <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
-                <div class="flex-item ml-20">质检记录</div>
+        <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length">
+            <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
+                <div class="flex-item">质检记录</div>
             </div>
-            <div class="flex-item scroll-y">
+            <div class="flex-item scroll-y ml-20">
                 <table class="data-table">
                     <tr>
-                        <th style="width: 60px;">ID</th>
                         <th>质检单号</th>
                         <th>物料名称</th>
                         <th>物料图号</th>
@@ -116,7 +115,7 @@
             console.log(this.inspect.id)
             console.log(this.inspect.inspectNo)
             this.getInfo()
-            this.inspectHistory()
+            this.getInspectHistory()
         },
         methods: {
             getInfo () {
@@ -131,7 +130,7 @@
                     this.$toast(e.msg || e.message)
                 })
             },
-            inspectHistory() {
+            getInspectHistory() {
                 this.$http.get(`/haolifa/material-inspect/history/list/${this.inspect.inspectNo}`).then(res=>
                 {
                     this.inspectHistory = res;

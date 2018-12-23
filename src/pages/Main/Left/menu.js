@@ -150,11 +150,11 @@ export default [
     id: 'parent-fhgl',
     children: [{
       name: '发货单列表',
-      url: '/dilivery-bills',
+      url: '/delivery-bills',
       id: 'fhdgl'
     },{
-        name: '发货记录',
-        url: '/dilivery-record',
+        name: '发货记录列表',
+        url: '/delivery-record',
         id: 'fhjlgl'
     }]
   },

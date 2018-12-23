@@ -56,12 +56,7 @@
                 loading: false,
                 loadingMsg: '',
                 fileList: [],
-                classifyList: [
-                    {value: 1, text: '销售订单'},
-                    {value: 2, text: '售后订单'},
-                    {value: 3, text: '外调货'},
-                    {value: 4, text: '调压箱'},
-                    {value: 5, text: '其他'}],
+                classifyList: [],
                 form: {
                     id: '',
                     contractOrderNo: '',
@@ -96,9 +91,20 @@
         },
         created() {
             let {id} = this.$route.query
+            this.form.contractOrderNo = this.$route.query.contractOrderNo
+            this.form.deliveryNoticeNo = this.$route.query.deliveryNoticeNo
             if (id !== undefined && this.$route.name === 'delivery-record-edit') this.getInfo(id)
+            this.getClassifyList()
         },
         methods: {
+            getClassifyList() {
+                this.$http.get('/haolifa/delivery/getClassifyList').then(res => {
+                    console.log(res)
+                    this.classifyList = res.map(item => {
+                        return {value: item.code, text: item.name}
+                    });
+                })
+            },
             getInfo(id) {
                 this.$http
                     .get(`/haolifa/delivery/getInfo/${id}`)

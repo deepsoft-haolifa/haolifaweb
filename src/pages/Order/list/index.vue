@@ -60,7 +60,7 @@ export default {
     return {
       loading: false,
       filter: {
-        type: ''
+        // type: ''
       }
     }
   },

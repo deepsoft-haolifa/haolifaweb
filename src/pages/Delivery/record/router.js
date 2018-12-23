@@ -1,0 +1,16 @@
+export default [{
+  path: '/delivery-record',
+  name: 'delivery-record-list',
+  component: () => import('./index.vue'),
+  meta: { level: 2, title: '发货单记录列表', open: false, id: 'fhdgl' }
+}, {
+  path: '/delivery-record/add',
+  name: 'delivery-record-add',
+  component: () => import('./add.vue'),
+  meta: { level: 3, title: '新增发货记录', open: false, id: 'fhdgl' }
+}, {
+  path: '/delivery-record/edit',
+  name: 'delivery-record-edit',
+  component: () => import('./add.vue'),
+  meta: { level: 3, title: '编辑发货记录', open: false, id: 'fhdgl' }
+}]

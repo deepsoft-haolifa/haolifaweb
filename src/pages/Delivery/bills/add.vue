@@ -111,7 +111,7 @@ export default {
       this.loadingMsg = '正在保存'
       this.$http.post('/haolifa/delivery/saveNotice', form).then(res => {
         this.loading = false
-        this.$router.replace('/dilivery-bills')
+        this.$router.replace('/delivery-bills')
       }).catch(e => {
         this.loading = false
         this.$toast(e.msg || e.message)

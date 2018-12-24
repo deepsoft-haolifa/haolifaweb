@@ -115,7 +115,7 @@
                     orderNo: this.storeRoom.orderNo,
                     productDepartment: this.storeRoom.productDepartment,
                     productModel: this.storeRoom.prodeuctModel,
-                    productNo: this.storeRoom.productNo,
+                    productNo: this.storeRoom.prodeuctModel,
                     productSpecifications: this.storeRoom.productSpecifications,
                     quantity: this.storeRoom.quantity,
                     rackNo: this.storeRoom.rackNo,
@@ -136,11 +136,11 @@
                         return {value:item.productModel,text:item.productModel}
                     });
                     this.storeRoom.prodeuctModel = this.storeRoom.prodeuctModels[0].value;
-                    this.storeRoom.productSpecifications = res.map(item=>{
+                    res.forEach(item=>{
                         if(item.productModel == this.storeRoom.prodeuctModel) {
-                            return item.productSpecifications;
+                            this.storeRoom.productSpecifications = item.productSpecifications;
                         }
-                    })
+                    });
                 }).catch(e=>{
                     this.$toast(e.msg || e.message);
                 });

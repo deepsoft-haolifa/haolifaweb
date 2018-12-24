@@ -208,5 +208,28 @@ export default [
             url: '/jgzx-invoice',
             id: 'fpgl'
         }]
+    },
+    {
+        name: '生产调度',
+        id: 'parent-scdd',
+        children: [{
+            name: '零件加工管理',
+            url: '/jgzx-invoice',
+            id: 'jjglb'
+        }]
+    },
+    {
+        name: '车间主任',
+        id: 'parent-cjzr',
+        children: [{
+            name: '零件加工管理',
+            url: '/jgzx-invoice',
+            id: 'jjglb'
+        },{
+            name: '替换料申请',
+            url: '/jgzx-invoice',
+            id: 'thllb'
+        }
+        ]
     }
 ]

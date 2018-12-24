@@ -3,12 +3,14 @@
   <div class="flex-v-center tool-bar">
     <div class="flex-v-center search-bar" style="margin-right: 20px;">
       <i class="icon f-20 c-8">search</i>
+      <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
+      开票状态：
       <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
-        <option value="0">开票状态</option>
         <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
       </select>
+      <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+      发票类型:
       <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)">
-        <option value="0">合同类型状态</option>
         <option v-for="item in allTypes" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
       </select>
       <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
@@ -20,23 +22,25 @@
     <data-list class="f-14" ref="list" method="post" :page-size="10" :param="filter" url="/haolifa/invoice/list/1">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
-        <th>发票编号</th>
         <th>合同编号</th>
-        <th>合同类型</th>
-        <th>合同状态</th>
-        <th>合同金额</th>
+        <th>金额</th>
+        <th>发票号</th>
+        <th>类型</th>
+        <th>状态</th>
+        <th>备注</th>
         <th class="t-right" style="width: 80px;">操作</th>
       </tr>
       <template slot="item" slot-scope="{ item, index }">
         <td>{{index}}</td>
-        <td>{{item.invoiceNo}}</td>
         <td>{{item.orderNo}}</td>
+        <td>￥ {{item.totalAmount}}</td>
+        <td>{{item.invoiceNo}}</td>
         <td>{{allTypes[item.type].text}}</td>
         <td>{{allStatus[item.status].text}}</td>
-        <td>￥ {{item.totalAmount}}</td>
+        <td>{{item.remark}}</td>
         <td class="t-right">
-          <icon-btn small @click="edit(item)">edit</icon-btn>
-          <icon-btn small @click="remove(item)">delete</icon-btn>
+          <a href="javascript:;" v-if="item.status == 1" class="blue" @click="billing(item)">开票</a>
+          <a href="javascript:;" v-if="item.status == 2" class="blue" @click="edit(item)">编辑</a>
         </td>
       </template>
     </data-list>
@@ -46,9 +50,9 @@
     <div class="layer-text" style="padding-bottom: 50px;">
       <input-box v-model="form.invoiceNo" label="发票编号"></input-box>
       <input-box v-model="form.orderNo" label="订单编号"></input-box>
-      <select-box :list="allStatus" v-model="form.status" label="合同状态"></select-box>
-      <select-box :list="allTypes" v-model="form.type" label="合同类型"></select-box>
-      <input-box type="number" v-model="form.totalAmount" label="合同金额"></input-box>
+      <select-box :list="allStatusAdd" v-model="form.status" label="发票状态"></select-box>
+      <select-box :list="allTypesAdd" v-model="form.type" label="发票类型"></select-box>
+      <input-box type="number" v-model="form.totalAmount" label="发票金额"></input-box>
       <input-box  :multi-line="true" type="text" v-model="form.remark" label="备注"></input-box>
     </div>
     <div class="layer-btns">
@@ -57,6 +61,16 @@
     </div>
   </layer>
 
+  <layer v-if="bill.layerbill" :title="'开票'" width="450px">
+    <div class="layer-text" style="padding-bottom: 50px;">
+      <input-box v-model="bill.orderNo" label="合同编号"></input-box>
+      <input-box v-model="bill.billInvoiceNo" label="发票编号"></input-box>
+    </div>
+    <div class="layer-btns">
+      <btn flat @click="cancel">取消</btn>
+      <btn flat color="#008eff" @click="billInvoice()">开票</btn>
+    </div>
+  </layer>
 </div>
 </template>
 
@@ -70,31 +84,59 @@ export default {
     return {
       filter: {
         type:0,
-        status: 0
+        status: 0,
+          orderNo:''
       },
       allStatus: [
-        {value: 0, text: '未收款'},
-        {value: 1, text: '未打款'},
-        {value: 2, text: '打款中'},
-        {value: 3, text: '收款中'},
-        {value: 4, text: '处理完成'}
+        {value: 0, text: '全部'},
+        {value: 1, text: '待开票'},
+        {value: 2, text: '已开票'}
       ],
       allTypes: [
-        {value: 0, text: '订单合同编号'},
-        {value: 1, text: '采购编号'}
+        {value: 0, text: '全部'},
+        {value: 1, text: '开出（生产）'},
+        {value: 2, text: '开入（采购）'}
       ],
+        allStatusAdd: [
+            {value: 1, text: '待开票'},
+            {value: 2, text: '已开票'}
+        ],
+        allTypesAdd: [
+            {value: 1, text: '开出（生产）'},
+            {value: 2, text: '开入（采购）'}
+        ],
+
+      bill:{
+          layerbill:false,
+          billInvoiceNo:'',
+          orderNo:''
+      },
       layer: false,
       form: {
         id: '',
         invoiceNo: '',
         orderNo: '',
-        status: null,
+        status: 1,
         totalAmount: '',
-        type: null
+        type: 1
       }
     }
   },
   methods: {
+      billing(item) {
+          this.bill.orderNo = item.orderNo;
+          this.bill.layerbill = true;
+          this.bill.id = item.id;
+      },
+      billInvoice() {
+        this.$http.get(`/haolifa/invoice/updateInvoiceNo/${this.bill.id}/${this.bill.billInvoiceNo}`).then(res=>{
+            this.$toast("开票成功")
+            this.$refs.list.update();
+            this.bill.layerbill = false;
+        }).catch(e=>{
+            this.$toast(e.msg || e.message)
+        })
+      },
     edit (item) {
       for (let key in this.form) this.form[key] = item[key]
       this.layer = true
@@ -125,9 +167,9 @@ export default {
         id: '',
         invoiceNo: '',
         orderNo: '',
-        status: null,
+        status: 1,
         totalAmount: '',
-        type: null
+        type: 1
       }
       this.layer = false
     },

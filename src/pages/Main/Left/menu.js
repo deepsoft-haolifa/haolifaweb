@@ -185,10 +185,6 @@ export default [
       name: '发货申请列表',
       url: '/finance-bills',
       id: 'fhsqlb'
-    }, {
-      name: '待开发票管理',
-      url: '/invoice',
-      id: 'dkfpgl'
     }]
   },
   {

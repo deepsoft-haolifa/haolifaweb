@@ -1,6 +1,15 @@
 <template>
 <div class="page-invoice-list">
   <div class="flex-v-center tool-bar">
+    <div class="flex-v-center search-bar" style="margin-right: 20px;">
+      <i class="icon f-20 c-8">search</i>
+      <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
+      发票状态：
+      <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+        <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
+      </select>
+      <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+    </div>
     <div class="flex-item"></div>
     <router-link to="/jgzx-invoice/add">
       <btn class="b" flat color="#008eff">新增发票申请</btn>
@@ -13,9 +22,7 @@
         <th>合同编号</th>
         <th>金额</th>
         <th>状态</th>
-        <th>类型</th>
         <th>备注</th>
-        <th>审批时间</th>
         <th>创建时间</th>
         <th>更新时间</th>
         <th class="t-right" style="width: 80px;">操作</th>
@@ -25,15 +32,12 @@
         <td class="c-a">{{index}}</td>
         <td>{{item.orderNo}}</td>
         <td>{{item.totalAmount}}</td>
-        <td>{{item.status}}</td>
-        <td>{{item.type}}</td>
+        <td>{{item.type==1?'待开票':'已开票'}}</td>
         <td>{{item.remark}}</td>
-        <td>{{item.auditTime}}</td>
         <td>{{item.createTime}}</td>
         <td>{{item.updateTime}}</td>
         <td class="t-right">
-         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>-->
-          <icon-btn small @click="remove(item)">delete</icon-btn>
+          <a href="javascript:;" v-if="item.status == 1" class="blue" @click="remove(item)">删除</a>
         </td>
       </template>
     </data-list>
@@ -48,9 +52,14 @@ export default {
   components: { DataList },
   data () {
     return {
+        statusList:[
+            {status:0,name:'全部'},
+            {status:1,name:'待开票'},
+            {status:2,name:'已开票'}],
       filter: {
         type:0,
-        status: 0
+        status: 0,
+        orderNo:''
       }
     }
   },

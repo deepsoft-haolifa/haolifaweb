@@ -7,42 +7,38 @@
     <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
         <i class="icon f-20 c-8">search</i>
         <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
-        <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
+        <!-- <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
             <option value="0">合同状态</option>
             <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
-        </select>
+        </select> -->
         <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
     </div>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/order-product/pageInfo">
+    <data-list ref="list" method="post" :page-size="10" :param="filter"  url="/haolifa/order-product/pageInfo">
         <tr slot="header">
             <th style="width: 60px;">序号</th>
             <th>合同编号</th>
-            <th>供方单位</th>
-            <th>采购完成日期</th>
-            <th>订单状态</th>
-            <th>创建人</th>
+            <!-- <th>供方单位</th> -->
+            <!-- <th>采购完成日期</th> -->
+            <!-- <th>订单状态</th> -->
+            <!-- <th>创建人</th> -->
             <th>创建日期</th>
+            <th>合同预览</th>
             <th class="t-right" style="width: 80px;">操作</th>
         </tr>
         <template slot="item" slot-scope="{ item, index }">
             <td>{{index}}</td>
-            <!--<td>-->
-                <!--<router-link class="c-4" :to="'/supplier/'+item.id">{{item.suppilerName}}</router-link>-->
-            <!--</td>-->
-            <td>{{item.purchaseOrderNo}}</td>
-            <td>{{item.supplierName}}</td>
-            <td>{{item.deliveryTime}}</td>
+            <td>{{item.orderNo}}</td>
+            <!-- <td>{{item.supplierName}}</td> -->
+            <!-- <td>{{item.deliveryTime}}</td>
             <td>{{statusList[item.status-1].name}}</td>
-            <td>{{item.createUserId}}</td>
+            <td>{{item.createUserId}}</td> -->
             <td>{{item.createTime}}</td>
+            <td><a target="_blank" v-if="(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.orderContractUrl">预览</a>
+            <a target="_blank"  v-if="!(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractUrl">预览</a></td>
             <td class="t-right">
-                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.id)">查看</a>
-                <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
-                <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a>
-                <a href="javascript:;" v-if="item.status == 1" class="blue" @click="deletePurchase(item.purchaseOrderNo)">删除</a>
-                <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a> -->
+                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.orderNo)">查看</a>
             </td>
         </template>
     </data-list>
@@ -73,9 +69,9 @@ export default {
                     {status:6,name:'已发货'}
                     ],
       filter:{
-        orderNo:'',
-        orderStatus:0,
-        createUserId:0
+        // orderNo:'',
+        // orderStatus:0,
+        // createUserId:0
       },
     }
   },
@@ -86,25 +82,8 @@ export default {
     toProdOrder(){
       this.$router.push(`/production`)
     },
-    // /order-product/pageInfo
-    edit (item) {
-      this.$router.push(`/supplier/edit?id=${item.id}`)
-    },
-    remove (item) {
-      this.$confirm({
-        title: '删除确认',
-        text: `您确定要删除以下供应商吗？<br><b>${item.suppilerName}</b>`,
-        color: 'red',
-        btns: ['取消', '删除'],
-        yes: () => {
-          this.$http.get(`/haolifa/supplier/delete?id=${item.id}`).then(res => {
-            this.$toast('删除成功')
-            this.$refs.list.update()
-          }).catch(e => {
-            this.$toast(e.msg || e.message)
-          })
-        }
-      })
+    info(orderNo){
+      this.$router.push(`/production/info?orderNo=${orderNo}`);
     }
   }
 }

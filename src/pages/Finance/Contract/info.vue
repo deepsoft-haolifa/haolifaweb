@@ -48,7 +48,7 @@
                     <div class='flex-item'>
                         <div class='flex'>
                             <input-box v-model='order.orderNo' disabled hint="必填" class='flex-item mr-10' label='合同订单号'></input-box>
-                            <input-box v-model='order.amount' hint="必填" class='flex-item mr-10' label='总金额'></input-box>
+                            <input-box v-model='order.amount' type="number" hint="必填" class='flex-item mr-10' label='总金额'></input-box>
                             <date-picker v-model="order.payTime" hint="必填" class="mr-10" label="付款日期" style="margin-right: 20px;"></date-picker>
                             <!-- <input-box v-model='order.payTime' class='mr-10' label='付款日期'></input-box> -->
                             <button class="btn btn-sm" @click="save()">保存</button>

@@ -69,7 +69,7 @@ export default {
       this.$router.push(`/contract`)
     },
     toProdOrder(){
-      this.$router.push(`/contract/production`)
+      this.$router.push(`/production`)
     },
     info(formId){
       this.$router.push(`/contract/info?formId=${formId}`);

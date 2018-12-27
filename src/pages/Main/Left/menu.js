@@ -73,7 +73,7 @@ export default [{
             url: '/storeproduct',
             id: 'ddllb'
         }, {
-            name: '待换料表',
+            name: '更换料表',
             url: '/storeproduct',
             id: 'dhlb'
         }]

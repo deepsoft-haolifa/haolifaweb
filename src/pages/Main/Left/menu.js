@@ -208,7 +208,7 @@ export default [{
         children: [{
             name: '发票管理',
             url: '/jgzx-invoice',
-            id: 'fpgl'
+            id: 'kfpgl'
         }]
     },
     {

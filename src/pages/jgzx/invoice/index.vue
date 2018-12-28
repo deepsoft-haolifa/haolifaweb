@@ -32,7 +32,7 @@
         <td class="c-a">{{index}}</td>
         <td>{{item.orderNo}}</td>
         <td>{{item.totalAmount}}</td>
-        <td>{{statusList[item.type].name}}</td>
+        <td>{{statusList[item.status].name}}</td>
         <td>{{item.remark}}</td>
         <td>{{item.createTime}}</td>
         <td>{{item.updateTime}}</td>

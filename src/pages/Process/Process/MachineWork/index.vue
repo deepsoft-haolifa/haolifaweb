@@ -1,8 +1,8 @@
 <template>
 <div class="process-prod flex-col">
   <tab v-model="$route.name" style="margin: 0 20px;">
-    <tab-item href="invoicebase" @click="switchTab('/invoiceflow')">基本信息</tab-item>
-    <tab-item href="invoicenodes" @click="switchTab('/invoiceflow/nodes')">流程节点</tab-item>
+    <tab-item href="invoicebase" @click="switchTab('/entrust')">基本信息</tab-item>
+    <tab-item href="invoicenodes" @click="switchTab('/entrust/nodes')">流程节点</tab-item>
   </tab>
   <div class="flex-item scroll-y">
     <div class="content">

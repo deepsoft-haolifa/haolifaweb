@@ -8,7 +8,7 @@ export default [{
     component: () => import(/* webpackChunkName: "applybuybase" */ './base.vue'),
       meta: { level: 2, title: '采购审批', open: false, id: 'home' },
   }, {
-    path: 'purchaseNodes',
+    path: '',
     name: 'purchaseNodes',
     component: () => import(/* webpackChunkName: "applybuynodes" */ './nodes.vue'),
       meta: { level: 2, title: '采购审批', open: false, id: 'home' },

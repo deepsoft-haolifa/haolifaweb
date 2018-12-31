@@ -1,8 +1,8 @@
 <template>
 <div class="process-prod flex-col">
   <tab v-model="$route.name" style="margin: 0 20px;">
-    <tab-item href="applybuybase" @click="switchTab('/applybuy')">基本信息</tab-item>
-    <tab-item href="applybuynodes" @click="switchTab('/applybuy/nodes')">流程节点</tab-item>
+    <tab-item href="produceBase" @click="switchTab('/produceBase')">审批</tab-item>
+    <!--<tab-item href="purchaseNodes" @click="switchTab('/applybuy/nodes')">流程节点</tab-item>-->
   </tab>
   <div class="flex-item scroll-y">
     <div class="content">

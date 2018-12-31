@@ -70,6 +70,18 @@
       </div>
     </div>
   </div>
+
+  <layer v-if="backStepLayer" :title="'退回节点'" width="450px">
+    <div class="node">
+      <div class="node-item" v-for="item in backSteps">
+        <radio-box v-model="handleStep.backStepId" :label="item.stepId"></radio-box>{{item.stepName}}
+      </div>
+    </div>
+    <div class="layer-btns">
+      <btn flat @click="cancel()">取消</btn>
+      <btn flat color="#008eff" @click="complete()">提交</btn>
+    </div>
+  </layer>
 </div>
 </template>
 
@@ -82,6 +94,7 @@ export default {
     return {
       data: null,
       orderUrl:'/haolifa/export/purchaseOrder/',
+        backStepLayer:false,
         auditResults:[
             {status:0,name:'审核不通过'},
             {status:1,name:'审核通过'},
@@ -92,13 +105,14 @@ export default {
             id:0,
             stepId:0,
             auditInfo:'',
-            allotUserId:0,
+            allotUserId:null,
             auditResult:1,
             formId:0,
             formType:0,
-            backStepId:0,
+            backStepId:null,
             condition:true
-        }
+        },
+        backSteps:[]
     }
   },
   created () {
@@ -122,6 +136,8 @@ export default {
         this.handleStep.auditResult = auditResult;
         this.$http.post(`/haolifa/flowInstance/handleStep`,this.handleStep).then(res=> {
             this.$toast("处理成功");
+            this.handleStep.backStepId = null;
+            this.backStepLayer = false;
             this.getData();
         }).catch(e=>{
             this.$toast(e.msg || e.message)
@@ -129,11 +145,25 @@ export default {
 
       },
       backStepM() {
-        this.$http.get(`/flowInstance/backSteps/${this.handleStep.id}`).then(res=> {
+        this.$http.get(`/haolifa/flowInstance/backSteps/${this.handleStep.id}`).then(res=> {
+            // console.log('backSteps', res);
+            if(res.length > 0) {
+                this.backSteps = res;
+                this.backStepLayer = true;
+            } else {
+                this.$toast("无可退回节点")
+            }
 
         }).catch(e=>{
             this.$toast(e.msg || e.message)
         })
+      },
+      complete(){
+          this.handleStepM(2);
+      },
+      cancel(){
+          this.backStepLayer=false;
+          this.handleStep.backStepId=null;
       }
 
   }

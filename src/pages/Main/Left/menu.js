@@ -70,11 +70,11 @@ export default [{
             id: 'cpdrk'
         }, {
             name: '订单领料表',
-            url: '/storeproduct',
+            url: '/ordermaterial',
             id: 'ddllb'
         }, {
             name: '更换料表',
-            url: '/storeproduct',
+            url: '/orderupdate',
             id: 'dhlb'
         }]
     },
@@ -208,7 +208,7 @@ export default [{
         children: [{
             name: '发票管理',
             url: '/jgzx-invoice',
-            id: 'fpgl'
+            id: 'kfpgl'
         }]
     },
     {
@@ -238,7 +238,7 @@ export default [{
         id: 'parent-jsgl',
         children: [{
             name: '更换料列表',
-            url: '/replacement',
+            url: '/replacementlist',
             id: 'jsgl-ghllb'
         }]
     }

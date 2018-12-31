@@ -32,7 +32,7 @@
         <td class="c-a">{{index}}</td>
         <td>{{item.orderNo}}</td>
         <td>{{item.totalAmount}}</td>
-        <td>{{item.type==1?'待开票':'已开票'}}</td>
+        <td>{{statusList[item.status].name}}</td>
         <td>{{item.remark}}</td>
         <td>{{item.createTime}}</td>
         <td>{{item.updateTime}}</td>
@@ -48,7 +48,7 @@
 <script>
 import DataList from '@/components/datalist'
 export default {
-  name: 'page-invoice-list',
+  name: 'invoice-list',
   components: { DataList },
   data () {
     return {

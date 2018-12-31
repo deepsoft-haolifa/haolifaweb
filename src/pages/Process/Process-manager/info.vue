@@ -128,6 +128,7 @@
             },
             cancel:function () {
                 this.layer=false;
+                this.checkUsers = [];
             },
             submit:function () {
                 this.allotForm.roleId = this.role.id;
@@ -141,6 +142,7 @@
                     .post(`/haolifa/flow/allotPersons/`,this.allotForm)
                     .then(res => {
                         this.layer=false;
+                        this.checkUsers = [];
                         this.info(this.flowId);
                     })
                     .catch(e => {

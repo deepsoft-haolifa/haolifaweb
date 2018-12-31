@@ -1,5 +1,5 @@
 <template>
-<div class="page-invoice">
+<div class="invoice">
   <div class="flex-v-center tool-bar">
     <div class="flex-v-center search-bar" style="margin-right: 20px;">
       <i class="icon f-20 c-8">search</i>
@@ -78,7 +78,7 @@
 import DataList from '@/components/datalist'
 
 export default {
-  name: 'page-invoice',
+  name: 'invoice',
   components: { DataList },
   data () {
     return {
@@ -194,7 +194,7 @@ export default {
 </script>
 
 <style lang="less">
-.page-invoice{
+.invoice{
   select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
   .scroll-y{padding-bottom: 40px;}
 }

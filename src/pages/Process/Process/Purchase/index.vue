@@ -1,7 +1,7 @@
 <template>
 <div class="process-prod flex-col">
   <tab v-model="$route.name" style="margin: 0 20px;">
-    <tab-item href="purchaseBase" @click="switchTab('/purchase')">基本信息</tab-item>
+    <tab-item href="purchaseBase" @click="switchTab('/purchase')">审批</tab-item>
     <tab-item href="purchaseNodes" @click="switchTab('/purchaseNodes')">流程节点</tab-item>
   </tab>
   <div class="flex-item scroll-y">

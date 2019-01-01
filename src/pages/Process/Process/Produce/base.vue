@@ -26,8 +26,8 @@
         </div>
         <div class="node">
           <div>
-            <div class="flex">
-              <input-box v-if="dealStepId == 51" v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
+            <div class="flex" v-if="dealStepId == 51 || dealStepId == 52 || dealStepId == 53">
+              <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
             </div>
             <div class="flex">
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
@@ -124,7 +124,8 @@
                     finishFeedbackTime:null,
                     purchaseFeedbackTime:null,
                     technicalRequire:''
-                }
+                },
+                orderInfo:{}
             }
         },
         created () {
@@ -144,6 +145,7 @@
                     this.$http.get(`/haolifa/order-product/details/${this.data.formNo}`).then(res=>{
                         this.orderUrl = res.orderContractUrl;
                     });
+
                     this.updateInfo.orderNo = this.data.formNo;
                 }).catch(e => {
                     this.$toast(e.message || e.msg)

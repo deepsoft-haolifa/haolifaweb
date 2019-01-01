@@ -54,7 +54,7 @@ export default {
   data () {
     return {
       filter: {
-        type:0,
+        // type:0,
         status: 5
       },
         statusList:[

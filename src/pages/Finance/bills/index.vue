@@ -4,7 +4,7 @@
 
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/delivery/noticeList" method="post">
+    <data-list ref="list" :param="filter" url="/haolifa/delivery/noticeList" method="post">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>发货通知单号</th>
@@ -48,7 +48,7 @@ export default {
   data () {
     return {
       filter: {
-        type: ''
+
       }
     }
   },

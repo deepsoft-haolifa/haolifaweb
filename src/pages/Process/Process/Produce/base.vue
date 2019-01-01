@@ -26,8 +26,18 @@
         </div>
         <div class="node">
           <div>
-            <div class="flex" v-if="dealStepId == 51 || dealStepId == 52 || dealStepId == 53">
+            <div class="flex" v-if="dealStepId == 51">
               <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
+            </div>
+            <div class="flex" v-if="dealStepId == 52 || dealStepId == 53">
+              <input-box :disabled="true" v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
+            </div>
+            <div class="flex" v-if="dealStepId == 56">
+              <input-box v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
+            </div>
+            <div class="flex" v-if="dealStepId == 57">
+              <input-box :disabled="true" v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
+              <input-box v-model="updateInfo.assemblyGroup" class="flex-item" label="装配小组" style="margin-right: 20px;"></input-box>
             </div>
             <div class="flex">
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
@@ -125,7 +135,7 @@
                     purchaseFeedbackTime:null,
                     technicalRequire:''
                 },
-                orderInfo:{}
+                orderInfo:null
             }
         },
         created () {
@@ -144,8 +154,16 @@
                     // 获取订单详情
                     this.$http.get(`/haolifa/order-product/details/${this.data.formNo}`).then(res=>{
                         this.orderUrl = res.orderContractUrl;
+                        this.orderInfo = res;
+                        console.log('details', this.orderInfo)
+                        if(this.dealStepId == 52 || this.dealStepId == 53) {
+                            // 总工 核料 看到技术清单
+                            console.log('总工审批', this.dealStepId, this.orderInfo.technicalRequire)
+                            this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
+                        } else if(this.dealStepId == 57) {
+                            this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
+                        }
                     });
-
                     this.updateInfo.orderNo = this.data.formNo;
                 }).catch(e => {
                     this.$toast(e.message || e.msg)
@@ -187,6 +205,7 @@
                                 this.updateInfo.assemblyShop = null;
                             });
                         } else if(this.dealStepId == 57) {
+                            // 车间主任
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
                                 this.updateInfo.assemblyGroup = null;
                             });

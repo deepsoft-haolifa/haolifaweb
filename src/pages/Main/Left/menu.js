@@ -76,6 +76,10 @@ export default [{
             name: '更换料表',
             url: '/orderupdate',
             id: 'dhlb'
+        }, {
+            name: '核替换料表',
+            url: '/nuclear-material/list',
+            id: 'kghl'
         }]
     },
     {

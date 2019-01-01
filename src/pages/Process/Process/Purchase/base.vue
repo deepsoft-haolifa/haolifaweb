@@ -16,7 +16,7 @@
         <span class="b">发起时间：</span><span>{{data.createTime}}</span>
       </div>
       <div class="node-title mb-10">
-        <span class="b">待审批附件：</span><span><a class="a" flat style="color: #008eff" :href="orderUrl">下载采购订单</a></span>
+        <span class="b">待审批附件：</span><span><a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">下载采购订单</a></span>
       </div>
     </div>
     <div v-if="data.dealStep">

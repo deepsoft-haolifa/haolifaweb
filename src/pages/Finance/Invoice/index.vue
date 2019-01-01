@@ -171,7 +171,7 @@ export default {
         totalAmount: '',
         type: 1
       }
-      this.layer = false
+      this.bill.layerbill = false
     },
     remove (item) {
       this.$confirm({

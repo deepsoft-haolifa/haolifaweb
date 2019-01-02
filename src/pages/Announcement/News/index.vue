@@ -1,5 +1,15 @@
 <template>
 <div class="page-news">
+  <div class="flex-v-center tool-bar">
+      <div class="flex-item"></div>
+      <router-link to="/news/add">
+          <btn
+              class="b"
+              flat
+              color="#008eff"
+          >新增新闻</btn>
+      </router-link>
+  </div>
   <data-list ref="list" url="/haolifa/message/news">
     <tr slot="header">
       <th style="width: 60px;">序号</th>
@@ -14,8 +24,8 @@
       <td>{{item.content || '无内容'}}</td>
       <td>{{item.showTime}}</td>
       <td class="t-right">
-        <icon-btn small @click="edit(item)">edit</icon-btn>
-        <icon-btn small @click="remove(item)">delete</icon-btn>
+        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
+        <a href="javascript:;" style="margin-right: 3px" class="red" @click="remove(item)">删除</a> 
       </td>
     </template>
   </data-list>
@@ -50,31 +60,8 @@ export default {
     }
   },
   methods: {
-    submit () {
-      const { id, title, content, showTime } = this.form
-      if (!title || !content || !showTime) {
-        this.$toast('请完整填写')
-        return
-      }
-      this.$http[(id ? 'put' : 'post')]('/haolifa/message', {
-        id,
-        title,
-        content,
-        type: 1,
-        showTime: showTime + ' 00:00:00'
-      }).then(res => {
-        this.$refs.list.update()
-      })
-    },
-    cancel () {
-      this.layer = false
-      this.form = { id: '', title: '', content: '' }
-    },
     edit (item) {
-      for (let key in this.form) {
-        this.form[key] = item[key]
-      }
-      this.layer = true
+      this.$router.push({name:"news-edit", params : item})
     },
     remove (item) {
       this.$confirm({

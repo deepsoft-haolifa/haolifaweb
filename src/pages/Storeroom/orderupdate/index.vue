@@ -1,7 +1,7 @@
 <template>
 <div class="page-contract flex-col">
   <div class="flex-v-center tool-bar">
-    <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
+    <div class="flex-v-center search-bar" style="margin-right: 20px;">
         <i class="icon f-20 c-8">search</i>
         <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
         <!-- <select v-model="filter.auditResult" class="f-14" @change="$refs.list.update(true)">

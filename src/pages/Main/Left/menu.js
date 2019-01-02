@@ -203,7 +203,7 @@ export default [{
         }]
     },
     {
-        name: '经管中心',
+        name: '经管任务',
         id: 'parent-jgzx',
         children: [{
             name: '发票管理',

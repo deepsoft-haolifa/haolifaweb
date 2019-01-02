@@ -33,8 +33,8 @@
         <td>{{item.legalPerson}}</td>
         <td>{{item.phone}}</td>
         <td class="t-right">
-          <icon-btn small @click="edit(item)">edit</icon-btn>
-          <icon-btn small @click="remove(item)">delete</icon-btn>
+          <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
+          <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a>
         </td>
       </template>
     </data-list>

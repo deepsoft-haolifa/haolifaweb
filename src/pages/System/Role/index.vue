@@ -18,8 +18,8 @@
           <td>{{item.description}}</td>
           <td>{{item.roleName || '-'}}</td>
           <td class="t-right">
-            <icon-btn small @click="edit(item)">edit</icon-btn>
-            <icon-btn small @click="remove(item)">delete</icon-btn>
+            <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
+            <a href="javascript:;" style="margin-right: 3px" class="red" @click="remove(item)">删除</a> 
           </td>
         </tr>
       </table>

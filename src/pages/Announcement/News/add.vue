@@ -55,13 +55,25 @@ export default {
     submit(){
         this.loading = true
         const method = this.form.id ? 'put' : 'post'
-        this.$http[method](`/haolifa/message`, this.form).then(res => {
+        if(!this.form.id){
+          delete this.form.id
+          this.$http[method](`/haolifa/message/add`, this.form).then(res => {
             this.loading = false
             this.$router.replace('/notification')
         }).catch(e => {
             this.loading = false
             this.$toast(e.msg || e.message)
         })
+        }else{
+          this.$http[method](`/haolifa/message/update`, this.form).then(res => {
+            this.loading = false
+            this.$router.replace('/notification')
+        }).catch(e => {
+            this.loading = false
+            this.$toast(e.msg || e.message)
+        })
+        }
+        
     }
   }
 }

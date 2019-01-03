@@ -10,7 +10,7 @@
           >新增新闻</btn>
       </router-link>
   </div>
-  <data-list ref="list" url="/haolifa/message/news">
+  <data-list ref="list" url="/haolifa/message/pageInfo/1">
     <tr slot="header">
       <th style="width: 60px;">序号</th>
       <th>标题</th>

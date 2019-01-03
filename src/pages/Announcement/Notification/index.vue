@@ -12,7 +12,7 @@
         </div>
         <data-list
             ref="list"
-            url="/haolifa/message/notice"
+            url="/haolifa/message/pageInfo/2"
         >
             <tr slot="header">
                 <th style="width: 60px;">序号</th>
@@ -129,7 +129,7 @@ export default {
                 color: 'red',
                 btns: ['取消', '删除'],
                 yes: () => {
-                    this.$http.delete(`/haolifa/message?id=${item.id}`).then(res => {
+                    this.$http.delete(`/haolifa/message/delete?id=${item.id}`).then(res => {
                         this.$toast('删除成功')
                         this.$refs.list.update()
                     }).catch(e => {

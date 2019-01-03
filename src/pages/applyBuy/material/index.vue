@@ -11,6 +11,8 @@
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>报检单号</th>
+        <th>采购合同号</th>
+        <th>批次号</th>
         <th>到货日期</th>
         <th>供应商名称</th>
         <th>发起时间</th>
@@ -21,6 +23,8 @@
       <template slot="item" slot-scope="{ item, index }">
         <td class="c-a">{{index}}</td>
         <td>{{item.inspectNo}}</td>
+        <td>{{item.purchaseNo}}</td>
+        <td>{{item.batchNumber}}</td>
         <td>{{item.arrivalTime}}</td>
         <td>{{item.supplierName}}</td>
         <td>{{item.createTime}}</td>
@@ -29,7 +33,7 @@
           <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
           <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
           <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
-          <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="commit(item.id)">提交</a>
+          <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="commit(item.id)">发起报检</a>
         </td>
       </template>
     </data-list>

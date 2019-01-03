@@ -5,13 +5,8 @@
             <div class="flex ml-20 mr-20">
                 <date-picker v-model="form.arrivalTime" hint="必填" class="flex-item" label="到货时间" style="margin-right: 20px;"></date-picker>
                 <input-box v-model="form.supplierName" class="flex-item" label="供应商名称"></input-box>
+                <input-box v-model="form.batchNumber" class="flex-item ml-20 mr-20" label="批次号"></input-box>
             </div>
-            <!--<div class='flex-v-center'>-->
-                <!--<span class="mr-20">是否同意: </span>-->
-                <!--<radio-box v-model=form.status label=1 text="保存"></radio-box>-->
-                <!--<radio-box v-model=form.status label=2 text="保存并发起"></radio-box>-->
-
-            <!--</div>-->
             <div class="b ml-20" style="margin: 20px 10px 10px;">送检列表</div>
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
                 <div class="flex-item">
@@ -39,9 +34,9 @@
                     <span>添加送检物料</span>
                 </div>
             </div>
-            <div class="flex">
+            <div class="flex ml-20 mt-20">
                 <btn big class="mr-20" @click="submit(1)">保存</btn>
-                <btn big class="mr-20" @click="submit(2)">保存并提交</btn>
+                <btn big class="mr-20" @click="submit(2)">保存并发起</btn>
                 <btn big flat @click="$router.back()">取消</btn>
             </div>
         </div>
@@ -57,8 +52,10 @@
                 form: {
                     arrivalTime: '',
                     supplierName: '',
+                    batchNumber:'',
                     status:1,
                     inspectNo:'',
+                    blueprints:'',
                     id:1,
                     items: [{
                         deliveryNumber: '',

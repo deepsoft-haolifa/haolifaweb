@@ -5,6 +5,8 @@
         <tr slot="header">
           <th style="width: 60px;">序号</th>
           <th>报检单号</th>
+          <th>采购合同号</th>
+          <th>批次号</th>
           <th>到货日期</th>
           <th>供应商名称</th>
           <th>发起时间</th>
@@ -15,6 +17,8 @@
         <template slot="item" slot-scope="{ item, index }">
           <td class="c-a">{{index}}</td>
           <td>{{item.inspectNo}}</td>
+          <td>{{item.purchaseNo}}</td>
+          <td>{{item.batchNumber}}</td>
           <td>{{item.arrivalTime}}</td>
           <td>{{item.supplierName}}</td>
           <td>{{item.createTime}}</td>
@@ -29,20 +33,24 @@
       </data-list>
     </div>
 
-    <layer v-if="inspectHistory.completeLayer" :title="'质检记录'" width="600px" style="">
+    <layer v-if="inspectHistory.completeLayer" :title="'质检记录'" width="650px" style="">
       <div class="flex">
-        <input-box v-model="inspectHistory.inspectNo" class="mr-20 ml-20" label="送检单号"></input-box>
-        <select-box :list="inspectHistory.selectMaterialNo" v-model="inspectHistory.materialGraphNo" label="物料名称"></select-box>
-        <input-box v-model="inspectHistory.materialGraphNo" class=" mr-20" label="物料图号"></input-box>
+        <input-box v-model="inspectHistory.purchaseNo" class="flex-item mr-20 ml-20" label="采购合同号"></input-box>
+        <input-box v-model="inspectHistory.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
       </div>
-      <div class="flex">
-        <input-box v-model="inspectHistory.testNumber" class="flex-item mr-20 ml-20" label="检测数量"></input-box>
-        <input-box v-model="inspectHistory.unqualifiedNumber" class="flex-item mr-20" label="不合格数量"></input-box>
-        <input-box v-model="inspectHistory.qualifiedNumber" class="flex-item mr-20" label="合格数量"></input-box>
+      <div class="flex mt-15">
+        <input-box v-model="inspectHistory.inspectNo" class="mr-20 ml-20 mt-15" label="送检单号"></input-box>
+        <select-box class="mt-15" :list="inspectHistory.selectMaterialNo" v-model="inspectHistory.materialGraphNo" label="物料名称"></select-box>
+        <input-box v-model="inspectHistory.materialGraphNo" class="mr-20 mt-15" label="物料图号"></input-box>
       </div>
-      <div class="flex">
-        <input-box v-model="inspectHistory.handlingSuggestion" class="flex-item mr-20 ml-20" label="处理意见"></input-box>
-        <input-box v-model="inspectHistory.remark" class="flex-item mr-20" label="备注"></input-box>
+      <div class="flex mt-15">
+        <input-box v-model="inspectHistory.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
+        <input-box v-model="inspectHistory.unqualifiedNumber" class="flex-item mr-20 mt-15" label="不合格数量"></input-box>
+        <input-box v-model="inspectHistory.qualifiedNumber" class="flex-item mr-20 mt-15" label="合格数量"></input-box>
+      </div>
+      <div class="flex mt-15">
+        <input-box v-model="inspectHistory.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
+        <input-box v-model="inspectHistory.remark" class="flex-item mr-20 mt-15" label="备注"></input-box>
       </div>
       <div class="layer-btns">
         <btn flat @click="inspectHistory.completeLayer=false">取消</btn>
@@ -63,14 +71,16 @@
                 inspectHistory:{
                     completeLayer:false,
                     selectMaterialNo:[],
-                    handlingSuggestion: "string",
-                    inspectNo: "string",
-                    materialName: "string",
-                    materialGraphNo: "string",
+                    handlingSuggestion: "",
+                    inspectNo: "",
+                    materialName: "",
+                    materialGraphNo: "",
                     qualifiedNumber: 0,
-                    remark: "string",
+                    remark: "",
                     testNumber: 0,
-                    unqualifiedNumber: 0
+                    unqualifiedNumber: 0,
+                    batchNumber:'',
+                    purchaseNo: ''
                 },
                 filter: {
                     type:0,
@@ -91,15 +101,20 @@
                 let save = {
                     handlingSuggestion: this.inspectHistory.handlingSuggestion,
                     inspectNo: this.inspectHistory.inspectNo,
-                    materialName: this.inspectHistory.materialName,
+                    materialGraphName: this.inspectHistory.materialName,
                     materialGraphNo: this.inspectHistory.materialGraphNo,
                     qualifiedNumber: this.inspectHistory.qualifiedNumber,
                     remark: this.inspectHistory.remark,
                     testNumber: this.inspectHistory.testNumber,
-                    unqualifiedNumber: this.inspectHistory.unqualifiedNumber
+                    unqualifiedNumber: this.inspectHistory.unqualifiedNumber,
+                    type:1,// 零件送检
+                    batchNumber:this.inspectHistory.batchNumber,
+                    purchaseNo:this.inspectHistory.purchaseNo
+
                 }
                 this.$http.post(`/haolifa/material-inspect/history/save`,save).then(res=>{
                     this.$refs.list.update();
+                    this.inspectHistory.completeLayer = false;
                 }).catch(e=>{
                     this.$toast(e.msg || e.message)
                 })
@@ -115,6 +130,9 @@
                 this.$router.push(`/applyBuy-material/info?id=${item.id}&inspectNo=${item.inspectNo}`);
             },
             addInspectHistory(item){
+                this.inspectHistory.batchNumber = item.batchNumber;
+                this.inspectHistory.purchaseNo = item.purchaseNo;
+                this.inspectHistory.inspectNo = item.inspectNo;
                 let inspectId = item.id;
               this.$http.get(`/haolifa/material-inspect/info/${inspectId}`).then(res=>{
                   this.inspectHistory.completeLayer = true;

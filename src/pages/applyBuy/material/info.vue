@@ -70,6 +70,9 @@
                 <table class="data-table">
                     <tr>
                         <th>质检单号</th>
+                        <th>采购合同号</th>
+                        <th>批次号</th>
+                        <th>类别</th>
                         <th>物料名称</th>
                         <th>物料图号</th>
                         <th>检测数量</th>
@@ -80,6 +83,9 @@
                     </tr>
                     <tr v-for="(item, i) in inspectHistory">
                         <td>{{item.id}}</td>
+                        <td>{{item.purchaseNo}}</td>
+                        <td>{{item.batchNumber}}</td>
+                        <td>{{item.type == 1?'采购零件':'机加工零件'}}</td>
                         <td>{{item.materialGraphName}}</td>
                         <td>{{item.materialGraphNo}}</td>
                         <td>{{item.testNumber}}</td>

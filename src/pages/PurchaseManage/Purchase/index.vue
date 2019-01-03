@@ -19,7 +19,7 @@
             <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/purchase-order/list">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>合同编号</th>
+                    <th>采购合同号</th>
                     <th>供方单位</th>
                     <th>采购完成日期</th>
                     <th>订单状态</th>
@@ -41,6 +41,7 @@
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.id)">查看</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 3" class="blue" @click="createInspect(item.id)">生成报检单</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a>
                         <a href="javascript:;" v-if="item.status == 1" class="blue" @click="deletePurchase(item.purchaseOrderNo)">删除</a>
                         <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a>
@@ -92,6 +93,20 @@
         methods: {
             info:function (formId) {
                 this.$router.push(`/purchsemanage-purchase/info?formId=${formId}`);
+            },
+            createInspect:function(formId) {
+                this.$http.get(`/haolifa/purchase-order/createInspect/${formId}`).then(res=>{
+                    console.log('报检单号',res);
+                    this.$confirm({
+                        title:'完善报检单',
+                        text: '现在去完善报检单？',
+                        color: 'blue',
+                        btns:['稍后再说','现在完善'],
+                        yes:()=>{
+                            this.$router.push(`/applyBuy-material/edit?id=${res}`);
+                        }
+                    })
+                });
             },
             approve:function (orderNo) {
                 this.$confirm({

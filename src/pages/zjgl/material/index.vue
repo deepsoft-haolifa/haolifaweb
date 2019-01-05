@@ -80,7 +80,9 @@
                     testNumber: 0,
                     unqualifiedNumber: 0,
                     batchNumber:'',
-                    purchaseNo: ''
+                    purchaseNo: '',
+                    supplierName:'',
+                    supplierNo:''
                 },
                 filter: {
                     type:0,
@@ -97,7 +99,7 @@
             }
         },
         methods: {
-            complete(){
+            complete() {
                 let save = {
                     handlingSuggestion: this.inspectHistory.handlingSuggestion,
                     inspectNo: this.inspectHistory.inspectNo,
@@ -133,6 +135,8 @@
                 this.inspectHistory.batchNumber = item.batchNumber;
                 this.inspectHistory.purchaseNo = item.purchaseNo;
                 this.inspectHistory.inspectNo = item.inspectNo;
+                this.inspectHistory.supplierName = item.supplierName;
+                this.inspectHistory.supplierNo = item.supplierNo;
                 let inspectId = item.id;
               this.$http.get(`/haolifa/material-inspect/info/${inspectId}`).then(res=>{
                   this.inspectHistory.completeLayer = true;

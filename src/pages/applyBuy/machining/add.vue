@@ -1,16 +1,16 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <div class="title b f-18">{{form.entrustNo ? '编辑' : '新增'}}机加工单</div>
+            <div class="title b f-18">{{entrustNo ? '编辑' : '新增'}}机加工单</div>
             <div class="flex">
-
-                <input-box v-model="form.materialGraphName" class="flex-item" label="物料名称"></input-box>
-                <input-box v-model="form.materialGraphNo" class="flex-item" label="物料图号"></input-box>
-                <input-box v-model="form.number" class="flex-item" label="数量"></input-box>
+                <input-box v-model="form.purchaseNo" class="flex-item mr-20" label="采购合同号"></input-box>
+                <select-box :list="materialClassify" v-model="classifyId" @change="getMaterialGraphNoList()" label="零件名称" style="margin-right: 20px;width: 240px;"></select-box>
+                <select-box :list="materialGraphNoList" v-model="form.materialGraphNo" label="零件图号" style="margin-right: 20px;width: 240px;"></select-box>
             </div>
-
-
-
+            <div class="flex">
+                <input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box>
+                <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
+            </div>
             <div class="flex">
                 <btn big class="mr-20" @click="submit">提交</btn>
                 <btn big flat @click="$router.back()">取消</btn>
@@ -25,27 +25,75 @@
         data () {
             return {
                 form: {
-                    materialGraphName: '',
-                    materialGraphNo: '',
-                    number:'',
+                    purchaseNo:null,
+                    materialGraphName: null,
+                    materialGraphNo: null,
+                    number:0,
                     actionType:1,
-                    entrustNo:''
-                }
+                    batchNumber:new Date().getTime()
+                },
+                entrustNo:'',
+                classifyId:0,
+                materialClassify:[],
+                materialGraphNoList:[]
             }
         },
         created () {
-            console.log("2223232")
+
             let { entrustNo } = this.$route.query
             console.log(entrustNo)
-            if (entrustNo !== undefined && this.$route.name === 'machining-edit') this.getInfo(entrustNo)
+            this.getMaterialClassify();
+            if (entrustNo !== undefined && this.$route.name === 'machining-edit') this.getInfo(entrustNo);
+
         },
         methods: {
+            getMaterialClassify() {
+                this.$http.get(`/haolifa/material/classify/list`).then(res=>{
+                    console.log('分类列表', res);
+                    this.materialClassify = res.map(item=>{
+                        return {value:item.id,text:item.classifyName}
+                    });
+                    this.classifyId = this.materialClassify[0].value;
+                    this.form.materialGraphName = this.materialClassify[0].text;
+                    this.$http.get(`/haolifa/material/getListByClassifyId/${this.materialClassify[0].value}`).then(res=>{
+                        this.materialGraphNoList = res.map(item=>{
+                            return {value:item.graphNo,text:item.graphNo};
+                        });
+                        this.form.materialGraphNo = this.materialGraphNoList[0].value;
+                    });
+                });
+            },
+            getMaterialGraphNoList() {
+                this.materialClassify.forEach((item,i)=>{
+                    if(item.value == this.classifyId) {
+                        this.form.materialGraphName = item.text;
+                    }
+                });
+                this.$http.get(`/haolifa/material/getListByClassifyId/${this.classifyId}`).then(res=>{
+                    this.materialGraphNoList = res.map(item=>{
+                        return {value:item.graphNo,text:item.graphNo};
+                    });
+                    this.form.materialGraphNo = this.materialGraphNoList[0].value;
+                });
+            },
             getInfo (entrustNo) {
                 console.log(entrustNo)
+                this.entrustNo = entrustNo;
                 this.$http.get(`/haolifa/entrust/info/${entrustNo}`).then(res => {
                     for (let key in this.form) {
                         if (this.form[key] !== undefined) this.form[key] = res[key]
                     }
+                    // 编辑
+                    this.materialClassify.forEach((item,i)=>{
+                       if(item.text == this.form.materialGraphName) {
+                           this.classifyId = item.value;
+                       }
+                        this.$http.get(`/haolifa/material/getListByClassifyId/${this.classifyId}`).then(res=>{
+                            this.materialGraphNoList = res.map(item=>{
+                                return {value:item.graphNo,text:item.graphNo};
+                            });
+                        });
+                    });
 
                 }).catch(e => {
                     this.$toast(e.msg || e.message)
@@ -57,15 +105,26 @@
                     materialGraphNo: '图号',
                     number:'数量'
 
-                } 
-   
-                this.$http.post('/haolifa/entrust/save', this.form).then(res => {
-                    this.loading = false
-                    this.$toast('提交成功')
-                    this.$router.replace('/applyBuy-machining')
-                }).catch(e => {
-                    this.$toast(e.message || e.msg)
-                })
+                }
+                this.form.number = Number(this.form.number);
+                if(this.entrustNo == '') {
+                    this.$http.post('/haolifa/entrust/save', this.form).then(res => {
+                        this.loading = false
+                        this.$toast('提交成功')
+                        this.$router.replace('/applyBuy-machining')
+                    }).catch(e => {
+                        this.$toast(e.message || e.msg)
+                    })
+                } else {
+                    this.$http.post(`/haolifa/entrust/update/${this.entrustNo}`, this.form).then(res => {
+                        this.loading = false
+                        this.$toast('更新成功')
+                        this.$router.replace('/applyBuy-machining')
+                    }).catch(e => {
+                        this.$toast(e.message || e.msg)
+                    })
+                }
+
             }
         }
         // ap_20181115201511123488

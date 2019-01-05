@@ -19,6 +19,8 @@
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>机加工单号</th>
+        <th>批次号</th>
+        <th>采购合同号</th>
         <th>物料名称</th>
         <th>物料图号</th>
         <th>数量</th>
@@ -30,13 +32,15 @@
       <template slot="item" slot-scope="{ item, index }">
         <td class="c-a">{{index}}</td>
         <td>{{item.entrustNo}}</td>
+        <td>{{item.batchNumber}}</td>
+        <td>{{item.purchaseNo}}</td>
         <td>{{item.materialGraphName}}</td>
         <td>{{item.materialGraphNo}}</td>
         <td>{{item.number}}</td>
         <td>{{item.createTime}}</td>
         <td>{{statusList[item.status+1].name}}</td>
         <td class="t-right">
-          <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
+          <!--<a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>-->
           <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
           <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="initApprove(item.entrustNo)">发起审批</a>
         </td>

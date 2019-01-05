@@ -20,6 +20,7 @@
                     <div class="flex ml-20 mr-20">
                         <input-box v-model="item.requirements" class="flex-item mr-10" label="材质要求" hint="选填"></input-box>
                         <input-box v-model="item.specification" class="flex-item mr-10" label="规格" hint="选填"></input-box>
+                        <input-box v-model="item.purchasePrice" class="flex-item mr-10" label="单价" ></input-box>
                     </div>
                     <div class="flex ml-20 mr-20">
                         <input-box v-model="item.unit" class="flex-item mr-10" label="单位" hint="选填"></input-box>

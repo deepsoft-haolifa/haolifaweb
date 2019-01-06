@@ -13,6 +13,10 @@ export default [{
             name: '部门管理',
             url: '/department',
             id: 'bmgl'
+        },{
+            name: '菜单管理',
+            url: '/department',
+            id: 'cdgl'
         }]
     },
     {

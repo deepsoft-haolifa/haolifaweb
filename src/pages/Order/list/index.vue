@@ -42,7 +42,7 @@
         <td>{{item.updateTime}}</td>
         <td class="t-right">
           <a href="javascript:;" class="blue" @click="progress(item)"  style="margin-right: 3px;">发起流程</a> |
-          <a href="javascript:;" class="red" @click="remove(item)" v-if="!item.orderStatus==0" style="margin-right: 3px;">删除</a>
+          <a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">删除</a>
           <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
         </td>
       </template>
@@ -84,7 +84,7 @@ export default {
         color: 'red',
         btns: ['取消', '删除'],
         yes: () => {
-          this.$http.delete(`/haolifa/material/delete/${item.id}`).then(res => {
+          this.$http.delete(`/haolifa/order-product/delete/${item.id}`).then(res => {
             this.$toast('删除成功')
             this.$refs.list.update()
           }).catch(e => {

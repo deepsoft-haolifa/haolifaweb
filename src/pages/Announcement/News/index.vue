@@ -14,8 +14,8 @@
     <tr slot="header">
       <th style="width: 60px;">序号</th>
       <th>标题</th>
-      <th>时间</th>
       <th>内容</th>
+      <th>时间</th>
       <th class="t-right" style="width: 80px;">操作</th>
     </tr>
     <template slot="item" slot-scope="{ item, index }">

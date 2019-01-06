@@ -13,4 +13,9 @@ export default [{
   name: 'news-edit',
   component: () => import(/* webpackChunkName: "news" */ './add.vue'),
   meta: { level: 2, title: '编辑新闻', open: false, id: 'xwgl' }
+},{
+  path: '/news/info',
+  name: 'news-info',
+  component: () => import(/* webpackChunkName: "news" */ '../Notification/info.vue'),
+  meta: { level: 2, title: '新闻详情', open: false, id: 'xwgl' }
 }]

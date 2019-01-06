@@ -41,8 +41,8 @@
         <td>{{item.createTime}}</td>
         <td>{{item.updateTime}}</td>
         <td class="t-right">
-          <a href="javascript:;" class="blue" @click="progress(item)" style="margin-right: 3px;">发起流程</a> |
-          <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a>
+          <a href="javascript:;" class="blue" @click="progress(item)"  style="margin-right: 3px;">发起流程</a> |
+          <a href="javascript:;" class="red" @click="remove(item)" v-if="!item.orderStatus==0" style="margin-right: 3px;">删除</a>
           <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
         </td>
       </template>

@@ -31,17 +31,25 @@
         <a class="home-tab-item a" :class="{'on': !tab2}" @click="tab2=false">公告</a>
       </div>
       <div class="home-list flex-item scroll-y" v-if="tab2">
-        <div class="home-list-item a flex-v-center" v-for="item in notice" :key="item.id">
+        <div class="home-list-item a flex-v-center" >
           <i class="icon f-16 c-a">hourglass_full</i>
-          <div class="c-8 date-time">{{item.showTime}}</div>
+          <div class="c-8 date-time" style="width:85px;">创建时间</div>
+          <div class="c-8 date-time" style="width: 100px;">标题</div>
+          <div class="flex-item text-ellipsis">内容</div>
+        </div>
+        <div class="home-list-item a flex-v-center" v-for="item in notice" :key="item.id" @click="newDetail(item.id)">
+          <i class="icon f-16 c-a">hourglass_full</i>
+          <div class="c-8 date-time" style="width:85px;">{{item.showTime}}</div>
+          <div class="c-8 date-time" style="width: 100px;">{{item.title}}</div>
           <div class="flex-item text-ellipsis">{{item.content}}</div>
         </div>
         <div v-if="!notice.length" style="pointer-events:none;" class="abs flex-center"><no-data></no-data></div>
       </div>
       <div class="home-list flex-item scroll-y" v-else>
-        <div class="home-list-item a flex-v-center" v-for="item in news" :key="item.id">
+        <div class="home-list-item a flex-v-center" v-for="item in news" :key="item.id" @click="newDetail(item.id)">
           <i class="icon f-16 c-a">hourglass_full</i>
-          <div class="c-8 date-time">{{item.showTime}}</div>
+          <div class="c-8 date-time" style="width:85px;">{{item.showTime}}</div>
+          <div class="c-8 date-time" style="width: 100px;">{{item.title}}</div>
           <div class="flex-item text-ellipsis">{{item.content}}</div>
         </div>
         <div v-if="!news.length" style="pointer-events:none;" class="abs flex-center"><no-data></no-data></div>
@@ -51,7 +59,7 @@
   <div class="home-row flex">
     <div class="home-card flex-item flex-col">
       <div class="home-tab flex-v-center">
-        <a class="home-tab-item a on">最新上传文件/图纸</a>
+        <a class="home-tab-item a on">站内信</a>
       </div>
       <div class="flex-item scroll-y flex-center">
         <no-data></no-data>
@@ -114,10 +122,10 @@ export default {
       })
     },
     getNews () {
-      this.$http.get('/haolifa/message/notice').then(res => {
+      this.$http.get('/haolifa/message/pageInfo/2').then(res => {
         this.notice = res.list
       })
-      this.$http.get('/haolifa/message/news').then(res => {
+      this.$http.get('/haolifa/message/pageInfo/1').then(res => {
         this.news = res.list
       })
     },
@@ -125,6 +133,9 @@ export default {
       this.$http.get('/haolifa/quick-start').then(res => {
         this.quick = res
       })
+    },
+    newDetail(id){
+      this.$router.push(`/notification/info?id=${id}`)
     }
   }
 }

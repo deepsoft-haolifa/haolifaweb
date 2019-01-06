@@ -13,4 +13,9 @@ export default [{
   name: 'notification-edit',
   component: () => import(/* webpackChunkName: "notification" */ './add.vue'),
   meta: { level: 2, title: '编辑通知', open: false, id: 'tzgl' }
+},{
+  path: '/notification/info',
+  name: 'notification-info',
+  component: () => import(/* webpackChunkName: "notification" */ './info.vue'),
+  meta: { level: 2, title: '通知详情', open: false, id: 'tzgl' }
 }]

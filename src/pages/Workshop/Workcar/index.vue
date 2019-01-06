@@ -1,12 +1,22 @@
 <template>
 <div class="page-material-list">
   <div class="flex-v-center tool-bar">
+    <div class="flex-v-center search-bar" style="margin-right: 20px;">
+      <i class="icon f-20 c-8">search</i>
+      状态：
+      <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+        <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
+      </select>
+      <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
+    </div>
   </div>
   <div class="flex-item scroll-y">
     <data-list ref="list" :page-size="10"  :param="filter" url="/haolifa/entrust/list" method="post">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>机加工单号</th>
+        <th>采购合同号</th>
+        <th>批次号</th>
         <th>物料名称</th>
         <th>物料图号</th>
         <th>数量</th>
@@ -18,13 +28,16 @@
       <template slot="item" slot-scope="{ item, index }">
         <td class="c-a">{{index}}</td>
         <td>{{item.entrustNo}}</td>
+        <td>{{item.purchaseNo}}</td>
+        <td>{{item.batchNumber}}</td>
         <td>{{item.materialGraphName}}</td>
         <td>{{item.materialGraphNo}}</td>
         <td>{{item.number}}</td>
         <td>{{item.createTime}}</td>
-        <td>{{statusList[item.status+1].name}}</td>
+        <td>{{rowStatusList[item.status-1].name}}</td>
         <td class="t-right">
-          <a href="javascript:;"  style="margin-right: 3px" class="blue" @click="edit(item)">车间选择</a>
+          <a href="javascript:;" v-if="item.status == 1"  style="margin-right: 3px" class="blue" @click="edit(item)">车间选择</a>
+          <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="audtiNotPass(item)">不通过</a>
         </td>
       </template>
     </data-list>
@@ -40,20 +53,41 @@ export default {
   data () {
     return {
       filter: {
-        // type:0,
-        status: 1
+        type:1,
+        status: 6
       },
+        rowStatusList:[
+            {status:1,name:'待审批'},
+            {status:2,name:'待加工'},
+            {status:3,name:'加工中'},
+            {status:4,name:'加工完成'},
+            {status:5,name:'审批不通过'}
+        ],
         statusList:[
-            {status:5,name:'全部'},
-            {status:0,name:'未提交'},
-            {status:1,name:'审批中'},
-            {status:2,name:'处理中'},
-            {status:3,name:'处理完成'},
-            {status:4,name:'审批不通过'}
+            {status:6,name:'全部'},
+            {status:1,name:'待审批'},
+            {status:2,name:'待加工'},
+            {status:3,name:'加工中'},
+            {status:4,name:'加工完成'},
+            {status:5,name:'审批不通过'}
             ]
     }
   },
   methods: {
+    audtiNotPass(item) {
+        this.$confirm({
+            title:'审批提示',
+            text: '确认不通过该加工申请？',
+            color: 'blue',
+            btns:['取消','确认'],
+            yes:()=>{
+                this.$http.get(`/haolifa/entrust/updateStatus/${item.entrustNo}/5`).then(res=>{
+                   this.$toast('审核完成');
+                   this.$refs.list.update();
+                });
+            }
+        })
+    },
     edit (item) {
       this.$router.push(`/workcar/edit?id=${item.id}`)
     },

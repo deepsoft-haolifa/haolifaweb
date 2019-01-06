@@ -45,20 +45,20 @@
     <layer v-if="storeRoom.layerShow" :title="'入库'" width="450px">
       <div>
         <div class="flex">
-          <input-box v-model="storeRoom.materialGraphNo" class=" mr-10 ml-20" label="物料图号" ></input-box>
-          <input-box v-model="storeRoom.quantity" type="number" class=" mr-10" label="入库数量" ></input-box>
+          <input-box disabled="true" v-model="storeRoom.materialGraphNo" class=" mr-10 ml-20" label="物料图号" ></input-box>
+          <input-box disabled="true" v-model="storeRoom.quantity" type="number" class=" mr-10" label="入库数量" ></input-box>
           <input-box v-model="storeRoom.price" type="number" class="mr-10" label="采购价格" ></input-box>
         </div>
           <div class="flex">
-              <input-box v-model="storeRoom.materialBatchNo" class=" mr-10 ml-20" label="批次号" ></input-box>
-              <input-box v-model="storeRoom.orderNo" class=" mr-10" label="采购合同号" ></input-box>
+              <input-box disabled="true" v-model="storeRoom.materialBatchNo" class=" mr-10 ml-20" label="批次号" ></input-box>
+              <input-box disabled="true" v-model="storeRoom.orderNo" class=" mr-10" label="采购合同号" ></input-box>
           </div>
         <div class="flex">
           <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
           <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
         </div>
         <div class="flex">
-          <input-box v-model="storeRoom.supplier" class="mr-10 ml-20" label="供应商"></input-box>
+          <input-box v-model="storeRoom.supplier" disabled="true" class="mr-10 ml-20" label="供应商"></input-box>
         </div>
       </div>
       <div class="layer-btns">
@@ -144,14 +144,18 @@
                   this.storeRoom.selectStoreRooms = res.map(item=>{
                       return {value:item.roomNo,text:item.name};
                   });
-                  this.storeRoom.roomNo = this.storeRoom.selectStoreRooms[0].value;
+                  if(this.storeRoom.selectStoreRooms.length > 0) {
+                      this.storeRoom.roomNo = this.storeRoom.selectStoreRooms[0].value;
+                  }
                   this.$http.get(`/haolifa/store-room/rack/list/${this.storeRoom.roomNo}`).then(res=>{
                       console.log('库位',res)
                     this.storeRoom.storeRoomRacks = res.map(item=>{
                         return {value:item.rackNo,text:item.rackName}
                     })
                       // 默认值
-                      this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
+                      if(this.storeRoom.storeRoomRacks.length > 0) {
+                          this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
+                      }
                   }).catch(e=>{
                       this.$toast(e.msg || e.message)
                   })

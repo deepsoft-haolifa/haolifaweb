@@ -146,7 +146,12 @@ export default [{
             name: '成品质检列表',
             url: '/inspect-product',
             id: 'cpzjlb'
-        }]
+        },{
+            name: '加工质检列表',
+            url: '/inspect-metalwork',
+            id: 'jgzjlb'
+        }
+        ]
     },
     {
         name: '发货管理',

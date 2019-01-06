@@ -14,6 +14,10 @@
       <data-list ref="list" :page-size="10"  :param="filter" url="/haolifa/material-inspect/history/page-list" method="get">
         <tr slot="header">
           <th>报检单号</th>
+          <th>采购合同号</th>
+          <th>批次号</th>
+          <th>零件类型</th>
+          <th>供应商</th>
           <th>物料名称</th>
           <th>物料图号</th>
           <th>入库数量</th>
@@ -23,6 +27,10 @@
         <!-- item: 当前行数据; index: 当前行数 -->
         <template slot="item" slot-scope="{ item, index }">
           <td>{{item.inspectNo}}</td>
+          <td>{{item.purchaseNo}}</td>
+          <td>{{item.batchNumber}}</td>
+          <td>{{item.type==1?'采购零件':'机加工零件'}}</td>
+          <td>{{item.supplierName}}</td>
           <td>{{item.materialGraphName}}</td>
           <td>{{item.materialGraphNo}}</td>
           <td>{{item.qualifiedNumber}}</td>
@@ -37,15 +45,20 @@
     <layer v-if="storeRoom.layerShow" :title="'入库'" width="450px">
       <div>
         <div class="flex">
-          <input-box v-model="storeRoom.materialGraphNo" class="flex-item mr-10 ml-20" label="物料图号" ></input-box>
+          <input-box v-model="storeRoom.materialGraphNo" class=" mr-10 ml-20" label="物料图号" ></input-box>
           <input-box v-model="storeRoom.quantity" type="number" class=" mr-10" label="入库数量" ></input-box>
+          <input-box v-model="storeRoom.price" type="number" class="mr-10" label="采购价格" ></input-box>
         </div>
+          <div class="flex">
+              <input-box v-model="storeRoom.materialBatchNo" class=" mr-10 ml-20" label="批次号" ></input-box>
+              <input-box v-model="storeRoom.orderNo" class=" mr-10" label="采购合同号" ></input-box>
+          </div>
         <div class="flex">
-          <select-box class="ml-20" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
+          <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
           <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
         </div>
         <div class="flex">
-          <input-box v-model="storeRoom.supplier" class="flex-item mr-10 ml-20" label="供应商"></input-box>
+          <input-box v-model="storeRoom.supplier" class="mr-10 ml-20" label="供应商"></input-box>
         </div>
       </div>
       <div class="layer-btns">
@@ -78,7 +91,10 @@
                     roomNo:'',
                     rackNo:'',
                     quantity:0,
-                    supplier:''
+                    supplier:'',
+                    materialBatchNo:'',
+                    orderNo:'',
+                    price:0
                 }
             }
         },
@@ -108,9 +124,13 @@
                     roomNo:this.storeRoom.roomNo,
                     rackNo:this.storeRoom.rackNo,
                     quantity:this.storeRoom.quantity,
-                    supplier:this.storeRoom.supplier
+                    supplier:this.storeRoom.supplier,
+                    materialBatchNo: this.storeRoom.materialBatchNo,
+                    orderNo: this.storeRoom.orderNo,
+                    price: Number(this.storeRoom.price)
                 }
               this.$http.put(`/haolifa/store-room/entryOut/entryMaterial`,save).then(res=>{
+                  this.$toast("入库成功")
                   this.$refs.list.update();
                   this.storeRoom.layerShow = false;
               }).catch(e=>{
@@ -139,6 +159,11 @@
                     this.$toast(e.msg || e.message)
                 });
                 this.storeRoom.materialGraphNo = item.materialGraphNo;
+                this.storeRoom.price = item.purchasePrice;
+                this.storeRoom.supplier = item.supplierName;
+                this.storeRoom.materialBatchNo = item.batchNumber;
+                this.storeRoom.orderNo = item.purchaseNo;
+                this.storeRoom.quantity = item.qualifiedNumber;
                 this.storeRoom.layerShow = true;
 
             }

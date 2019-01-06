@@ -40,8 +40,8 @@
       </div>
       <div class="flex mt-15">
         <input-box v-model="inspectHistory.inspectNo" class="mr-20 ml-20 mt-15" label="送检单号"></input-box>
-        <select-box class="mt-15" :list="inspectHistory.selectMaterialNo" v-model="inspectHistory.materialGraphNo" label="物料名称"></select-box>
-        <input-box v-model="inspectHistory.materialGraphNo" class="mr-20 mt-15" label="物料图号"></input-box>
+        <select-box class="mt-15" @change="changeMaterialNo()" :list="inspectHistory.selectMaterialNo" v-model="inspectHistory.materialGraphNo" label="物料图号"></select-box>
+        <input-box v-model="inspectHistory.materialName" class="mr-20 mt-15" label="物料名称"></input-box>
       </div>
       <div class="flex mt-15">
         <input-box v-model="inspectHistory.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
@@ -71,6 +71,7 @@
                 inspectHistory:{
                     completeLayer:false,
                     selectMaterialNo:[],
+                    selectMaterialName:[],
                     handlingSuggestion: "",
                     inspectNo: "",
                     materialName: "",
@@ -99,6 +100,15 @@
             }
         },
         methods: {
+            changeMaterialNo(){
+              this.inspectHistory.selectMaterialNo.forEach(item=>{
+                  console.log('当前值',item)
+                  console.log('change值',this.inspectHistory.materialGraphNo)
+                  if(item.value == this.inspectHistory.materialGraphNo) {
+                      this.inspectHistory.materialName = item.materialName;
+                  }
+              })
+            },
             complete() {
                 let save = {
                     handlingSuggestion: this.inspectHistory.handlingSuggestion,
@@ -111,10 +121,13 @@
                     unqualifiedNumber: this.inspectHistory.unqualifiedNumber,
                     type:1,// 零件送检
                     batchNumber:this.inspectHistory.batchNumber,
-                    purchaseNo:this.inspectHistory.purchaseNo
+                    purchaseNo:this.inspectHistory.purchaseNo,
+                    supplierName: this.inspectHistory.supplierName,
+                    supplierNo: this.inspectHistory.supplierNo
 
                 }
                 this.$http.post(`/haolifa/material-inspect/history/save`,save).then(res=>{
+                    this.$toast("添加成功")
                     this.$refs.list.update();
                     this.inspectHistory.completeLayer = false;
                 }).catch(e=>{
@@ -140,14 +153,14 @@
                 let inspectId = item.id;
               this.$http.get(`/haolifa/material-inspect/info/${inspectId}`).then(res=>{
                   this.inspectHistory.completeLayer = true;
-                  console.log(res);
                   let items = res.items;
                   this.inspectHistory.selectMaterialNo=items.map(item=>{
-                      return {value:item.materialGraphNo,text:item.materialName}
-                  })
-                  console.log(this.inspectHistory.selectMaterialNo)
+                      return {value:item.materialGraphNo,text:item.materialGraphNo,materialName:item.materialName}
+                  });
                   // 默认
                   this.inspectHistory.materialGraphNo = this.inspectHistory.selectMaterialNo[0].value;
+                  this.inspectHistory.materialName = this.inspectHistory.selectMaterialNo[0].materialName;
+
               }).catch(e=>{
                   this.$toast(e.msg || e.message)
               })

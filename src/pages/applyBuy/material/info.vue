@@ -31,6 +31,10 @@
                     <td colspan="6">发起日期：{{inspect.createTime}}</td>
                 </tr>
                 <tr>
+                    <th colspan="5">采购合同号：{{inspect.purchaseNo}}</th>
+                    <td colspan="6">批次号：{{inspect.batchNumber}}</td>
+                </tr>
+                <tr>
                     <th colspan="5">供应商：{{inspect.supplierName}}</th>
                     <td colspan="6">到货日期：{{inspect.arrivalTime}}</td>
                 </tr>
@@ -70,8 +74,6 @@
                 <table class="data-table">
                     <tr>
                         <th>质检单号</th>
-                        <th>采购合同号</th>
-                        <th>批次号</th>
                         <th>类别</th>
                         <th>物料名称</th>
                         <th>物料图号</th>
@@ -83,8 +85,6 @@
                     </tr>
                     <tr v-for="(item, i) in inspectHistory">
                         <td>{{item.id}}</td>
-                        <td>{{item.purchaseNo}}</td>
-                        <td>{{item.batchNumber}}</td>
                         <td>{{item.type == 1?'采购零件':'机加工零件'}}</td>
                         <td>{{item.materialGraphName}}</td>
                         <td>{{item.materialGraphNo}}</td>

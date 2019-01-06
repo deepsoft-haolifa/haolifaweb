@@ -22,7 +22,7 @@
                 <input-box v-model="form.operatorUserName" class="flex-item" label="经办人" style="margin-right: 20px;"></input-box>
             </div>
             <div class="flex">
-                <input-box v-model="form.orderNo" class="flex-item" label="订单编号"></input-box>
+                <input-box v-model="form.orderNo" class="flex-item" label="采购合同编号"></input-box>
                 <input-box v-model="form.payType" class="flex-item" label="付款方式"></input-box>
             </div>
 

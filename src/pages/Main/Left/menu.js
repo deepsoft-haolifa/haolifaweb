@@ -216,21 +216,21 @@ export default [{
         }]
     },
     {
-        name: '生产调度',
+        name: '计划管理',
         id: 'parent-scdd',
         children: [{
             name: '零件加工管理',
-            url: '/jgzx-invoice',
-            id: 'jjglb'
+            url: '/workcar',
+            id: 'jhjjglb'
         }]
     },
     {
-        name: '车间主任',
+        name: '生产过程管理',
         id: 'parent-cjzr',
         children: [{
             name: '零件加工管理',
             url: '/partmanufacturing',
-            id: 'jjglb'
+            id: 'cjjjglb'
         }, {
             name: '更换料申请',
             url: '/replacement',
@@ -244,6 +244,10 @@ export default [{
             name: '更换料列表',
             url: '/replacementlist',
             id: 'jsgl-ghllb'
+        },{
+            name: '文件/图纸管理',
+            url: '/fileupload',
+            id: 'wjtzgl'
         }]
     }
 ]

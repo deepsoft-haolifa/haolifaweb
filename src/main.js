@@ -4,10 +4,12 @@ import App from './App.vue'
 import router from './router/'
 import store from './store/'
 import axios from 'axios'
+import 'element-ui/lib/theme-chalk/index.css';
 // import obj2FormData from './utils/obj2FormData'
-
+import { Tree } from 'element-ui'
 import './common'
 
+Vue.use(Tree)
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 

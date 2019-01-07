@@ -19,6 +19,7 @@
           <td>{{item.roleName || '-'}}</td>
           <td class="t-right">
             <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
+            <a href="javascript:;" style="margin-right: 3px" class="blue" @click="menuEdit(item)">关联菜单</a> |
             <a href="javascript:;" style="margin-right: 3px" class="red" @click="remove(item)">删除</a> 
           </td>
         </tr>
@@ -88,8 +89,10 @@ export default {
         this.$toast(e.message || e.msg)
       })
     },
+    menuEdit(item){
+      this.$router.push({name:"role-edit", params : item})
+    },
     edit (item) {
-      console.log(item)
       for (let key in this.form) {
         if (key !== 'department') this.form[key] = item[key]
         else this.form.department = { id: item.department.id }

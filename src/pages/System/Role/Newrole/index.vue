@@ -2,30 +2,12 @@
 <div class="page-role flex-col">
   <div class="flex-v-center tool-bar">
     <div class="flex-item"></div>
-    <btn class="b" flat color="#008eff" @click="showTree()">角色预览</btn>
-    <btn class="b" flat color="#008eff" @click="layer=true">新增角色</btn>
+    <btn class="b" flat color="#008eff" @click="$router.back()">返回</btn>
   </div>
   <div class="flex-item scroll-y">
-    <transition name="slide-y">
-      <table class="data-table" v-if="list.length">
-        <tr>
-          <th style="width: 60px">序号</th>
-          <th>角色描述</th>
-          <th>角色名称</th>
-          <td style="width: 100px;text-align: right;">操作</td>
-        </tr>
-        <tr v-for="(item, i) in list" :key="item.id">
-          <td>{{i+1}}</td>
-          <td>{{item.description}}</td>
-          <td>{{item.roleName || '-'}}</td>
-          <td class="t-right">
-            <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
-            <a href="javascript:;" style="margin-right: 3px" class="blue" @click="menuEdit(item)">关联菜单</a> |
-            <a href="javascript:;" style="margin-right: 3px" class="red" @click="remove(item)">删除</a> 
-          </td>
-        </tr>
-      </table>
-    </transition>
+     <el-tree ref="tree" :data="data"
+         node-key='id' :props="defaultProps">
+    </el-tree>
   </div>
   <layer v-if="layer" :title="form.id ? '编辑部门' : '新增部门'" width="450px">
     <div class="layer-text" style="padding-bottom: 50px;">
@@ -53,6 +35,11 @@ export default {
       layer: false,
       list: [],
       depts: [],
+      data:[],
+      defaultProps:{
+          label:'name',
+          children:'childList'
+      },
       form: {
         id: '',
         roleName: '',
@@ -73,14 +60,11 @@ export default {
   },
   methods: {
     getList () {
-      this.$http.get('/haolifa/role').then(res => {
-        this.list = res
+      this.$http.post('/haolifa/role/roleTree').then(res => {
+        this.data = res
       }).catch(e => {
         this.$toast(e.message || e.msg)
       })
-    },
-     showTree () {
-      this.$router.push(`/role/tree`)
     },
     getDept () {
       this.$http.get('/haolifa/dept/list').then(res => {

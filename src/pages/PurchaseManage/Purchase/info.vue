@@ -62,7 +62,7 @@
                     <td colspan="1" class="b">金额</td>
                     <td colspan="1" class="b">备注</td>
                 </tr>
-                <tr v-for="(item,i) in itemList">
+                <tr v-for="(item,i) in itemList" :key="item.id">
                     <td colspan="1">{{i}}</td>
                     <td colspan="1">{{item.materialName}}</td>
                     <td colspan="1">{{item.materialGraphNo}}</td>

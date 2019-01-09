@@ -13,4 +13,10 @@ export default [{
   name: 'role-add',
   component: () => import(/* webpackChunkName: "role" */ './add.vue'),
   meta: { level: 2, title: '新增角色', open: false, id: 'jsgl' }
+},{
+    path: '/role/tree',
+    name: 'role-tree',
+    component: () => import(/* webpackChunkName: "role" */ './Newrole/index.vue'),
+    meta: { level: 2, title: '角色预览', open: true, id: 'jsgl' }
+  
 }]

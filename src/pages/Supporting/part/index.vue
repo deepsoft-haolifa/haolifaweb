@@ -24,6 +24,8 @@
         <th>库存</th>
         <th>单位</th>
         <th>图号</th>
+        <th>配套数量</th>
+        <th>可替换零件</th>
         <th class="t-right" style="width: 80px;">操作</th>
       </tr>
       <!-- item: 当前行数据; index: 当前行数 -->
@@ -34,6 +36,8 @@
         <td>{{item.currentQuantity}}</td>
         <td>{{item.unit}}</td>
         <td>{{item.graphNo}}</td>
+        <td>{{item.supportQuantity}}</td>
+        <td>{{item.replaceGraphNos}}</td>
         <td class="t-right">
           <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
           <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a>

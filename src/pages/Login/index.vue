@@ -27,6 +27,7 @@
           <a href="javascript:;" class="loginBtn" :loading="loading" @click="login">登录</a>
       </div>
       <div class="t-inputWrap" style="text-align:right;">
+        <span style="color:#f36ca1" v-show="errorMsgFlag">{{errorMsg}}</span>
           <a class="a f-13" v-tooltip:top="'请联系管理员修改密码'" style="color:rgb(178, 204, 239);">忘记密码？</a><span class="flex-item"></span>
         </div>
       <!-- <div class="flex-v-center">
@@ -68,7 +69,9 @@ export default {
       username: 'admin',
       password: 'admin',
       imageCode: '',
-      authImg: ''
+      authImg: '',
+      errorMsgFlag : false,
+      errorMsg : ''
     }
   },
   computed: {
@@ -96,11 +99,14 @@ export default {
       fd.append('imageCode', imageCode)
       this.$http.post('/haolifa/login', fd).then(res => {
         res.menus.push('home')
+        this.errorMsgFlag = false;
         this.$store.commit('LOGIN', res)
         resetRouter(res.menus)
         this.$router.replace('/')
       }).catch(e => {
         this.loading = false
+        this.errorMsgFlag = true;
+        this.errorMsg = e.message || e.msg
         this.$toast(e.message || e.msg || e)
       })
     },

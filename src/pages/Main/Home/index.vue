@@ -9,7 +9,8 @@
       <div class="home-list flex-item scroll-y" v-if="tab1">
         <div class="home-list-item a flex-v-center" v-for="item in todo" :key="item.id">
           <i class="icon f-16 c-a">hourglass_full</i>
-          <div v-if="item.flowId == 6" class="c-8 date-time" @click="$router.push({path:'/entrust',query:{instanceId:item.instanceId,stepId:item.stepId}})">发起人：{{item.createUserRealName}}</div>
+          <div v-if="item.flowId == 4" class="c-8 date-time" @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})">发起人：{{item.createUserRealName}}</div>
+          <div v-if="item.flowId == 3" class="c-8 date-time" @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})">发起人：{{item.createUserRealName}}</div>
           <div v-if="item.flowId == 1" class="c-8 date-time" @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})">发起人：{{item.createUserRealName}}</div>
           <div v-if="item.flowId == 2" class="c-8 date-time" @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})">发起人：{{item.createUserRealName}}</div>
           <div class="flex-item text-ellipsis">流程：{{item.flowName}}</div><div class="flex-item text-ellipsis">发起时间：{{item.createTime}}</div>

@@ -75,7 +75,8 @@ export default {
       // this.$router.push(`/material/entryMaterial?graphNo=${item.graphNo}&name=${item.name}`)
     },
     outMaterial (item) {
-      this.$router.push(`/material/outMaterial?graphNo=${item.graphNo}&name=${item.name}`)
+      this.$router.push({ name: "outMaterial-list", params: item });
+      // this.$router.push(`/material/outMaterial?graphNo=${item.graphNo}&name=${item.name}`)
     },
     entryInfo (item) {
       this.$router.push(`/material/entryInfo?graphNo=${item.graphNo}`)

@@ -63,7 +63,6 @@ export default {
   },
   created () {
     let item = this.$route.params
-    console.log(item)
     this.form.materialGraphNo = item.graphNo;
     this.form.price = item.price;
     this.form.name = item.name;

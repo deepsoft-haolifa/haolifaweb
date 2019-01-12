@@ -16,8 +16,8 @@
                     <td colspan="4" class="b">压力测试质检</td>
                 </tr>
                 <tr>
-                    <td colspan="2">报检单号：{{stresstest.inspectNo}}</td>
-                    <td colspan="2">订单号{{stresstest.orderNo}}</td>
+                    <td colspan="2">报检单号: {{stresstest.inspectNo}}</td>
+                    <td colspan="2">订单号: {{stresstest.orderNo}}</td>
                 </tr>
                 <tr>
                     <td colspan="1" class="b">检测数量</td>
@@ -31,9 +31,13 @@
                     <td colspan="1">{{stresstest.qualifiedNumber}}</td>
                     <td colspan="1">{{stresstest.unqualifiedNumber}}</td>
                 </tr>
+                <tr>
+                    <td colspan="2" class="b">不合格原因</td>
+                    <td colspan="2" class="b">不合格数量</td>
+                </tr>
                 <tr v-for="item in stresstest.unqualifiedList" :key="item.unqualifiedNumber">
-                    <td colspan="2">不合格原因: {{item.reason}}</td>
-                    <td colspan="2">不合格数量: {{item.unqualifiedNumber}}</td>
+                    <td colspan="2">{{item.reason}}</td>
+                    <td colspan="2">{{item.unqualifiedNumber}}</td>
                 </tr>
             </table>
         </div>

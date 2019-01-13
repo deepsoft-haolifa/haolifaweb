@@ -154,6 +154,10 @@ export default [{
             name: '加工质检列表',
             url: '/inspect-metalwork',
             id: 'jgzjlb'
+        },{
+            name:'压力测试列表',
+            url:'/stresstest',
+            id:"ylcslb"
         }
         ]
     },

@@ -16,7 +16,7 @@
           <span class="b">发起时间：</span><span>{{data.createTime}}</span>
         </div>
         <div class="node-title mb-10">
-          <span class="b">待审批附件：</span><span><a class="a" flat style="color: #008eff" :href="orderUrl">下载生产订单</a></span>
+          <span class="b">待审批附件：</span><span><a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">下载采购订单</a></span>
         </div>
       </div>
       <div v-if="data.dealStep">
@@ -26,19 +26,6 @@
         </div>
         <div class="node">
           <div>
-            <div class="flex" v-if="dealStepId == 51">
-              <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
-            </div>
-            <div class="flex" v-if="dealStepId == 52 || dealStepId == 53">
-              <input-box :disabled="true" v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
-            </div>
-            <div class="flex" v-if="dealStepId == 56">
-              <input-box v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
-            </div>
-            <div class="flex" v-if="dealStepId == 57">
-              <input-box :disabled="true" v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
-              <input-box v-model="updateInfo.assemblyGroup" class="flex-item" label="装配小组" style="margin-right: 20px;"></input-box>
-            </div>
             <div class="flex">
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
             </div>
@@ -125,17 +112,7 @@
                     backStepId:null,
                     condition:true
                 },
-                backSteps:[],
-                dealStepId:0,
-                updateInfo:{
-                    orderNo:'',
-                    assemblyGroup:null,
-                    assemblyShop:null,
-                    finishFeedbackTime:null,
-                    purchaseFeedbackTime:null,
-                    technicalRequire:''
-                },
-                orderInfo:null
+                backSteps:[]
             }
         },
         created () {
@@ -149,22 +126,8 @@
                     this.handleStep.id = res.instanceId;
                     if(res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
-                        this.dealStepId = res.dealStep.stepId;
                     }
-                    // 获取订单详情
-                    this.$http.get(`/haolifa/order-product/details/${this.data.formNo}`).then(res=>{
-                        this.orderUrl = res.orderContractUrl;
-                        this.orderInfo = res;
-                        console.log('details', this.orderInfo)
-                        if(this.dealStepId == 52 || this.dealStepId == 53) {
-                            // 总工 核料 看到技术清单
-                            console.log('总工审批', this.dealStepId, this.orderInfo.technicalRequire)
-                            this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
-                        } else if(this.dealStepId == 57) {
-                            this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
-                        }
-                    });
-                    this.updateInfo.orderNo = this.data.formNo;
+                    this.orderUrl = this.orderUrl + res.formId;
                 }).catch(e => {
                     this.$toast(e.message || e.msg)
                 })
@@ -176,43 +139,6 @@
                     this.handleStep.backStepId = null;
                     this.backStepLayer = false;
                     this.getData();
-                    if(auditResult == 1) {
-                        // 同意
-                        let status = 1;
-                        if(this.dealStepId == 51) {
-                            // 技术员：技术清单
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.technicalRequire = '';
-                            });
-                        } else if(this.dealStepId == 52) {
-                            // 技术总工
-                            status = 2;
-                        } else if(this.dealStepId == 54){
-                            // 采购反馈
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.purchaseFeedbackTime = null;
-                            });
-                        } else if(this.dealStepId == 55) {
-                            // 综合计划
-                             status = 3;
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.finishFeedbackTime = null;
-                            });
-                        } else if(this.dealStepId == 56) {
-                            // 生产调度
-                            status = 4;
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.assemblyShop = null;
-                            });
-                        } else if(this.dealStepId == 57) {
-                            // 车间主任
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.assemblyGroup = null;
-                            });
-                        }
-                        let updateStatus = {orderNo:this.data.formNo,status:status}
-                        this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
-                    }
                 }).catch(e=>{
                     this.$toast(e.msg || e.message)
                 })

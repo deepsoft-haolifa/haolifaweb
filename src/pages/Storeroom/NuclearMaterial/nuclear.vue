@@ -46,13 +46,10 @@
                             <div v-if="classifyItem.type=='fazuo'">阀座</div>
                             <div v-if="classifyItem.type=='faban'">阀板</div>
                             <div v-if="classifyItem.type=='fagan'">阀杆</div>
-                            <!--<div v-if="classifyItem.type=='tongyong'">通用</div>-->
-                            <div v-if="classifyItem.type!='tongyong'" v-for="(materItem,j) in classifyItem.list">
-                                <radio-box :name="classifyItem.type+i" :label="materItem.graphNo" :text="materItem.graphNo" @change="checkMater(materItem, classifyItem.type, item.id)"/>
-                                零件名称：{{materItem.materialName}}
-                                配套数量：{{materItem.supportQuantity}}
-                                库存数量：{{materItem.currentQuantity}}
-                            </div>
+                            <select v-if="classifyItem.type!='tongyong'"  :value="0" @change="checkMater($event, classifyItem.type, item.id)">
+                                <option value="0">请选择</option>
+                                <option v-for="(materItem,i) in classifyItem.list" :value="JSON.stringify(materItem)">{{materItem.graphNo}}</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -60,6 +57,50 @@
         </div>
         <div class="flex mt-20">
             <btn big color="#008eff" @click="nuclearing()">开始核料</btn>
+            <btn big color="#008eff" class="ml-20" @click="nuclearComplete()">核料完成</btn>
+        </div>
+        <div class="mt-20" v-if="preCheckMaterList.length>0">
+            <hr/>
+            <div class="flex-item mt-20 mb-10"><span class="f-20">核料结果</span></div>
+            <div class="node">
+                <div class="flex-item scroll-y ml-20">
+                    <table class="data-table">
+                        <tr>
+                            <th>物料名称</th>
+                            <th>物料图号</th>
+                            <th>需要数量</th>
+                            <th>缺少数量</th>
+                            <th>核料状态</th>
+                            <th>核料结果</th>
+                            <th>可替换</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr v-for="(item, i) in preCheckMaterList">
+                            <td>{{item.materialName}}</td>
+                            <td>{{item.materialGraphNo}}</td>
+                            <td>{{item.materialCount}}</td>
+                            <td>{{item.lackMaterialCount}}</td>
+                            <td>{{checkStatusList[item.checkStatus-1].text}}</td>
+                            <td>{{item.checkResultMsg}}</td>
+                            <td>{{item.replaceGraphNoList != null && item.replaceGraphNoList.length >0?'是':''}}</td>
+                            <td>
+                                <a href="javascript:;" v-if="item.replaceGraphNoList != null && item.replaceGraphNoList.length >0" style="margin-right: 3px" class="blue" @click="replaceShow(item)">替换</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <layer v-if="replaceLayer" :title="'替换料列表'" width="450px">
+                <div class="node ml-10 mr-10">
+                    <div class="flex" v-for="(item,i) in replaceList">
+                        <radio-box :label="item.materialGraphNo" name="replace" @change="changeReplace(item)" :text="item.materialGraphNo"></radio-box>
+                    </div>
+                </div>
+                <div class="layer-btns">
+                    <btn flat @click="replaceLayer=false">取消</btn>
+                    <btn flat color="#008eff" @click="replaceComplete()">保存</btn>
+                </div>
+            </layer>
         </div>
     </div>
 </template>
@@ -69,12 +110,23 @@
         name: 'nuclear-material-nuclear',
         data () {
             return {
+                replaceMaterNo:null,
+                replaceList:[],
+                replaceLayer:false,
+                replaceTemp:null,
+                checkStatusList:[
+                    {value:1,text:'成功'},
+                    {value:2,text:'待采购'},
+                    {value:3,text:'可替换'}
+                ],
                 productInfos:[],
                 orderInfo:{
                     orderContractNo:'',
                     orderContractUrl:''
                 },
-                nuclearMater:[]
+                nuclearMater:[],
+                preCheckMaterList:[],
+                replaceMapping:[]
             }
         },
         created () {
@@ -82,21 +134,56 @@
             this.getInfo(orderNo)
         },
         methods: {
-            checkMater(materItem,type, productId) {
+            changeReplace(item) {
+                this.replaceTemp = item;
+            },
+            replaceShow(replaceItem){
+                console.log('replace',replaceItem);
+                this.replaceList = replaceItem.replaceGraphNoList;
+                this.replaceMaterNo = replaceItem.materialGraphNo;
+                this.replaceLayer = true;
+            },
+            replaceComplete() {
+                if(this.replaceTemp==null || this.replaceTemp == '') {
+                    this.$toast("请选择可替换零件")
+                    return;
+                }
+                this.replaceLayer = false;
+                let choseReplace = Object.assign({},this.replaceTemp);
+                choseReplace.lackMaterialCount = 0;
+                choseReplace.replaceGraphNoList = [];
+                let flag = true;
+                this.replaceMapping.forEach(item=>{
+                    if(item.replaceMaterNo == this.replaceMaterNo) {
+                        item.choseReplace = choseReplace;
+                        flag=false;
+                    }
+                })
+                if(flag) {
+                    this.replaceMapping.push({'replaceMaterNo':Object.assign({},this.replaceMaterNo),'choseReplace':choseReplace});
+                }
+                this.replaceMaterNo = null;
+            },
+            checkMater(event,type, productId) {
+                // console.log('event',event.target.value);
+                let materItem = JSON.parse(event.target.value);
                 this.nuclearMater.forEach(item=>{
                     if(item.id == productId) {
                         item.listDTOS.forEach(list=>{
                             if(list.type != 'tongyong'){
                                 if(list.type == type && list.type != 'tongyong') {
-                                    list.list = [];
-                                    list.list.push(materItem);
+                                    if(materItem == '0') {
+                                        list.list = [];
+                                    }else {
+                                        list.list = [];
+                                        list.list.push(materItem);
+                                    }
                                 }
                             }
 
                         })
                     }
                 });
-                console.log("选择", this.nuclearMater);
             },
             getInfo (orderNo) {
                 this.$http.get(`/haolifa/order-product/details?orderNo=${orderNo}`).then(res => {
@@ -106,18 +193,54 @@
                     this.$toast(e.msg || e.message)
                 });
                 this.$http.get(`/haolifa/order-product/pre-check-material?orderNo=${orderNo}`).then(res=>{
-                    this.productInfos = Object.assign({},res);
+                    this.productInfos = JSON.parse(JSON.stringify(res));
                     this.nuclearMater = JSON.parse(JSON.stringify(res));
+                    // 对nuclearMater进行处理，默认值保留
+                    this.nuclearMater.forEach(item=>{
+                        item.listDTOS.forEach(list=>{
+                            if(list.type != 'tongyong') {
+                                list.list = [];
+                            }
+                        })
+                    });
+                    console.log('处理过后', this.nuclearMater);
+
                 }).catch(e=>{
 
                 });
             },
-            nuclearing(){
+            nuclearing() {
                 this.$http.post(`/haolifa/order-product/check-material?orderNo=${this.orderInfo.orderContractNo}`,this.nuclearMater).then(res=>{
-                    console.log(res);
+                    this.preCheckMaterList = JSON.parse(JSON.stringify(res));
                 }).catch(e=>{
                     this.$toast(e.msg || e.message);
                 })
+            },
+            nuclearComplete(){
+                let completeTemp = JSON.parse(JSON.stringify(this.preCheckMaterList));
+                completeTemp.forEach(item=>{
+                   if(item.replaceGraphNoList == null) {
+                       item.replaceGraphNoList = []
+                   } else if(item.replaceGraphNoList.length > 0) {
+                       this.replaceMapping.forEach(mapping=>{
+                          if(mapping.replaceMaterNo == item.materialGraphNo) {
+                              item.replaceGraphNoList = []
+                              item.replaceGraphNoList.push(mapping.choseReplace)
+                          }
+                       });
+                   }
+                   if(item.lackMaterialCount == null) {
+                       item.lackMaterialCount = 0
+                   }
+
+                });
+                this.$http.post(`/haolifa/order-product/pass-check-material`,this.preCheckMaterList).then(res=>{
+                    console.log(res);
+                    this.$toast("核料完成，清单已保存")
+                }).catch(e=>{
+                    this.$toast(e.msg || e.message)
+                })
+
             }
         }
     }

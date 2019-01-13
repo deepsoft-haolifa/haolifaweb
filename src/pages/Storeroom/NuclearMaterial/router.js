@@ -8,4 +8,9 @@ export default [{
   name: 'nuclear-material-nuclear',
   component: () => import(/* webpackChunkName: "roomadd" */ './nuclear.vue'),
   meta: { level: 3, title: '核料', open: false, id: 'kghl' }
+}, {
+  path: '/nuclear-form',
+  name: 'nuclear-material-form',
+  component: () => import(/* webpackChunkName: "roomadd" */ './nuclearForm.vue'),
+  meta: { level: 3, title: '核料清单', open: false, id: 'kghl' }
 }]

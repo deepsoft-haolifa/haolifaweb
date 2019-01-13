@@ -42,6 +42,9 @@
             <div class="flex">
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
             </div>
+            <div class='flex' style="margin:50px 0;">
+              <upload-box btnText='上传附件' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' style='width: 100%'></upload-box>
+            </div>
             <div class="flex">
               <btn @click="handleStepM(1)">同意</btn>
               <btn class="ml-10" @click="handleStepM(0)">不同意</btn>
@@ -105,6 +108,7 @@
         name: 'p-p-base',
         data () {
             return {
+                fileList: [],
                 data: null,
                 orderUrl:'/haolifa/export/purchaseOrder/',
                 backStepLayer:false,
@@ -142,6 +146,31 @@
             this.getData()
         },
         methods: {
+            uploadFile(file, fileList) {
+                this.loading = true
+                this.loadingMsg = '正在上传'
+                fileToBase64(file.source).then(base64Str => {
+                    this.$http.post('/haolifa/order-product/uploadContract', {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    }).then(res => {
+                        this.$toast(!this.form.id ? '上传成功' : '更新成功')
+                        this.loading = false
+                        // this.$router.push('/order')
+                    }).catch(e => {
+                        this.$toast(e.msg || e.message)
+                        this.loading = false
+                    })
+                })
+            },
+            removeFile(){
+                return new Promise(
+                    (resolve,reject)=> {
+                        this.form.orderContractUrl = ''
+                        resolve()
+                    }
+                )
+            },
             getData () {
                 this.$http.get(`/haolifa/flowInstance/flow-history/${this.$route.query.instanceId}`).then(res => {
                     res.createTime = moment(res.createTime).format('YYYY-MM-DD HH:mm')

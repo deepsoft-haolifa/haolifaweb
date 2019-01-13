@@ -28,6 +28,7 @@
           <td>{{item.updateTime}}</td>
           <td class="t-right">
             <a href="javascript:;" class="blue" @click="nuclear(item)"  style="margin-right: 3px;">核料</a>
+            <a href="javascript:;" class="blue" @click="nuclearForm(item)"  style="margin-right: 3px;">核料清单</a>
             <!--<a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">删除</a>-->
             <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
           </td>
@@ -55,33 +56,8 @@
             nuclear(item) {
                 this.$router.push(`/nuclear-material?orderNo=${item.orderNo}`)
             },
-            edit (item) {
-                this.$router.push(`/dilivery-bills/edit?id=${item.id}`)
-            },
-            progress (item) {
-                this.$http.post('/haolifa/flowInstance/create', {
-                    flowId: 1, formId: item.id, formType: 1, formNo: item.orderNo, summary: '生产订单审批' }).then(
-                    res => {
-                        this.loading = false
-                        this.$toast(`发起流程成功,流程ID: ${res.instanceId}`)
-                    }
-                )
-            },
-            remove (item) {
-                this.$confirm({
-                    title: '删除确认',
-                    text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
-                    color: 'red',
-                    btns: ['取消', '删除'],
-                    yes: () => {
-                        this.$http.delete(`/haolifa/order-product/delete/${item.id}`).then(res => {
-                            this.$toast('删除成功')
-                            this.$refs.list.update()
-                        }).catch(e => {
-                            this.$toast(e.msg)
-                        })
-                    }
-                })
+            nuclearForm(item){
+                this.$router.push(`/nuclear-form?orderNo=${item.orderNo}`)
             }
         }
     }

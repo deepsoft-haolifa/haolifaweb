@@ -7,6 +7,9 @@
                 <input-box v-model="form.supplierName" class="flex-item" label="供应商名称"></input-box>
                 <input-box v-model="form.batchNumber" class="flex-item ml-20 mr-20" label="批次号"></input-box>
             </div>
+            <div class='flex'>
+                <upload-box btnText='质量保证书' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' :multiple="multiple" style='width: 50%'></upload-box>
+            </div>
             <div class="b ml-20" style="margin: 20px 10px 10px;">送检列表</div>
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
                 <div class="flex-item">
@@ -67,8 +70,12 @@
                         remark: '',
                         specification: '',
                         unit: ''
-                    }]
-                }
+                    }],
+                    blueprints:[]
+                },
+                fileList:[],
+                multiple:true,
+                resFileList:[]
             }
         },
         created () {
@@ -85,7 +92,12 @@
                         if(res[key]== undefined) this.form[key] = res.inspect[key]
                         console.log(this.form.arrivalTime)
                     }
-
+                    if(res.blueprints.length > 0){
+                        this.resFileList = res.blueprints;
+                        this.fileList = res.blueprints.map(item => {
+                            return item.url
+                        })
+                    }
                 }).catch(e => {
                     this.$toast(e.msg || e.message)
                 })
@@ -101,6 +113,31 @@
                     specification: '',
                     unit: ''
                 })
+            },
+            uploadFile(file,fileList){
+                this.loading = true
+                this.loadingMsg = '正在上传'
+                fileToBase64(file.source).then(base64Str => {
+                    this.$http.post('/haolifa/file/uploadFileBase64', {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    }).then(res => {
+                        let name
+                        this.resFileList.push({"name":file.name,"url":res})
+                        this.loading = false
+                    }).catch(e => {
+                        this.$toast(e.msg || e.message)
+                        this.loading = false
+                    })
+                })
+            },
+            removeFile(fileList,i){
+                return new Promise(
+                    (resolve,reject)=> {
+                        this.resFileList.splice(i,1);
+                    resolve()
+                    }
+                )
             },
             submit (status) {
                 alert(this.form.id)
@@ -130,6 +167,7 @@
                     }
                 })
                 this.form.status = status;
+                this.form.blueprints = this.resFileList;
                 this.$http.post(`/haolifa/material-inspect/update/${this.form.id}`, this.form).then(res => {
                     this.loading = false
                     this.$toast('提交成功')

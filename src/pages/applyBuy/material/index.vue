@@ -31,7 +31,7 @@
         <td>{{statusList[item.status].name}}</td>
         <td class="t-right">
           <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
-          <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
+          <a href="javascript:;" v-if="item.status != 1" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
           <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
           <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="commit(item.id)">发起报检</a>
         </td>

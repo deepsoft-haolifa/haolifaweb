@@ -123,7 +123,7 @@
                         fileName: file.name
                     }).then(res => {
                         let name
-                        this.resFileList.push({"name":file.name,"url":res})
+                        this.resFileList.push({"filename":file.name,"url":res})
                         this.loading = false
                     }).catch(e => {
                         this.$toast(e.msg || e.message)

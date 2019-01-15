@@ -1,7 +1,7 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <div class="title b f-18 mb-10">{{form.id ? '编辑' : '新增'}}采购订单</div>
+            <div class="title b f-18 mb-10">{{isAdd ? '编辑' : '新增'}}采购订单</div>
             <div class="flex">
                 <input-box v-model="form.demander" class="flex-item" label="需方" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.demanderAddr" class="flex-item" label="需方地址" style="margin-right: 20px;"></input-box>
@@ -69,7 +69,7 @@
                 supplierInfoList:[],
                 supplierList:[],
                 form: {
-                    id:'',
+                    id:null,
                     confirmTime: "",
                     deliveryTime: "",
                     demander: "",
@@ -86,8 +86,20 @@
                     supplierName: "",
                     supplierNo: "",
                     payType:'',
-                    itemList: [],
+                    itemList: [{
+                        id:'',
+                        material: "",
+                        materialGraphNo: "",
+                        materialName: "",
+                        number: 0,
+                        remark: "",
+                        specification: "",
+                        unit: "",
+                        unitPrice: 0,
+                        unitWeight: 0
+                    }],
                 },
+                isAdd:true
             }
         },
         mounted() {
@@ -103,13 +115,40 @@
             
             if(formId){
                 // 加载详情
+                this.isAdd = false;
                 this.$http.get('/haolifa/purchase-order/info/'+formId).then(res=>{
-                    this.form = res.order;
+                    this.form.id = res.order.id,
+                    this.form.demander= res.order.demander,
+                    this.form.demanderAddr= res.order.demanderAddr,
+                    this.form.demanderLinkman= res.order.demanderLinkman,
+                    this.form.demanderPhone= res.order.demanderPhone,
+                    this.form.operatorUserName= res.order.operatorUserName,
+                    this.form.suppilerPhone= res.order.suppilerPhone,
+                    this.form.supplierAddr=res.order.supplierAddr,
+                    this.form.supplierConfirmer= res.order.supplierConfirmer,
+                    this.form.supplierLinkman= res.order.supplierLinkman,
+                    this.form.supplierName=res.order.supplierName,
+                    this.form.supplierNo= res.order.supplierNo,
+                    this.form.payType=res.order.payType,
                     this.form.orderNo = res.order.purchaseOrderNo;
-                    this.form.confirmTime = this.form.confirmTime.substring(0,10);
-                    this.form.deliveryTime = this.form.deliveryTime.substring(0,10);
-                    this.form.operateTime = this.form.operateTime.substring(0,10);
-                    this.form.itemList=res.items; 
+                    this.form.confirmTime = res.order.confirmTime.substring(0,10);
+                    this.form.deliveryTime = res.order.deliveryTime.substring(0,10);
+                    this.form.operateTime = res.order.operateTime.substring(0,10);
+
+                    this.form.itemList=res.items.map(item=>{
+                        return {
+                            id:item.id,
+                            material: item.material,
+                            materialGraphNo:item.materialGraphNo,
+                            materialName:item.materialName,
+                            number: item.number,
+                            remark: item.remark,
+                            specification:item.specification,
+                            unit: item.unit,
+                            unitPrice: item.unitPrice,
+                            unitWeight: item.unitWeight
+                        };
+                    });
                 })
             }
         },
@@ -152,16 +191,21 @@
                     unitPrice:'单价',
                     unitWeight:'单重'
                 }
+                let flag = true;
                 this.form.itemList.forEach((item, i) => {
                     for (let key in item) {
                         if (requireItem[key] && !item[key]) {
                             this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
-                            return
+                            flag = false;
                         }
                     }
                 })
-                this.$http.post(this.form.id == ''?'/haolifa/purchase-order/save':'/haolifa/purchase-order/update', this.form).then(res => {
-                    this.$toast(this.form.id==''?'创建成功':'更新成功');
+                if(!flag){
+                    return;
+                }
+                console.log(this.form);
+                this.$http.post(this.isAdd ?'/haolifa/purchase-order/save':'/haolifa/purchase-order/update', this.form).then(res => {
+                    this.$toast(this.isAdd ?'创建成功':'更新成功');
                     this.$router.push('/purchsemanage-purchase/list')
                 }).catch(e => {
                     this.$toast(e.message || e.msg)

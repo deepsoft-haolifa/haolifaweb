@@ -7,7 +7,7 @@
           <span class="b">流程描述：</span><span class="mr-15">{{data.summary}}</span>
         </div>
         <div class="node-title mb-10">
-          <span class="b">采购单号：</span><span class="mr-15">{{data.formNo}}</span>
+          <span class="b">生产订单号：</span><span class="mr-15">{{data.formNo}}</span>
         </div>
         <div class="node-title mb-10">
           <span class="b">发 起 人：</span><span class="mr-15">{{data.initUserName}}</span>
@@ -39,6 +39,10 @@
               <input-box :disabled="true" v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
               <input-box v-model="updateInfo.assemblyGroup" class="flex-item" label="装配小组" style="margin-right: 20px;"></input-box>
             </div>
+            <div class="flex" v-if="dealStepId == 54">
+              <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
+            </div>
+            // 采购员的采购清单 按订单号查。
             <div class="flex">
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
             </div>
@@ -152,7 +156,7 @@
                         this.dealStepId = res.dealStep.stepId;
                     }
                     // 获取订单详情
-                    this.$http.get(`/haolifa/order-product/details/${this.data.formNo}`).then(res=>{
+                    this.$http.get(`/haolifa/order-product/details?orderNo=${this.data.formNo}`).then(res=>{
                         this.orderUrl = res.orderContractUrl;
                         this.orderInfo = res;
                         console.log('details', this.orderInfo)

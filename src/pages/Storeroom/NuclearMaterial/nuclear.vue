@@ -234,7 +234,7 @@
                    }
 
                 });
-                this.$http.post(`/haolifa/order-product/pass-check-material`,this.preCheckMaterList).then(res=>{
+                this.$http.post(`/haolifa/order-product/pass-check-material`,completeTemp).then(res=>{
                     console.log(res);
                     this.$toast("核料完成，清单已保存")
                 }).catch(e=>{

@@ -10,6 +10,9 @@
             <div class='flex'>
                 <upload-box btnText='质量保证书' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' :multiple="multiple" style='width: 50%'></upload-box>
             </div>
+            <div v-for="(item,i) in resFileList">
+                <div class="flex"><a :href="item.fileUrl">{{item.fileName}}</a><icon-btn small @click="resFileList.splice(i, 1)">close</icon-btn></div>
+            </div>
             <div class="b ml-20" style="margin: 20px 10px 10px;">送检列表</div>
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
                 <div class="flex-item">
@@ -48,6 +51,7 @@
 </template>
 
 <script>
+    import fileToBase64 from '../../../utils/fileToBase64'
     import moment from 'moment'
     export default {
         name: 'apply-buy-update',
@@ -106,8 +110,9 @@
                     console.log('form-items', this.form.items);
                     if(res.inspect.blueprints != '') {
                         this.resFileList = JSON.parse(res.inspect.blueprints);
+                        console.log('fileList',this.resFileList);
                         this.fileList = this.resFileList.map(item => {
-                            return item.url
+                            return item.fileUrl
                         })
                     }
                 }).catch(e => {

@@ -71,7 +71,7 @@
                         specification: '',
                         unit: ''
                     }],
-                    blueprints:[]
+                    accessorys:[]
                 },
                 fileList:[],
                 multiple:true,
@@ -123,7 +123,7 @@
                         fileName: file.name
                     }).then(res => {
                         let name
-                        this.resFileList.push({"filename":file.name,"url":res})
+                        this.resFileList.push({"fileName":file.name,"fileUrl":res})
                         this.loading = false
                     }).catch(e => {
                         this.$toast(e.msg || e.message)
@@ -167,7 +167,7 @@
                     }
                 })
                 this.form.status = status;
-                this.form.blueprints = this.resFileList;
+                this.form.accessorys = this.resFileList;
                 this.$http.post(`/haolifa/material-inspect/update/${this.form.id}`, this.form).then(res => {
                     this.loading = false
                     this.$toast('提交成功')

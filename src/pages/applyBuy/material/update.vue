@@ -8,10 +8,10 @@
                 <input-box v-model="form.batchNumber" class="flex-item ml-20 mr-20" label="批次号"></input-box>
             </div>
             <div class='flex'>
-                <upload-box btnText='质量保证书' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' :multiple="multiple" style='width: 50%'></upload-box>
+                <upload-box btnText='质量保证书' :fileShow="false" :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' :multiple="multiple" style='width: 50%'></upload-box>
             </div>
-            <div v-for="(item,i) in resFileList">
-                <div class="flex"><a :href="item.fileUrl">{{item.fileName}}</a><icon-btn small @click="resFileList.splice(i, 1)">close</icon-btn></div>
+            <div v-for="(item,i) in resFileList" :key="i" style="margin-left:20px;margin-top:5px;">
+                <div class="flex"><a :href="item.fileUrl" style="text-decoration:none ;out-line: none ;color:#ccc" target="_blank">{{item.fileName}}</a><icon-btn small @click="resFileList.splice(i, 1)">close</icon-btn></div>
             </div>
             <div class="b ml-20" style="margin: 20px 10px 10px;">送检列表</div>
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
@@ -110,7 +110,7 @@
                     console.log('form-items', this.form.items);
                     if(res.inspect.blueprints != '') {
                         this.resFileList = JSON.parse(res.inspect.blueprints);
-                        console.log('fileList',this.resFileList);
+                        // console.log('fileList',this.resFileList);
                         this.fileList = this.resFileList.map(item => {
                             return item.fileUrl
                         })

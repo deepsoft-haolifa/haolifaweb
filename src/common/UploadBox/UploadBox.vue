@@ -3,7 +3,7 @@
     <btn @click="$refs.uploadInput.click()">{{btnText}}</btn>
     <input type="file" class="uploadInput" ref="uploadInput" @change="handleChange" :multiple="multiple">
     <div v-if="tips" class="tips">{{tips}}</div>
-    <transition-group name="slide" tag="div">
+    <transition-group name="slide" tag="div" v-show="fileShow">
       <div v-for="(item, index) in fileList" :key="item.uid" class="flex uploadListItem">
         <img v-if="isImg(item.type)" :src="item.url" alt="" width="24" height="24">
         <i v-else class="icon uploadDocument">description</i>
@@ -57,6 +57,10 @@
       btnText: {
         type: String,
         default: '点击上传'
+      },
+      fileShow:{
+        type:Boolean,
+        default: true
       }
     },
     data () {

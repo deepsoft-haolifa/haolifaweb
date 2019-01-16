@@ -1,11 +1,11 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <div class="title b f-18">{{form.id ? '编辑' : '新增'}}送检单</div>
+            <div class="title b f-18">新增送检单</div>
             <div class="flex">
                 <date-picker v-model="form.arrivalTime" hint="必填" class="flex-item" label="到货时间" style="margin-right: 20px;"></date-picker>
                 <input-box v-model="form.supplierName" class="flex-item" label="供应商名称"></input-box>
-                <input-box v-model="form.batchNumber" class="flex-item" label="供应商名称"></input-box>
+                <input-box v-model="form.batchNumber" class="flex-item" label="批次号"></input-box>
             </div>
             <div class='flex'>
                 <upload-box btnText='质量保证书' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' :multiple="multiple" style='width: 50%'></upload-box>
@@ -23,6 +23,7 @@
                     <div class="flex">
                         <input-box v-model="item.requirements" class="flex-item mr-10" label="材质要求" hint="选填"></input-box>
                         <input-box v-model="item.specification" class="flex-item mr-10" label="规格" hint="选填"></input-box>
+                        <input-box v-model="item.purchasePrice" class="flex-item mr-10" label="单价" ></input-box>
                     </div>
                     <div class="flex">
                         <input-box v-model="item.unit" class="flex-item mr-10" label="单位" hint="选填"></input-box>
@@ -66,7 +67,8 @@
                         purchaseNumber: '',
                         remark: '',
                         specification: '',
-                        unit: ''
+                        unit: '',
+                        purchasePrice:0
                     }],
                     accessorys:[]
                 },
@@ -87,7 +89,7 @@
                     for (let key in this.form) {
                         if (this.form[key] !== undefined) this.form[key] = res[key]
                         if(res[key]== undefined) this.form[key] = res.inspect[key]
-                        console.log('对比',key,res[key],res.inspect[key]);
+                        // console.log('对比',key,res[key],res.inspect[key]);
                     }
 
                 }).catch(e => {
@@ -103,7 +105,8 @@
                     purchaseNumber: '',
                     remark: '',
                     specification: '',
-                    unit: ''
+                    unit: '',
+                    purchasePrice:0
                 })
             },
             uploadFile(file,fileList){
@@ -148,14 +151,14 @@
                     this.$toast('请填写到货时间')
                     return
                 }
-                items.forEach((item, i) => {
-                    for (let key in item) {
-                        if (requireItem[key] && !item[key]) {
-                            this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
-                            return
-                        }
-                    }
-                })
+                // items.forEach((item, i) => {
+                //     for (let key in item) {
+                //         if (requireItem[key] && !item[key]) {
+                //             this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
+                //             return
+                //         }
+                //     }
+                // })
                 this.form.status = status
                 this.form.accessorys = this.resFileList;
                 this.$http.post('/haolifa/material-inspect/save', this.form).then(res => {

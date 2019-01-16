@@ -4,7 +4,7 @@
             <div class="title b f-18 ml-10 ">编辑送检单</div>
             <div class="flex ml-20 mr-20">
                 <date-picker v-model="form.arrivalTime" hint="必填" class="flex-item" label="到货时间" style="margin-right: 20px;"></date-picker>
-                <input-box v-model="form.supplierName" class="flex-item" label="供应商名称"></input-box>
+                <input-box v-model="form.supplierName" class="flex-item ml-20 mr-20" label="供应商名称"></input-box>
                 <input-box v-model="form.batchNumber" class="flex-item ml-20 mr-20" label="批次号"></input-box>
             </div>
             <div class='flex'>
@@ -53,25 +53,24 @@
         name: 'apply-buy-update',
         data () {
             return {
+                id:0,
                 form: {
                     arrivalTime: '',
                     supplierName: '',
                     batchNumber:'',
                     status:1,
-                    inspectNo:'',
-                    blueprints:'',
-                    id:1,
+                    accessorys:[],
                     items: [{
                         deliveryNumber: '',
                         materialGraphNo: '',
                         materialName: '',
                         purchaseNo: '',
                         purchaseNumber: '',
+                        purchasePrice:0,
                         remark: '',
                         specification: '',
                         unit: ''
-                    }],
-                    accessorys:[]
+                    }]
                 },
                 fileList:[],
                 multiple:true,
@@ -84,17 +83,30 @@
         },
         methods: {
             getInfo (id) {
+                this.id = id;
                 this.$http.get(`/haolifa/material-inspect/info/${id}`).then(res => {
-                    console.log(res.inspect.arrivalTime)
                     res.inspect.arrivalTime =  moment(res.inspect.arrivalTime).format('YYYY-MM-DD')
-                    for (let key in this.form) {
-                        if (this.form[key] !== undefined) this.form[key] = res[key]
-                        if(res[key]== undefined) this.form[key] = res.inspect[key]
-                        console.log(this.form.arrivalTime)
-                    }
-                    if(res.blueprints.length > 0){
-                        this.resFileList = res.blueprints;
-                        this.fileList = res.blueprints.map(item => {
+                    this.form.arrivalTime = res.inspect.arrivalTime;
+                    this.form.supplierName = res.inspect.supplierName;
+                    this.form.batchNumber = res.inspect.batchNumber;
+                    console.log('items', res.items);
+                    this.form.items = res.items.map(item=>{
+                        return {
+                            deliveryNumber:item.deliveryNumber,
+                            materialGraphNo:item.materialGraphNo,
+                            materialName: item.materialName,
+                            purchaseNo: item.purchaseNo,
+                            purchaseNumber: item.purchaseNumber,
+                            remark:item.remark,
+                            specification: item.specification,
+                            unit: item.unit,
+                            purchasePrice:item.purchasePrice
+                        };
+                    });
+                    console.log('form-items', this.form.items);
+                    if(res.inspect.blueprints != '') {
+                        this.resFileList = JSON.parse(res.inspect.blueprints);
+                        this.fileList = this.resFileList.map(item => {
                             return item.url
                         })
                     }
@@ -140,8 +152,8 @@
                 )
             },
             submit (status) {
-                alert(this.form.id)
-                alert(this.form.inspectNo)
+                // alert(this.form.id)
+                // alert(this.form.inspectNo)
                 const requireItem = {
                     arrivalTime: '到货日期',
                     supplierName: '供应商名称',
@@ -158,17 +170,17 @@
                     this.$toast('请填写到货时间')
                     return
                 }
-                items.forEach((item, i) => {
-                    for (let key in item) {
-                        if (requireItem[key] && !item[key]) {
-                            this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
-                            return
-                        }
-                    }
-                })
+                // items.forEach((item, i) => {
+                //     for (let key in item) {
+                //         if (requireItem[key] && !item[key]) {
+                //             this.$toast(`请填写第 ${i + 1} 项 ${requireItem[key]}`)
+                //             return
+                //         }
+                //     }
+                // })
                 this.form.status = status;
                 this.form.accessorys = this.resFileList;
-                this.$http.post(`/haolifa/material-inspect/update/${this.form.id}`, this.form).then(res => {
+                this.$http.post(`/haolifa/material-inspect/update/${this.id}`, this.form).then(res => {
                     this.loading = false
                     this.$toast('提交成功')
                     this.$router.replace('/applyBuy-material')

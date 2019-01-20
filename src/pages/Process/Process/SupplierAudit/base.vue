@@ -7,16 +7,13 @@
           <span class="b">流程描述：</span><span class="mr-15">{{data.summary}}</span>
         </div>
         <div class="node-title mb-10">
-          <span class="b">采购单号：</span><span class="mr-15">{{data.formNo}}</span>
+          <span class="b">供应商编号：</span><span class="mr-15">{{data.formNo}}</span>
         </div>
         <div class="node-title mb-10">
           <span class="b">发 起 人：</span><span class="mr-15">{{data.initUserName}}</span>
         </div>
         <div class="node-title mb-10">
           <span class="b">发起时间：</span><span>{{data.createTime}}</span>
-        </div>
-        <div class="node-title mb-10">
-          <span class="b">待审批附件：</span><span><a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">供应商</a></span>
         </div>
       </div>
       <div v-if="data.dealStep">

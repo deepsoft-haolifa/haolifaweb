@@ -151,7 +151,7 @@
                 this.orderUrl = '/haolifa/export/purchaseOrder/'+formId
                 console.log(formId);
                 this.info.id = formId;
-                this.$http.get(`/haolifa//purchase-order/info/${formId}`).then(res => {
+                this.$http.get(`/haolifa/purchase-order/info/${formId}`).then(res => {
                     this.info = res.order;
                     this.itemList = res.items;
                     this.info.operateTime = res.order.operateTime.substring(0,10);

@@ -11,7 +11,7 @@
     </router-link>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" method="post" url="/haolifa/supplier/list">
+    <data-list ref="list" method="post" :pageSize="10" url="/haolifa/supplier/list">
       <tr slot="header">
         <th style="width: 60px;">序号</th>
         <th>企业名称</th>
@@ -34,7 +34,9 @@
         <td>{{item.phone}}</td>
         <td class="t-right">
           <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
-          <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a>
+          <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a> |
+          <a href="javascript:;" class="red" v-if="item.isQualified != 3" @click="approveSupplier(item.suppilerNo)" style="margin-right: 3px;">发起审批</a>
+          <a href="javascript:;" class="red" v-if="item.isQualified == 3" @click="approving(item.suppilerNo)" style="margin-right: 3px;">审批进度</a>
         </td>
       </template>
     </data-list>
@@ -54,6 +56,16 @@ export default {
     }
   },
   methods: {
+      approving(supplierNo){
+          //todo
+      },
+      approveSupplier(supplierNo){
+          this.$http.post(`/haolifa/supplier/approve/${supplierNo}`).then(res=>{
+            this.$toast("成功发起")
+          }).catch(e=> {
+              this.$toast(e.msg || e.message)
+          })
+      },
     edit (item) {
       this.$router.push(`/supplier/edit?id=${item.id}`)
     },

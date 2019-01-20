@@ -42,7 +42,27 @@
             <div class="flex" v-if="dealStepId == 54">
               <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
             </div>
-            // 采购员的采购清单 按订单号查。
+            <div>
+              <div v-if="purchaseList.length>0">
+                <div class="flex-item mt-10 mb-10"><span class="f-20">待采购项</span></div>
+                <div class="flex-item scroll-y">
+                  <table class="data-table">
+                    <tr>
+                      <th>生产订单号</th>
+                      <th>零件名称</th>
+                      <th>零件图号</th>
+                      <th>采购数量</th>
+                    </tr>
+                    <tr v-for="(item, i) in purchaseList">
+                      <td>{{item.productOrderNo}}</td>
+                      <td>{{item.materialName}}</td>
+                      <td>{{item.materialGraphNo}}</td>
+                      <td>{{item.purchaseNumber}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
             <div class="flex">
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
             </div>
@@ -139,7 +159,9 @@
                     purchaseFeedbackTime:null,
                     technicalRequire:''
                 },
-                orderInfo:null
+                orderInfo:null,
+                actionType:0,
+                purchaseList:[]
             }
         },
         created () {
@@ -159,13 +181,31 @@
                     this.$http.get(`/haolifa/order-product/details?orderNo=${this.data.formNo}`).then(res=>{
                         this.orderUrl = res.orderContractUrl;
                         this.orderInfo = res;
-                        console.log('details', this.orderInfo)
                         if(this.dealStepId == 52 || this.dealStepId == 53) {
                             // 总工 核料 看到技术清单
-                            console.log('总工审批', this.dealStepId, this.orderInfo.technicalRequire)
                             this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
+                            if(this.dealStepId == 53) { //库管核料
+                                if(res.orderStatus == '2'){
+                                    // 核料中
+                                    this.actionType = 1 // 去核料
+                                } else if(res.orderStatus == '3') {
+                                    // 替换料审批中
+                                    this.actionType = 2 // 提示不能操作。
+                                } else if(res.orderStatus == '4') {
+                                    // 核料完成：
+                                    this.actionType = 0
+                                    // 查看是否需要采购
+                                    this.$http.get(`/haolifa/applyBuy/product/list`).then(res=>{
+                                      res.length > 0? this.handleStep.condition = false:true;
+                                    });
+                                }
+                            }
                         } else if(this.dealStepId == 57) {
                             this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
+                        } else if(this.dealStepId == 54) {
+                            this.$http.get(`/haolifa/applyBuy/product/list`).then(res=>{
+                               this.purchaseList = JOSN.parse(JSON.stringify(res));
+                            });
                         }
                     });
                     this.updateInfo.orderNo = this.data.formNo;
@@ -174,15 +214,44 @@
                 })
             },
             handleStepM(auditResult) {
+                if(auditResult != 2) {
+                    if(this.actionType == 1) {
+                        // 提示去核料
+                        this.$confirm({
+                            title:'核料',
+                            text: '订单未核料，是否现在核料？',
+                            color: 'blue',
+                            btns:['稍后再说','现在核料'],
+                            yes:()=>{
+                                this.$router.push(`/nuclear-material?orderNo=${this.orderInfo.orderNo}`)
+                            }
+                        })
+                        return;
+                    } else if(this.actionType == 2) {
+                        // 提示 替换料审批中。
+                        this.$alert({
+                            title:'审批',
+                            text: '订单存在替换料审批，不能进行其它操作？',
+                            color: 'blue',
+                            time:1000
+                        });
+                        return;
+                    }
+                }
+                if(auditResult == 1 && this.dealStepId == 54) {
+                    if(this.updateInfo.purchaseFeedbackTime == null) {
+                        this.$toast("请填写采购完成日期");
+                        return;
+                    }
+                }
                 this.handleStep.auditResult = auditResult;
                 this.$http.post(`/haolifa/flowInstance/handleStep`,this.handleStep).then(res=> {
                     this.$toast("处理成功");
                     this.handleStep.backStepId = null;
                     this.backStepLayer = false;
                     this.getData();
+                    let status = 1;// 同意,审批中
                     if(auditResult == 1) {
-                        // 同意
-                        let status = 1;
                         if(this.dealStepId == 51) {
                             // 技术员：技术清单
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
@@ -191,20 +260,20 @@
                         } else if(this.dealStepId == 52) {
                             // 技术总工
                             status = 2;
-                        } else if(this.dealStepId == 54){
+                        } else if(this.dealStepId == 54) {
                             // 采购反馈
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
                                 this.updateInfo.purchaseFeedbackTime = null;
                             });
                         } else if(this.dealStepId == 55) {
                             // 综合计划
-                             status = 3;
+                            status = 5;
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
                                 this.updateInfo.finishFeedbackTime = null;
                             });
                         } else if(this.dealStepId == 56) {
                             // 生产调度
-                            status = 4;
+                            status = 6;
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
                                 this.updateInfo.assemblyShop = null;
                             });
@@ -214,6 +283,23 @@
                                 this.updateInfo.assemblyGroup = null;
                             });
                         }
+                        let updateStatus = {orderNo:this.data.formNo,status:status}
+                        this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
+                    } else if (auditResult == 2) {
+                        // 退回操作
+                        if(this.handleStep.backStepId == 53) {
+                            // 核料中
+                            status = 2;
+                        }
+                        if(this.handleStep.backStepId == 56) {
+                            // 待生产
+                            status = 5;
+                        }
+                        let updateStatus = {orderNo:this.data.formNo,status:status}
+                        this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
+                    } else {
+                        // 不通过
+                        status = 14;
                         let updateStatus = {orderNo:this.data.formNo,status:status}
                         this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
                     }

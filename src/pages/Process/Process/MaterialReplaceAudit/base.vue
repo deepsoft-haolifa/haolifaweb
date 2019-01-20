@@ -7,7 +7,7 @@
           <span class="b">流程描述：</span><span class="mr-15">{{data.summary}}</span>
         </div>
         <div class="node-title mb-10">
-          <span class="b">采购单号：</span><span class="mr-15">{{data.formNo}}</span>
+          <span class="b">替换料单号：</span><span class="mr-15">{{data.formNo}}</span>
         </div>
         <div class="node-title mb-10">
           <span class="b">发 起 人：</span><span class="mr-15">{{data.initUserName}}</span>
@@ -15,8 +15,23 @@
         <div class="node-title mb-10">
           <span class="b">发起时间：</span><span>{{data.createTime}}</span>
         </div>
-        <div class="node-title mb-10">
-          <span class="b">待审批附件：</span><span><a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">下载采购订单</a></span>
+        <div v-if="replaceInfo.length > 0 ">
+          <table class="data-table">
+            <tr>
+              <th>实例ID</th>
+              <th>生产订单号</th>
+              <th>零件名称</th>
+              <th>待替换图号</th>
+              <th>替换图号</th>
+            </tr>
+            <tr v-for="(item, i) in replaceInfo">
+              <td>{{item.id}}</td>
+              <td>{{item.orderNo}}</td>
+              <td>{{item.materialName}}</td>
+              <td>{{item.materialGraphNo}}</td>
+              <td>{{item.replaceMaterialGraphNo}}</td>
+            </tr>
+          </table>
         </div>
       </div>
       <div v-if="data.dealStep">
@@ -51,7 +66,7 @@
               <th>意见</th>
               <th>审核附件</th>
             </tr>
-            <tr v-for="(item, i) in data.historyInfos">
+            <tr v-for="(item, i) in data">
               <td>{{item.historyId}}</td>
               <td>{{item.instanceId}}</td>
               <td>{{item.auditResult == 3?'发起':'审批'}}</td>
@@ -93,7 +108,7 @@
         data () {
             return {
                 data: null,
-                orderUrl:'/haolifa/export/purchaseOrder/',
+                replaceInfo:[],
                 backStepLayer:false,
                 auditResults:[
                     {status:0,name:'审核不通过'},
@@ -127,7 +142,10 @@
                     if(res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
                     }
-                    this.orderUrl = this.orderUrl + res.formId;
+                    // 替换料详情
+                    this.$http.get(`/order-product/replace-material-detail/${res.formId}`).then(res=>{
+                        this.replaceInfo.push(res);
+                    });
                 }).catch(e => {
                     this.$toast(e.message || e.msg)
                 })

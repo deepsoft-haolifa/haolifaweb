@@ -145,13 +145,13 @@ export default {
   },
   methods: {
     addBusinessStateList () {
-      this.form.financialInfo.businessStateList.push({id: Math.random(), desc: '', profit: '', sale: '', year: ''})
+      this.form.financialInfo.businessStateList.push({desc: '', profit: '', sale: '', year: ''})
     },
     removeBusinessStateList (index) {
       this.form.financialInfo.businessStateList.splice(index, 1)
     },
     addOragn () {
-      this.form.mainOrgan.push({id: Math.random(), department: '', fax: '', leader: '', phone: ''})
+      this.form.mainOrgan.push({ department: '', fax: '', leader: '', phone: ''})
     },
     removeOragn (index) {
       this.form.mainOrgan.splice(index, 1)
@@ -159,10 +159,10 @@ export default {
     getInfo (id) {
       this.$http.get(`/haolifa/supplier/info?id=${id}`).then(res => {
         res = parseJson(res, ['credentialsInfo', 'financialInfo', 'mainOrgan', 'qualityAssuranceInfo', 'staffInfo'])
-        if (res.mainOrgan && res.mainOrgan.length) res.mainOrgan.forEach(item => { item.id = Math.random() })
-        if (res.financialInfo && res.financialInfo.businessStateList && res.financialInfo.businessStateList.length) {
-          res.financialInfo.businessStateList.forEach(item => { item.id = Math.random().toString() })
-        }
+        // if (res.mainOrgan && res.mainOrgan.length) res.mainOrgan.forEach(item => { item.id = Math.random() })
+        // if (res.financialInfo && res.financialInfo.businessStateList && res.financialInfo.businessStateList.length) {
+        //   res.financialInfo.businessStateList.forEach(item => { item.id = Math.random().toString() })
+        // }
         for (let key in this.form) {
           this.form[key] = res[key]
         }

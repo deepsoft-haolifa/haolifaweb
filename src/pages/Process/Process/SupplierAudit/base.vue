@@ -27,6 +27,9 @@
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
             </div>
             <div class="flex">
+                <upload-box btnText='附件上传' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' style='width: 50%'></upload-box>
+            </div>
+            <div class="flex" style="margin-top:10px;">
               <btn @click="handleStepM(1)">同意</btn>
               <btn class="ml-10" @click="handleStepM(0)">不同意</btn>
               <btn class="ml-10" @click="backStepM()">退回</btn>
@@ -56,10 +59,12 @@
               <td>{{item.auditUserName}}</td>
               <td>{{auditResults[item.auditResult].name}}</td>
               <td>{{item.auditInfo}}</td>
-              <td v-if="item.forms">
-                <a v-for="form in item.forms"></a>
+              <td v-if="item.accessory">
+                <a v-for="(file,index) in item.accessory" :key="index" :href="file.fileUrl">
+                    {{file.fileName}}
+                </a>
               </td>
-              <td v-if="!item.forms">
+              <td v-else>
                 无
               </td>
             </tr>
@@ -107,9 +112,15 @@
                     formId:0,
                     formType:0,
                     backStepId:null,
-                    condition:true
+                    condition:true,
+                    accessorys: [{
+                        fileName: "",
+                        fileUrl: ""
+                    }],
                 },
-                backSteps:[]
+                backSteps:[],
+                fileList:[],
+                fileName:""
             }
         },
         created () {
@@ -140,6 +151,32 @@
                     this.$toast(e.msg || e.message)
                 })
 
+            },
+            uploadFile(file, fileList) {
+                this.loading = true
+                this.loadingMsg = '正在上传'
+                fileToBase64(file.source).then(base64Str => {
+                    this.$http.post('/haolifa/file/uploadFileBase64', {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    }).then(res => {
+                        this.handleStep.accessorys[0].fileUrl = res
+                        this.handleStep.accessorys[0].fileName = file.name;
+                        this.loading = false
+                    }).catch(e => {
+                        this.$toast(e.msg || e.message)
+                        this.loading = false
+                    })
+                })
+            },
+            removeFile(){
+                return new Promise(
+                    (resolve,reject)=> {
+                        this.handleStep.accessorys[0].fileUrl = res
+                        this.handleStep.accessorys[0].fileName = fileName;
+                        resolve()
+                    }
+                )
             },
             backStepM() {
                 this.$http.get(`/haolifa/flowInstance/backSteps/${this.handleStep.id}`).then(res=> {

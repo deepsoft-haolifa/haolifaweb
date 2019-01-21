@@ -18,6 +18,9 @@
         <div class="node-title mb-10">
           <span class="b">待审批附件：</span><span><a class="a" flat style="color: #008eff" :href="orderUrl">下载生产订单</a></span>
         </div>
+        <div class="node-title mb-10">
+          <span class="b">待审批附件预览：</span><span><a target="_blank" class="a" flat style="color: #008eff" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl">生产订单预览</a></span>
+        </div>
       </div>
       <div v-if="data.dealStep">
         <div class="flex-item mt-10 mb-10">
@@ -67,6 +70,9 @@
               <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
             </div>
             <div class="flex">
+                <upload-box btnText='附件上传' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' style='width: 50%'></upload-box>
+            </div>
+            <div class="flex" style="margin-top:10px;">
               <btn @click="handleStepM(1)">同意</btn>
               <btn class="ml-10" @click="handleStepM(0)">不同意</btn>
               <btn class="ml-10" @click="backStepM()">退回</btn>
@@ -88,7 +94,7 @@
               <th>意见</th>
               <th>审核附件</th>
             </tr>
-            <tr v-for="(item, i) in data.historyInfos">
+            <tr v-for="(item, i) in data.historyInfos" :key="i">
               <td>{{item.historyId}}</td>
               <td>{{item.instanceId}}</td>
               <td>{{item.auditResult == 3?'发起':'审批'}}</td>
@@ -96,10 +102,12 @@
               <td>{{item.auditUserName}}</td>
               <td>{{auditResults[item.auditResult].name}}</td>
               <td>{{item.auditInfo}}</td>
-              <td v-if="item.forms">
-                <a v-for="form in item.forms"></a>
+              <td v-if="item.accessory">
+                <a v-for="(file,index) in item.accessory" :key="index" :href="file.fileUrl">
+                    {{file.fileName}}
+                </a>
               </td>
-              <td v-if="!item.forms">
+              <td v-else>
                 无
               </td>
             </tr>
@@ -124,6 +132,7 @@
 
 <script>
     import moment from 'moment'
+    import fileToBase64 from '../../../../utils/fileToBase64'
 
     export default {
         name: 'p-p-base',
@@ -147,7 +156,12 @@
                     formId:0,
                     formType:0,
                     backStepId:null,
-                    condition:true
+                    condition:true,
+                    accessorys: [{
+                        fileName: "",
+                        fileUrl: ""
+                    }],
+
                 },
                 backSteps:[],
                 dealStepId:0,
@@ -161,7 +175,9 @@
                 },
                 orderInfo:null,
                 actionType:0,
-                purchaseList:[]
+                purchaseList:[],
+                fileList:[],
+                fileName:""
             }
         },
         created () {
@@ -172,6 +188,15 @@
                 this.$http.get(`/haolifa/flowInstance/flow-history/${this.$route.query.instanceId}`).then(res => {
                     res.createTime = moment(res.createTime).format('YYYY-MM-DD HH:mm')
                     this.data = res;
+                    // for(let i in this.data.historyInfos){
+                    //     console.log(i)
+                    //     for(let j in this.data.historyInfos[i].accessory){
+                    //         // console.log(j)
+                    //         this.data.historyInfos[i].accessory[j] = JSON.stringify(this.data.historyInfos[i].accessory[j])
+                    //     }
+                    // }
+                    // console.log(res)
+                    this.data.historyInfos.accessory
                     this.handleStep.id = res.instanceId;
                     if(res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
@@ -307,6 +332,33 @@
                     this.$toast(e.msg || e.message)
                 })
 
+            },
+            uploadFile(file, fileList) {
+                this.loading = true
+                this.loadingMsg = '正在上传'
+                fileToBase64(file.source).then(base64Str => {
+                    this.$http.post('/haolifa/file/uploadFileBase64', {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    }).then(res => {
+                        this.handleStep.accessorys[0].fileUrl = res
+                        this.handleStep.accessorys[0].fileName = file.name;
+                        console.log(this.handleStep.accessorys)
+                        this.loading = false
+                    }).catch(e => {
+                        this.$toast(e.msg || e.message)
+                        this.loading = false
+                    })
+                })
+            },
+            removeFile(){
+                return new Promise(
+                    (resolve,reject)=> {
+                        this.handleStep.accessorys[0].fileUrl = res
+                        this.handleStep.accessorys[0].fileName = fileName;
+                        resolve()
+                    }
+                )
             },
             backStepM() {
                 this.$http.get(`/haolifa/flowInstance/backSteps/${this.handleStep.id}`).then(res=> {

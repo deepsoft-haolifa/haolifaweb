@@ -220,7 +220,7 @@
                                     // 核料完成：
                                     this.actionType = 0
                                     // 查看是否需要采购
-                                    this.$http.get(`/haolifa/applyBuy/product/list`).then(res=>{
+                                    this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res=>{
                                       res.length > 0? this.handleStep.condition = false:true;
                                     });
                                 }
@@ -228,8 +228,9 @@
                         } else if(this.dealStepId == 57) {
                             this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
                         } else if(this.dealStepId == 54) {
-                            this.$http.get(`/haolifa/applyBuy/product/list`).then(res=>{
-                               this.purchaseList = JOSN.parse(JSON.stringify(res));
+                            this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res=>{
+                               this.purchaseList = JSON.parse(JSON.stringify(res));
+                               console.log('list',this.purchaseList);
                             });
                         }
                     });
@@ -254,7 +255,7 @@
                         return;
                     } else if(this.actionType == 2) {
                         // 提示 替换料审批中。
-                        this.$alert({
+                        this.$confirm({
                             title:'审批',
                             text: '订单存在替换料审批，不能进行其它操作？',
                             color: 'blue',

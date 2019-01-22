@@ -48,8 +48,8 @@
                 loading: false,
                 filter: {
                     // 待核料
-                    orderStatus:2
-                }
+                    orderStatus:0
+                },
             }
         },
         methods: {

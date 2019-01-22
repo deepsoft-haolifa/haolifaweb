@@ -45,6 +45,10 @@
             <div class="flex" v-if="dealStepId == 54">
               <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
             </div>
+            <div class="flex" v-if="dealStepId == 55">
+              <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
+            </div>
+
             <div>
               <div v-if="purchaseList.length>0">
                 <div class="flex-item mt-10 mb-10"><span class="f-20">待采购项</span></div>
@@ -222,6 +226,7 @@
                                     // 查看是否需要采购
                                     this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res=>{
                                       res.length > 0? this.handleStep.condition = false:true;
+                                      console.log('condition',this.handleStep.condition)
                                     });
                                 }
                             }
@@ -232,6 +237,12 @@
                                this.purchaseList = JSON.parse(JSON.stringify(res));
                                console.log('list',this.purchaseList);
                             });
+                        } else if(this.dealStepId == 55) {
+                            this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res=>{
+                                this.purchaseList = JSON.parse(JSON.stringify(res));
+                                console.log('list',this.purchaseList);
+                            });
+                            this.updateInfo.purchaseFeedbackTime = moment(res.purchaseFeedbackTime).format('YYYY-MM-DD')
                         }
                     });
                     this.updateInfo.orderNo = this.data.formNo;
@@ -257,7 +268,7 @@
                         // 提示 替换料审批中。
                         this.$confirm({
                             title:'审批',
-                            text: '订单存在替换料审批，不能进行其它操作？',
+                            text: '订单存在替换料审批，不能进行其它操作',
                             color: 'blue',
                             time:1000
                         });
@@ -288,12 +299,16 @@
                             status = 2;
                         } else if(this.dealStepId == 54) {
                             // 采购反馈
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${this.updateInfo.purchaseFeedbackTime}&orderNo=${this.updateInfo.orderNo}`).then(res=>{
+                            });
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
                                 this.updateInfo.purchaseFeedbackTime = null;
                             });
                         } else if(this.dealStepId == 55) {
                             // 综合计划
                             status = 5;
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/2`).then(res=>{
+                            });
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
                                 this.updateInfo.finishFeedbackTime = null;
                             });
@@ -315,7 +330,7 @@
                         // 退回操作
                         if(this.handleStep.backStepId == 53) {
                             // 核料中
-                            status = 2;
+                            status = 4;
                         }
                         if(this.handleStep.backStepId == 56) {
                             // 待生产
@@ -328,6 +343,8 @@
                         status = 14;
                         let updateStatus = {orderNo:this.data.formNo,status:status}
                         this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
+                        // 释放料
+                        this.$http.post(`/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`)
                     }
                 }).catch(e=>{
                     this.$toast(e.msg || e.message)

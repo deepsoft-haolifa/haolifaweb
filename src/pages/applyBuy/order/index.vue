@@ -5,7 +5,6 @@
   <div class="flex-v-center search-bar" style="margin-right: 20px;">
     <i class="icon f-20 c-8">search</i>
     <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
-      <option value="0">未处理</option>
       <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
     </select>
   </div></div>
@@ -31,10 +30,9 @@
         <td>{{item.purchaseNumber}}</td>
         <td>{{item.createTime}}</td>
         <td>{{item.arrivalTime}}</td>
-        <td>{{item.status == 0 ?'待处理':'已处理'}}</td>
+        <td>{{allStatus[item.status-1].text}}</td>
         <td class="t-right">
-         <icon-btn small @click="edit(item)">edit</icon-btn>
-          <icon-btn small @click="remove(item)">delete</icon-btn>
+          <a href="javascript:;" v-if="item.status==2" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
         </td>
       </template>
     </data-list>
@@ -51,16 +49,25 @@ export default {
     return {
       filter: {
         type:0,
-        status: 0
+        status: 1
       },
       allStatus: [
-
-          {value: 1, text: '已处理'},
-          {value: 2, text: '全部'}
+          {value: 1, text: '待审批'},
+          {value: 2, text: '待采购'},
+          {value: 3, text: '已处理'},
+          {value: 4, text: '审批不通过'},
       ]
     }
   },
   methods: {
+      dealApplyBuy(itemId){
+        this.$http.post(`/haolifa/applyBuy/updateStatus/${itemId}`).then(res=>{
+            this.$toast("处理成功")
+            this.$refs.list.update();
+        }).catch(e=>{
+            this.$toast("处理失败")
+        })
+      },
     edit (item) {
         this.$confirm({
             title: '更新确认',

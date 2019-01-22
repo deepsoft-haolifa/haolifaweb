@@ -78,26 +78,26 @@ export default {
                 });
         },
         progress(item) {
-            // this.$http
-            //     .post("/haolifa/flowInstance/create", {
-            //         flowId: 1,
-            //         formId: item.id,
-            //         formType: 1,
-            //         formNo: item.orderNo,
-            //         summary: "生产订单审批"
-            //     })
-            //     .then(res => {
-            //         this.loading = false;
-            //         this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
-            //     });
             this.$http
-                .post("/haolifa/order-product/updateStatus", {
-                    orderNo: item.orderNo,
-                    status: 1
+                .post("/haolifa/flowInstance/create", {
+                    flowId: 1,
+                    formId: item.id,
+                    formType: 1,
+                    formNo: item.orderNo,
+                    summary: "生产订单审批"
                 })
                 .then(res => {
-                    this.loading = false;
-                    this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
+                    // this.loading = false;
+                    // this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
+                    this.$http
+                        .post("/haolifa/order-product/updateStatus", {
+                            orderNo: item.orderNo,
+                            status: 1
+                        })
+                        .then(res => {
+                            this.loading = false;
+                            this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
+                        });
                 });
         },
         remove(item) {

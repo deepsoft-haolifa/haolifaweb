@@ -1,0 +1,165 @@
+<template>
+    <div class="abs scroll-y">
+        <div class="form-content metalwork-info">
+            <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
+                <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
+                <div class="flex-item">详情</div>
+            </div>
+            <table class="f-14 order-info">
+                <tr>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 8%;"></td>
+                    <td style="width: 10%;"></td>
+                    <td style="width: 10%;"></td>
+                </tr>
+                <tr>
+                    <td colspan="12" class="b">订单编号 : {{info.orderNo}}</td>
+                </tr>
+                <tr>
+                    <td colspan="12" class="b">成品合同订单号 : {{info.orderContractNo}}</td>
+                </tr>
+                <tr>
+                    <td colspan="12" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="b">
+                        订单合同:
+                        <a :href="info.orderContractUrl">下载</a>
+                    </td>
+                    <td colspan="6" class="b">
+                        订单备份合同:
+                        <a :href="info.orderContractExtendUrl">下载</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="b">装配车间: {{info.assemblyShop}}</td>
+                    <td colspan="6" class="b">装配小组: {{info.assemblyGroup}}</td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
+                    <td colspan="6" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
+                </tr>
+                <tr>
+                    <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
+                    <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
+                </tr>
+                <tr>
+                    <td colspan="12" class="b">技术清单: {{info.technicalRequire}}</td>
+                </tr>
+                <tr>
+                    <td colspan="12" class="b">订单产品列表</td>
+                </tr>
+                <tr>
+                    <td colspan="1" class="b">产品编号</td>
+                    <td colspan="1" class="b">产品名称</td>
+                    <td colspan="1" class="b">型号</td>
+                    <td colspan="1" class="b">标签属性</td>
+                    <td colspan="1" class="b">规格</td>
+                    <td colspan="1" class="b">颜色</td>
+                    <td colspan="1" class="b">产品数量</td>
+                    <td colspan="1" class="b">单价</td>
+                    <td colspan="1" class="b">总计价格</td>
+                    <td colspan="1" class="b">材质说明</td>
+                    <td colspan="2" class="b">产品备注</td>
+                </tr>
+                <tr v-for="(item,index) in info.orderProductAssociates" :key="index">
+                    <td colspan="1">{{item.productNo}}</td>
+                    <td colspan="1">{{item.productName}}</td>
+                    <td colspan="1">{{item.productModel}}</td>
+                    <td colspan="1">{{item.lable}}</td>
+                    <td colspan="1">{{item.specifications}}</td>
+                    <td colspan="1">{{item.productColor}}</td>
+                    <td colspan="1">{{item.productNumber}}</td>
+                    <td colspan="1">{{item.price}}</td>
+                    <td colspan="1">{{item.totalPrice}}</td>
+                    <td colspan="1">{{item.materialDescription}}</td>
+                    <td colspan="2">{{item.productRemark}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</template>
+
+<script>
+// import parseJson from '@/utils/parseJson'
+export default {
+    name: "metalwork-info",
+    data() {
+        return {
+            info: {},
+            orderStatusList: {}
+        };
+    },
+    created() {
+        const { orderNo } = this.$route.query;
+        this.getInfo(orderNo);
+        this.getOrderStatusList();
+    },
+    methods: {
+        getInfo(orderNo) {
+            this.$http
+                .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
+                .then(res => {
+                    this.info = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getOrderStatusList() {
+            this.$http
+                .get("/haolifa/order-product/order-status-list")
+                .then(res => {
+                    for (let i in res) {
+                        this.orderStatusList[res[i].code] = res[i].desc;
+                    }
+                });
+        }
+    }
+};
+</script>
+
+<style lang="less">
+.metalwork-info {
+    padding: 30px 20px;
+    tr:first-child td {
+        padding: 0;
+        border: none;
+    }
+    th {
+        font-weight: normal;
+        color: #888;
+    }
+    td {
+        color: #444;
+    }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #fff;
+        border: 1px solid #ddd;
+    }
+    .checkbox-list {
+        flex-wrap: wrap;
+    }
+    .checkbox-item {
+        line-height: 1em;
+        width: 180px;
+        margin: 5px 0;
+    }
+}
+.order-info {
+    th,
+    td {
+        white-space: unset !important;
+    }
+}
+</style>

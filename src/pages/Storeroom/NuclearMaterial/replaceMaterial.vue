@@ -81,7 +81,7 @@
                 }).catch(e => {
                     this.$toast(e.msg || e.message)
                 });
-                this.$http.get(`/haolifa/order-product/order-material?orderNo=${orderNo}`).then(res=>{
+                this.$http.get(`/haolifa/order-product/replace-material-list?orderNo=${orderNo}`).then(res=>{
                     this.preCheckMaterList = res;
                     console.log('处理过后', res);
 

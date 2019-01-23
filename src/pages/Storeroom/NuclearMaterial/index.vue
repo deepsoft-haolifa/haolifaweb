@@ -62,7 +62,7 @@
                 this.$router.push(`/nuclear-form?orderNo=${item.orderNo}`)
             },
             replaceForm(item) {
-
+                this.$router.push(`/nuclear-replace-form?orderNo=${item.orderNo}`)
             }
         }
     }

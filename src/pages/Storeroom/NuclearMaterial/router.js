@@ -13,4 +13,9 @@ export default [{
   name: 'nuclear-material-form',
   component: () => import(/* webpackChunkName: "roomadd" */ './nuclearForm.vue'),
   meta: { level: 3, title: '核料清单', open: false, id: 'kghl' }
-}]
+}, {
+        path: '/nuclear-replace-form',
+        name: 'nuclear-material-replace',
+        component: () => import(/* webpackChunkName: "roomadd" */ './replaceMaterial.vue'),
+        meta: { level: 3, title: '替换料清单', open: false, id: 'kghl' }
+    }]

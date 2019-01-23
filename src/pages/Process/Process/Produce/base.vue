@@ -294,9 +294,16 @@ export default {
                     // 提示 替换料审批中。
                     this.$confirm({
                         title: "审批",
-                        text: "订单存在替换料审批，不能进行其它操作？",
+                        text: "订单存在替换料审批，不能进行其它操作",
                         color: "blue",
-                        time: 1000
+                        btns: ["取消", "查看"],
+                        yes: () => {
+                            this.$router.push(
+                                `/nuclear-material?orderNo=${
+                                    this.orderInfo.orderNo
+                                    }`
+                            );
+                        }
                     });
                     return;
                 }
@@ -340,7 +347,7 @@ export default {
                         } else if(this.dealStepId == 55) {
                             // 综合计划
                             status = 5;
-                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/2`).then(res=>{
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${this.updateInfo.orderNo}`).then(res=>{
                             });
                             this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
                                 this.updateInfo.finishFeedbackTime = null;

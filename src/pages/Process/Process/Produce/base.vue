@@ -1,208 +1,230 @@
 <template>
-  <div class="p-p-base" v-if="data">
-    <div class="node">
-      <div class="flex-item mt-10 mb-10"><span class="f-20">基本信息</span></div>
-      <div class="node">
-        <div class="node-title mb-10">
-          <span class="b">流程描述：</span><span class="mr-15">{{data.summary}}</span>
-        </div>
-        <div class="node-title mb-10">
-          <span class="b">生产订单号：</span><span class="mr-15">{{data.formNo}}</span>
-        </div>
-        <div class="node-title mb-10">
-          <span class="b">发 起 人：</span><span class="mr-15">{{data.initUserName}}</span>
-        </div>
-        <div class="node-title mb-10">
-          <span class="b">发起时间：</span><span>{{data.createTime}}</span>
-        </div>
-        <div class="node-title mb-10">
-          <span class="b">待审批附件：</span><span><a class="a" flat style="color: #008eff" :href="orderUrl">下载生产订单</a></span>
-        </div>
-        <div class="node-title mb-10">
-          <span class="b">待审批附件预览：</span><span><a target="_blank" class="a" flat style="color: #008eff" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl">生产订单预览</a></span>
-        </div>
-      </div>
-      <div v-if="data.dealStep">
-        <div class="flex-item mt-10 mb-10">
-          <span class="f-20">审批栏</span>
-          <span class="f-10 ml-20">当前节点:{{data.dealStep.stepName}}</span>
-        </div>
+    <div class="p-p-base" v-if="data">
         <div class="node">
-          <div>
-            <div class="flex" v-if="dealStepId == 51">
-              <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
-            </div>
-            <div class="flex" v-if="dealStepId == 52 || dealStepId == 53">
-              <input-box :disabled="true" v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
-            </div>
-            <div class="flex" v-if="dealStepId == 56">
-              <input-box v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
-            </div>
-            <div class="flex" v-if="dealStepId == 57">
-              <input-box :disabled="true" v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
-              <input-box v-model="updateInfo.assemblyGroup" class="flex-item" label="装配小组" style="margin-right: 20px;"></input-box>
-            </div>
-            <div class="flex" v-if="dealStepId == 54">
-              <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
-            </div>
-            <div class="flex" v-if="dealStepId == 55">
-              <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
+            <div class="flex-item mt-10 mb-10">
+                <span class="f-20">基本信息</span>
+                <btn @click="nuclear(data.formNo)" style="left: 74%;">核料清单查看</btn>
             </div>
 
-            <div>
-              <div v-if="purchaseList.length>0">
-                <div class="flex-item mt-10 mb-10"><span class="f-20">待采购项</span></div>
-                <div class="flex-item scroll-y">
-                  <table class="data-table">
-                    <tr>
-                      <th>生产订单号</th>
-                      <th>零件名称</th>
-                      <th>零件图号</th>
-                      <th>采购数量</th>
-                    </tr>
-                    <tr v-for="(item, i) in purchaseList">
-                      <td>{{item.productOrderNo}}</td>
-                      <td>{{item.materialName}}</td>
-                      <td>{{item.materialGraphNo}}</td>
-                      <td>{{item.purchaseNumber}}</td>
-                    </tr>
-                  </table>
+            <div class="node">
+                <div class="node-title mb-10">
+                    <span class="b">流程描述：</span>
+                    <span class="mr-15">{{data.summary}}</span>
                 </div>
-              </div>
+                <div class="node-title mb-10">
+                    <span class="b">生产订单号：</span>
+                    <span class="mr-15">{{data.formNo}}</span>
+                </div>
+                <div class="node-title mb-10">
+                    <span class="b">发 起 人：</span>
+                    <span class="mr-15">{{data.initUserName}}</span>
+                </div>
+                <div class="node-title mb-10">
+                    <span class="b">发起时间：</span>
+                    <span>{{data.createTime}}</span>
+                </div>
+                <div class="node-title mb-10">
+                    <span class="b">待审批附件：</span>
+                    <span>
+                        <a class="a" flat style="color: #008eff" :href="orderUrl">下载生产订单</a>
+                    </span>
+                </div>
+                <div class="node-title mb-10">
+                    <span class="b">待审批附件预览：</span>
+                    <span>
+                        <a target="_blank" class="a" flat style="color: #008eff" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl">生产订单预览</a>
+                    </span>
+                </div>
             </div>
-            <div class="flex">
-              <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
+            <div v-if="data.dealStep">
+                <div class="flex-item mt-10 mb-10">
+                    <span class="f-20">审批栏</span>
+                    <span class="f-10 ml-20">当前节点:{{data.dealStep.stepName}}</span>
+                </div>
+                <div class="node">
+                    <div>
+                        <div class="flex" v-if="dealStepId == 51">
+                            <input-box v-model="updateInfo.technicalRequire" :multi-line="true" class="flex-item" label="技术清单说明" style="margin-right: 20px;"></input-box>
+                        </div>
+                        <div class="flex" v-if="dealStepId == 52 || dealStepId == 53">
+                            <input-box
+                                :disabled="true"
+                                v-model="updateInfo.technicalRequire"
+                                :multi-line="true"
+                                class="flex-item"
+                                label="技术清单说明"
+                                style="margin-right: 20px;"
+                            ></input-box>
+                        </div>
+                        <div class="flex" v-if="dealStepId == 56">
+                            <input-box v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
+                        </div>
+                        <div class="flex" v-if="dealStepId == 57">
+                            <input-box :disabled="true" v-model="updateInfo.assemblyShop" class="flex-item" label="装配车间" style="margin-right: 20px;"></input-box>
+                            <input-box v-model="updateInfo.assemblyGroup" class="flex-item" label="装配小组" style="margin-right: 20px;"></input-box>
+                        </div>
+                        <div class="flex" v-if="dealStepId == 54">
+                            <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
+                        </div>
+                        <div class="flex" v-if="dealStepId == 55">
+                            <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
+                        </div>
+                        <div>
+                            <div v-if="purchaseList.length>0">
+                                <div class="flex-item mt-10 mb-10">
+                                    <span class="f-20">待采购项</span>
+                                </div>
+                                <div class="flex-item scroll-y">
+                                    <table class="data-table">
+                                        <tr>
+                                            <th>生产订单号</th>
+                                            <th>零件名称</th>
+                                            <th>零件图号</th>
+                                            <th>采购数量</th>
+                                        </tr>
+                                        <tr v-for="(item, i) in purchaseList">
+                                            <td>{{item.productOrderNo}}</td>
+                                            <td>{{item.materialName}}</td>
+                                            <td>{{item.materialGraphNo}}</td>
+                                            <td>{{item.purchaseNumber}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
+                        </div>
+                        <div class="flex">
+                            <upload-box btnText="附件上传" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" style="width: 50%"></upload-box>
+                        </div>
+                        <div class="flex" style="margin-top:10px;">
+                            <btn @click="handleStepM(1)">同意</btn>
+                            <btn class="ml-10" @click="handleStepM(0)">不同意</btn>
+                            <btn class="ml-10" @click="backStepM()">退回</btn>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flex">
-                <upload-box btnText='附件上传' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' style='width: 50%'></upload-box>
+            <div v-if="data.historyInfos">
+                <div class="flex-item mt-10 mb-10">
+                    <span class="f-20">审批历史</span>
+                </div>
+                <div class="flex-item scroll-y">
+                    <table class="data-table">
+                        <tr>
+                            <th style="width: 60px;">ID</th>
+                            <th>实例ID</th>
+                            <th>节点类型</th>
+                            <th>节点名称</th>
+                            <th>审核人</th>
+                            <th>审核结果</th>
+                            <th>意见</th>
+                            <th>审核附件</th>
+                        </tr>
+                        <tr v-for="(item, i) in data.historyInfos" :key="i">
+                            <td>{{item.historyId}}</td>
+                            <td>{{item.instanceId}}</td>
+                            <td>{{item.auditResult == 3?'发起':'审批'}}</td>
+                            <td>{{item.stepName}}</td>
+                            <td>{{item.auditUserName}}</td>
+                            <td>{{auditResults[item.auditResult].name}}</td>
+                            <td>{{item.auditInfo}}</td>
+                            <td v-if="item.accessory">
+                                <a v-for="(file,index) in item.accessory" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
+                            </td>
+                            <td v-else>无</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="flex" style="margin-top:10px;">
-              <btn @click="handleStepM(1)">同意</btn>
-              <btn class="ml-10" @click="handleStepM(0)">不同意</btn>
-              <btn class="ml-10" @click="backStepM()">退回</btn>
-            </div>
-          </div>
         </div>
-      </div>
-      <div v-if="data.historyInfos">
-        <div class="flex-item mt-10 mb-10"><span class="f-20">审批历史</span></div>
-        <div class="flex-item scroll-y">
-          <table class="data-table">
-            <tr>
-              <th style="width: 60px;">ID</th>
-              <th>实例ID</th>
-              <th>节点类型</th>
-              <th>节点名称</th>
-              <th>审核人</th>
-              <th>审核结果</th>
-              <th>意见</th>
-              <th>审核附件</th>
-            </tr>
-            <tr v-for="(item, i) in data.historyInfos" :key="i">
-              <td>{{item.historyId}}</td>
-              <td>{{item.instanceId}}</td>
-              <td>{{item.auditResult == 3?'发起':'审批'}}</td>
-              <td>{{item.stepName}}</td>
-              <td>{{item.auditUserName}}</td>
-              <td>{{auditResults[item.auditResult].name}}</td>
-              <td>{{item.auditInfo}}</td>
-              <td v-if="item.accessory">
-                <a v-for="(file,index) in item.accessory" :key="index" :href="file.fileUrl">
-                    {{file.fileName}}
-                </a>
-              </td>
-              <td v-else>
-                无
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
 
-    <layer v-if="backStepLayer" :title="'退回节点'" width="450px">
-      <div class="node">
-        <div class="node-item" v-for="item in backSteps">
-          <radio-box v-model="handleStep.backStepId" :label="item.stepId"></radio-box>{{item.stepName}}
-        </div>
-      </div>
-      <div class="layer-btns">
-        <btn flat @click="cancel()">取消</btn>
-        <btn flat color="#008eff" @click="complete()">提交</btn>
-      </div>
-    </layer>
-  </div>
+        <layer v-if="backStepLayer" :title="'退回节点'" width="450px">
+            <div class="node">
+                <div class="node-item" v-for="item in backSteps">
+                    <radio-box v-model="handleStep.backStepId" :label="item.stepId"></radio-box>
+                    {{item.stepName}}
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="cancel()">取消</btn>
+                <btn flat color="#008eff" @click="complete()">提交</btn>
+            </div>
+        </layer>
+    </div>
 </template>
 
 <script>
-    import moment from 'moment'
-    import fileToBase64 from '../../../../utils/fileToBase64'
+import moment from "moment";
+import fileToBase64 from "../../../../utils/fileToBase64";
 
-    export default {
-        name: 'p-p-base',
-        data () {
-            return {
-                data: null,
-                orderUrl:'/haolifa/export/purchaseOrder/',
-                backStepLayer:false,
-                auditResults:[
-                    {status:0,name:'审核不通过'},
-                    {status:1,name:'审核通过'},
-                    {status:2,name:'退回'},
-                    {status:3,name:'流程初始化'}
-                ],
-                handleStep:{
-                    id:0,
-                    stepId:0,
-                    auditInfo:'',
-                    allotUserId:null,
-                    auditResult:1,
-                    formId:0,
-                    formType:0,
-                    backStepId:null,
-                    condition:true,
-                    accessorys: [{
+export default {
+    name: "p-p-base",
+    data() {
+        return {
+            data: null,
+            orderUrl: "/haolifa/export/purchaseOrder/",
+            backStepLayer: false,
+            auditResults: [
+                { status: 0, name: "审核不通过" },
+                { status: 1, name: "审核通过" },
+                { status: 2, name: "退回" },
+                { status: 3, name: "流程初始化" }
+            ],
+            handleStep: {
+                id: 0,
+                stepId: 0,
+                auditInfo: "",
+                allotUserId: null,
+                auditResult: 1,
+                formId: 0,
+                formType: 0,
+                backStepId: null,
+                condition: true,
+                accessorys: [
+                    {
                         fileName: "",
                         fileUrl: ""
-                    }],
-
-                },
-                backSteps:[],
-                dealStepId:0,
-                updateInfo:{
-                    orderNo:'',
-                    assemblyGroup:null,
-                    assemblyShop:null,
-                    finishFeedbackTime:null,
-                    purchaseFeedbackTime:null,
-                    technicalRequire:''
-                },
-                orderInfo:null,
-                actionType:0,
-                purchaseList:[],
-                fileList:[],
-                fileName:""
-            }
-        },
-        created () {
-            this.getData()
-        },
-        methods: {
-            getData () {
-                this.$http.get(`/haolifa/flowInstance/flow-history/${this.$route.query.instanceId}`).then(res => {
-                    res.createTime = moment(res.createTime).format('YYYY-MM-DD HH:mm')
+                    }
+                ]
+            },
+            backSteps: [],
+            dealStepId: 0,
+            updateInfo: {
+                orderNo: "",
+                assemblyGroup: null,
+                assemblyShop: null,
+                finishFeedbackTime: null,
+                purchaseFeedbackTime: null,
+                technicalRequire: ""
+            },
+            orderInfo: null,
+            actionType: 0,
+            purchaseList: [],
+            fileList: [],
+            fileName: ""
+        };
+    },
+    created() {
+        this.getData();
+    },
+    methods: {
+        getData() {
+            this.$http
+                .get(
+                    `/haolifa/flowInstance/flow-history/${
+                        this.$route.query.instanceId
+                    }`
+                )
+                .then(res => {
+                    res.createTime = moment(res.createTime).format(
+                        "YYYY-MM-DD HH:mm"
+                    );
                     this.data = res;
-                    // for(let i in this.data.historyInfos){
-                    //     console.log(i)
-                    //     for(let j in this.data.historyInfos[i].accessory){
-                    //         // console.log(j)
-                    //         this.data.historyInfos[i].accessory[j] = JSON.stringify(this.data.historyInfos[i].accessory[j])
-                    //     }
-                    // }
-                    // console.log(res)
-                    this.data.historyInfos.accessory
+                    this.data.historyInfos.accessory;
                     this.handleStep.id = res.instanceId;
-                    if(res.dealStep) {
+                    if (res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
                         this.dealStepId = res.dealStep.stepId;
                     }
@@ -210,23 +232,24 @@
                     this.$http.get(`/haolifa/order-product/details?orderNo=${this.data.formNo}`).then(res=>{
                         this.orderUrl = res.orderContractUrl;
                         this.orderInfo = res;
+                        this.updateInfo.orderNo = this.data.formNo;
                         if(this.dealStepId == 52 || this.dealStepId == 53) {
                             // 总工 核料 看到技术清单
                             this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
                             if(this.dealStepId == 53) { //库管核料
-                                if(res.orderStatus == '2'){
+                                if (res.orderStatus == '2') {
                                     // 核料中
                                     this.actionType = 1 // 去核料
-                                } else if(res.orderStatus == '3') {
+                                } else if (res.orderStatus == '3') {
                                     // 替换料审批中
                                     this.actionType = 2 // 提示不能操作。
-                                } else if(res.orderStatus == '4') {
+                                } else if (res.orderStatus == '4') {
                                     // 核料完成：
                                     this.actionType = 0
                                     // 查看是否需要采购
-                                    this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res=>{
-                                      res.length > 0? this.handleStep.condition = false:true;
-                                      console.log('condition',this.handleStep.condition)
+                                    this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res => {
+                                        res.length > 0 ? this.handleStep.condition = false : true;
+                                        console.log('condition', this.handleStep.condition)
                                     });
                                 }
                             }
@@ -245,59 +268,69 @@
                             this.updateInfo.purchaseFeedbackTime = moment(res.purchaseFeedbackTime).format('YYYY-MM-DD')
                         }
                     });
-                    this.updateInfo.orderNo = this.data.formNo;
                 }).catch(e => {
-                    this.$toast(e.message || e.msg)
-                })
-            },
-            handleStepM(auditResult) {
-                if(auditResult != 2) {
-                    if(this.actionType == 1) {
-                        // 提示去核料
-                        this.$confirm({
-                            title:'核料',
-                            text: '订单未核料，是否现在核料？',
-                            color: 'blue',
-                            btns:['稍后再说','现在核料'],
-                            yes:()=>{
-                                this.$router.push(`/nuclear-material?orderNo=${this.orderInfo.orderNo}`)
-                            }
-                        })
-                        return;
-                    } else if(this.actionType == 2) {
-                        // 提示 替换料审批中。
-                        this.$confirm({
-                            title:'审批',
-                            text: '订单存在替换料审批，不能进行其它操作',
-                            color: 'blue',
-                            time:1000
-                        });
-                        return;
-                    }
+                this.$toast(e.message || e.msg);
+            });
+        },
+        handleStepM(auditResult) {
+            if (auditResult != 2) {
+                if (this.actionType == 1) {
+                    // 提示去核料
+                    this.$confirm({
+                        title: "核料",
+                        text: "订单未核料，是否现在核料？",
+                        color: "blue",
+                        btns: ["稍后再说", "现在核料"],
+                        yes: () => {
+                            this.$router.push(
+                                `/nuclear-material?orderNo=${
+                                    this.orderInfo.orderNo
+                                }`
+                            );
+                        }
+                    });
+                    return;
+                } else if (this.actionType == 2) {
+                    // 提示 替换料审批中。
+                    this.$confirm({
+                        title: "审批",
+                        text: "订单存在替换料审批，不能进行其它操作？",
+                        color: "blue",
+                        time: 1000
+                    });
+                    return;
                 }
-                if(auditResult == 1 && this.dealStepId == 54) {
-                    if(this.updateInfo.purchaseFeedbackTime == null) {
-                        this.$toast("请填写采购完成日期");
-                        return;
-                    }
+            }
+            if (auditResult == 1 && this.dealStepId == 54) {
+                if (this.updateInfo.purchaseFeedbackTime == null) {
+                    this.$toast("请填写采购完成日期");
+                    return;
                 }
-                this.handleStep.auditResult = auditResult;
-                this.$http.post(`/haolifa/flowInstance/handleStep`,this.handleStep).then(res=> {
+            }
+            this.handleStep.auditResult = auditResult;
+            this.$http
+                .post(`/haolifa/flowInstance/handleStep`, this.handleStep)
+                .then(res => {
                     this.$toast("处理成功");
                     this.handleStep.backStepId = null;
                     this.backStepLayer = false;
                     this.getData();
-                    let status = 1;// 同意,审批中
-                    if(auditResult == 1) {
-                        if(this.dealStepId == 51) {
+                    let status = 1; // 同意,审批中
+                    if (auditResult == 1) {
+                        if (this.dealStepId == 51) {
                             // 技术员：技术清单
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.technicalRequire = '';
-                            });
-                        } else if(this.dealStepId == 52) {
+                            this.$http
+                                .post(
+                                    `/haolifa/order-product/updateInfo`,
+                                    this.updateInfo
+                                )
+                                .then(res => {
+                                    this.updateInfo.technicalRequire = "";
+                                });
+                        } else if (this.dealStepId == 52) {
                             // 技术总工
                             status = 2;
-                        } else if(this.dealStepId == 54) {
+                        } else if (this.dealStepId == 54) {
                             // 采购反馈
                             this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${this.updateInfo.purchaseFeedbackTime}&orderNo=${this.updateInfo.orderNo}`).then(res=>{
                             });
@@ -315,29 +348,51 @@
                         } else if(this.dealStepId == 56) {
                             // 生产调度
                             status = 6;
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.assemblyShop = null;
-                            });
-                        } else if(this.dealStepId == 57) {
+                            this.$http
+                                .post(
+                                    `/haolifa/order-product/updateInfo`,
+                                    this.updateInfo
+                                )
+                                .then(res => {
+                                    this.updateInfo.assemblyShop = null;
+                                });
+                        } else if (this.dealStepId == 57) {
                             // 车间主任
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.assemblyGroup = null;
-                            });
+                            this.$http
+                                .post(
+                                    `/haolifa/order-product/updateInfo`,
+                                    this.updateInfo
+                                )
+                                .then(res => {
+                                    this.updateInfo.assemblyGroup = null;
+                                });
                         }
-                        let updateStatus = {orderNo:this.data.formNo,status:status}
-                        this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
+                        let updateStatus = {
+                            orderNo: this.data.formNo,
+                            status: status
+                        };
+                        this.$http.post(
+                            `/haolifa/order-product/updateStatus`,
+                            updateStatus
+                        );
                     } else if (auditResult == 2) {
                         // 退回操作
-                        if(this.handleStep.backStepId == 53) {
+                        if (this.handleStep.backStepId == 53) {
                             // 核料中
                             status = 4;
                         }
-                        if(this.handleStep.backStepId == 56) {
+                        if (this.handleStep.backStepId == 56) {
                             // 待生产
                             status = 5;
                         }
-                        let updateStatus = {orderNo:this.data.formNo,status:status}
-                        this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
+                        let updateStatus = {
+                            orderNo: this.data.formNo,
+                            status: status
+                        };
+                        this.$http.post(
+                            `/haolifa/order-product/updateStatus`,
+                            updateStatus
+                        );
                     } else {
                         // 不通过
                         status = 14;
@@ -346,71 +401,92 @@
                         // 释放料
                         this.$http.post(`/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`)
                     }
-                }).catch(e=>{
-                    this.$toast(e.msg || e.message)
                 })
-
-            },
-            uploadFile(file, fileList) {
-                this.loading = true
-                this.loadingMsg = '正在上传'
-                fileToBase64(file.source).then(base64Str => {
-                    this.$http.post('/haolifa/file/uploadFileBase64', {
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        nuclear(supplierNo) {
+            this.$router.push(`/nuclear-form?orderNo=${supplierNo}`);
+        },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
                         base64Source: base64Str,
                         fileName: file.name
-                    }).then(res => {
-                        this.handleStep.accessorys[0].fileUrl = res
-                        this.handleStep.accessorys[0].fileName = file.name;
-                        console.log(this.handleStep.accessorys)
-                        this.loading = false
-                    }).catch(e => {
-                        this.$toast(e.msg || e.message)
-                        this.loading = false
                     })
-                })
-            },
-            removeFile(){
-                return new Promise(
-                    (resolve,reject)=> {
-                        this.handleStep.accessorys[0].fileUrl = res
-                        this.handleStep.accessorys[0].fileName = fileName;
-                        resolve()
-                    }
-                )
-            },
-            backStepM() {
-                this.$http.get(`/haolifa/flowInstance/backSteps/${this.handleStep.id}`).then(res=> {
+                    .then(res => {
+                        this.handleStep.accessorys[0].fileUrl = res;
+                        this.handleStep.accessorys[0].fileName = file.name;
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
+        },
+        removeFile() {
+            return new Promise((resolve, reject) => {
+                this.handleStep.accessorys[0].fileUrl = res;
+                this.handleStep.accessorys[0].fileName = fileName;
+                resolve();
+            });
+        },
+        backStepM() {
+            this.$http
+                .get(`/haolifa/flowInstance/backSteps/${this.handleStep.id}`)
+                .then(res => {
                     // console.log('backSteps', res);
-                    if(res.length > 0) {
+                    if (res.length > 0) {
                         this.backSteps = res;
                         this.backStepLayer = true;
                     } else {
-                        this.$toast("无可退回节点")
+                        this.$toast("无可退回节点");
                     }
-
-                }).catch(e=>{
-                    this.$toast(e.msg || e.message)
                 })
-            },
-            complete(){
-                this.handleStepM(2);
-            },
-            cancel(){
-                this.backStepLayer=false;
-                this.handleStep.backStepId=null;
-            }
-
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        complete() {
+            this.handleStepM(2);
+        },
+        cancel() {
+            this.backStepLayer = false;
+            this.handleStep.backStepId = null;
         }
     }
+};
 </script>
 
 <style lang="less">
-  .p-p-base{
+.p-p-base {
     padding: 20px;
-    .node{border: 1px solid #e6e6e6;padding: 15px;border-radius: 8px;}
-    tr:first-child td{padding: 0;border: none;}
-    th{font-weight: normal;color: #888;}
-    td{color: #444;}
-    th, td{padding: 10px;border: 1px solid #fff;border: 1px solid #ddd;}
-  }
+    .node {
+        border: 1px solid #e6e6e6;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    tr:first-child td {
+        padding: 0;
+        border: none;
+    }
+    th {
+        font-weight: normal;
+        color: #888;
+    }
+    td {
+        color: #444;
+    }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #fff;
+        border: 1px solid #ddd;
+    }
+}
 </style>

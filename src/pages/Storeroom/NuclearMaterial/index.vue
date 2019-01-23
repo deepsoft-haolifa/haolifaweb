@@ -8,8 +8,7 @@
           <th>订单编号</th>
           <th>成品合同订单号</th>
           <th style="width:50px;">订单合同URL</th>
-          <th>审批人</th>
-          <th>审批结果</th>
+          <th>合同状态</th>
           <th>创建时间</th>
           <th>更新时间</th>
           <th class="t-right" style="width: 80px;">操作</th>
@@ -20,15 +19,13 @@
           <td>{{item.orderNo}}</td>
           <td>{{item.contractOrderNo}}</td>
           <td><a class='fixed-length' :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a></td>
-          <td>{{item.auditUserId}}</td>
-          <td>{{item.auditResult}}</td>
-          <td>{{item.auditInfo}}</td>
-          <td>{{item.auditTime}}</td>
+          <td>{{statusList[item.orderStatus-2].text}}</td>
           <td>{{item.createTime}}</td>
           <td>{{item.updateTime}}</td>
           <td class="t-right">
-            <a href="javascript:;" class="blue" @click="nuclear(item)"  style="margin-right: 3px;">核料</a>
-            <a href="javascript:;" class="blue" @click="nuclearForm(item)"  style="margin-right: 3px;">核料清单</a>
+            <a href="javascript:;" class="blue" v-if="item.orderStatus == 2" @click="nuclear(item)"  style="margin-right: 3px;">核料</a>
+            <a href="javascript:;" class="blue" v-if="item.orderStatus != 2" @click="nuclearForm(item)"  style="margin-right: 3px;">核料清单</a>
+            <a href="javascript:;" class="blue" v-if="item.orderStatus == 3"  @click="replaceForm(item)"  style="margin-right: 3px;">替换料清单</a>
             <!--<a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">删除</a>-->
             <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
           </td>
@@ -48,8 +45,13 @@
                 loading: false,
                 filter: {
                     // 待核料
-                    orderStatus:0
+                    orderStatusList:[2,3,4]
                 },
+                statusList:[
+                    {value:2,text:'待核料'},
+                    {value:3,text:'替换料审批'},
+                    {value:4,text:'核料完成'}
+                ]
             }
         },
         methods: {
@@ -58,6 +60,9 @@
             },
             nuclearForm(item){
                 this.$router.push(`/nuclear-form?orderNo=${item.orderNo}`)
+            },
+            replaceForm(item) {
+
             }
         }
     }

@@ -398,9 +398,13 @@ export default {
                         status = 14;
                         let updateStatus = {orderNo:this.data.formNo,status:status}
                         this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
-                        // 释放料
-                        this.$http.post(`/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`)
-                    }
+                        if(this.dealStepId == 55) {
+                            // 释放料
+                            this.$http.post(`/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`)
+                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/4`).then(res=>{
+                            });
+                        }
+                        }
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

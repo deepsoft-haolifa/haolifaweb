@@ -11,39 +11,31 @@
             </div>
         </div>
 
-        <div class="mt-20" v-if="preCheckMaterList.length>0">
+        <div class="mt-20" v-if="replaceMaterList.length>0">
             <hr/>
-            <div class="flex-item mt-20 mb-10"><span class="f-20">核料清单</span></div>
+            <div class="flex-item mt-20 mb-10"><span class="f-20">替换料清单</span></div>
             <div class="node">
                 <div class="flex-item scroll-y ml-20">
                     <table class="data-table" >
                         <tr>
+                            <th>ID</th>
                             <th>物料名称</th>
                             <th>物料图号</th>
-                            <th>型号</th>
-                            <th>规格</th>
-                            <th>单价</th>
-                            <th>单位</th>
                             <th>需要数量</th>
                             <th>缺少数量</th>
-                            <th>核料状态</th>
-                            <th>是否替换</th>
                             <th>替换零件</th>
-                            <th>备注</th>
+                            <th>操作</th>
                         </tr>
-                        <tr v-for="(item, i) in preCheckMaterList">
+                        <tr v-for="(item, i) in replaceMaterList">
+                            <td>{{item.id}}</td>
                             <td>{{item.materialName}}</td>
                             <td>{{item.materialGraphNo}}</td>
-                            <td>{{item.model}}</td>
-                            <td>{{item.specifications}}</td>
-                            <td>{{item.price}}</td>
-                            <td>{{item.unit}}</td>
                             <td>{{item.materialCount}}</td>
                             <td>{{item.lackMaterialCount}}</td>
-                            <td>{{checkStatusList[item.checkStatus-1].text}}</td>
-                            <td>{{item.isReplace==0?'否':'是'}}</td>
                             <td>{{item.replaceMaterialGraphNo}}</td>
-                            <td>{{item.remark}}</td>
+                            <td>
+                                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="auditProcess(item.id)"></a>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -66,7 +58,7 @@
                     orderContractNo:'',
                     orderContractUrl:''
                 },
-                preCheckMaterList:[],
+                replaceMaterList:[],
             }
         },
         created () {
@@ -82,13 +74,16 @@
                     this.$toast(e.msg || e.message)
                 });
                 this.$http.get(`/haolifa/order-product/replace-material-list?orderNo=${orderNo}`).then(res=>{
-                    this.preCheckMaterList = res;
+                    this.replaceMaterList = res;
                     console.log('处理过后', res);
 
                 }).catch(e=>{
 
                 });
             }
+        },
+        auditProcess(formId) {
+            // 查看审批详情
         }
     }
 </script>

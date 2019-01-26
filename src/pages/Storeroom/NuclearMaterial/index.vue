@@ -25,9 +25,8 @@
           <td class="t-right">
             <a href="javascript:;" class="blue" v-if="item.orderStatus == 2" @click="nuclear(item)"  style="margin-right: 3px;">核料</a>
             <a href="javascript:;" class="blue" v-if="item.orderStatus != 2" @click="nuclearForm(item)"  style="margin-right: 3px;">核料清单</a>
+            <a href="javascript:;" class="blue" v-if="item.orderStatus != 2" @click="releaseForm(item.orderNo)"  style="margin-right: 3px;">释放料</a>
             <a href="javascript:;" class="blue" v-if="item.orderStatus == 3"  @click="replaceForm(item)"  style="margin-right: 3px;">替换料清单</a>
-            <!--<a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">删除</a>-->
-            <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
           </td>
         </template>
       </data-list>
@@ -58,11 +57,20 @@
             nuclear(item) {
                 this.$router.push(`/nuclear-material?orderNo=${item.orderNo}`)
             },
-            nuclearForm(item){
+            nuclearForm(item) {
                 this.$router.push(`/nuclear-form?orderNo=${item.orderNo}`)
             },
             replaceForm(item) {
                 this.$router.push(`/nuclear-replace-form?orderNo=${item.orderNo}`)
+            },
+            releaseForm(orderNo) {
+                this.$http.post(`/haolifa/order-product/release-material?orderNo=${orderNo}`).then(res=>{
+                    this.$toast("释放料成功")
+                    this.$http.post(`/haolifa/order-product/updateStatus`,{orderNo:orderNo,status:2})
+                    this.$refs.list.update();
+                }).catch(e=>{
+                    this.$toast("释放料失败")
+                })
             }
         }
     }

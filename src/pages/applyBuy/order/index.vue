@@ -49,9 +49,10 @@ export default {
     return {
       filter: {
         type:0,
-        status: 1
+        status: -1
       },
       allStatus: [
+          {value: -1, text:'全部'},
           {value: 1, text: '待审批'},
           {value: 2, text: '待采购'},
           {value: 3, text: '已处理'},
@@ -60,45 +61,13 @@ export default {
     }
   },
   methods: {
-      dealApplyBuy(itemId){
+      dealApplyBuy(itemId) {
         this.$http.post(`/haolifa/applyBuy/updateStatus/${itemId}`).then(res=>{
             this.$toast("处理成功")
             this.$refs.list.update();
         }).catch(e=>{
             this.$toast("处理失败")
         })
-      },
-    edit (item) {
-        this.$confirm({
-            title: '更新确认',
-            text: `您确定要更新完成此订单吗？<br><b>${item.materialName}</b>`,
-            color: 'red',
-            btns: ['取消', '确认'],
-            yes: () => {
-                this.$http.post(`/haolifa/applyBuy/updateStatus/${item.id}`).then(res => {
-                    this.$toast('更新成功')
-                    this.$refs.list.update()
-                }).catch(e => {
-                    this.$toast(e.msg || e.message)
-                })
-            }
-        })
-    },
-      remove (item) {
-          this.$confirm({
-              title: '删除确认',
-              text: `您确定要删除以下送检单吗？<br><b>${item.materialName}</b>`,
-              color: 'red',
-              btns: ['取消', '删除'],
-              yes: () => {
-                  this.$http.get(`/haolifa/entrust/delete/${item.id}`).then(res => {
-                      this.$toast('删除成功')
-                      this.$refs.list.update()
-                  }).catch(e => {
-                      this.$toast(e.msg || e.message)
-                  })
-              }
-          })
       }
   }
 }

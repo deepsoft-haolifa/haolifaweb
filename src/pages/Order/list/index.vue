@@ -77,6 +77,7 @@ export default {
                 });
         },
         progress(item) {
+            let id = "";
             this.$http
                 .post("/haolifa/flowInstance/create", {
                     flowId: 1,
@@ -86,6 +87,7 @@ export default {
                     summary: "生产订单审批"
                 })
                 .then(res => {
+                    id = res.instanceId;
                     // this.loading = false;
                     // this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
                     this.$http
@@ -95,9 +97,7 @@ export default {
                         })
                         .then(res => {
                             this.loading = false;
-                            this.$toast(
-                                `发起流程成功,流程ID: ${res.instanceId}`
-                            );
+                            this.$toast(`发起流程成功,流程ID: ${id}`);
                         });
                 });
         },

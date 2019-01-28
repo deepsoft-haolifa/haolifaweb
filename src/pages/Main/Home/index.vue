@@ -12,12 +12,12 @@
                         <div
                             v-if="item.flowId == 4"
                             class="c-8 date-time"
-                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
                             v-if="item.flowId == 3"
                             class="c-8 date-time"
-                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
                             v-if="item.flowId == 1"

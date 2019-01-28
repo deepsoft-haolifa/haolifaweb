@@ -30,7 +30,7 @@
         <td>{{item.purchaseNumber}}</td>
         <td>{{item.createTime}}</td>
         <td>{{item.arrivalTime}}</td>
-        <td>{{allStatus[item.status-1].text}}</td>
+        <td>{{allStatus[item.status].text}}</td>
         <td class="t-right">
           <a href="javascript:;" v-if="item.status==2" style="margin-right: 3px" class="blue" @click="dealApplyBuy(item.id)">处理完成</a>
         </td>

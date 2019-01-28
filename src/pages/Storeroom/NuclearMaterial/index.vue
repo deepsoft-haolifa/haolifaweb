@@ -64,9 +64,11 @@
                 this.$router.push(`/nuclear-replace-form?orderNo=${item.orderNo}`)
             },
             releaseForm(orderNo) {
-                this.$http.post(`/haolifa/order-product/release-material?orderNo=${orderNo}`).then(res=>{
+                this.$http.post(`/haolifa/order-product/release-material/?orderNo=${orderNo}`).then(res=>{
                     this.$toast("释放料成功")
-                    this.$http.post(`/haolifa/order-product/updateStatus`,{orderNo:orderNo,status:2})
+                    this.$http.post(`/haolifa/order-product/updateStatus`,{orderNo:orderNo,status:2}).then(res=>{
+                        this.$refs.list.update();
+                    })
                     this.$refs.list.update();
                 }).catch(e=>{
                     this.$toast("释放料失败")

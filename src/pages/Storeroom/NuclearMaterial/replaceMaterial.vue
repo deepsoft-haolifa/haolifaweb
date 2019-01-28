@@ -1,6 +1,7 @@
 <template>
     <div class="nuclear-material-nuclear abs scroll-y">
         <div class="node">
+            <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
             <div class="flex-item mt-10 mb-10"><span class="f-20">基本信息</span></div>
             <div class="mb-10">
                 <span class="b">订单编号：</span><span class="mr-15">{{orderInfo.orderContractNo}}</span>
@@ -19,8 +20,9 @@
                     <table class="data-table" >
                         <tr>
                             <th>ID</th>
-                            <th>物料名称</th>
-                            <th>物料图号</th>
+                            <th>零件名称</th>
+                            <th>待替换图号</th>
+                            <th>替换图号</th>
                             <th>需要数量</th>
                             <th>缺少数量</th>
                             <th>替换零件</th>
@@ -30,11 +32,11 @@
                             <td>{{item.id}}</td>
                             <td>{{item.materialName}}</td>
                             <td>{{item.materialGraphNo}}</td>
+                            <td>{{item.replaceMaterialGraphNo}}</td>
                             <td>{{item.materialCount}}</td>
                             <td>{{item.lackMaterialCount}}</td>
-                            <td>{{item.replaceMaterialGraphNo}}</td>
                             <td>
-                                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="auditProcess(item.id)"></a>
+                                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="auditProcess(item.id)">审批进度</a>
                             </td>
                         </tr>
                     </table>

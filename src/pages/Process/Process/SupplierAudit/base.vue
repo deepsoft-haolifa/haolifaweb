@@ -7,7 +7,8 @@
           <span class="b">流程描述：</span><span class="mr-15">{{data.summary}}</span>
         </div>
         <div class="node-title mb-10">
-          <span class="b">供应商编号：</span><span class="mr-15">{{data.formNo}}</span>
+          <span class="b">供应商编号：</span>
+          <router-link class="c-4" :to="'/supplier/'+data.formId"><span class="mr-15">{{data.formNo}}</span></router-link>
         </div>
         <div class="node-title mb-10">
           <span class="b">发 起 人：</span><span class="mr-15">{{data.initUserName}}</span>

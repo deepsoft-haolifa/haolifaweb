@@ -298,11 +298,7 @@ export default {
                         color: "blue",
                         btns: ["取消", "查看"],
                         yes: () => {
-                            this.$router.push(
-                                `/nuclear-material?orderNo=${
-                                    this.orderInfo.orderNo
-                                    }`
-                            );
+                            this.$router.push(`/nuclear-replace-form?orderNo=${this.orderInfo.orderNo}`);
                         }
                     });
                     return;

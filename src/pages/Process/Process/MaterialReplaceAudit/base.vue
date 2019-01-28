@@ -66,7 +66,7 @@
               <th>意见</th>
               <th>审核附件</th>
             </tr>
-            <tr v-for="(item, i) in data">
+            <tr v-for="(item, i) in data.historyInfos">
               <td>{{item.historyId}}</td>
               <td>{{item.instanceId}}</td>
               <td>{{item.auditResult == 3?'发起':'审批'}}</td>
@@ -138,12 +138,14 @@
                 this.$http.get(`/haolifa/flowInstance/flow-history/${this.$route.query.instanceId}`).then(res => {
                     res.createTime = moment(res.createTime).format('YYYY-MM-DD HH:mm')
                     this.data = res;
+                    console.log('historyInfos', this.data.historyInfos)
                     this.handleStep.id = res.instanceId;
                     if(res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
                     }
-                    // 替换料详情
-                    this.$http.get(`/order-product/replace-material-detail/${res.formId}`).then(res=>{
+                    // 替换料详情/order-product/replace-material-detail/{id}
+                    this.$http.get(`/haolifa/order-product/replace-material-detail/${res.formId}`).then(res=>{
+                        console.log(res);
                         this.replaceInfo.push(res);
                     });
                 }).catch(e => {

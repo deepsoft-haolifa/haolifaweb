@@ -10,28 +10,32 @@
                     <div class="home-list-item a flex-v-center" v-for="item in todo" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
                         <div
+                            style="width:145px"
                             v-if="item.flowId == 4"
                             class="c-8 date-time"
                             @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
+                            style="width:145px"
                             v-if="item.flowId == 3"
                             class="c-8 date-time"
                             @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
+                            style="width:145px"
                             v-if="item.flowId == 1"
                             class="c-8 date-time"
                             @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
+                            style="width:145px"
                             v-if="item.flowId == 2"
                             class="c-8 date-time"
                             @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
-                        <div class="flex-item text-ellipsis">流程：{{item.flowName}}</div>
-                        <!-- <div class="flex-item text-ellipsis">订单号：{{item.orderNo}}</div> -->
-                        <div class="flex-item text-ellipsis">发起时间：{{item.createTime}}</div>
+                        <div class="c-8 date-time text-ellipsis" style="width:145px">流程：{{item.flowName}}</div>
+                        <div class="flex-item text-ellipsis">订单号：{{item.formNo}}</div>
+                        <div class="date-time text-ellipsis">发起时间：{{item.createTime}}</div>
                     </div>
                     <div v-if="!todo.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>

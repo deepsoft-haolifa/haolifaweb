@@ -38,6 +38,7 @@
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="progress(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">发起流程|</a>
+                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
                         <a href="javascript:;" class="blue" @click="info(item)" style="margin-right: 3px;">详情</a>
                         <a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0||item.orderStatus==14" style="margin-right: 3px;">|删除</a>
                     </td>
@@ -100,6 +101,10 @@ export default {
                             this.$toast(`发起流程成功,流程ID: ${id}`);
                         });
                 });
+        },
+        // 审批进度查看
+        approveProgress(item) {
+            this.$router.push(`/order/approveProgress?formNo=${item.orderNo}`);
         },
         info(item) {
             this.$router.push(`/order/info?orderNo=${item.orderNo}`);

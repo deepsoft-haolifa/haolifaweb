@@ -30,7 +30,7 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
                     <!--<td>-->
-                        <!--<router-link class="c-4" :to="'/supplier/'+item.id">{{item.suppilerName}}</router-link>-->
+                    <!--<router-link class="c-4" :to="'/supplier/'+item.id">{{item.suppilerName}}</router-link>-->
                     <!--</td>-->
                     <td>{{item.purchaseOrderNo}}</td>
                     <td>{{item.supplierName}}</td>
@@ -43,6 +43,7 @@
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="approve(item.purchaseOrderNo)">发起审批</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 3" class="blue" @click="createInspect(item.id)">生成报检单</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a>
+                        <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue" @click="approveProgress(item)">审批进度</a>
                         <a href="javascript:;" v-if="item.status == 1" class="blue" @click="deletePurchase(item.purchaseOrderNo)">删除</a>
                         <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a>
                     </td>
@@ -51,8 +52,8 @@
         </div>
         <layer v-if="completeLayer" :title="'订单折损'" width="450px">
             <div class="flex">
-            <input-box v-model="wreck.wreckAmount" class="flex-item mr-20" label="折损金额"></input-box>
-            <input-box v-model="wreck.wreckReason" class="flex-item mr-20" label="折损原因"></input-box>
+                <input-box v-model="wreck.wreckAmount" class="flex-item mr-20" label="折损金额"></input-box>
+                <input-box v-model="wreck.wreckReason" class="flex-item mr-20" label="折损原因"></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="completeLayer=false">取消</btn>
@@ -63,112 +64,132 @@
 </template>
 
 <script>
-    import DataList from '@/components/datalist'
-    // import obj2FormData from '@/utils/obj2FormData'
-    export default {
-        name: 'purchsemanage-purchase',
-        components: { DataList },
-        data () {
-            return {
-                natureList: ['国有', '三资', '集体', '联营', '私营'],
-                statusList:[
-                    {status:1,name:'待审批'},
-                    {status:2,name:'审批中'},
-                    {status:3,name:'采购中'},
-                    {status:4,name:'审批不通过'},
-                    {status:5,name:'采购完成'}],
-                filter:{
-                    orderNo:'',
-                    status:0,
-                    createUserId:0
-                },
-                wreck:{orderNo:'',wreckAmount:0,wreckReason:''},
-                completeLayer:false,
-                confirmLayer:false
-            }
-        },
-        created() {
-            this.filter.createUserId=0
-        },
-        methods: {
-            info:function (formId) {
-                this.$router.push(`/purchsemanage-purchase/info?formId=${formId}`);
+import DataList from "@/components/datalist";
+// import obj2FormData from '@/utils/obj2FormData'
+export default {
+    name: "purchsemanage-purchase",
+    components: { DataList },
+    data() {
+        return {
+            natureList: ["国有", "三资", "集体", "联营", "私营"],
+            statusList: [
+                { status: 1, name: "待审批" },
+                { status: 2, name: "审批中" },
+                { status: 3, name: "采购中" },
+                { status: 4, name: "审批不通过" },
+                { status: 5, name: "采购完成" }
+            ],
+            filter: {
+                orderNo: "",
+                status: 0,
+                createUserId: 0
             },
-            createInspect:function(formId) {
-                this.$http.get(`/haolifa/purchase-order/createInspect/${formId}`).then(res=>{
-                    console.log('报检单号',res);
+            wreck: { orderNo: "", wreckAmount: 0, wreckReason: "" },
+            completeLayer: false,
+            confirmLayer: false
+        };
+    },
+    created() {
+        this.filter.createUserId = 0;
+    },
+    methods: {
+        info: function(formId) {
+            this.$router.push(`/purchsemanage-purchase/info?formId=${formId}`);
+        },
+        createInspect: function(formId) {
+            this.$http
+                .get(`/haolifa/purchase-order/createInspect/${formId}`)
+                .then(res => {
+                    console.log("报检单号", res);
                     this.$confirm({
-                        title:'完善报检单',
-                        text: '现在去完善报检单？',
-                        color: 'blue',
-                        btns:['稍后再说','现在完善'],
-                        yes:()=>{
-                            this.$router.push(`/applyBuy-material/edit?id=${res}`);
+                        title: "完善报检单",
+                        text: "现在去完善报检单？",
+                        color: "blue",
+                        btns: ["稍后再说", "现在完善"],
+                        yes: () => {
+                            this.$router.push(
+                                `/applyBuy-material/edit?id=${res}`
+                            );
                         }
-                    })
+                    });
                 });
-            },
-            approve:function (orderNo) {
-                this.$confirm({
-                    title:'发起审批',
-                    text: '确定发起审批？',
-                    color: 'blue',
-                    btns:['取消','确认'],
-                    yes:()=>{
-                        this.$http
-                            .get(`/haolifa/purchase-order/approve/${orderNo}`)
-                            .then(res => {
-                                this.$toast('发起成功')
-                                this.$refs.list.update();
-                            })
-                            .catch(e => {
-                                this.$toast(e.msg || e.message)
-                            })
-                    }
-                })
-
-            },
-            updatePurchase:function (orderId) {
-                this.$router.push(`/purchsemanage-purchase/add?formId=${orderId}`)
-            },
-            completePurchase:function (orderNo) {
-
-                this.completeLayer = true;
-                this.wreck.orderNo = orderNo;
-            },
-            complete:function () {
-                this.$http.post('/haolifa/purchase-order/complete',this.wreck).then(res=>{
-                    this.completeLayer = false
-                    this.$refs.list.update(true)
-                }).catch(e => {
-                    this.$toast(e.msg || e.message)
-                })
-            },
-            deletePurchase:function (purchaseOrderNo) {
-                this.$confirm({
-                    title: '删除确认',
-                    text: `您确定要删除该订单么？`,
-                    color: 'red',
-                    btns: ['取消', '删除'],
-                    yes: () => {
-                        this.$http.get(`/haolifa//purchase-order/delete/${purchaseOrderNo}`).then(res=>{
-                            this.$toast('删除成功')
-                            this.$refs.list.update()
-                        }).catch(e => {
-                            this.$toast(e.msg)
+        },
+        approveProgress(item) {
+            this.$router.push(
+                `/order/approveProgress?formNo=${item.supplierNo}`
+            );
+        },
+        approve: function(orderNo) {
+            this.$confirm({
+                title: "发起审批",
+                text: "确定发起审批？",
+                color: "blue",
+                btns: ["取消", "确认"],
+                yes: () => {
+                    this.$http
+                        .get(`/haolifa/purchase-order/approve/${orderNo}`)
+                        .then(res => {
+                            this.$toast("发起成功");
+                            this.$refs.list.update();
                         })
-                    }
+                        .catch(e => {
+                            this.$toast(e.msg || e.message);
+                        });
+                }
+            });
+        },
+        updatePurchase: function(orderId) {
+            this.$router.push(`/purchsemanage-purchase/add?formId=${orderId}`);
+        },
+        completePurchase: function(orderNo) {
+            this.completeLayer = true;
+            this.wreck.orderNo = orderNo;
+        },
+        complete: function() {
+            this.$http
+                .post("/haolifa/purchase-order/complete", this.wreck)
+                .then(res => {
+                    this.completeLayer = false;
+                    this.$refs.list.update(true);
                 })
-
-            }
-
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        deletePurchase: function(purchaseOrderNo) {
+            this.$confirm({
+                title: "删除确认",
+                text: `您确定要删除该订单么？`,
+                color: "red",
+                btns: ["取消", "删除"],
+                yes: () => {
+                    this.$http
+                        .get(
+                            `/haolifa//purchase-order/delete/${purchaseOrderNo}`
+                        )
+                        .then(res => {
+                            this.$toast("删除成功");
+                            this.$refs.list.update();
+                        })
+                        .catch(e => {
+                            this.$toast(e.msg);
+                        });
+                }
+            });
         }
     }
+};
 </script>
 
 <style lang="less">
-    .purchaseadd {
-        height: 100%;
-        select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
+.purchaseadd {
+    height: 100%;
+    select {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px 5px 10px;
+        appearance: none;
     }
+}
 </style>

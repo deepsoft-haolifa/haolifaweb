@@ -38,4 +38,14 @@ export default [{
     open: false,
     id: 'parent-ddgl'
   }
+}, {
+  path: '/order/approveProgress',
+  name: 'order-approveProgress',
+  component: () => import( /* webpackChunkName: "orderedit" */ './approveProgress.vue'),
+  meta: {
+    level: 3,
+    title: '审批进度',
+    open: false,
+    id: 'parent-ddgl'
+  }
 }]

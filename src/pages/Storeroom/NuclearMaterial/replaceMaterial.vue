@@ -25,7 +25,6 @@
                             <th>替换图号</th>
                             <th>需要数量</th>
                             <th>缺少数量</th>
-                            <th>替换零件</th>
                             <th>操作</th>
                         </tr>
                         <tr v-for="(item, i) in replaceMaterList">

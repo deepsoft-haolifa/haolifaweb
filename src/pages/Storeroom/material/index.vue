@@ -4,8 +4,8 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="型号" style="width: 100px;">
-                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
+                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="型号" style="width: 100px;">
+                <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
                 <select v-model="filter.classifyId" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">全部</option>
                     <option v-for="item in classifyList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>

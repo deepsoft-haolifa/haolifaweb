@@ -59,7 +59,7 @@
                 </div>
                 <div class="home-list flex-item scroll-y" v-if="tab2">
                     <div class="home-list-item a flex-v-center">
-                        <i class="icon f-16 c-a">hourglass_full</i>
+                        <!--<i class="icon f-16 c-a">hourglass_full</i>-->
                         <div class="c-8 date-time" style="width:85px;">创建时间</div>
                         <div class="c-8 date-time" style="width: 100px;">标题</div>
                         <div class="flex-item text-ellipsis">内容</div>
@@ -102,16 +102,16 @@
                 </div>
                 <div class="home-list flex-item scroll-y">
                     <div class="home-list-item a flex-v-center">
-                        <i class="icon f-16 c-a">hourglass_full</i>
+                        <!--<i class="icon f-16 c-a">hourglass_full</i>-->
                         <div class="c-8 date-time" style="width:350px;">订单号</div>
                         <div class="c-8 date-time" style="width: 200px;">订单状态</div>
-                        <div class="flex-item text-ellipsis">创建时间</div>
+                        <div class="c-8 date-time" style="width: 200px;">发货时间</div>
                     </div>
                     <div class="home-list-item a flex-v-center" v-for="item in orderList" :key="item.id" @click="orderInfo(item)">
                         <i class="icon f-16 c-a">hourglass_full</i>
                         <div class="c-8 date-time" style="width:350px;">{{item.orderNo}}</div>
                         <div class="c-8 date-time" style="width: 200px;">{{orderStatusList[item.orderStatus].text}}</div>
-                        <div class="flex-item text-ellipsis">{{item.createTime}}</div>
+                        <div class="c-8 date-time" style="width: 200px;">{{item.deliveryDate}}</div>
                     </div>
                     <div v-if="!orderList.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>

@@ -127,7 +127,7 @@ export default [{
             url: '/applyBuy-material',
             id: 'ljbjd'
         }, {
-            name: '加工报检单',
+            name: '加工委托单',
             url: '/applyBuy-machining',
             id: 'jjgbjd'
         }, {

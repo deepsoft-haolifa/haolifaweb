@@ -33,4 +33,9 @@ export default [{
   name: 'outInfo-list',
   component: () => import(/* webpackChunkName: "outInfolist" */ './outInfo.vue'),
   meta: { level: 3, title: '零件出库详情', open: false, id: 'ljgl' }
-}]
+}, {
+    path: '/material/materialQuery',
+    name: 'material-list-query',
+    component: () => import(/* webpackChunkName: "outInfolist" */ './materialQuery.vue'),
+    meta: { level: 2, title: '库存查询', open: false, id: 'ljgl' }
+  }]

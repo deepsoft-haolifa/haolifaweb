@@ -11,6 +11,9 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
+            <router-link to="/order/add">
+                <btn class="b" flat color="#008eff">新增订单</btn>
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" :param="filter" url="/haolifa/order-product/pageInfo" method="post">
@@ -28,14 +31,16 @@
                     <td class="c-a">{{index}}</td>
                     <td>{{item.orderNo}}</td>
                     <td>
-                        <a class="fixed-length" :href="item.orderContractExtendUrl" :title="item.orderContractExtendUrl">{{item.orderContractExtendUrl}}</a>
+                        <a class="fixed-length" :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a>
                     </td>
                     <td>{{item.deliveryDate}}</td>
                     <td>{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
+                        <a href="javascript:;" class="blue" @click="progress(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">发起流程|</a>
                         <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
                         <a href="javascript:;" class="blue" @click="info(item)" style="margin-right: 3px;">详情</a>
+                        <a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0||item.orderStatus==14" style="margin-right: 3px;">|删除</a>
                     </td>
                 </template>
             </data-list>

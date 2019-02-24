@@ -39,6 +39,11 @@ export default [{
             name: '订单列表',
             url: '/order',
             id: 'ddlb'
+        },{
+            name: '新增订单',
+            url: '/order/addList',
+            id: 'xzdd'
+
         }]
     },
     {
@@ -60,6 +65,10 @@ export default [{
             name: '零件管理',
             url: '/material',
             id: 'ljgl'
+        }, {
+            name: '库存查询',
+            url: '/material/materialQuery',
+            id: 'kccx'
         }, {
             name: '成品管理',
             url: '/storeproduct',

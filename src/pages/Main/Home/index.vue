@@ -44,8 +44,33 @@
                 <div class="home-list flex-item scroll-y" v-else>
                     <div class="home-list-item a flex-v-center" v-for="item in done" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
-                        <div class="c-8 date-time">{{item.date}}</div>
-                        <div class="flex-item text-ellipsis">{{item.title}}</div>
+                        <div
+                            style="width:145px"
+                            v-if="item.flowId == 4"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
+                        <div
+                            style="width:145px"
+                            v-if="item.flowId == 3"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
+                        <div
+                            style="width:145px"
+                            v-if="item.flowId == 1"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
+                        <div
+                            style="width:145px"
+                            v-if="item.flowId == 2"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
+                        <div class="c-8 date-time text-ellipsis" style="width:145px">流程：{{item.flowName}}</div>
+                        <div class="flex-item text-ellipsis">订单号：{{item.formNo}}</div>
+                        <div class="date-time text-ellipsis">发起时间：{{item.createTime}}</div>
                     </div>
                     <div v-if="!done.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
@@ -167,6 +192,7 @@ export default {
     },
     created() {
         this.getTodo();
+        this.getDone();
         this.getNews();
         this.getQuickStart();
         this.getOrderStatusList();
@@ -176,6 +202,11 @@ export default {
         getTodo() {
             this.$http.get("/haolifa/todo").then(res => {
                 this.todo = res;
+            });
+        },
+        getDone() {
+            this.$http.get("/haolifa/done").then(res => {
+                this.done = res;
             });
         },
         getNews() {

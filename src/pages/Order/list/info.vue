@@ -30,14 +30,20 @@
                     <td colspan="12" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>
                 </tr>
                 <tr>
-                    <td colspan="6" class="b">
+                    <td colspan="12" class="b">
                         订单合同:
-                        <a :href="info.orderContractUrl">下载</a>
+                        <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
+                        <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
+                        <a
+                            target="_blank"
+                            v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                        >预览</a>
                     </td>
-                    <td colspan="6" class="b">
+                    <!-- <td colspan="6" class="b">
                         订单备份合同:
                         <a :href="info.orderContractExtendUrl">下载</a>
-                    </td>
+                    </td>-->
                 </tr>
                 <tr>
                     <td colspan="6" class="b">装配车间: {{info.assemblyShop}}</td>
@@ -47,10 +53,10 @@
                     <td colspan="6" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
                     <td colspan="6" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
                     <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td colspan="12" class="b">技术清单: {{info.technicalRequire}}</td>
                 </tr>

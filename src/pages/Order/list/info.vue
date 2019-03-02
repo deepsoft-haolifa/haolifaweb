@@ -7,30 +7,32 @@
             </div>
             <table class="f-14 order-info">
                 <tr>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
+                    <td style="width: 7%;"></td>
                     <td style="width: 8%;"></td>
                     <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 10%;"></td>
-                    <td style="width: 10%;"></td>
                 </tr>
                 <tr>
-                    <td colspan="12" class="b">订单编号 : {{info.orderNo}}</td>
+                    <td colspan="14" class="b">订单编号 : {{info.orderNo}}</td>
                 </tr>
                 <tr>
-                    <td colspan="12" class="b">成品合同订单号 : {{info.orderContractNo}}</td>
+                    <td colspan="14" class="b">成品合同订单号 : {{info.orderContractNo}}</td>
                 </tr>
                 <tr>
-                    <td colspan="12" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>
+                    <td colspan="14" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>
                 </tr>
                 <tr>
-                    <td colspan="12" class="b">
+                    <td colspan="14" class="b">
                         订单合同:
                         <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                         <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
@@ -46,26 +48,63 @@
                     </td>-->
                 </tr>
                 <tr>
-                    <td colspan="6" class="b">装配车间: {{info.assemblyShop}}</td>
-                    <td colspan="6" class="b">装配小组: {{info.assemblyGroup}}</td>
+                    <td colspan="7" class="b">装配车间: {{info.assemblyShop}}</td>
+                    <td colspan="7" class="b">装配小组: {{info.assemblyGroup}}</td>
                 </tr>
                 <tr>
-                    <td colspan="6" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
-                    <td colspan="6" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
+                    <td colspan="7" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
+                    <td colspan="7" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
                 </tr>
                 <!-- <tr>
                     <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
                     <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
                 </tr>-->
                 <tr>
-                    <td colspan="12" class="b">技术清单: {{info.technicalRequire}}</td>
+                    <td colspan="14" class="b">技术清单: {{info.technicalRequire}}</td>
+                </tr>
+
+                <tr>
+                    <td colspan="1" rowspan="2">序号</td>
+                    <td colspan="1" rowspan="2">产品名称</td>
+                    <td colspan="1" rowspan="2">型号</td>
+                    <td colspan="1" rowspan="2">规格</td>
+                    <td colspan="1" rowspan="2">数量</td>
+                    <td colspan="1" rowspan="2">上法兰标准</td>
+                    <td colspan="3" rowspan="1">上法兰尺寸</td>
+                    <td colspan="3" rowspan="1">出轴尺寸</td>
+                    <td colspan="1" rowspan="2">静扭矩</td>
+                    <td colspan="1" rowspan="2">执行器型号</td>
                 </tr>
                 <tr>
-                    <td colspan="12" class="b">订单产品列表</td>
+                    <td colspan="1" rowspan="1">连接孔</td>
+                    <td colspan="1" rowspan="1">角度</td>
+                    <td colspan="1" rowspan="1">中心距</td>
+                    <td colspan="1" rowspan="1">出轴型式</td>
+                    <td colspan="1" rowspan="1">出轴长度</td>
+                    <td colspan="1" rowspan="1">轴图号</td>
+                </tr>
+                <!-- <tr v-for="(val,index) in info.technicalRequire" :key="index">
+                    <td colspan="1">{{index}}</td>
+                    <td colspan="1">{{val.name}}</td>
+                    <td colspan="1">{{val.xinhao}}</td>
+                    <td colspan="1">{{val.guige}}</td>
+                    <td colspan="1">{{val.num}}</td>
+                    <td colspan="1">{{val.biaozhun}}</td>
+                    <td colspan="1">{{val.lianjiek}}</td>
+                    <td colspan="1">{{val.jiaodu}}</td>
+                    <td colspan="1">{{val.zhongxinju}}</td>
+                    <td colspan="1">{{val.xinshi}}</td>
+                    <td colspan="1">{{val.length}}</td>
+                    <td colspan="1">{{val.tuhao}}</td>
+                    <td colspan="1">{{val.jinniuju}}</td>
+                    <td colspan="1">{{val.jishuxinhao}}</td>
+                </tr>-->
+                <tr>
+                    <td colspan="14" class="b">订单产品列表</td>
                 </tr>
                 <tr>
                     <td colspan="1" class="b">产品编号</td>
-                    <td colspan="1" class="b">产品名称</td>
+                    <td colspan="2" class="b">产品名称</td>
                     <td colspan="1" class="b">型号</td>
                     <td colspan="1" class="b">标签属性</td>
                     <td colspan="1" class="b">规格</td>
@@ -73,12 +112,12 @@
                     <td colspan="1" class="b">产品数量</td>
                     <td colspan="1" class="b">单价</td>
                     <td colspan="1" class="b">总计价格</td>
-                    <td colspan="1" class="b">材质说明</td>
+                    <td colspan="2" class="b">材质说明</td>
                     <td colspan="2" class="b">产品备注</td>
                 </tr>
                 <tr v-for="(item,index) in info.orderProductAssociates" :key="index">
                     <td colspan="1">{{item.productNo}}</td>
-                    <td colspan="1">{{item.productName}}</td>
+                    <td colspan="2">{{item.productName}}</td>
                     <td colspan="1">{{item.productModel}}</td>
                     <td colspan="1">{{item.lable}}</td>
                     <td colspan="1">{{item.specifications}}</td>
@@ -86,7 +125,7 @@
                     <td colspan="1">{{item.productNumber}}</td>
                     <td colspan="1">{{item.price}}</td>
                     <td colspan="1">{{item.totalPrice}}</td>
-                    <td colspan="1">{{item.materialDescription}}</td>
+                    <td colspan="2">{{item.materialDescription}}</td>
                     <td colspan="2">{{item.productRemark}}</td>
                 </tr>
             </table>
@@ -101,7 +140,39 @@ export default {
     data() {
         return {
             info: {},
-            orderStatusList: {}
+            orderStatusList: {},
+            arr: [
+                {
+                    name: "",
+                    xinhao: "",
+                    guige: "",
+                    num: "",
+                    biaozhun: "",
+                    lianjiek: "",
+                    jiaodu: "",
+                    zhongxinju: "",
+                    xinshi: "",
+                    length: "",
+                    tuhao: "",
+                    jinniuju: "",
+                    jishuxinhao: ""
+                },
+                {
+                    name: "",
+                    xinhao: "",
+                    guige: "",
+                    num: "",
+                    biaozhun: "",
+                    lianjiek: "",
+                    jiaodu: "",
+                    zhongxinju: "",
+                    xinshi: "",
+                    length: "",
+                    tuhao: "",
+                    jinniuju: "",
+                    jishuxinhao: ""
+                }
+            ]
         };
     },
     created() {

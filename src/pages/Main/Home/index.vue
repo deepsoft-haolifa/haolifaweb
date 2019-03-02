@@ -84,7 +84,7 @@
                 </div>
                 <div class="home-list flex-item scroll-y" v-if="tab2">
                     <div class="home-list-item a flex-v-center">
-                        <i class="icon f-16 c-a">hourglass_full</i>
+                        <!--<i class="icon f-16 c-a">hourglass_full</i>-->
                         <div class="c-8 date-time" style="width:85px;">创建时间</div>
                         <div class="c-8 date-time" style="width: 100px;">标题</div>
                         <div class="flex-item text-ellipsis">内容</div>

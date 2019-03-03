@@ -248,6 +248,10 @@ export default [{
             name: '零件加工管理',
             url: '/workcar',
             id: 'jhjjglb'
+        }, {
+            name: '生产订单列表',
+            url: '/scddlb-list',
+            id: 'jhgl-scddlb'
         }]
     },
     {
@@ -261,11 +265,13 @@ export default [{
             name: '更换料申请',
             url: '/replacement',
             id: 'cjzr-ghllb'
-        }, {
-            name: '生产订单列表',
-            url: '/replacement',
-            id: 'cjzr-ghllb'
-        }]
+        }
+        // , {
+        //     name: '生产订单列表',
+        //     url: '/cjzr-scddlb',
+        //     id: 'cjzr-scddlb'
+        // }
+        ]
     },
     {
         name: '技术管理',

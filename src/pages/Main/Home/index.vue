@@ -203,12 +203,12 @@ export default {
     methods: {
         getTodo() {
             this.$http.get("/haolifa/todo").then(res => {
-                this.todo = res;
+                this.todo = res.list;
             });
         },
         getDone() {
             this.$http.get("/haolifa/done").then(res => {
-                this.done = res;
+                this.done = res.list;
             });
         },
         getNews() {

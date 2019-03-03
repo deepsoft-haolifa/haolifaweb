@@ -50,7 +50,7 @@
       </div>
       <div class="flex mt-15">
         <input-box v-model="inspectHistory.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
-        <input-box v-model="inspectHistory.remark" class="flex-item mr-20 mt-15" label="备注"></input-box>
+        <input-box v-model="inspectHistory.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
       </div>
       <div class="layer-btns">
         <btn flat @click="inspectHistory.completeLayer=false">取消</btn>

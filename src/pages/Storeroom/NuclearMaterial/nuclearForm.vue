@@ -15,7 +15,7 @@
             <hr/>
             <div class="flex-item mt-20 mb-10"><span class="f-20">核料清单</span></div>
             <div class="node">
-                <div class="flex-item scroll-y ml-20">
+                <div class="flex-item ml-20" style="overflow-x:auto">
                     <table class="data-table" >
                         <tr>
                             <th>物料名称</th>

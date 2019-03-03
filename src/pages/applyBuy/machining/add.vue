@@ -8,7 +8,7 @@
                 <select-box :list="materialGraphNoList" v-model="form.materialGraphNo" label="零件图号" style="margin-right: 20px;width: 240px;"></select-box>
             </div>
             <div class="flex">
-                <input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box>
+                <!--<input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box>-->
                 <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
             </div>
             <div class="flex">
@@ -29,8 +29,8 @@
                     materialGraphName: null,
                     materialGraphNo: null,
                     number:0,
-                    actionType:1,
-                    batchNumber:new Date().getTime()
+                    actionType:1
+                    // batchNumber:new Date().getTime()
                 },
                 entrustNo:'',
                 classifyId:0,
@@ -52,6 +52,10 @@
                     console.log('分类列表', res);
                     this.materialClassify = res.map(item=>{
                         return {value:item.id,text:item.classifyName}
+                    }).filter(item=>{
+                        if(item.text == '阀体' || item.text == '阀板')
+                            return true;
+                        return false;
                     });
                     this.classifyId = this.materialClassify[0].value;
                     this.form.materialGraphName = this.materialClassify[0].text;
@@ -106,7 +110,7 @@
                     number:'数量'
 
                 }
-                this.form.number = Number(this.form.number);
+                // this.form.number = Number(this.form.number);
                 if(this.entrustNo == '') {
                     this.$http.post('/haolifa/entrust/save', this.form).then(res => {
                         this.loading = false

@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="flex">
-                        <input-box v-model="item.reason" class="flex-item" label="备注"></input-box>
+                        <input-box v-model="item.reason" class="flex-item" label="不合格现象描述"></input-box>
                     </div>
                 </div>
                 <div v-if="form.items.length > 1"><icon-btn small @click="form.items.splice(i, 1)">close</icon-btn></div>

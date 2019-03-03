@@ -55,7 +55,7 @@
                         <th>合格数量</th>
                         <th>不合格数量</th>
                         <th>处理意见</th>
-                        <th>备注</th>
+                        <th>不合格现象描述</th>
                     </tr>
                     <tr v-for="(item, i) in inspectHistory">
                         <td>{{item.inspectNo}}</td>

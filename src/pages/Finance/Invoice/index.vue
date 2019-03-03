@@ -3,7 +3,7 @@
   <div class="flex-v-center tool-bar">
     <div class="flex-v-center search-bar" style="margin-right: 20px;">
       <i class="icon f-20 c-8">search</i>
-      <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
+      <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
       开票状态：
       <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
         <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
@@ -171,7 +171,8 @@ export default {
         totalAmount: '',
         type: 1
       }
-      this.bill.layerbill = false
+      this.bill.layerbill = false;
+      this.layer = false;
     },
     remove (item) {
       this.$confirm({

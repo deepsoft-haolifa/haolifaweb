@@ -5,7 +5,7 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
-                    <option value="-1">全部</option>
+                    <!--<option value="-1">全部</option>-->
                     <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
@@ -34,7 +34,7 @@
                     <td>{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
+                        <a href="javascript:;" class="blue" @click="inspectHistorys(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">质检记录|</a>
                         <a href="javascript:;" class="blue" @click="info(item)" style="margin-right: 3px;">详情</a>
                     </td>
                 </template>
@@ -52,76 +52,25 @@ export default {
     data() {
         return {
             loading: false,
-            orderStatusList: [],
+            orderStatusList: [
+                {value:5,text:'待生产'},
+                {value:6,text:'待领料'},
+                {value:7,text:'生产中'},
+                {value:8,text:'生产暂停'},
+                {value:9,text:'生产完成'},
+            ],
             filter: {
                 orderNo: "",
-                orderStatus: -1
+                orderStatus: 5
             }
         };
     },
-    created() {
-        this.getOrderStatusList();
-    },
     methods: {
-        getOrderStatusList() {
-            this.$http
-                .get("/haolifa/order-product/order-status-list")
-                .then(res => {
-                    this.orderStatusList = res.map(item => {
-                        return { value: item.code, text: item.desc };
-                    });
-                });
-        },
-        progress(item) {
-            let id = "";
-            this.$http
-                .post("/haolifa/flowInstance/create", {
-                    flowId: 1,
-                    formId: item.id,
-                    formType: 1,
-                    formNo: item.orderNo,
-                    summary: "生产订单审批"
-                })
-                .then(res => {
-                    id = res.instanceId;
-                    // this.loading = false;
-                    // this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
-                    this.$http
-                        .post("/haolifa/order-product/updateStatus", {
-                            orderNo: item.orderNo,
-                            status: 1
-                        })
-                        .then(res => {
-                            this.loading = false;
-                            this.$toast(`发起流程成功,流程ID: ${id}`);
-                        });
-                });
-        },
-        // 审批进度查看
-        approveProgress(item) {
-            this.$router.push(`/order/approveProgress?formNo=${item.orderNo}`);
+        inspectHistorys(item) {
+
         },
         info(item) {
-            this.$router.push(`/order/info?orderNo=${item.orderNo}`);
-        },
-        remove(item) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
-                    this.$http
-                        .delete(`/haolifa/order-product/delete/${item.id}`)
-                        .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update();
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg);
-                        });
-                }
-            });
+            this.$router.push(`/jhgl-scddlb/info?orderNo=${item.orderNo}`);
         }
     }
 };

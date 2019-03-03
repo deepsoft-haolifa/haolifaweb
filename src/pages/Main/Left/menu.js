@@ -250,7 +250,7 @@ export default [{
             id: 'jhjjglb'
         }, {
             name: '生产订单列表',
-            url: '/scddlb-list',
+            url: '/jhgl-scddlb-list',
             id: 'jhgl-scddlb'
         }]
     },
@@ -266,11 +266,11 @@ export default [{
             url: '/replacement',
             id: 'cjzr-ghllb'
         }
-        // , {
-        //     name: '生产订单列表',
-        //     url: '/cjzr-scddlb',
-        //     id: 'cjzr-scddlb'
-        // }
+        , {
+            name: '生产订单列表',
+            url: '/cjzr-scddlb',
+            id: 'cjzr-scddlb'
+        }
         ]
     },
     {

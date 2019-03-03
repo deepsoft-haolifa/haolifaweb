@@ -130,12 +130,22 @@
                             <td>{{item.auditUserName}}</td>
                             <td>{{auditResults[item.auditResult].name}}</td>
                             <td>{{item.auditInfo}}</td>
-                            <td v-if="item.accessory">
-                                <a v-for="(file,index) in item.accessory" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
+                            <td v-if="item.accessories != null">
+                                <a v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">
+                                    {{file.fileName}}
+                                </a>
                             </td>
                             <td v-else>无</td>
                         </tr>
                     </table>
+                </div>
+            </div>
+            <div v-if="data.accessories">
+                <div class="flex-item mt-10 mb-10"><span class="f-20">审批附件</span></div>
+                <div class="flex-item">
+                    <div v-for="(item,i) in data.accessories" :key="i" style="margin-left:20px;margin-top:5px;">
+                        <div class="flex"><a :href="item.fileUrl" style="text-decoration:none ;out-line: none ;color:blue" target="_blank">{{item.fileName}}</a></div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -261,6 +261,10 @@ export default [{
             name: '更换料申请',
             url: '/replacement',
             id: 'cjzr-ghllb'
+        }, {
+            name: '生产订单列表',
+            url: '/replacement',
+            id: 'cjzr-ghllb'
         }]
     },
     {

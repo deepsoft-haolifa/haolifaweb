@@ -70,6 +70,7 @@ export default {
             this.$http
                 .post(`/haolifa/supplier/approve/${supplierNo}`)
                 .then(res => {
+                    this.$refs.list.update();
                     this.$toast("成功发起");
                 })
                 .catch(e => {

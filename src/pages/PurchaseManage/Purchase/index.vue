@@ -16,7 +16,7 @@
             </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/purchase-order/list">
+            <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/purchase-order/list/0">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>采购合同号</th>
@@ -127,7 +127,7 @@ export default {
                 btns: ["取消", "确认"],
                 yes: () => {
                     this.$http
-                        .get(`/haolifa/purchase-order/approve/${orderNo}`)
+                        .get(`/haolifa/purchase-order/approve/${orderNo}/0`)
                         .then(res => {
                             this.$toast("发起成功");
                             this.$refs.list.update();

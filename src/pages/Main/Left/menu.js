@@ -147,6 +147,10 @@ export default [{
             name: '采购列表',
             url: '/purchsemanage-purchase/list',
             id: 'cglb'
+        }, {
+            name: '机加工列表',
+            url: '/purchsemanage-entrust/list',
+            id: 'jjglb'
         }]
     }, {
         name: '质检管理',

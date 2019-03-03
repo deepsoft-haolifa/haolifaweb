@@ -10,6 +10,12 @@
                     <div class="home-list-item a flex-v-center" v-for="item in todo" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
                         <div
+                                style="width:145px"
+                                v-if="item.flowId == 5"
+                                class="c-8 date-time"
+                                @click="$router.push({path:'/entrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >发起人：{{item.createUserRealName}}</div>
+                        <div
                             style="width:145px"
                             v-if="item.flowId == 4"
                             class="c-8 date-time"

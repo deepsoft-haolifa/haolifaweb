@@ -204,7 +204,7 @@
                     return;
                 }
                 console.log(this.form);
-                this.$http.post(this.isAdd ?'/haolifa/purchase-order/save':'/haolifa/purchase-order/update', this.form).then(res => {
+                this.$http.post(this.isAdd ?'/haolifa/purchase-order/save/0':'/haolifa/purchase-order/update', this.form).then(res => {
                     this.$toast(this.isAdd ?'创建成功':'更新成功');
                     this.$router.push('/purchsemanage-purchase/list')
                 }).catch(e => {

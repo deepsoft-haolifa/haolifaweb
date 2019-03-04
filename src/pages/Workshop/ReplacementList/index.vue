@@ -26,7 +26,7 @@
             <th>审核状态</th>
             <th>审核时间</th>
             <th>创建时间</th>
-            <!-- <th class="t-right" style="width: 80px;">操作</th> -->
+             <th class="t-right" style="width: 80px;">操作</th>
         </tr>
         <template slot="item" slot-scope="{ item, index }">
             <td>{{index}}</td>
@@ -40,13 +40,27 @@
             <td>{{statusList[item.auditResult].name}}</td>
             <td>{{item.auditTime}}</td>
             <td>{{item.createTime}}</td>
-            <!-- <td class="t-right">
-                <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
-                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a> 
-            </td> -->
+             <td class="t-right">
+                <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="auditLayerM(item)">审核</a>
+            </td>
         </template>
     </data-list>
   </div>
+    <layer v-if="auditLayer" :title="'更换料审核'" width="450px">
+        <div>
+            <div class="flex-item">
+                <input-box disabled class="ml-10" v-model="auditLayerItem.replaceMaterialNo" label="更换料号" ></input-box>
+            </div>
+            <div class="flex-item">
+                <input-box v-model="auditLayerItem.auditInfo" class="ml-10" multi-line label="审核意见" ></input-box>
+            </div>
+        </div>
+        <div class="layer-btns">
+            <btn flat @click="auditLayer=false">取消</btn>
+            <btn flat color="#008eff" @click="completeAudit(2)">审核通过</btn>
+            <btn flat color="#008eff" @click="completeAudit(1)">审核不通过</btn>
+        </div>
+    </layer>
 </div>
 </template>
 
@@ -62,6 +76,12 @@ export default {
           auditResult: -1,
           replaceMaterialNo: ""
       },
+        auditLayer:false,
+        auditLayerItem:{
+            auditInfo: "",
+            auditResult: 0,
+            replaceMaterialNo: ""
+        },
        statusList:[
                     {status:0,name:'未审核'},
                     {status:1,name:'审核不通过'},
@@ -69,25 +89,21 @@ export default {
     }
   },
   methods: {
-    edit (item) {
-      this.$router.push(`/replacementedit?id=${item.id}`)
+    auditLayerM (item) {
+        console.log('item===', item);
+        this.auditLayerItem.replaceMaterialNo = item.materialGraphNo;
+        this.auditLayer = true;
     },
-    remove (item) {
-      this.$confirm({
-        title: '删除确认',
-        text: `您确定要删除以下库房吗？<br><b>${item.materialName}</b>`,
-        color: 'red',
-        btns: ['取消', '删除'],
-        yes: () => {
-          this.$http.delete(`/haolifa/replace-material/del/${item.id}`).then(res => {
-            this.$toast('删除成功')
-            this.$refs.list.update()
-          }).catch(e => {
-            this.$toast(e.msg)
+      completeAudit(auditResult) {
+        this.auditLayerItem.auditResult = Number(auditResult);
+          this.$http.post(`/haolifa/replace-material/audit`, this.auditLayerItem).then(res=>{
+              this.$toast("处理成功")
+              this.auditLayer = false;
+              this.$refs.list.update();
+          }).catch(e=>{
+              this.$toast(e.msg || e.mesage)
           })
-        }
-      })
-    }
+          }
   }
 }
 </script>

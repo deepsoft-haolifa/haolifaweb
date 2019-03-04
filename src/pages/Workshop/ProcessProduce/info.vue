@@ -83,22 +83,6 @@
                     <td colspan="1" rowspan="1">出轴长度</td>
                     <td colspan="1" rowspan="1">轴图号</td>
                 </tr>
-                <!-- <tr v-for="(val,index) in info.technicalRequire" :key="index">
-                    <td colspan="1">{{index}}</td>
-                    <td colspan="1">{{val.name}}</td>
-                    <td colspan="1">{{val.xinhao}}</td>
-                    <td colspan="1">{{val.guige}}</td>
-                    <td colspan="1">{{val.num}}</td>
-                    <td colspan="1">{{val.biaozhun}}</td>
-                    <td colspan="1">{{val.lianjiek}}</td>
-                    <td colspan="1">{{val.jiaodu}}</td>
-                    <td colspan="1">{{val.zhongxinju}}</td>
-                    <td colspan="1">{{val.xinshi}}</td>
-                    <td colspan="1">{{val.length}}</td>
-                    <td colspan="1">{{val.tuhao}}</td>
-                    <td colspan="1">{{val.jinniuju}}</td>
-                    <td colspan="1">{{val.jishuxinhao}}</td>
-                </tr>-->
                 <tr>
                     <td colspan="14" class="b">订单产品列表</td>
                 </tr>

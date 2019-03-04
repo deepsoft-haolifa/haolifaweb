@@ -31,10 +31,10 @@
                         <a class="fixed-length" :href="item.orderContractExtendUrl" :title="item.orderContractExtendUrl">{{item.orderContractExtendUrl}}</a>
                     </td>
                     <td>{{item.deliveryDate}}</td>
-                    <td>{{orderStatusList[item.orderStatus].text}}</td>
+                    <td>{{orderStatusList[item.orderStatus-5].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
+                        <a href="javascript:;" class="blue" @click="inspectHistorys(item)" v-if="item.orderStatus==7 ||item.orderStatus==8 || item.orderStatus==9" style="margin-right: 3px;">质检记录|</a>
                         <a href="javascript:;" class="blue" @click="info(item)" style="margin-right: 3px;">详情</a>
                     </td>
                 </template>
@@ -66,6 +66,9 @@ export default {
         };
     },
     methods: {
+        inspectHistorys(item) {
+            this.$router.push(`/jhgl-scddlb/inspect?orderNo=${item.orderNo}`);
+        },
         info(item) {
             this.$router.push(`/cjzr-scddlb/info?orderNo=${item.orderNo}`);
         }

@@ -18,4 +18,14 @@ export default [{
         open: false,
         id: 'jhgl-scddlb'
     }
+}, {
+    path: '/jhgl-scddlb/inspect',
+    name: 'inspect-info',
+    component: () => import( /* webpackChunkName: "orderedit" */ './inspectHistory.vue'),
+    meta: {
+        level: 3,
+        title: '质检记录',
+        open: false,
+        id: 'jhgl-scddlb'
+    }
 }]

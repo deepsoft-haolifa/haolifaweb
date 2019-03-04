@@ -10,7 +10,7 @@
             </div>
 
             <div class="b" style="margin: 20px 0 10px;">不合格详情</div>
-            <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
+            <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.unqualifiedList" :key="i">
                 <div class="flex-item">
                     <div class="flex">
                         <input-box v-model="item.productModel" class="flex-item mr-10" label="产品型号" hint="必填"></input-box>
@@ -22,7 +22,7 @@
                         <input-box v-model="item.reason" class="flex-item" label="不合格现象描述"></input-box>
                     </div>
                 </div>
-                <div v-if="form.items.length > 1"><icon-btn small @click="form.items.splice(i, 1)">close</icon-btn></div>
+                <div v-if="form.unqualifiedList.length > 1"><icon-btn small @click="form.unqualifiedList.splice(i, 1)">close</icon-btn></div>
             </div>
             <div class="card a flex-center" @click="addItem()">
                 <div class="flex-v-center">
@@ -49,7 +49,7 @@
                     testingNumber: '',
                     qualifiedNumber:'',
                     unqualifiedNumber:'',
-                    items: [{
+                    unqualifiedList: [{
                         productModel: '',
                         productSpecifications: '',
                         reason: '',
@@ -62,7 +62,7 @@
         methods: {
 
             addItem () {
-                this.form.items.push({
+                this.form.unqualifiedList.push({
                     productModel: '',
                     productSpecifications: '',
                     reason: '',

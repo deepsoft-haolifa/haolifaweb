@@ -4,11 +4,7 @@
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
                 <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
                 <div class="flex-item">详情</div>
-                <!--<div class="flex-item ml-20">-->
-                    <!--<btn class="b" flat color="#008eff" @click="downloadOrder(info.id)">合同下载</btn>-->
-                <!--</div>-->
             </div>
-            <!--<no-data v-if="!info.id" style="margin: 50px 0;"/>-->
             <table class="f-14" >
                 <tr>
                     <td style="width: 10%;"></td>
@@ -66,7 +62,7 @@
                 </tr>
             </table>
         </div>
-        <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length">
+        <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length" style="overflow-x: auto">
             <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
                 <div class="flex-item">质检记录</div>
             </div>
@@ -81,7 +77,7 @@
                         <th>合格数量</th>
                         <th>不合格数量</th>
                         <th>处理意见</th>
-                        <th>备注</th>
+                        <th>不合格现象描述</th>
                     </tr>
                     <tr v-for="(item, i) in inspectHistory">
                         <td>{{item.inspectNo}}</td>

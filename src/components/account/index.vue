@@ -90,13 +90,14 @@ export default {
                 this.newPassword === this.cNewPassword
             ) {
                 this.$http
-                    .put(`/haolifa/user/changePwd`, {
-                        newPassword: this.newPassword
-                    })
+                    .put(
+                        `/haolifa/user/changePwd?newPassword=${
+                            this.newPassword
+                        }`
+                    )
                     .then(res => {
-                        console.log(res);
-                        // this.$toast('删除成功')
-                        // this.$refs.list.update()
+                        this.$toast("修改成功");
+                        this.pwdFlag = false;
                     })
                     .catch(e => {
                         this.$toast(e.msg);

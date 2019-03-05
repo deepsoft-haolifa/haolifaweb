@@ -39,12 +39,129 @@
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="progress(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">发起流程|</a>
                         <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
-                        <a href="javascript:;" class="blue" @click="info(item)" style="margin-right: 3px;">详情</a>
+                        <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                         <a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0||item.orderStatus==14" style="margin-right: 3px;">|删除</a>
                     </td>
                 </template>
             </data-list>
         </div>
+        <layer v-if="layer" title="详情" width="50%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content metalwork-info">
+                    <table class="f-14 order-info">
+                        <tr>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 8%;"></td>
+                            <td style="width: 8%;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">订单编号 : {{info.orderNo}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">成品合同订单号 : {{info.orderContractNo}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">
+                                订单合同:
+                                <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
+                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                >预览</a>
+                            </td>
+                            <!-- <td colspan="6" class="b">
+                        订单备份合同:
+                        <a :href="info.orderContractExtendUrl">下载</a>
+                            </td>-->
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="b">装配车间: {{info.assemblyShop}}</td>
+                            <td colspan="7" class="b">装配小组: {{info.assemblyGroup}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
+                            <td colspan="7" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
+                        </tr>
+                        <!-- <tr>
+                    <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
+                    <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
+                        </tr>-->
+                        <tr>
+                            <td colspan="14" class="b">技术清单: {{info.technicalRequire}}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="1" rowspan="2">序号</td>
+                            <td colspan="1" rowspan="2">产品名称</td>
+                            <td colspan="1" rowspan="2">型号</td>
+                            <td colspan="1" rowspan="2">规格</td>
+                            <td colspan="1" rowspan="2">数量</td>
+                            <td colspan="1" rowspan="2">上法兰标准</td>
+                            <td colspan="3" rowspan="1">上法兰尺寸</td>
+                            <td colspan="3" rowspan="1">出轴尺寸</td>
+                            <td colspan="1" rowspan="2">静扭矩</td>
+                            <td colspan="1" rowspan="2">执行器型号</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" rowspan="1">连接孔</td>
+                            <td colspan="1" rowspan="1">角度</td>
+                            <td colspan="1" rowspan="1">中心距</td>
+                            <td colspan="1" rowspan="1">出轴型式</td>
+                            <td colspan="1" rowspan="1">出轴长度</td>
+                            <td colspan="1" rowspan="1">轴图号</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">订单产品列表</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" class="b">产品编号</td>
+                            <td colspan="2" class="b">产品名称</td>
+                            <td colspan="1" class="b">型号</td>
+                            <td colspan="1" class="b">标签属性</td>
+                            <td colspan="1" class="b">规格</td>
+                            <td colspan="1" class="b">颜色</td>
+                            <td colspan="1" class="b">产品数量</td>
+                            <td colspan="1" class="b">单价</td>
+                            <td colspan="1" class="b">总计价格</td>
+                            <td colspan="2" class="b">材质说明</td>
+                            <td colspan="2" class="b">产品备注</td>
+                        </tr>
+                        <tr v-for="(item,index) in info.orderProductAssociates" :key="index">
+                            <td colspan="1">{{item.productNo}}</td>
+                            <td colspan="2">{{item.productName}}</td>
+                            <td colspan="1">{{item.productModel}}</td>
+                            <td colspan="1">{{item.lable}}</td>
+                            <td colspan="1">{{item.specifications}}</td>
+                            <td colspan="1">{{item.productColor}}</td>
+                            <td colspan="1">{{item.productNumber}}</td>
+                            <td colspan="1">{{item.price}}</td>
+                            <td colspan="1">{{item.totalPrice}}</td>
+                            <td colspan="2">{{item.materialDescription}}</td>
+                            <td colspan="2">{{item.productRemark}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat color="#008eff" @click="close">关闭</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -61,7 +178,42 @@ export default {
             filter: {
                 orderNo: "",
                 orderStatus: -1
-            }
+            },
+            layer: false,
+            info: {},
+            // orderStatusList: {},
+            arr: [
+                {
+                    name: "",
+                    xinhao: "",
+                    guige: "",
+                    num: "",
+                    biaozhun: "",
+                    lianjiek: "",
+                    jiaodu: "",
+                    zhongxinju: "",
+                    xinshi: "",
+                    length: "",
+                    tuhao: "",
+                    jinniuju: "",
+                    jishuxinhao: ""
+                },
+                {
+                    name: "",
+                    xinhao: "",
+                    guige: "",
+                    num: "",
+                    biaozhun: "",
+                    lianjiek: "",
+                    jiaodu: "",
+                    zhongxinju: "",
+                    xinshi: "",
+                    length: "",
+                    tuhao: "",
+                    jinniuju: "",
+                    jishuxinhao: ""
+                }
+            ]
         };
     },
     created() {
@@ -106,8 +258,33 @@ export default {
         approveProgress(item) {
             this.$router.push(`/order/approveProgress?formNo=${item.orderNo}`);
         },
-        info(item) {
-            this.$router.push(`/order/info?orderNo=${item.orderNo}`);
+        infoShow(item) {
+            // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
+            this.layer = true;
+            this.getInfo(item.orderNo);
+            this.getOrderStatusList();
+        },
+        getInfo(orderNo) {
+            this.$http
+                .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
+                .then(res => {
+                    this.info = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getOrderStatusList() {
+            this.$http
+                .get("/haolifa/order-product/order-status-list")
+                .then(res => {
+                    for (let i in res) {
+                        this.orderStatusList[res[i].code] = res[i].desc;
+                    }
+                });
+        },
+        close() {
+            this.layer = false;
         },
         remove(item) {
             this.$confirm({
@@ -152,5 +329,39 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+.metalwork-info {
+    padding: 30px 20px;
+    tr:first-child td {
+        padding: 0;
+        border: none;
+    }
+    th {
+        font-weight: normal;
+        color: #888;
+    }
+    td {
+        color: #444;
+    }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #fff;
+        border: 1px solid #ddd;
+    }
+    .checkbox-list {
+        flex-wrap: wrap;
+    }
+    .checkbox-item {
+        line-height: 1em;
+        width: 180px;
+        margin: 5px 0;
+    }
+}
+.order-info {
+    th,
+    td {
+        white-space: unset !important;
+    }
 }
 </style>

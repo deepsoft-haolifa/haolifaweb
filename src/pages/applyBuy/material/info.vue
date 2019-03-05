@@ -1,11 +1,11 @@
 <template>
-    <div class=" abs scroll-y">
+    <div class="abs scroll-y">
         <div class="form-content page-supplier-info">
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
                 <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
                 <div class="flex-item">详情</div>
             </div>
-            <table class="f-14" >
+            <table class="f-14">
                 <tr>
                     <td style="width: 10%;"></td>
                     <td style="width: 10%;"></td>
@@ -97,62 +97,96 @@
 </template>
 
 <script>
-    // import parseJson from '@/utils/parseJson'
-    export default {
-        name: 'purchsemanage-purchaseinfo',
-        data () {
-            return {
-                loading: false,
-                inspect: {
-                    id:0,
-                    inspectNo:''
-                },
-                items:[],
-                inspectHistory:[]
-            }
-        },
-        created () {
-            this.inspect.id = this.$route.query.id;
-            this.inspect.inspectNo = this.$route.query.inspectNo;
-            console.log(this.inspect.id)
-            console.log(this.inspect.inspectNo)
-            this.getInfo()
-            this.getInspectHistory()
-        },
-        methods: {
-            getInfo () {
-                this.$http.get(`/haolifa/material-inspect/info/${this.inspect.id}`).then(res => {
+// import parseJson from '@/utils/parseJson'
+export default {
+    name: "purchsemanage-purchaseinfo",
+    data() {
+        return {
+            loading: false,
+            inspect: {
+                id: 0,
+                inspectNo: ""
+            },
+            items: [],
+            inspectHistory: []
+        };
+    },
+    created() {
+        this.inspect.id = this.$route.query.id;
+        this.inspect.inspectNo = this.$route.query.inspectNo;
+        this.getInfo();
+        this.getInspectHistory();
+    },
+    methods: {
+        getInfo() {
+            this.$http
+                .get(`/haolifa/material-inspect/info/${this.inspect.id}`)
+                .then(res => {
                     this.inspect = res.inspect;
                     this.items = res.items;
-                    this.inspect.createTime = res.inspect.createTime.substring(0,10);
-                    this.inspect.arrivalTime = res.inspect.arrivalTime.substring(0,10);
-                    this.inspect.updateTime = res.inspect.updateTime.substring(0,10);
-
-                }).catch(e => {
-                    this.$toast(e.msg || e.message)
+                    this.inspect.createTime = res.inspect.createTime.substring(
+                        0,
+                        10
+                    );
+                    this.inspect.arrivalTime = res.inspect.arrivalTime.substring(
+                        0,
+                        10
+                    );
+                    this.inspect.updateTime = res.inspect.updateTime.substring(
+                        0,
+                        10
+                    );
                 })
-            },
-            getInspectHistory() {
-                this.$http.get(`/haolifa/material-inspect/history/list/${this.inspect.inspectNo}`).then(res=>
-                {
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getInspectHistory() {
+            this.$http
+                .get(
+                    `/haolifa/material-inspect/history/list/${
+                        this.inspect.inspectNo
+                    }`
+                )
+                .then(res => {
                     this.inspectHistory = res;
-                    console.log(this.inspectHistory)
-                }).catch(e=>{
-                  this.$toast(e.msg || e.message)
+                    console.log(this.inspectHistory);
                 })
-            }
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
     }
+};
 </script>
 
 <style lang="less">
-    .page-supplier-info{
-        padding: 30px 20px;
-        tr:first-child td{padding: 0;border: none;}
-        th{font-weight: normal;color: #888;}
-        td{color: #444;}
-        th, td{padding: 10px;border: 1px solid #fff;border: 1px solid #ddd;}
-        .checkbox-list{flex-wrap: wrap;}
-        .checkbox-item{line-height: 1em;width: 180px;margin: 5px 0;}
+.page-supplier-info {
+    padding: 30px 20px;
+    tr:first-child td {
+        padding: 0;
+        border: none;
     }
+    th {
+        font-weight: normal;
+        color: #888;
+    }
+    td {
+        color: #444;
+    }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #fff;
+        border: 1px solid #ddd;
+    }
+    .checkbox-list {
+        flex-wrap: wrap;
+    }
+    .checkbox-item {
+        line-height: 1em;
+        width: 180px;
+        margin: 5px 0;
+    }
+}
 </style>

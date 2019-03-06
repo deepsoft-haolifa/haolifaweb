@@ -44,6 +44,50 @@
                 </template>
             </data-list>
         </div>
+        <layer v-if="layer" title="详情" width="70%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content metalwork-info">
+                    <table class="f-14">
+                        <tr>
+                            <td style="width: 25%;"></td>
+                            <td style="width: 25%;"></td>
+                            <td style="width: 25%;"></td>
+                            <td style="width: 25%;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="b">压力测试质检</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">报检单号: {{stresstest.inspectNo}}</td>
+                            <td colspan="2">订单号: {{stresstest.orderNo}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" class="b">检测数量</td>
+                            <td colspan="1" class="b">复检数量</td>
+                            <td colspan="1" class="b">合格数量</td>
+                            <td colspan="1" class="b">不合格数量</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">{{stresstest.testingNumber}}</td>
+                            <td colspan="1">{{stresstest.reinspectNumber}}</td>
+                            <td colspan="1">{{stresstest.qualifiedNumber}}</td>
+                            <td colspan="1">{{stresstest.unqualifiedNumber}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="b">不合格原因</td>
+                            <td colspan="2" class="b">不合格数量</td>
+                        </tr>
+                        <tr v-for="item in stresstest.unqualifiedList" :key="item.unqualifiedNumber">
+                            <td colspan="2">{{item.reason}}</td>
+                            <td colspan="2">{{item.unqualifiedNumber}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat color="#008eff" @click="layer=false">关闭</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -57,7 +101,9 @@ export default {
             filter: {
                 inspectNo: "",
                 orderNo: ""
-            }
+            },
+            stresstest: {},
+            layer: false
         };
     },
     methods: {
@@ -66,8 +112,21 @@ export default {
             // this.$router.push(`/material/entryMaterial?graphNo=${item.graphNo}&name=${item.name}`)
         },
         info(item) {
-            this.$router.push({ name: "stresstest-info", params: item });
+            this.layer = true;
+            this.stresstest.id = item.id;
+            this.stresstest.inspectNo = item.inspectNo;
+            this.getInfo(this.stresstest.inspectNo);
             // this.$router.push(`/material/outMaterial?graphNo=${item.graphNo}&name=${item.name}`)
+        },
+        getInfo(inspectNo) {
+            this.$http
+                .get(`/haolifa/pressure-inspect-res/info/${inspectNo}`)
+                .then(res => {
+                    this.stresstest = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         remove(item) {
             this.$confirm({

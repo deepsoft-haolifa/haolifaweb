@@ -13,7 +13,7 @@ export default [{
             name: '部门管理',
             url: '/department',
             id: 'bmgl'
-        },{
+        }, {
             name: '菜单管理',
             url: '/department',
             id: 'cdgl'
@@ -39,7 +39,7 @@ export default [{
             name: '订单列表',
             url: '/order',
             id: 'ddlb'
-        },{
+        }, {
             name: '新增订单',
             url: '/order/addList',
             id: 'xzdd'
@@ -163,16 +163,15 @@ export default [{
             name: '成品质检列表',
             url: '/inspect-product',
             id: 'cpzjlb'
-        },{
+        }, {
             name: '加工质检列表',
             url: '/inspect-metalwork',
             id: 'jgzjlb'
-        },{
-            name:'压力测试列表',
-            url:'/stresstest',
-            id:"ylcslb"
-        }
-        ]
+        }, {
+            name: '压力测试列表',
+            url: '/stresstest',
+            id: "ylcslb"
+        }]
     },
     {
         name: '发货管理',
@@ -265,13 +264,11 @@ export default [{
             name: '更换料申请',
             url: '/replacement',
             id: 'cjzr-ghllb'
-        }
-        , {
+        }, {
             name: '生产订单列表',
             url: '/cjzr-scddlb',
             id: 'cjzr-scddlb'
-        }
-        ]
+        }]
     },
     {
         name: '技术管理',
@@ -280,10 +277,19 @@ export default [{
             name: '更换料列表',
             url: '/replacementlist',
             id: 'jsgl-ghllb'
-        },{
+        }, {
             name: '文件/图纸管理',
             url: '/fileupload',
             id: 'wjtzgl'
+        }]
+    },
+    {
+        name: '任务管理',
+        id: 'parent-rwgl',
+        children: [{
+            name: '任务列表',
+            url: '/taskfinishlist',
+            id: 'rwlb'
         }]
     }
 ]

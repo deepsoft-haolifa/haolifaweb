@@ -5,15 +5,16 @@
                 <div class="home-tab flex-v-center">
                     <a class="home-tab-item a" :class="{'on': tab1}" @click="tab1=true">待办事项</a>
                     <a class="home-tab-item a" :class="{'on': !tab1}" @click="tab1=false">已办事项</a>
+                    <a href="javascript:;" @click="toTask" style="position:relative;left:66%;color:#009bff">更多..</a>
                 </div>
                 <div class="home-list flex-item scroll-y" v-if="tab1">
                     <div class="home-list-item a flex-v-center" v-for="item in todo" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
                         <div
-                                style="width:145px"
-                                v-if="item.flowId == 5"
-                                class="c-8 date-time"
-                                @click="$router.push({path:'/entrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                            style="width:145px"
+                            v-if="item.flowId == 5"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/entrust',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
                             style="width:145px"
@@ -216,6 +217,9 @@ export default {
             this.$http.get("/haolifa/done").then(res => {
                 this.done = res.list;
             });
+        },
+        toTask() {
+            this.$router.push(`/taskfinishlist`);
         },
         getNews() {
             this.$http.get("/haolifa/message/pageInfo/2").then(res => {

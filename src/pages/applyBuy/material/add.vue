@@ -5,7 +5,7 @@
             <div class="flex">
                 <date-picker v-model="form.arrivalTime" hint="必填" class="flex-item" label="到货时间" style="margin-right: 20px;"></date-picker>
                 <input-box v-model="form.supplierName" class="flex-item" label="供应商名称"></input-box>
-                <input-box v-model="form.batchNumber" class="flex-item" label="批次号"></input-box>
+                <!--<input-box v-model="form.batchNumber" class="flex-item" label="批次号"></input-box>-->
             </div>
             <div class='flex'>
                 <upload-box btnText='质量保证书' :fileList='fileList' :onchange='uploadFile' :onremove='removeFile' :multiple="multiple" style='width: 50%'></upload-box>

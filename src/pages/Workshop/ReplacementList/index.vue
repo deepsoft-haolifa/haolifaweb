@@ -91,7 +91,7 @@ export default {
   methods: {
     auditLayerM (item) {
         console.log('item===', item);
-        this.auditLayerItem.replaceMaterialNo = item.materialGraphNo;
+        this.auditLayerItem.replaceMaterialNo = item.replaceMaterialNo;
         this.auditLayer = true;
     },
       completeAudit(auditResult) {

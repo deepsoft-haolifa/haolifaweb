@@ -39,8 +39,8 @@
             <td>{{item.createTime}}</td>
             <td class="t-right">
                 <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.id)">详情</a> | -->
-                <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
-                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a> 
+                <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑 |</a>
+                <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
             </td>
         </template>
     </data-list>
@@ -57,7 +57,7 @@ export default {
     return {
       filter:{
           orderNo:'',
-          auditResult: 0,
+          auditResult: -1,
           replaceMaterialNo: ""
       },
        statusList:[

@@ -4,12 +4,7 @@
     <div class="flex-v-center search-bar" style="margin-right: 20px;">
         <i class="icon f-20 c-8">search</i>
         <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
-        <!-- <select v-model="filter.auditResult" class="f-14" @change="$refs.list.update(true)">
-            <option value="-1">审核状态</option>
-            <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
-        </select> -->
-        <!-- <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i> -->
-    </div>
+        </div>
     <div class="flex-item"></div>
   </div>
   <div class="flex-item scroll-y">
@@ -40,10 +35,10 @@
             <td>{{statusList[item.auditResult].name}}</td>
             <td>{{item.auditTime}}</td>
             <td>{{item.createTime}}</td>
-            <!-- <td class="t-right">
-                <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
-                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a> 
-            </td> -->
+             <td class="t-right">
+                <a href="javascript:;" style="margin-right: 3px" class="blue" @click="outRoom(item)">出库</a>
+
+            </td>
         </template>
     </data-list>
   </div>
@@ -59,7 +54,7 @@ export default {
     return {
       filter:{
           orderNo:'',
-          auditResult: -1,
+          auditResult: 2,
           replaceMaterialNo: ""
       },
        statusList:[
@@ -69,25 +64,9 @@ export default {
     }
   },
   methods: {
-    edit (item) {
-      this.$router.push(`/replacementedit?id=${item.id}`)
-    },
-    remove (item) {
-      this.$confirm({
-        title: '删除确认',
-        text: `您确定要删除以下库房吗？<br><b>${item.materialName}</b>`,
-        color: 'red',
-        btns: ['取消', '删除'],
-        yes: () => {
-          this.$http.delete(`/haolifa/replace-material/del/${item.id}`).then(res => {
-            this.$toast('删除成功')
-            this.$refs.list.update()
-          }).catch(e => {
-            this.$toast(e.msg)
-          })
-        }
-      })
-    }
+      outRoom:function (item) {
+          this.$router.push({name: "orderupdate-outMaterial-list", params: item});
+      }
   }
 }
 </script>

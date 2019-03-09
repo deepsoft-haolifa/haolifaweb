@@ -20,6 +20,7 @@
                     <th>企业性质</th>
                     <th>法人</th>
                     <th>电话</th>
+                    <th>是否合格</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
@@ -32,13 +33,14 @@
                     <td>{{natureList[item.nature]}}</td>
                     <td>{{item.legalPerson}}</td>
                     <td>{{item.phone}}</td>
+                    <td>{{item.isQualified}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
                         <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a> |
                         <a
                             href="javascript:;"
                             class="red"
-                            v-if="item.isQualified != 3"
+                            v-if="item.isQualified == 0"
                             @click="approveSupplier(item.suppilerNo)"
                             style="margin-right: 3px;"
                         >发起审批</a>
@@ -58,7 +60,13 @@ export default {
     components: { DataList },
     data() {
         return {
-            natureList: ["国有", "三资", "集体", "联营", "私营"]
+            natureList: ["国有", "三资", "集体", "联营", "私营"],
+            isQualifiedStatusList:[
+                {value:0,text:'待评定'},
+                {value:1,text:'合格'},
+                {value:2,text:'不合格'},
+                {value:3,text:'评定中'},
+            ]
         };
     },
     methods: {

@@ -33,10 +33,12 @@
                     <td>{{natureList[item.nature]}}</td>
                     <td>{{item.legalPerson}}</td>
                     <td>{{item.phone}}</td>
-                    <td>{{item.isQualified}}</td>
+                    <td>{{isQualifiedStatusList[item.isQualified].text}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
                         <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a> |
+                        <a href="javascript:;" v-if="item.isQualified == 1 || item.isQualified==2" class="blue"
+                           @click="auditAccessoryInfo(item.suppilerNo)" style="margin-right: 3px;">审批附件</a>
                         <a
                             href="javascript:;"
                             class="red"
@@ -70,8 +72,12 @@ export default {
         };
     },
     methods: {
+        auditAccessoryInfo(supplierNo) {
+            console.log('accessory-info', supplierNo);
+            this.$router.push(`/supplier/accessory-info?formNo=${supplierNo}`);
+        },
         approving(supplierNo) {
-            //todo
+            // todo
             this.$router.push(`/order/approveProgress?formNo=${supplierNo}`);
         },
         approveSupplier(supplierNo) {

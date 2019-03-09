@@ -26,8 +26,6 @@
                     <th>图号</th>
                     <th>型号</th>
                     <th>规格</th>
-                    <th>单价</th>
-                    <th>金额</th>
                     <th>库存</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
@@ -37,8 +35,6 @@
                     <td>{{item.graphNo}}</td>
                     <td>{{item.model}}</td>
                     <td>{{item.specifications}}</td>
-                    <td>{{item.price}}</td>
-                    <td>{{item.price*item.currentQuantity}}</td>
                     <td>{{item.currentQuantity}}</td>
                 </template>
             </data-list>

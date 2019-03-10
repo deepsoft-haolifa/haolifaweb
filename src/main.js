@@ -42,5 +42,8 @@ axios.interceptors.response.use(function (response) {
     return Promise.reject(response.data || response)
   }
 }, function (e) {
+  if (e.response.status == 401) {
+    return Promise.reject(e.response.data.msg)
+  }
   return Promise.reject(e)
 })

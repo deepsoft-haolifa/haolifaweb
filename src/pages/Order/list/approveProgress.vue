@@ -24,85 +24,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <table class="f-14 order-info">
-                <tr>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 8%;"></td>
-                    <td style="width: 10%;"></td>
-                    <td style="width: 10%;"></td>
-                </tr>
-                <tr>
-                    <td colspan="12" class="b">订单编号 : {{info.orderNo}}</td>
-                </tr>
-                <tr>
-                    <td colspan="12" class="b">成品合同订单号 : {{info.orderContractNo}}</td>
-                </tr>
-                <tr>
-                    <td colspan="12" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>
-                </tr>
-                <tr>
-                    <td colspan="6" class="b">
-                        订单合同:
-                        <a :href="info.orderContractUrl">下载</a>
-                    </td>
-                    <td colspan="6" class="b">
-                        订单备份合同:
-                        <a :href="info.orderContractExtendUrl">下载</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6" class="b">装配车间: {{info.assemblyShop}}</td>
-                    <td colspan="6" class="b">装配小组: {{info.assemblyGroup}}</td>
-                </tr>
-                <tr>
-                    <td colspan="6" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
-                    <td colspan="6" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
-                </tr>
-                <tr>
-                    <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
-                    <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
-                </tr>
-                <tr>
-                    <td colspan="12" class="b">技术清单: {{info.technicalRequire}}</td>
-                </tr>
-                <tr>
-                    <td colspan="12" class="b">订单产品列表</td>
-                </tr>
-                <tr>
-                    <td colspan="1" class="b">产品编号</td>
-                    <td colspan="1" class="b">产品名称</td>
-                    <td colspan="1" class="b">型号</td>
-                    <td colspan="1" class="b">标签属性</td>
-                    <td colspan="1" class="b">规格</td>
-                    <td colspan="1" class="b">颜色</td>
-                    <td colspan="1" class="b">产品数量</td>
-                    <td colspan="1" class="b">单价</td>
-                    <td colspan="1" class="b">总计价格</td>
-                    <td colspan="1" class="b">材质说明</td>
-                    <td colspan="2" class="b">产品备注</td>
-                </tr>
-                <tr v-for="(item,index) in info.orderProductAssociates" :key="index">
-                    <td colspan="1">{{item.productNo}}</td>
-                    <td colspan="1">{{item.productName}}</td>
-                    <td colspan="1">{{item.productModel}}</td>
-                    <td colspan="1">{{item.lable}}</td>
-                    <td colspan="1">{{item.specifications}}</td>
-                    <td colspan="1">{{item.productColor}}</td>
-                    <td colspan="1">{{item.productNumber}}</td>
-                    <td colspan="1">{{item.price}}</td>
-                    <td colspan="1">{{item.totalPrice}}</td>
-                    <td colspan="1">{{item.materialDescription}}</td>
-                    <td colspan="2">{{item.productRemark}}</td>
-                </tr>
-            </table>-->
         </div>
     </div>
 </template>
@@ -124,14 +45,14 @@ export default {
         };
     },
     created() {
-        const { formNo } = this.$route.query;
-        this.getInfo(formNo);
+        this.getInfo(this.$route.query.formNo, this.$route.query.formId);
         this.getOrderStatusList();
     },
     methods: {
-        getInfo(formNo) {
+        getInfo(formNo, formId) {
+            console.log(formNo,formId);
             this.$http
-                .get(`/haolifa/flowInstance/flow/progress?formNo=${formNo}`)
+                .get(`/haolifa/flowInstance/flow/progress?formNo=${formNo}&formId=${formId}`)
                 .then(res => {
                     console.log(res);
                     this.list = res;

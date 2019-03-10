@@ -81,11 +81,12 @@
                 }).catch(e=>{
 
                 });
+            },
+            auditProcess(formId) {
+                this.$router.push(`/order/approveProgress?formNo=''&formId=${formId}`);
             }
-        },
-        auditProcess(formId) {
-            // 查看审批详情
         }
+
     }
 </script>
 

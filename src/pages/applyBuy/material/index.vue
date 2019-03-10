@@ -99,11 +99,32 @@
                         </tr>
                     </table>
                 </div>
+                <div class="mt-15 ml-20 mr-20" v-if="resFileList.length" style="overflow-x: auto">
+                    <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
+                        <div class="flex-item" style="text-align: left;line-height: 24px;">质量保证书</div>
+                    </div>
+                    <div  style="margin-left:20px;margin-top:5px;">
+                        <table class="data-table">
+                            <tr slot="header">
+                                <th style="width: 60px;">序号</th>
+                                <th>文件名称</th>
+                                <th>下载地址</th>
+                            </tr>
+                            <tr v-for="(item,i) in resFileList" :key="i">
+                                <td>{{i}}</td>
+                                <td>{{item.fileName}}</td>
+                                <td>
+                                    <a class="fixed-length" :href="item.fileUrl" :title="item.fileUrl">{{item.fileUrl}}</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length" style="overflow-x: auto">
                     <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
                         <div class="flex-item" style="text-align: center;line-height: 24px;">质检记录</div>
                     </div>
-                    <div class="flex-item scroll-y page-supplier-info">
+                    <div class="flex-item scroll-y page-supplier-info" style="overflow-x: auto">
                         <table class="data-table">
                             <tr style="display:none">
                                 <td style="width: 11%;"></td>
@@ -174,7 +195,8 @@ export default {
                 inspectNo: ""
             },
             items: [],
-            inspectHistory: []
+            inspectHistory: [],
+            resFileList:[]
         };
     },
     methods: {
@@ -218,6 +240,9 @@ export default {
                         0,
                         10
                     );
+                    if(res.inspect.blueprints != "" && res.inspect.blueprints != null){
+                        this.resFileList = JSON.parse(res.inspect.blueprints);
+                    }
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -253,6 +278,7 @@ export default {
             this.layer = true;
             this.inspect.id = item.id;
             this.inspect.inspectNo = item.inspectNo;
+            this.resFileList=[]
             this.getInfo();
             this.getInspectHistory();
             // this.$router.push(

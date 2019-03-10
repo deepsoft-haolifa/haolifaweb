@@ -78,7 +78,7 @@ export default {
         },
         approving(supplierNo) {
             // todo
-            this.$router.push(`/order/approveProgress?formNo=${supplierNo}`);
+            this.$router.push(`/order/approveProgress?formNo=${supplierNo}&formId=0`);
         },
         approveSupplier(supplierNo) {
             this.$http

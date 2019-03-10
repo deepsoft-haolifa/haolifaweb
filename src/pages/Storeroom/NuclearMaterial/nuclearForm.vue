@@ -41,7 +41,7 @@
                             <td>{{item.materialCount}}</td>
                             <td>{{item.lackMaterialCount}}</td>
                             <td>{{checkStatusList[item.checkStatus-1].text}}</td>
-                            <td>{{item.isReplace==0?'否':'是'}}</td>
+                            <td>{{item.checkStatus==3?'是':'否'}}</td>
                             <td>{{item.replaceMaterialGraphNo}}</td>
                             <td>{{item.remark}}</td>
                         </tr>

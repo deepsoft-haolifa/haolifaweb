@@ -251,7 +251,7 @@ export default {
         },
         // 审批进度查看
         approveProgress(item) {
-            this.$router.push(`/order/approveProgress?formNo=${item.orderNo}`);
+            this.$router.push(`/order/approveProgress?formNo=${item.orderNo}&formId=0`);
         },
         infoShow(item) {
             // this.$router.push(`/order/info?orderNo=${item.orderNo}`);

@@ -1,18 +1,16 @@
 <template>
-    <div class='page-part-add abs scroll-y'>
-        <div class='form-content'>
-            <div class='title b f-18'>{{form.id ? '编辑' : '新增'}}发票</div>
-            <div class='flex-v-center'>
-
+    <div class="page-part-add abs scroll-y">
+        <div class="form-content">
+            <div class="title b f-18">{{form.id ? '编辑' : '新增'}}发票</div>
+            <div class="flex-v-center"></div>
+            <div class="flex-v-center">
+                <input-box v-model="form.orderNo" class="mr-10" label="合同编号" style="width: 50%"></input-box>
             </div>
-            <div class='flex-v-center'>
-                <input-box v-model='form.orderNo' class='mr-10' label='合同编号' style='width: 50%'></input-box>
+            <div class="flex-v-center">
+                <input-box v-model="form.totalAmount" class="mr-10" label="发票金额" style="width: 50%"></input-box>
             </div>
-            <div class='flex-v-center'>
-                <input-box v-model='form.totalAmount' class='mr-10' label='发票金额' style='width: 50%'></input-box>
-            </div>
-            <div class='flex-v-center'>
-                <input-box v-model='form.remark' class='mr-10' label='备注' style='width: 50%'></input-box>
+            <div class="flex-v-center">
+                <input-box v-model="form.remark" class="mr-10" label="备注" style="width: 50%"></input-box>
             </div>
             <div class="flex">
                 <btn big class="mr-20" @click="submit">提交</btn>
@@ -24,44 +22,42 @@
 
 <script>
 export default {
-    name: 'page-part-add',
+    name: "page-part-add",
     data() {
         return {
             form: {
-                orderNo: '',
+                orderNo: "",
                 totalAmount: 0.0,
-                remark: '',
+                remark: "",
                 status: 1,
-                type:1
-
+                type: 1
             }
-        }
-    }
-    ,
+        };
+    },
     methods: {
         submit() {
-            console.log("start save.111.")
             const requireItem = {
-                orderNo: '合同编号',
-                totalAmount: '金额'
-            }
-            this.$http.post('/haolifa/invoice/save', this.form).then(res => {
-                console.log("start save..")
-                this.$router.replace('/jgzx-invoice')
-            }).catch(e => {
-                this.$toast(e.message || e.msg)
-            })
+                orderNo: "合同编号",
+                totalAmount: "金额"
+            };
+            this.$http
+                .post("/haolifa/invoice/save", this.form)
+                .then(res => {
+                    this.$router.replace("/jgzx-invoice");
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         }
-
     }
-}
+};
 </script>
 
 <style lang='less'>
-    .page-part-add {
-        padding: 30px 20px;
-        .title {
-            margin-bottom: 20px;
-        }
+.page-part-add {
+    padding: 30px 20px;
+    .title {
+        margin-bottom: 20px;
     }
+}
 </style>

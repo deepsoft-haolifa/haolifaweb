@@ -67,7 +67,14 @@
                             <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
                         </div>
                         <div class="flex" v-if="dealStepId == 55">
-                            <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
+                            <input-box
+                                :disabled="true"
+                                v-model="updateInfo.purchaseFeedbackTime"
+                                hint="必填"
+                                class="flex-item"
+                                label="采购完成时间"
+                                style="margin-right: 20px;"
+                            ></input-box>
                         </div>
                         <div>
                             <div v-if="purchaseList.length>0">
@@ -96,7 +103,14 @@
                             <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
                         </div>
                         <div class="flex">
-                            <upload-box btnText="附件上传" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" style="width: 50%"></upload-box>
+                            <upload-box
+                                btnText="附件上传"
+                                :fileList="fileList"
+                                :onchange="uploadFile"
+                                :onremove="removeFile"
+                                :multiple="multiple"
+                                style="width: 50%"
+                            ></upload-box>
                         </div>
                         <div class="flex" style="margin-top:10px;">
                             <btn @click="handleStepM(1)">同意</btn>
@@ -131,9 +145,7 @@
                             <td>{{auditResults[item.auditResult].name}}</td>
                             <td>{{item.auditInfo}}</td>
                             <td v-if="item.accessories != null">
-                                <a v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">
-                                    {{file.fileName}}
-                                </a>
+                                <a v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
                             </td>
                             <td v-else>无</td>
                         </tr>
@@ -141,10 +153,14 @@
                 </div>
             </div>
             <div v-if="data.accessories">
-                <div class="flex-item mt-10 mb-10"><span class="f-20">审批附件</span></div>
+                <div class="flex-item mt-10 mb-10">
+                    <span class="f-20">审批附件</span>
+                </div>
                 <div class="flex-item">
                     <div v-for="(item,i) in data.accessories" :key="i" style="margin-left:20px;margin-top:5px;">
-                        <div class="flex"><a :href="item.fileUrl" style="text-decoration:none ;out-line: none ;color:blue" target="_blank">{{item.fileName}}</a></div>
+                        <div class="flex">
+                            <a :href="item.fileUrl" style="text-decoration:none ;out-line: none ;color:blue" target="_blank">{{item.fileName}}</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,12 +208,7 @@ export default {
                 formType: 0,
                 backStepId: null,
                 condition: true,
-                accessorys: [
-                    {
-                        fileName: "",
-                        fileUrl: ""
-                    }
-                ]
+                accessorys: []
             },
             backSteps: [],
             dealStepId: 0,
@@ -213,7 +224,8 @@ export default {
             actionType: 0,
             purchaseList: [],
             fileList: [],
-            fileName: ""
+            fileName: "",
+            multiple: true
         };
     },
     created() {
@@ -239,48 +251,88 @@ export default {
                         this.dealStepId = res.dealStep.stepId;
                     }
                     // 获取订单详情
-                    this.$http.get(`/haolifa/order-product/details?orderNo=${this.data.formNo}`).then(res=>{
-                        this.orderUrl = res.orderContractUrl;
-                        this.orderInfo = res;
-                        this.updateInfo.orderNo = this.data.formNo;
-                        if(this.dealStepId == 52 || this.dealStepId == 53) {
-                            // 总工 核料 看到技术清单
-                            this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
-                            if(this.dealStepId == 53) { //库管核料
-                                if (res.orderStatus == '2') {
-                                    // 核料中
-                                    this.actionType = 1 // 去核料
-                                } else if (res.orderStatus == '3') {
-                                    // 替换料审批中
-                                    this.actionType = 2 // 提示不能操作。
-                                } else if (res.orderStatus == '4') {
-                                    // 核料完成：
-                                    this.actionType = 0
-                                    // 查看是否需要采购
-                                    this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res => {
-                                        res.length > 0 ? this.handleStep.condition = false : true;
-                                        console.log('condition', this.handleStep.condition)
-                                    });
+                    this.$http
+                        .get(
+                            `/haolifa/order-product/details?orderNo=${
+                                this.data.formNo
+                            }`
+                        )
+                        .then(res => {
+                            this.orderUrl = res.orderContractUrl;
+                            this.orderInfo = res;
+                            this.updateInfo.orderNo = this.data.formNo;
+                            if (
+                                this.dealStepId == 52 ||
+                                this.dealStepId == 53
+                            ) {
+                                // 总工 核料 看到技术清单
+                                this.updateInfo.technicalRequire = this.orderInfo.technicalRequire;
+                                if (this.dealStepId == 53) {
+                                    //库管核料
+                                    if (res.orderStatus == "2") {
+                                        // 核料中
+                                        this.actionType = 1; // 去核料
+                                    } else if (res.orderStatus == "3") {
+                                        // 替换料审批中
+                                        this.actionType = 2; // 提示不能操作。
+                                    } else if (res.orderStatus == "4") {
+                                        // 核料完成：
+                                        this.actionType = 0;
+                                        // 查看是否需要采购
+                                        this.$http
+                                            .get(
+                                                `/haolifa/applyBuy/product/list?orderNo=${
+                                                    this.data.formNo
+                                                }`
+                                            )
+                                            .then(res => {
+                                                res.length > 0
+                                                    ? (this.handleStep.condition = false)
+                                                    : true;
+                                                console.log(
+                                                    "condition",
+                                                    this.handleStep.condition
+                                                );
+                                            });
+                                    }
                                 }
+                            } else if (this.dealStepId == 57) {
+                                this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
+                            } else if (this.dealStepId == 54) {
+                                this.$http
+                                    .get(
+                                        `/haolifa/applyBuy/product/list?orderNo=${
+                                            this.data.formNo
+                                        }`
+                                    )
+                                    .then(res => {
+                                        this.purchaseList = JSON.parse(
+                                            JSON.stringify(res)
+                                        );
+                                        console.log("list", this.purchaseList);
+                                    });
+                            } else if (this.dealStepId == 55) {
+                                this.$http
+                                    .get(
+                                        `/haolifa/applyBuy/product/list?orderNo=${
+                                            this.data.formNo
+                                        }`
+                                    )
+                                    .then(res => {
+                                        this.purchaseList = JSON.parse(
+                                            JSON.stringify(res)
+                                        );
+                                        console.log("list", this.purchaseList);
+                                    });
+                                this.updateInfo.purchaseFeedbackTime = moment(
+                                    res.purchaseFeedbackTime
+                                ).format("YYYY-MM-DD");
                             }
-                        } else if(this.dealStepId == 57) {
-                            this.updateInfo.assemblyShop = this.orderInfo.assemblyShop;
-                        } else if(this.dealStepId == 54) {
-                            this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res=>{
-                               this.purchaseList = JSON.parse(JSON.stringify(res));
-                               console.log('list',this.purchaseList);
-                            });
-                        } else if(this.dealStepId == 55) {
-                            this.$http.get(`/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`).then(res=>{
-                                this.purchaseList = JSON.parse(JSON.stringify(res));
-                                console.log('list',this.purchaseList);
-                            });
-                            this.updateInfo.purchaseFeedbackTime = moment(res.purchaseFeedbackTime).format('YYYY-MM-DD')
-                        }
-                    });
-                }).catch(e => {
-                this.$toast(e.message || e.msg);
-            });
+                        });
+                })
+                .catch(e => {
+                    this.$toast(e.message || e.msg);
+                });
         },
         handleStepM(auditResult) {
             if (auditResult != 2) {
@@ -308,7 +360,11 @@ export default {
                         color: "blue",
                         btns: ["取消", "查看"],
                         yes: () => {
-                            this.$router.push(`/nuclear-replace-form?orderNo=${this.orderInfo.orderNo}`);
+                            this.$router.push(
+                                `/nuclear-replace-form?orderNo=${
+                                    this.orderInfo.orderNo
+                                }`
+                            );
                         }
                     });
                     return;
@@ -345,20 +401,40 @@ export default {
                             status = 2;
                         } else if (this.dealStepId == 54) {
                             // 采购反馈
-                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${this.updateInfo.purchaseFeedbackTime}&orderNo=${this.updateInfo.orderNo}`).then(res=>{
-                            });
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.purchaseFeedbackTime = null;
-                            });
-                        } else if(this.dealStepId == 55) {
+                            this.$http
+                                .post(
+                                    `/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${
+                                        this.updateInfo.purchaseFeedbackTime
+                                    }&orderNo=${this.updateInfo.orderNo}`
+                                )
+                                .then(res => {});
+                            this.$http
+                                .post(
+                                    `/haolifa/order-product/updateInfo`,
+                                    this.updateInfo
+                                )
+                                .then(res => {
+                                    this.updateInfo.purchaseFeedbackTime = null;
+                                });
+                        } else if (this.dealStepId == 55) {
                             // 综合计划
                             status = 5;
-                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${this.updateInfo.orderNo}`).then(res=>{
-                            });
-                            this.$http.post(`/haolifa/order-product/updateInfo`, this.updateInfo).then(res=>{
-                                this.updateInfo.finishFeedbackTime = null;
-                            });
-                        } else if(this.dealStepId == 56) {
+                            this.$http
+                                .post(
+                                    `/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${
+                                        this.updateInfo.orderNo
+                                    }`
+                                )
+                                .then(res => {});
+                            this.$http
+                                .post(
+                                    `/haolifa/order-product/updateInfo`,
+                                    this.updateInfo
+                                )
+                                .then(res => {
+                                    this.updateInfo.finishFeedbackTime = null;
+                                });
+                        } else if (this.dealStepId == 56) {
                             // 生产调度
                             status = 6;
                             this.$http
@@ -409,15 +485,30 @@ export default {
                     } else {
                         // 不通过
                         status = 14;
-                        let updateStatus = {orderNo:this.data.formNo,status:status}
-                        this.$http.post(`/haolifa/order-product/updateStatus`,updateStatus);
-                        if(this.dealStepId == 55) {
+                        let updateStatus = {
+                            orderNo: this.data.formNo,
+                            status: status
+                        };
+                        this.$http.post(
+                            `/haolifa/order-product/updateStatus`,
+                            updateStatus
+                        );
+                        if (this.dealStepId == 55) {
                             // 释放料
-                            this.$http.post(`/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`)
-                            this.$http.post(`/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/4`).then(res=>{
-                            });
+                            this.$http.post(
+                                `/haolifa/order-product/release-material?orderNo=${
+                                    updateStatus.orderNo
+                                }`
+                            );
+                            this.$http
+                                .post(
+                                    `/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${
+                                        this.updateInfo.orderNo
+                                    }/4`
+                                )
+                                .then(res => {});
                         }
-                        }
+                    }
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -436,8 +527,12 @@ export default {
                         fileName: file.name
                     })
                     .then(res => {
-                        this.handleStep.accessorys[0].fileUrl = res;
-                        this.handleStep.accessorys[0].fileName = file.name;
+                        this.handleStep.accessorys.push({
+                            fileName: file.name,
+                            fileUrl: res
+                        });
+                        // this.handleStep.accessorys[0].fileUrl = res;
+                        // this.handleStep.accessorys[0].fileName = file.name;
                         this.loading = false;
                     })
                     .catch(e => {
@@ -448,8 +543,9 @@ export default {
         },
         removeFile() {
             return new Promise((resolve, reject) => {
-                this.handleStep.accessorys[0].fileUrl = res;
-                this.handleStep.accessorys[0].fileName = fileName;
+                this.handleStep.accessorys.splice(i, 1);
+                // this.handleStep.accessorys[0].fileUrl = res;
+                // this.handleStep.accessorys[0].fileName = fileName;
                 resolve();
             });
         },

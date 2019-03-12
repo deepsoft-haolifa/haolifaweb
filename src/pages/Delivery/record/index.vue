@@ -3,12 +3,10 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.contractOrderNo" @change="$refs.list.update(true)"
-                       placeholder="订单号">
+                <input type="text" class="flex-item" v-model="filter.contractOrderNo" @change="$refs.list.update(true)" placeholder="订单号">
                 <select v-model="filter.deliveryClassify" @change="$refs.list.update(true)">
                     <option value="0">发货分类</option>
-                    <option v-for="item in classifyList" :value="item.value" v-bind:key="item.value">{{item.text}}
-                    </option>
+                    <option v-for="item in classifyList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -55,49 +53,48 @@
 </template>
 
 <script>
-    import DataList from '@/components/datalist'
+import DataList from "@/components/datalist";
 
-    export default {
-        name: 'page-delivery-record-list',
-        components: {DataList},
-        data() {
-            return {
-                classifyList: [],
-                filter:{
-                    contractOrderNo:'',
-                    deliveryClassify:0
-                }
+export default {
+    name: "page-delivery-record-list",
+    components: { DataList },
+    data() {
+        return {
+            classifyList: [],
+            filter: {
+                contractOrderNo: "",
+                deliveryClassify: 0
             }
+        };
+    },
+    created() {
+        this.getClassifyList();
+    },
+    methods: {
+        edit(item) {
+            this.$router.push(`/delivery-record/edit?id=${item.id}`);
         },
-        created() {
-            this.getClassifyList()
-        },
-        methods: {
-            edit(item) {
-                this.$router.push(`/delivery-record/edit?id=${item.id}`)
-            },
-            getClassifyList() {
-                this.$http.get('/haolifa/delivery/getClassifyList').then(res => {
-                    console.log(res)
-                    this.classifyList = res.map(item => {
-                        return {value: item.code, text: item.name}
-                    });
-                })
-            }
+        getClassifyList() {
+            this.$http.get("/haolifa/delivery/getClassifyList").then(res => {
+                this.classifyList = res.map(item => {
+                    return { value: item.code, text: item.name };
+                });
+            });
         }
     }
+};
 </script>
 
 <style lang="less">
-    .page-part-list {
-        //
-    }
+.page-part-list {
+    //
+}
 
-    .fixed-length {
-        width: 100px;
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
+.fixed-length {
+    width: 100px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 </style>

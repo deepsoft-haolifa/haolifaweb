@@ -150,7 +150,6 @@ export default {
                 )
                 .then(res => {
                     this.inspectHistory = res;
-                    console.log(this.inspectHistory);
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

@@ -103,7 +103,6 @@ export default {
                 .post("/haolifa/login", fd)
                 .then(res => {
                     res.menus.push("home");
-                    console.log(res);
                     this.errorMsgFlag = false;
                     this.$store.commit("LOGIN", res);
                     resetRouter(res.menus);

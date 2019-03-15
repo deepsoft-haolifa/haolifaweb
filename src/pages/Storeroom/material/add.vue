@@ -21,7 +21,7 @@
     <div class="flex-v-center">
       <input-box v-model="form.actualWeight" class="flex-item mr-10" label="实际单重" style="width: 25%"></input-box>
       <input-box v-model="form.theoreticalWeight" class="mr-10" label="理论单重" style="width: 25%"></input-box>
-      <input-box v-model="form.price" class="mr-10" label="单价" style="width: 25%"></input-box>
+      <!--<input-box v-model="form.price" class="mr-10" label="单价" style="width: 25%"></input-box>-->
       <input-box v-model="form.taxRate" class="mr-10" label="税率" style="width: 25%"></input-box>
     </div>
     <div class="flex-v-center">

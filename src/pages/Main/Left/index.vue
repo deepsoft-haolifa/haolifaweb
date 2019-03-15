@@ -105,6 +105,11 @@ export default {
                         name: "新增订单",
                         url: "/order/addList",
                         id: "xzdd"
+                    },
+                    {
+                        name: "订单生成",
+                        url: "/order/addList",
+                        id: "ddsc"
                     }
                 ]
             },
@@ -317,7 +322,17 @@ export default {
                         name: "发货申请列表",
                         url: "/finance-bills",
                         id: "fhsqlb"
-                    }
+                    },
+                    {
+                        name: "成品价格管理",
+                        url: "/cost",
+                        id: "cpjggl"
+                    },
+                    {
+                        name: "零件价格管理",
+                        url: "/cost",
+                        id: "ljjggl"
+                    },
                 ]
             },
             {

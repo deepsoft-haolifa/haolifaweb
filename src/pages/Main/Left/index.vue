@@ -325,14 +325,14 @@ export default {
                     },
                     {
                         name: "成品价格管理",
-                        url: "/cost",
+                        url: "/finishedPrice",
                         id: "cpjggl"
                     },
                     {
                         name: "零件价格管理",
-                        url: "/cost",
+                        url: "/partPrice",
                         id: "ljjggl"
-                    },
+                    }
                 ]
             },
             {

@@ -48,13 +48,23 @@ export default [{
     open: false,
     id: 'parent-ddgl'
   }
-},{
+}, {
   path: '/order/addList',
   name: 'order-addList',
   component: () => import( /* webpackChunkName: "orderlist" */ './addList.vue'),
   meta: {
     level: 2,
     title: '新增订单',
+    open: false,
+    id: 'parent-ddgl'
+  }
+}, {
+  path: '/order/create',
+  name: 'order-create',
+  component: () => import( /* webpackChunkName: "orderlist" */ './create.vue'),
+  meta: {
+    level: 2,
+    title: '订单生成',
     open: false,
     id: 'parent-ddgl'
   }

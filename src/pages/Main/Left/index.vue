@@ -108,7 +108,7 @@ export default {
                     },
                     {
                         name: "订单生成",
-                        url: "/order/addList",
+                        url: "/order/create",
                         id: "ddsc"
                     }
                 ]
@@ -325,14 +325,14 @@ export default {
                     },
                     {
                         name: "成品价格管理",
-                        url: "/cost",
+                        url: "/finishedPrice",
                         id: "cpjggl"
                     },
                     {
                         name: "零件价格管理",
-                        url: "/cost",
+                        url: "/partPrice",
                         id: "ljjggl"
-                    },
+                    }
                 ]
             },
             {

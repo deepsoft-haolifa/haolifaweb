@@ -60,9 +60,8 @@
                     <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
                 </tr>-->
                 <tr>
-                    <td colspan="14" class="b">技术清单: {{info.technicalRequire}}</td>
+                    <td colspan="14" class="b">技术清单:</td>
                 </tr>
-
                 <tr>
                     <td colspan="1" rowspan="2">序号</td>
                     <td colspan="1" rowspan="2">产品名称</td>
@@ -99,7 +98,7 @@
                     <td colspan="2" class="b">材质说明</td>
                     <td colspan="2" class="b">产品备注</td>
                 </tr>
-                <tr v-for="(item,index) in info.orderProductAssociates" :key="index">
+                <tr v-for="(item,index) in JSON.parse(info.orderProductAssociates)" :key="index">
                     <td colspan="1">{{item.productNo}}</td>
                     <td colspan="2">{{item.productName}}</td>
                     <td colspan="1">{{item.productModel}}</td>

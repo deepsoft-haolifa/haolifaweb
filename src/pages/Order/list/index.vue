@@ -97,9 +97,9 @@
                     <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
                     <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
                         </tr>-->
-                        <!-- <tr>
-                            <td colspan="14" class="b">技术清单: {{info.technicalRequire}}</td>
-                        </tr>-->
+                        <tr>
+                            <td colspan="14" class="b">技术清单:</td>
+                        </tr>
                         <tr>
                             <td colspan="1" rowspan="2">序号</td>
                             <td colspan="1" rowspan="2">产品名称</td>

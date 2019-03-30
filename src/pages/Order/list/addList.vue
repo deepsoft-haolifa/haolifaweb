@@ -125,7 +125,7 @@
                             <td colspan="1" rowspan="1">出轴长度</td>
                             <td colspan="1" rowspan="1">轴图号</td>
                         </tr>
-                        <tr v-for="(val,index) in info.technicalRequire" :key="index">
+                        <tr v-for="(val,index) in JSON.parse(info.technicalRequire)" :key="index">
                             <td colspan="1">{{index}}</td>
                             <td colspan="1">{{val.name}}</td>
                             <td colspan="1">{{val.xinhao}}</td>

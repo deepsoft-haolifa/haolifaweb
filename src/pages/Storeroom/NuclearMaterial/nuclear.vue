@@ -279,6 +279,15 @@ export default {
 </script>
 
 <style lang="less">
+.node {
+    select {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px 5px 10px;
+        appearance: none;
+    }
+}
 .nuclear-material-nuclear {
     padding: 20px;
     .node {

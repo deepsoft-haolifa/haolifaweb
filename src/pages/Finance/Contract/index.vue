@@ -15,12 +15,13 @@
     </div>
   </div>
   <div class="flex-item scroll-y">
-    <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa//purchase-order/list">
+    <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/purchase-order/list/-1">
         <tr slot="header">
             <th style="width: 60px;">序号</th>
             <th>合同编号</th>
             <th>供方单位</th>
             <th>采购完成日期</th>
+            <th>合同类型</th>
             <th>订单状态</th>
             <th>创建人</th>
             <th>创建日期</th>
@@ -31,6 +32,7 @@
             <td>{{item.purchaseOrderNo}}</td>
             <td>{{item.supplierName}}</td>
             <td>{{item.deliveryTime}}</td>
+            <td>{{item.orderType == 0?'零件采购':'毛坯加工'}}</td>
             <td>{{statusList[item.status-1].name}}</td>
             <td>{{item.createUserId}}</td>
             <td>{{item.createTime}}</td>
@@ -68,8 +70,8 @@ export default {
     toProcOrder(){
       this.$router.push(`/contract`)
     },
-    toProdOrder(){
-      this.$router.push(`/production`)
+toProdOrder(){
+    this.$router.push(`/production`)
     },
     info(formId){
       this.$router.push(`/contract/info?formId=${formId}`);

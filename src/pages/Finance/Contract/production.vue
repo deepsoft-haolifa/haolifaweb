@@ -6,7 +6,7 @@
     <button class="btn btn-small"  @click="toProdOrder">生产合同</button>
     <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
         <i class="icon f-20 c-8">search</i>
-        <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
+        <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
         <!-- <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
             <option value="0">合同状态</option>
             <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>

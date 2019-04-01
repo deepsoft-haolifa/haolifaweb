@@ -1,6 +1,7 @@
 <template>
     <div class="main-left c-6 f-14">
-        <div class="nav-group" v-for="(item,index) in list" v-if="menus.includes(item.id)" :key="item.name">
+        <!-- <div class="nav-group" v-for="(item,index) in list" v-if="menus.includes(item.id)" :key="item.name"> -->
+        <div class="nav-group" v-for="(item,index) in list" :key="item.name">
             <div class="flex-v-center nav-item nav-toggle a" @click="item.open = !item.open">
                 <i class="icon" style>{{iconList[index]}}</i>
                 <span class="flex-item b">{{item.name}}</span>

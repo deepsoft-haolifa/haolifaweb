@@ -60,7 +60,8 @@ export default {
        statusList:[
                     {status:0,name:'未审核'},
                     {status:1,name:'审核不通过'},
-                    {status:2,name:'审核通过'}]
+                    {status:2,name:'审核通过'},
+                    {status:3,name:'已出库'}]
     }
   },
   methods: {

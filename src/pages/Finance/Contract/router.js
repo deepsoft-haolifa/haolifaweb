@@ -15,7 +15,7 @@ export default [{
     name: 'productioninfo',
     component: () =>
         import ( /* webpackChunkName: "productioninfo" */ './prodInfo.vue'),
-    meta: { level: 2, title: '付款记录', open: false, id: 'htgl' }
+    meta: { level: 2, title: '收款记录', open: false, id: 'htgl' }
 }, {
     path: '/contract/info',
     name: 'contractinfo',

@@ -313,7 +313,7 @@ export default {
         },
         approveProgress(item) {
             this.$router.push(
-                {path:`/order/approveProgress?`, query:{formNo:item.purchaseOrderNo, formId:0}}
+                {path:`/purchsemanage-purchase/approveProgress?`, query:{formNo:item.purchaseOrderNo, formId:0}}
             );
         },
         approve: function(orderNo) {

@@ -13,4 +13,9 @@ export default [{
     name: 'purchsemanage-purchaseinfo',
     component: () => import(/* webpackChunkName: "suppliermanage" */ './info.vue'),
     meta: { level: 2, title: '采购列表', open: false, id: 'cglb' }
+},{
+    path: '/purchsemanage-purchase/approveProgress',
+    name: 'purchsemanage-purchaseapproveProgress',
+    component: () => import(/* webpackChunkName: "suppliermanage" */ './approveProgress.vue'),
+    meta: { level: 2, title: '采购列表', open: false, id: 'cglb' }
 }]

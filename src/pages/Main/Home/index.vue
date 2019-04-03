@@ -244,7 +244,7 @@ export default {
             this.$router.push(`/notification/info?id=${id}`);
         },
         orderInfo(item) {
-            this.$router.push(`/order/info?orderNo=${item.orderNo}`);
+            this.$router.push(`/order-info?orderNo=${item.orderNo}`);
         },
         getOrderList() {
             this.$http

@@ -3,9 +3,9 @@
         <div class="form-content">
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
                 <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
-                <div class="flex-item">付款记录</div>
+                <div class="flex-item">收款记录</div>
                 <div class="flex-item ml-20">
-                    <a class="a" flat style="color: #008eff" @click="addPay()" href="javascript:;">新增付款记录</a>
+                    <a class="a" flat style="color: #008eff" @click="addPay()" href="javascript:;">新增收款记录</a>
                 </div>
             </div>
             <table class="f-14">
@@ -35,13 +35,13 @@
                 </tr>
             </table>
             <div v-show="addFlag">
-                <div class='b' style='margin: 20px 0 10px;'>付款记录添加</div>
+                <div class='b' style='margin: 20px 0 10px;'>收款记录添加</div>
                 <div class='card flex' style='margin-top: 0;'>
                     <div class='flex-item'>
                         <div class='flex'>
                             <input-box v-model='order.orderNo' disabled hint="必填" class='flex-item mr-10' label='合同订单号'></input-box>
                             <input-box type="number" v-model='order.amount' hint="必填" class='flex-item mr-10' label='总金额'></input-box>
-                            <date-picker v-model="order.payTime" hint="必填" class="mr-10" label="付款日期" style="margin-right: 20px;"></date-picker>
+                            <date-picker v-model="order.payTime" hint="必填" class="mr-10" label="收款日期" style="margin-right: 20px;"></date-picker>
                             <button class="btn btn-sm" @click="save()">保存</button>
                         </div>
                     </div>
@@ -79,8 +79,7 @@
                 this.order.orderNo = orderNo;
                 this.detailFlag = false;
                 this.payFlag = true;
-                this.$http.get(`/haolifa//payment/list/${orderNo}`).then(res => {
-                // this.$http.get(`/haolifa/payment/list/cg_123121`).then(res => {
+                this.$http.get(`/haolifa/payment/list/${orderNo}`).then(res => {
                     this.payList = res;
                 }).catch(e => {
                     this.$toast(e.msg)
@@ -100,7 +99,7 @@
                     return
                 }
                 if (!this.order.payTime) {
-                    this.$toast('请选择付款日期')
+                    this.$toast('请选择收款日期')
                     return
                 }
                 this.$http.post('/haolifa/payment/save',this.order).then(res => {

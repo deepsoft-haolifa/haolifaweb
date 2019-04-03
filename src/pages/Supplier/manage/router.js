@@ -19,6 +19,11 @@ export default [{
     component: () => import(/* webpackChunkName: "supplieradd" */ './accessoryInfo.vue'),
     meta: {level: 2, title: '供应商审批附件', open: false, id: 'gysgl'}
 },{
+    path: '/supplier/approveProgress',
+    name: 'supplier-approveProgress',
+    component: () => import(/* webpackChunkName: "supplieradd" */ './approveProgress.vue'),
+    meta: {level: 2, title: '供应商审批进度', open: false, id: 'gysgl'}
+},{
     path: '/supplier/:id',
     name: 'supplier-info',
     component: () => import(/* webpackChunkName: "supplieradd" */ './info.vue'),

@@ -1,7 +1,7 @@
 <template>
 <div class="page-room-add abs scroll-y">
   <div class="form-content">
-    <div class="title b f-18">{{form.id ? '编辑' : '新增'}}库房</div>
+    <div class="title b f-18">{{form.id ? '编辑' : '新增'}}零件</div>
     <div class="flex-v-center">
       <input-box v-model="form.materialName" class="mr-10" hint="必填" style="width:50%" label="零件名称"></input-box>
       <input-box v-model="form.materialGraphNo" hint="必填" class="flex-item mr-10" label="零件号" ></input-box>

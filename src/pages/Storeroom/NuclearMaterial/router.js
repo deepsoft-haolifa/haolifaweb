@@ -18,4 +18,9 @@ export default [{
         name: 'nuclear-material-replace',
         component: () => import(/* webpackChunkName: "roomadd" */ './replaceMaterial.vue'),
         meta: { level: 3, title: '替换料清单', open: false, id: 'kghl' }
-    }]
+    }, {
+    path: '/nuclear-replace/approveProgress',
+    name: 'nuclear-material-approveProgress',
+    component: () => import(/* webpackChunkName: "roomadd" */ './approveProgress.vue'),
+    meta: { level: 3, title: '替换料审批进度', open: false, id: 'kghl' }
+}]

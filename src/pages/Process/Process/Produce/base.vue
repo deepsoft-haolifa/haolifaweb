@@ -757,7 +757,7 @@ export default {
                 });
         },
         nuclear(supplierNo) {
-            this.$router.push(`/nuclear-form?orderNo=${supplierNo}`);
+            this.$router.push(`/nuclear-audit-form?orderNo=${supplierNo}`);
         },
         uploadFile(file, fileList) {
             this.loading = true;

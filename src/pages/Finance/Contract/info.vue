@@ -3,7 +3,7 @@
         <div class="form-content">
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;" v-show="detailFlag">
                 <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
-                <div class="flex-item">订单详情</div>
+                <div class="flex-item">合同详情</div>
                 <div class="flex-item ml-20">
                     <a class="a" flat style="color: #008eff" @click="payClick(info.purchaseOrderNo)" href="javascript:;">付款记录</a>
                 </div>
@@ -224,7 +224,7 @@
             payClick(orderNo){
                 this.detailFlag = false;
                 this.payFlag = true;
-                this.$http.get(`/haolifa//payment/list/${orderNo}`).then(res => {
+                this.$http.get(`/haolifa/payment/list/${orderNo}`).then(res => {
                     this.payList = res;
                 }).catch(e => {
                     this.$toast(e.msg)

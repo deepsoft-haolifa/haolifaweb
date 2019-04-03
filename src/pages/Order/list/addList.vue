@@ -6,7 +6,7 @@
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
-                    <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
+                    <option v-for="item in orderStatusList" :value="item.code" v-bind:key="item.code">{{item.desc}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -34,7 +34,7 @@
                         <a class="fixed-length" :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a>
                     </td>
                     <td>{{item.deliveryDate}}</td>
-                    <td>{{orderStatusList[item.orderStatus].text}}</td>
+                    <td>{{orderStatusList[item.orderStatus].desc}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="progress(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">发起流程|</a>
@@ -189,7 +189,23 @@ export default {
     data() {
         return {
             loading: false,
-            orderStatusList: [],
+            orderStatusList: [
+                { code: 0, desc: "创建" },
+                { code: 1, desc: "审批中" },
+                { code: 2, desc: "核料中" },
+                { code: 3, desc: "替换料审批中" },
+                { code: 4, desc: "核料完成" },
+                { code: 5, desc: "待生产" },
+                { code: 6, desc: "待领料" },
+                { code: 7, desc: "生产中" },
+                { code: 8, desc: "生产暂停" },
+                { code: 9, desc: "生产完成" },
+                { code: 10, desc: "质检中" },
+                { code: 11, desc: "已入库" },
+                { code: 12, desc: "申请发货" },
+                { code: 13, desc: "发货完成" },
+                { code: 14, desc: "审核不通过" }
+            ],
             filter: {
                 orderNo: "",
                 orderStatus: -1
@@ -232,17 +248,19 @@ export default {
         };
     },
     created() {
-        this.getOrderStatusList();
+        // this.getOrderStatusList();
     },
     methods: {
         getOrderStatusList() {
             this.$http
                 .get("/haolifa/order-product/order-status-list")
                 .then(res => {
+                    console.log(res);
                     this.orderStatusList = res.map(item => {
                         return { value: item.code, text: item.desc };
                     });
                 });
+            console.log(this.orderStatusList);
         },
         progress(item) {
             let id = "";

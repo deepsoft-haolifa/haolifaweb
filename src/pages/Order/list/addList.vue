@@ -184,7 +184,7 @@
 import DataList from "@/components/datalist";
 
 export default {
-    name: "page-orders-list",
+    name: "page-orders-addlist",
     components: { DataList },
     data() {
         return {

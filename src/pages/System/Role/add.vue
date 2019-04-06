@@ -65,9 +65,9 @@ export default {
                     let resultList = res;
                     this.checkedList = [];
                     for (let i = 0; i < resultList.length; i++) {
-                        this.checkedList[i] = resultList[i].id;
+                        if (resultList[i].code.indexOf("parent") === -1)
+                            this.checkedList[i] = resultList[i].id;
                     }
-                    console.log(this.checkedList);
                     this.$refs.tree.setCheckedKeys(this.checkedList);
                 })
                 .catch(e => {
@@ -95,6 +95,18 @@ export default {
             let list = [];
             for (let i = 0; i < this.checkedList.length; i++) {
                 list.push(parseInt(this.checkedList[i]));
+            }
+            //将半选中的父节点也加入到要发送的参数中
+            if (this.$refs.tree.getHalfCheckedKeys().length > 0) {
+                for (
+                    let i = 0;
+                    i < this.$refs.tree.getHalfCheckedKeys().length;
+                    i++
+                ) {
+                    list.push(
+                        parseInt(this.$refs.tree.getHalfCheckedKeys()[i])
+                    );
+                }
             }
             this.$http
                 .post(`/haolifa/role/${this.id}/menu`, list)

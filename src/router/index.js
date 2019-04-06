@@ -6,7 +6,7 @@ import axios from 'axios'
 
 Vue.use(Router)
 
-function createRoutesFromFiles (routeFiles) {
+function createRoutesFromFiles(routeFiles) {
   let _routes = []
   routeFiles.keys().forEach(key => {
     let item = routeFiles(key).default
@@ -16,10 +16,11 @@ function createRoutesFromFiles (routeFiles) {
   return _routes
 }
 
-function eachRoutes (children, parent) {
+function eachRoutes(children, parent) {
   children.forEach(child => {
     if (!child.meta) child.meta = {}
-    if (parent) for (let key in parent.meta) child.meta[key] = child.meta[key] || parent.meta[key]
+    if (parent)
+      for (let key in parent.meta) child.meta[key] = child.meta[key] || parent.meta[key]
     if (child.children) eachRoutes(child.children, child)
   })
 }
@@ -33,12 +34,19 @@ const createRouter = () => new Router({
   base: process.env.BASE_URL,
   routes: [{
     path: '*',
-    component: () => import(/* webpackChunkName: "login" */ '../pages/404/index.vue'),
-    meta: { level: 1, title: '' }
+    component: () => import( /* webpackChunkName: "login" */ '../pages/404/index.vue'),
+    meta: {
+      level: 1,
+      title: ''
+    }
   }, {
     path: '/login',
-    component: () => import(/* webpackChunkName: "login" */ '../pages/Login/index.vue'),
-    meta: { level: 1, title: '登录', open: true }
+    component: () => import( /* webpackChunkName: "login" */ '../pages/Login/index.vue'),
+    meta: {
+      level: 1,
+      title: '登录',
+      open: true
+    }
   }]
 })
 
@@ -60,23 +68,33 @@ router.beforeEach((to, from, next) => {
     res.menus.push('home')
     store.commit('LOGIN', res)
     resetRouter(res.menus)
-    router.replace({ path: to.path, query: to.query })
+    router.replace({
+      path: to.path,
+      query: to.query
+    })
   }).catch(e => {
     console.log(e)
     router.replace('/login')
   })
 })
 
-router.onError(err => { console.log(err) })
+router.onError(err => {
+  console.log(err)
+})
 
-export function resetRouter (menus) {
+export function resetRouter(menus) {
   router.matcher = createRouter().matcher
   router.addRoutes([{
     path: '/',
-    component: () => import(/* webpackChunkName: "main" */ '../pages/Main/index.vue'),
-    meta: { level: 2, title: 'HAOLIFA', open: false },
+    component: () => import( /* webpackChunkName: "main" */ '../pages/Main/index.vue'),
+    meta: {
+      level: 2,
+      title: 'HAOLIFA',
+      open: false
+    },
     children: routes.filter(r => r.meta.open || (r.meta.id && menus.includes(r.meta.id)))
   }])
+  console.log(router)
 }
 
 export default router

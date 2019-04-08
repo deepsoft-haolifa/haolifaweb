@@ -121,7 +121,7 @@ export default {
                     {
                         name: "库存预警",
                         url: "/earlywarning",
-                        id: "kcgl"
+                        id: "kcyj"
                     },
                     {
                         name: "库房管理",
@@ -140,7 +140,7 @@ export default {
                     },
                     {
                         name: "库存查询",
-                        url: "/material/materialQuery",
+                        url: "/materialquery",
                         id: "kccx"
                     },
                     {

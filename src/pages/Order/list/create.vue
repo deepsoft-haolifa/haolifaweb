@@ -13,13 +13,18 @@
                 <input-box v-model="form.orderContractNo" class="flex-item mr-10" label="平台编码"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.demandName" class="flex-item mr-10" label="需求方"></input-box>
+                <select-box v-model="form.demandName" @change="nameChange" :list="demandNameList" class="flex-item mr-10" label="需求方"></select-box>
+                <!-- <select-box v-model="form.demandAgentName" :list="demandAgentNameList" class="flex-item mr-10" label="需求方代理人"></select-box> -->
                 <input-box v-model="form.demandAgentName" class="flex-item mr-10" label="需求方代理人"></input-box>
-                <input-box v-model="form.demandPhone" class="flex-item mr-10" label="需求方电话"></input-box>
+                <select-box v-model="form.demandPhone" :list="demandPhoneList" class="flex-item mr-10" label="需求方电话"></select-box>
+                <!-- <select-box v-model="form.demandFax" :list="demandFaxList" class="flex-item mr-10" label="需求方传真"></select-box> -->
+                <!-- <input-box v-model="form.demandName" class="flex-item mr-10" label="需求方"></input-box> -->
+                <!--  <input-box v-model="form.demandPhone" class="flex-item mr-10" label="需求方电话"></input-box>-->
                 <input-box v-model="form.demandFax" class="flex-item mr-10" label="需求方传真"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.demandAddress" class="flex-item mr-10" label="需求方地址"></input-box>
+                <select-box v-model="form.demandAddress" :list="demandAddressList" class="flex-item mr-10" label="需求方地址"></select-box>
+                <!-- <input-box v-model="form.demandAddress" class="flex-item mr-10" label="需求方地址"></input-box> -->
             </div>
             <div class="flex-v-center">
                 <input-box v-model="form.supplyName" class="flex-item mr-10" label="供应方"></input-box>
@@ -119,6 +124,72 @@ export default {
     data() {
         return {
             loading: false,
+            demandNameList: [
+                {
+                    text: "北京好利阀业集团有限公司",
+                    value: "北京好利阀业集团有限公司"
+                },
+                {
+                    text: "北京好利时代科技发展有限公司",
+                    value: "北京好利时代科技发展有限公司"
+                },
+                {
+                    text: "北京艾森哈特技术服务有限公司",
+                    value: "北京艾森哈特技术服务有限公司"
+                },
+                {
+                    text: "上海好利阀门技术有限公司 ",
+                    value: "上海好利阀门技术有限公司 "
+                },
+                {
+                    text: "北京大宇公司",
+                    value: "北京大宇公司"
+                }
+            ],
+            demandPhoneList: [
+                {
+                    text: "010-89229051",
+                    value: "010-89229051"
+                },
+                {
+                    text: "010-67180119",
+                    value: "010-67180119"
+                },
+                {
+                    text: "1350102569",
+                    value: "1350102569"
+                },
+                {
+                    text: "021-24206461",
+                    value: "021-24206461"
+                },
+                {
+                    text: "010-67110192",
+                    value: "010-67110192"
+                }
+            ],
+            demandAddressList: [
+                {
+                    text: "北京市大兴区榆垡镇榆顺路6号",
+                    value: "北京市大兴区榆垡镇榆顺路6号"
+                },
+                {
+                    text: "北京市大兴区榆垡镇榆顺路6号",
+                    value: "北京市大兴区榆垡镇榆顺路6号"
+                },
+                {
+                    text: "北京市大兴区泰禾中央广场E座503",
+                    value: "北京市大兴区泰禾中央广场E座503"
+                },
+                {
+                    text: "上海市闵行区兴梅路375号",
+                    value: "上海市闵行区兴梅路375号"
+                },
+                {
+                    text: "北京市东城区广渠门内大街90号新裕商务大厦506",
+                    value: "北京市东城区广渠门内大街90号新裕商务大厦506"
+                }
+            ],
             form: {
                 totalCount: 0,
                 totalPrice: 0,
@@ -159,6 +230,25 @@ export default {
             });
             this.form.orderProductAssociates.push({});
             this.$forceUpdate();
+        },
+        nameChange() {
+            if (this.form.demandName == "北京好利阀业集团有限公司") {
+                this.form.demandAddress = "北京市大兴区榆垡镇榆顺路6号";
+                this.form.demandPhone = "010-89229051";
+            } else if (this.form.demandName == "北京好利时代科技发展有限公司") {
+                this.form.demandAddress = "北京市大兴区榆垡镇榆顺路6号";
+                this.form.demandPhone = "010-67180119";
+            } else if (this.form.demandName == "北京艾森哈特技术服务有限公司") {
+                this.form.demandAddress = "北京市大兴区泰禾中央广场E座503";
+                this.form.demandPhone = "1350102569";
+            } else if (this.form.demandName == "上海好利阀门技术有限公司") {
+                this.form.demandAddress = "上海市闵行区兴梅路375号";
+                this.form.demandPhone = "021-24206461";
+            } else if (this.form.demandName == "北京大宇公司") {
+                this.form.demandAddress =
+                    "北京市东城区广渠门内大街90号新裕商务大厦506";
+                this.form.demandPhone = "010-67110192";
+            }
         },
         submit() {
             // location.href = "http://d.miaojiebei.com/1552742883995-32.xlsx";

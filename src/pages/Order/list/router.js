@@ -6,7 +6,7 @@ export default [{
     level: 2,
     title: '订单列表',
     open: false,
-    id: 'parent-ddgl'
+    id: 'ddlb'
   }
 }, {
   path: '/order/add',
@@ -56,7 +56,7 @@ export default [{
     level: 2,
     title: '新增订单',
     open: false,
-    id: 'parent-ddgl'
+    id: 'xzdd'
   }
 }, {
   path: '/order/create',
@@ -66,6 +66,6 @@ export default [{
     level: 2,
     title: '订单生成',
     open: false,
-    id: 'parent-ddgl'
+    id: 'ddsc'
   }
 }]

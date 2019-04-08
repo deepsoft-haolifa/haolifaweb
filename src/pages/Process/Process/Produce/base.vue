@@ -698,14 +698,16 @@ export default {
                                     this.updateInfo.assemblyGroup = null;
                                 });
                         }
-                        let updateStatus = {
-                            orderNo: this.data.formNo,
-                            status: status
-                        };
-                        this.$http.post(
-                            `/haolifa/order-product/updateStatus`,
-                            updateStatus
-                        );
+                        if(this.dealStepId != 57) {
+                            let updateStatus = {
+                                orderNo: this.data.formNo,
+                                status: status
+                            };
+                            this.$http.post(
+                                `/haolifa/order-product/updateStatus`,
+                                updateStatus
+                            );
+                        }
                     } else if (auditResult == 2) {
                         // 退回操作
                         if (this.handleStep.backStepId == 53) {

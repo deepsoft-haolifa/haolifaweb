@@ -79,7 +79,23 @@
                         <tr>
                             <td colspan="6" class="b">采购订单</td>
                             <td colspan="6" class="b">
-                                <a class="a" flat style="color: #008eff" :href="orderUrl">合同下载</a>
+                                <a class="a" flat style="color: #008eff;margin-right:10px;" :href="orderUrl">合同下载</a>
+                                <!-- <a
+                                    target="_blank"
+                                    v-if="(orderUrl).match('\.(pdf|jpe?g|png|bmp)$') "
+                                    class="a"
+                                    flat
+                                    style="color: #008eff"
+                                    :href="orderUrl"
+                                >合同预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    class="a"
+                                    flat
+                                    style="color: #008eff"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
+                                >合同预览</a>-->
                             </td>
                         </tr>
                         <tr>
@@ -312,9 +328,10 @@ export default {
                 });
         },
         approveProgress(item) {
-            this.$router.push(
-                {path:`/purchsemanage-purchase/approveProgress?`, query:{formNo:item.purchaseOrderNo, formId:0}}
-            );
+            this.$router.push({
+                path: `/purchsemanage-purchase/approveProgress?`,
+                query: { formNo: item.purchaseOrderNo, formId: 0 }
+            });
         },
         approve: function(orderNo) {
             this.$confirm({

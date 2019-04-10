@@ -18,7 +18,7 @@
                     <th style="width: 60px;">序号</th>
                     <th>订单编号</th>
                     <th style="width:50px;">订单合同URL</th>
-                    <th>发货日期</th>
+                    <!-- <th>发货日期</th> -->
                     <th>订单状态</th>
                     <th>创建时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -30,7 +30,7 @@
                     <td>
                         <a class="fixed-length" :href="item.orderContractExtendUrl" :title="item.orderContractExtendUrl">{{item.orderContractExtendUrl}}</a>
                     </td>
-                    <td>{{item.deliveryDate}}</td>
+                    <!-- <td>{{item.deliveryDate}}</td> -->
                     <td>{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
@@ -64,6 +64,7 @@
                             <td colspan="14" class="b">订单编号 : {{info.orderNo}}</td>
                         </tr>
                         <tr>
+                            <!-- <td colspan="14" class="b">成品合同订单号 : {{info.orderContractNo}}</td> -->
                             <td colspan="14" class="b">发货日期 : {{info.deliveryDate}}</td>
                         </tr>
                         <tr>

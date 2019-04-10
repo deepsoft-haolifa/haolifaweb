@@ -23,8 +23,19 @@
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">待审批附件：</span>
-                    <span>
+                    <span style="margin-right:20px;">
                         <a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">下载采购订单</a>
+                    </span>
+                    <span>
+                        <a target="_blank" flat style="color: #008eff" v-if="(orderUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="orderUrl">采购订单预览</a>
+                        <a
+                            target="_blank"
+                            flat
+                            style="color: #008eff"
+                            v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
+                        >预览</a>
+                        <!-- <a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">预览采购订单</a> -->
                     </span>
                 </div>
             </div>

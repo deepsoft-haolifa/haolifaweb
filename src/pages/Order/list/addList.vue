@@ -150,9 +150,9 @@
                             <td colspan="1" class="b">型号</td>
                             <td colspan="1" class="b">标签属性</td>
                             <td colspan="1" class="b">规格</td>
-                            <td colspan="1" class="b">颜色</td>
+                            <td colspan="2" class="b">颜色</td>
                             <td colspan="1" class="b">产品数量</td>
-                            <td colspan="1" class="b">单价</td>
+                            <!-- <td colspan="1" class="b">单价</td> -->
                             <td colspan="1" class="b">总计价格</td>
                             <td colspan="2" class="b">材质说明</td>
                             <td colspan="2" class="b">产品备注</td>
@@ -163,9 +163,9 @@
                             <td colspan="1">{{item.productModel}}</td>
                             <td colspan="1">{{item.lable}}</td>
                             <td colspan="1">{{item.specifications}}</td>
-                            <td colspan="1">{{item.productColor}}</td>
+                            <td colspan="2">{{item.productColor}}</td>
                             <td colspan="1">{{item.productNumber}}</td>
-                            <td colspan="1">{{item.price}}</td>
+                            <!-- <td colspan="1">{{item.price}}</td> -->
                             <td colspan="1">{{item.totalPrice}}</td>
                             <td colspan="2">{{item.materialDescription}}</td>
                             <td colspan="2">{{item.productRemark}}</td>

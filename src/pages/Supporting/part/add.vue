@@ -11,13 +11,14 @@
     <div class="flex-v-center">
       <input-box v-model="form.graphNo" class="mr-10" label="图号" style="width: 50%"></input-box>
       <input-box v-model="form.model" class="mr-10" label="型号" style="width: 25%"></input-box>
+      <input-box v-model="form.specifications" class="mr-10" label="规格" style="width: 25%"></input-box>
       <input-box v-model="form.unit" class="mr-10" label="单位(如：根，个)" style="width: 25%"></input-box>
     </div>
     <div class="flex-v-center">
       <input-box v-model="form.currentQuantity" class="mr-10" label="当前库存数量" style="width: 25%"></input-box>
       <input-box v-model="form.safeQuantity" class="mr-10" label="安全库存" style="width: 25%"></input-box>
       <input-box v-model="form.safetyFactor" class="mr-10" label="安全库存系数" style="width: 25%"></input-box>
-      <input-box v-model="form.specifications" class="mr-10" label="规格" style="width: 25%"></input-box>
+      <input-box v-model="form.supportQuantity" class="mr-10" label="配套数量" style="width: 25%"></input-box>
     </div>
     <div class="flex-v-center">
       <input-box v-model="form.actualWeight" class="flex-item mr-10" label="实际单重" style="width: 25%"></input-box>
@@ -62,7 +63,8 @@ export default {
         specifications: '',
         taxRate: '',
         theoreticalWeight: '',
-        unit: ''
+        unit: '',
+        supportQuantity:''
       }
     }
   },

@@ -38,94 +38,10 @@
             </div>
         </div>
     </div>
-<<<<<<< Updated upstream
-    <div class="flex-v-center">
-      <input-box v-model="form.graphNo" class="mr-10" label="图号" style="width: 50%"></input-box>
-      <input-box v-model="form.model" class="mr-10" label="型号" style="width: 25%"></input-box>
-      <input-box v-model="form.specifications" class="mr-10" label="规格" style="width: 25%"></input-box>
-      <input-box v-model="form.unit" class="mr-10" label="单位(如：根，个)" style="width: 25%"></input-box>
-    </div>
-    <div class="flex-v-center">
-      <input-box v-model="form.currentQuantity" class="mr-10" label="当前库存数量" style="width: 25%"></input-box>
-      <input-box v-model="form.safeQuantity" class="mr-10" label="安全库存" style="width: 25%"></input-box>
-      <input-box v-model="form.safetyFactor" class="mr-10" label="安全库存系数" style="width: 25%"></input-box>
-      <input-box v-model="form.supportQuantity" class="mr-10" label="配套数量" style="width: 25%"></input-box>
-    </div>
-    <div class="flex-v-center">
-      <input-box v-model="form.actualWeight" class="flex-item mr-10" label="实际单重" style="width: 25%"></input-box>
-      <input-box v-model="form.theoreticalWeight" class="mr-10" label="理论单重" style="width: 25%"></input-box>
-      <!--<input-box v-model="form.price" class="mr-10" label="单价" style="width: 25%"></input-box>-->
-      <input-box v-model="form.taxRate" class="mr-10" label="税率" style="width: 25%"></input-box>
-    </div>
-    <div class="flex-v-center">
-      <input-box v-model="form.material" class="flex-item mr-10" label="材料"></input-box>
-    </div>
-    <div class="flex-v-center">
-      <input-box v-model="form.remark" class="flex-item mr-10" multi-line label="备注"></input-box>
-    </div>
-    <div class="flex-v-center" style="margin: 20px 0;">
-      <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>
-      <btn big flat bg class="mr-20" @click="cancel">取消</btn>
-    </div>
-  </div>
-</div>
-=======
->>>>>>> Stashed changes
 </template>
 
 <script>
 export default {
-<<<<<<< Updated upstream
-  name: 'page-part-add',
-  data () {
-    return {
-      parttypeList: [],
-      form: {
-        id: '',
-        actualWeight: '',
-        currentQuantity: '',
-        graphNo: '',
-        material: '',
-        materialClassifyId: '',
-        materialClassifyName: '',
-        model: '',
-        name: '',
-        price: '',
-        remark: '',
-        safeQuantity: '',
-        safetyFactor: '',
-        specifications: '',
-        taxRate: '',
-        theoreticalWeight: '',
-        unit: '',
-        supportQuantity:''
-      }
-    }
-  },
-  computed: {
-    canSubmit () {
-      const { form } = this
-      return form.name && form.graphNo
-    }
-  },
-  created () {
-    let { id } = this.$route.query
-    if (id !== undefined && this.$route.name === 'part-edit') this.getInfo(id)
-    this.getparttypeList()
-    this.typeId()
-  },
-  methods: {
-    typeId () {
-      let item = this.parttypeList.find(item => item.value === this.form.materialClassifyName)
-      this.form.materialClassifyId = item ? item.id : ''
-    },
-    getparttypeList () {
-      this.$http.get('/haolifa/material/classify/pageInfo').then(res => {
-        this.parttypeList = res.list.filter(item => !item.isDelete).map(item => {
-          return { value: item.classifyName, text: item.classifyName, id: item.id }
-        })
-      })
-=======
     name: "page-part-add",
     data() {
         return {
@@ -151,7 +67,6 @@ export default {
                 supportQuantity: ""
             }
         };
->>>>>>> Stashed changes
     },
     computed: {
         canSubmit() {

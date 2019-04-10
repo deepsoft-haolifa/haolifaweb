@@ -26,7 +26,7 @@
                     <td colspan="14" class="b">订单编号 : {{info.orderNo}}</td>
                 </tr>
                 <tr>
-                    <td colspan="14" class="b">成品合同订单号 : {{info.orderContractNo}}</td>
+                    <td colspan="14" class="b">发货日期 : {{info.deliveryDate}}</td>
                 </tr>
                 <tr>
                     <td colspan="14" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>

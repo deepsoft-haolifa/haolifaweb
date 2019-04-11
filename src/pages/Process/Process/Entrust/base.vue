@@ -23,8 +23,20 @@
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">待审批附件：</span>
-                    <span>
+                    <span style="margin-right:20px;">
                         <a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">下载机加工订单</a>
+                    </span>
+                    <span>
+                        <a target="_blank" flat style="color: #008eff" v-if="(orderUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="orderUrl">机加工订单预览</a>
+                        <a
+                                target="_blank"
+                                flat
+                                style="color: #008eff"
+                                v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
+                        >预览</a>
+                    <!--<span>-->
+                        <!--<a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">下载机加工订单</a>-->
                     </span>
                 </div>
             </div>
@@ -172,7 +184,10 @@ export default {
                     if (res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
                     }
-                    this.orderUrl = this.orderUrl + res.formId;
+                    // this.orderUrl = this.orderUrl + res.formId;
+                    this.$http.get(`/haolifa/purchase-order/info/${res.formId}`).then(result=>{
+                        this.orderUrl = result.order.fileUrl;
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);

@@ -45,7 +45,7 @@ export default {
         };
     },
     created() {
-        this.getInfo(this.$route.query.formNo, this.$route.query.formId);
+        this.getInfo(this.$route.query.formNo);
         this.getOrderStatusList();
     },
     methods: {

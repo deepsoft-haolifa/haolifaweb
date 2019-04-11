@@ -1,6 +1,12 @@
 <template>
     <div class="page-material-list">
         <div class="flex-v-center tool-bar">
+            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
+            </div>
             <div class="flex-item"></div>
             <router-link to="/applyBuy-material/add">
                 <btn class="b" flat color="#008eff">创建送检单</btn>
@@ -179,7 +185,10 @@ export default {
         return {
             filter: {
                 type: 0,
-                status: 0
+                status: 0,
+                inspectNo:'',
+                purchaseOrderNo:''
+
             },
             statusList: [
                 { status: 0, name: "全部" },

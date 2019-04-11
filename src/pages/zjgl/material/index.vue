@@ -1,5 +1,13 @@
 <template>
     <div class="material-list">
+        <div class="flex-v-center tool-bar">
+            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
+            </div>
+        </div>
         <div class="flex-item scroll-y">
             <data-list class="f-14" ref="list" :page-size="10" :param="filter" url="/haolifa/material-inspect/purchase-list/1" method="get">
                 <tr slot="header">

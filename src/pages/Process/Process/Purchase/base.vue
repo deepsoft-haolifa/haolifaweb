@@ -183,7 +183,10 @@ export default {
                     if (res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
                     }
-                    this.orderUrl = this.orderUrl + res.formId;
+                    // this.orderUrl = this.orderUrl + res.formId;
+                    this.$http.get(`/haolifa/purchase-order/info/${res.formId}`).then(result=>{
+                        this.orderUrl = result.order.fileUrl;
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);

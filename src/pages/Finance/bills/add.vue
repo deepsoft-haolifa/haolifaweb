@@ -81,7 +81,11 @@ export default {
             this.loading = true;
             this.loadingMsg = "正在保存";
             this.$http
-                .post("/haolifa/delivery/auditNotice", form)
+                .post("/haolifa/delivery/auditNotice",
+                    {"auditInfo":form.auditInfo,
+                        "auditResult":form.auditResult,
+                        "deliveryNo":form.deliveryNo
+                })
                 .then(res => {
                     this.loading = false;
                     this.$router.replace("/finance-bills");

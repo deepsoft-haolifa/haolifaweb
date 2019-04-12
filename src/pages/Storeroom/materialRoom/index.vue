@@ -45,20 +45,20 @@
         <layer v-if="storeRoom.layerShow" :title="'入库'" width="450px">
             <div>
                 <div class="flex">
-                    <input-box disabled="true" v-model="storeRoom.materialGraphNo" class="mr-10 ml-20" label="物料图号"></input-box>
-                    <input-box disabled="true" v-model="storeRoom.quantity" type="number" class="mr-10" label="入库数量"></input-box>
+                    <input-box disabled v-model="storeRoom.materialGraphNo" class="mr-10 ml-20" label="物料图号"></input-box>
+                    <input-box disabled v-model="storeRoom.quantity" type="number" class="mr-10" label="入库数量"></input-box>
                     <input-box v-model="storeRoom.price" type="number" class="mr-10" label="采购价格"></input-box>
                 </div>
                 <div class="flex">
-                    <input-box disabled="true" v-model="storeRoom.materialBatchNo" class="mr-10 ml-20" label="批次号"></input-box>
-                    <input-box disabled="true" v-model="storeRoom.orderNo" class="mr-10" label="采购合同号"></input-box>
+                    <input-box disabled v-model="storeRoom.materialBatchNo" class="mr-10 ml-20" label="批次号"></input-box>
+                    <input-box disabled v-model="storeRoom.orderNo" class="mr-10" label="采购合同号"></input-box>
                 </div>
                 <div class="flex">
                     <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
                     <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="storeRoom.supplier" disabled="true" class="mr-10 ml-20" label="供应商"></input-box>
+                    <input-box v-model="storeRoom.supplier" disabled class="mr-10 ml-20" label="供应商"></input-box>
                 </div>
             </div>
             <div class="layer-btns">
@@ -96,7 +96,8 @@ export default {
                 materialBatchNo: "",
                 orderNo: "",
                 price: 0
-            }
+            },
+            itemId:0
         };
     },
     methods: {
@@ -119,7 +120,7 @@ export default {
             this.$http
                 .put(`/haolifa/material-inspect/updateHistoryStatus/${id}`)
                 .then(res => {
-                    this.$refs.list.update();
+                    // this.$refs.list.update();
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -139,6 +140,7 @@ export default {
             this.$http
                 .put(`/haolifa/store-room/entryOut/entryMaterial`, save)
                 .then(res => {
+                    this.storeComplete(this.itemId);
                     this.$toast("入库成功");
                     this.$refs.list.update();
                     this.storeRoom.layerShow = false;
@@ -148,6 +150,7 @@ export default {
                 });
         },
         execStoreRoom(item) {
+            this.itemId = item.id;
             // 获取库房库位
             this.$http
                 .get(`/haolifa/store-room/listInfo?type=1`)
@@ -185,7 +188,13 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
-            this.storeRoom.materialGraphNo = item.materialGraphNo;
+            if(item.type == 2) {
+                let length = item.materialGraphNo.length;
+                this.storeRoom.materialGraphNo = item.materialGraphNo.substring(0,length-1)+'J';
+            }else {
+                this.storeRoom.materialGraphNo = item.materialGraphNo;
+            }
+
             this.storeRoom.price = item.purchasePrice;
             this.storeRoom.supplier = item.supplierName;
             this.storeRoom.materialBatchNo = item.batchNumber;

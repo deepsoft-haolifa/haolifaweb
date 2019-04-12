@@ -379,7 +379,7 @@ export default {
                 yes: () => {
                     this.$http
                         .get(
-                            `/haolifa//purchase-order/delete/${purchaseOrderNo}`
+                            `/haolifa/purchase-order/delete/${purchaseOrderNo}`
                         )
                         .then(res => {
                             this.$toast("删除成功");

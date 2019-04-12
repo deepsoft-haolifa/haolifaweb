@@ -57,7 +57,7 @@ export default {
             {status:1,name:'待开票'},
             {status:2,name:'已开票'}],
       filter: {
-        type:0,
+        type:1,
         status: 0,
         orderNo:''
       }

@@ -718,6 +718,13 @@ export default {
                             // 待生产
                             status = 5;
                         }
+                        if(this.handleStep.backStepId < 53) {
+                            this.$http.post(
+                                `/haolifa/order-product/release-material?orderNo=${
+                                    this.data.formNo
+                                    }`
+                            );
+                        }
                         let updateStatus = {
                             orderNo: this.data.formNo,
                             status: status

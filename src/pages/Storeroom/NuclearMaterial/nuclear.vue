@@ -154,7 +154,7 @@ export default {
                 return;
             }
             this.replaceLayer = false;
-            let choseReplace = Object.assign({}, this.replaceTemp);
+            let choseReplace = JSON.parse(JSON.stringify(this.replaceTemp));
             choseReplace.lackMaterialCount = 0;
             choseReplace.replaceGraphNoList = [];
             let flag = true;
@@ -166,7 +166,7 @@ export default {
             });
             if (flag) {
                 this.replaceMapping.push({
-                    replaceMaterNo: Object.assign({}, this.replaceMaterNo),
+                    replaceMaterNo: this.replaceMaterNo,
                     choseReplace: choseReplace
                 });
             }
@@ -248,12 +248,16 @@ export default {
                 if (item.replaceGraphNoList == null) {
                     item.replaceGraphNoList = [];
                 } else if (item.replaceGraphNoList.length > 0) {
-                    this.replaceMapping.forEach(mapping => {
-                        if (mapping.replaceMaterNo == item.materialGraphNo) {
-                            item.replaceGraphNoList = [];
-                            item.replaceGraphNoList.push(mapping.choseReplace);
-                        }
-                    });
+                    if(this.replaceMapping.length > 0){
+                        this.replaceMapping.forEach(mapping => {
+                            if (mapping.replaceMaterNo == item.materialGraphNo) {
+                                item.replaceGraphNoList = [];
+                                item.replaceGraphNoList.push(mapping.choseReplace);
+                            }
+                        });
+                    } else {
+                        item.replaceGraphNoList = [];
+                    }
                 }
                 if (item.lackMaterialCount == null) {
                     item.lackMaterialCount = 0;

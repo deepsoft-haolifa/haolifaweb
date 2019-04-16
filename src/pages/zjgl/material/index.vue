@@ -5,7 +5,14 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.purchaseOrderNo"
+                    @change="$refs.list.update(true)"
+                    placeholder="采购合同号"
+                    style="width: 200px;"
+                >
             </div>
         </div>
         <div class="flex-item scroll-y">
@@ -33,7 +40,7 @@
                     <td>{{statusList[item.status].name}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
-                        <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
+                        <!-- <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a> -->
                         <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="commit(item.id)">质检完成</a>
                     </td>
                 </template>
@@ -135,7 +142,7 @@
                     <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
                         <div class="flex-item" style="text-align: left;line-height: 24px;">质量保证书</div>
                     </div>
-                    <div  style="margin-left:20px;margin-top:5px;">
+                    <div style="margin-left:20px;margin-top:5px;">
                         <table class="data-table">
                             <tr slot="header">
                                 <th style="width: 60px;">序号</th>
@@ -244,7 +251,7 @@ export default {
                 inspectNo: ""
             },
             items: [],
-            resFileList:[]
+            resFileList: []
             // inspectHistory: []
         };
     },
@@ -302,7 +309,7 @@ export default {
             this.layer = true;
             this.inspect.id = item.id;
             this.inspect.inspectNo = item.inspectNo;
-            this.resFileList=[]
+            this.resFileList = [];
             this.getInfo();
             this.getInspectHistory();
         },
@@ -351,7 +358,10 @@ export default {
                         0,
                         10
                     );
-                    if(res.inspect.blueprints != "" && res.inspect.blueprints != null){
+                    if (
+                        res.inspect.blueprints != "" &&
+                        res.inspect.blueprints != null
+                    ) {
                         this.resFileList = JSON.parse(res.inspect.blueprints);
                     }
                 })

@@ -3,8 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.name" @change="$refs.list.update(true)" placeholder="零件名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.haoliModel" @change="$refs.list.update(true)" placeholder="好利型号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="型号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="规格" style="width: 200px;">
                 <!-- <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
@@ -14,41 +13,61 @@
                 <!-- <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i> -->
             </div>
             <div class="flex-item"></div>
-            <!-- <btn class="b" flat color="#008eff" @click="edit">新增</btn> -->
+            <btn class="b" flat color="#008eff" @click="edit">新增</btn>
         </div>
         <div class="flex-item">
-            <data-list ref="list" :param="filter" url="/haolifa/price/material/pageInfo" method="post">
+            <data-list ref="list" :param="filter" url="/haolifa/price/product/pageInfo" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>图号</th>
-                    <th>零件名称</th>
+                    <th>好利型号</th>
                     <th>型号</th>
                     <th>规格</th>
-                    <th>零件分类名称</th>
-                    <th>材料</th>
-                    <th>单位</th>
-                    <th>单重</th>
-                    <th>吨价(元)</th>
-                    <th>毛坯费(元)</th>
-                    <th>加工费(元)</th>
-                    <th>成品价(元)</th>
+                    <th>连接方式</th>
+                    <th>结构形式</th>
+                    <th>公称压力</th>
+                    <th>阀体材质</th>
+                    <th>阀板材质</th>
+                    <th>密封形式</th>
+                    <th>阀轴材质</th>
+                    <th>辅料</th>
+                    <th>驱动</th>
+                    <th>成品单价</th>
+                    <th>价格书</th>
+                    <th>阀体单价</th>
+                    <th>阀板单价</th>
+                    <th>阀座单价</th>
+                    <th>阀轴单价</th>
+                    <th>辅料单价</th>
+                    <th>驱动单价</th>
+                    <th>合计单价</th>
+                    <th>备注</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
-                    <td>{{item.graphNo}}</td>
-                    <td>{{item.name}}</td>
+                    <td>{{item.haoliModel}}</td>
                     <td>{{item.model}}</td>
                     <td>{{item.specifications}}</td>
-                    <td>{{item.materialClassifyName}}</td>
-                    <td>{{item.material}}</td>
-                    <td>{{item.unit}}</td>
-                    <td>{{item.actualWeight}}</td>
-                    <td>{{item.tonPrice}}</td>
-                    <td>{{item.blankCost}}</td>
-                    <td>{{item.processCost}}</td>
+                    <td>{{item.connectionMode}}</td>
+                    <td>{{item.structuralStyle}}</td>
+                    <td>{{item.nominalPressure}}</td>
+                    <td>{{item.fatiMaterial}}</td>
+                    <td>{{item.fabanMaterial}}</td>
+                    <td>{{item.sealForm}}</td>
+                    <td>{{item.fazhouMaterial}}</td>
+                    <td>{{item.accessories}}</td>
+                    <td>{{item.drive}}</td>
                     <td>{{item.productPrice}}</td>
+                    <td>{{item.priceBook}}</td>
+                    <td>{{item.fatiPrice}}</td>
+                    <td>{{item.fabanPrice}}</td>
+                    <td>{{item.fazuoPrice}}</td>
+                    <td>{{item.fazhouPrice}}</td>
+                    <td>{{item.accessoriesPrice}}</td>
+                    <td>{{item.drivePrice}}</td>
+                    <td>{{item.totalPrice}}</td>
+                    <td>{{item.remark}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑|</a>
                         <a href="javascript:;" class="red" @click="del(item)" style="margin-right: 3px;">删除</a>
@@ -58,18 +77,28 @@
         </div>
         <layer v-if="layer" :title="form.id ? '编辑' : '新增'" width="900px">
             <div class="layer-text" style="padding-bottom: 50px;">
-                <input-box v-model="form.graphNo" label="图号" class="input-width" style="width:48%;"></input-box>
-                <input-box v-model="form.name" label="零件名称" class="input-width" style="width:48%;"></input-box>
+                <input-box v-model="form.haoliModel" label="好利型号" class="input-width" style="width:48%;"></input-box>
                 <input-box v-model="form.model" label="型号" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.specifications" label="规格" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.materialClassifyName" label="零件分类名称" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.material" label="材料" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.unit" label="单位" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.actualWeight" label="单重" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.tonPrice" label="吨价(元)" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.blankCost" label="毛坯费(元)" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.processCost" label="加工费(元)" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.productPrice" label="成品价(元)" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.connectionMode" label="连接方式" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.structuralStyle" label="结构形式" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.nominalPressure" label="公称压力" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.fatiMaterial" label="阀体材质" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.fabanMaterial" label="阀板材质" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.sealForm" label="密封形式" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.fazhouMaterial" label="阀轴材质" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.accessories" label="辅料" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.drive" label="驱动" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.productPrice" label="成品单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.priceBook" label="价格书" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.fatiPrice" label="阀体单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.fabanPrice" label="阀板单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.fazuoPrice" label="阀座单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.fazhouPrice" label="阀轴单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.accessoriesPrice" label="辅料单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.drivePrice" label="驱动单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.totalPrice" label="合计单价" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.remark" label="备注" multi-line></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="layer = false">取消</btn>
@@ -88,13 +117,14 @@ export default {
     data() {
         return {
             layer: false,
+            loading: false,
             form: {},
             filter: {
-                graphNo: "",
+                haoliModel: "",
                 model: "",
-                name: "",
                 specifications: ""
-            }
+            },
+            info: {}
         };
     },
     created() {},
@@ -125,7 +155,7 @@ export default {
             const { form } = this;
             if (form.id) {
                 this.$http
-                    .put("/haolifa/price/material/update", form)
+                    .put("/haolifa/price/product/update", form)
                     .then(res => {
                         this.$refs.list.update();
                         this.layer = false;
@@ -136,7 +166,7 @@ export default {
                     });
             } else {
                 this.$http
-                    .post("/haolifa/price/material/save", form)
+                    .post("/haolifa/price/product/save", form)
                     .then(res => {
                         this.$refs.list.update();
                         this.layer = false;
@@ -153,12 +183,12 @@ export default {
         del(item) {
             this.$confirm({
                 title: "删除确认",
-                text: `您确定要删除以下成品吗？<br>${item.name}`,
+                text: `您确定要删除以下成品吗？<br>${item.haoliModel}`,
                 color: "red",
                 btns: ["取消", "删除"],
                 yes: () => {
                     this.$http
-                        .delete(`/haolifa/price/material/delete/${item.id}`)
+                        .delete(`/haolifa/price/product/delete/${item.id}`)
                         .then(res => {
                             this.$toast("删除成功");
                             this.$refs.list.update();

@@ -13,7 +13,7 @@
                 <!-- <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i> -->
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="edit">新增</btn>
+            <!-- <btn class="b" flat color="#008eff" @click="edit">新增</btn> -->
         </div>
         <div class="flex-item">
             <data-list ref="list" :param="filter" url="/haolifa/price/product/pageInfo" method="post">

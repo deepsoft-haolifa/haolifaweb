@@ -8,4 +8,14 @@ export default [{
         open: false,
         id: 'ljjggl'
     }
+}, {
+    path: '/partPrice/addList',
+    name: 'part-price-list-add',
+    component: () => import( /* webpackChunkName: "invoice" */ './addList.vue'),
+    meta: {
+        level: 2,
+        title: '新增零件价格',
+        open: false,
+        id: 'xzljjg'
+    }
 }]

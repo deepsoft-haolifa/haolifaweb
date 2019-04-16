@@ -7,9 +7,9 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/replacementadd">
-      <btn class="b" flat color="#008eff">新增零件</btn>
-            </router-link>-->
+            <router-link to="/replacementadd">
+                <btn class="b" flat color="#008eff">新增更换料零件</btn>
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :page-size="10" :param="filter" url="/haolifa/replace-material/pageInfo">

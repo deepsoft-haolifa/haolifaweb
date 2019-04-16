@@ -206,9 +206,19 @@ export default {
                         id: "gysgl"
                     },
                     {
+                        name: "新增供应商",
+                        url: "/supplier/addList",
+                        id: "xzgys"
+                    },
+                    {
                         name: "供应商产品",
                         url: "/supplierproduct",
                         id: "gyscp"
+                    },
+                    {
+                        name: "新增供应商产品",
+                        url: "/supplierproduct/addList",
+                        id: "xzgyscp"
                     },
                     {
                         name: "供应商设备",
@@ -227,9 +237,19 @@ export default {
                         id: "ljbjd"
                     },
                     {
+                        name: "创建送检单",
+                        url: "/applyBuy-material/addList",
+                        id: "cjsjd"
+                    },
+                    {
                         name: "加工委托单",
                         url: "/applyBuy-machining",
                         id: "jjgbjd"
+                    },
+                    {
+                        name: "创建加工委托单",
+                        url: "/applyBuy-machining/addList",
+                        id: "cjjjgd"
                     },
                     {
                         name: "生产待采购列表",
@@ -242,9 +262,19 @@ export default {
                         id: "cglb"
                     },
                     {
-                        name: "机加工列表",
+                        name: "新增采购合同",
+                        url: "/purchsemanage-purchase/addList",
+                        id: "xzcght"
+                    },
+                    {
+                        name: "机加工单列表",
                         url: "/purchsemanage-entrust/list",
                         id: "jjglb"
+                    },
+                    {
+                        name: "新增机加工单",
+                        url: "/purchsemanage-entrust/list",
+                        id: "xzjjgdd"
                     }
                 ]
             },
@@ -258,9 +288,19 @@ export default {
                         id: "ljzjlb"
                     },
                     {
+                        name: "新增零件质检记录",
+                        url: "/inspect-material/addList",
+                        id: "xzljzjjl"
+                    },
+                    {
                         name: "成品质检列表",
                         url: "/inspect-product",
                         id: "cpzjlb"
+                    },
+                    {
+                        name: "新增成品质检记录",
+                        url: "/inspect-product/addList",
+                        id: "xzcpzjjl"
                     },
                     {
                         name: "加工质检列表",
@@ -268,9 +308,19 @@ export default {
                         id: "jgzjlb"
                     },
                     {
+                        name: "新增加工质检记录",
+                        url: "/inspect-metalwork/addList",
+                        id: "xzjgzjjl"
+                    },
+                    {
                         name: "压力测试列表",
                         url: "/stresstest",
                         id: "ylcslb"
+                    },
+                    {
+                        name: "新增压力测试列表",
+                        url: "/stresstest/addList",
+                        id: "xzylcs"
                     }
                 ]
             },
@@ -284,9 +334,19 @@ export default {
                         id: "fhdgl"
                     },
                     {
+                        name: "新增发货通知单",
+                        url: "/delivery-bills/addList",
+                        id: "xzfhtzd"
+                    },
+                    {
                         name: "发货记录列表",
                         url: "/delivery-record",
                         id: "fhjlgl"
+                    },
+                    {
+                        name: "新增发货记录",
+                        url: "/delivery-record/addList",
+                        id: "xzfhjl"
                     }
                 ]
             },
@@ -330,9 +390,19 @@ export default {
                         id: "cpjggl"
                     },
                     {
+                        name: "新增成品价格",
+                        url: "/finishedPrice/addList",
+                        id: "xzcpjg"
+                    },
+                    {
                         name: "零件价格管理",
                         url: "/partPrice",
                         id: "ljjggl"
+                    },
+                    {
+                        name: "新增零件价格",
+                        url: "/partPrice/addList",
+                        id: "xzljjg"
                     }
                 ]
             },
@@ -360,6 +430,11 @@ export default {
                         name: "发票管理",
                         url: "/jgzx-invoice",
                         id: "kfpgl"
+                    },
+                    {
+                        name: "新增发票管理",
+                        url: "/jgzx-invoice/addList",
+                        id: "xzfp"
                     }
                 ]
             },
@@ -394,6 +469,11 @@ export default {
                         id: "cjzr-ghllb"
                     },
                     {
+                        name: "新增更换料",
+                        url: "/replacement/addList",
+                        id: "xzghllj"
+                    },
+                    {
                         name: "生产订单列表",
                         url: "/cjzr-scddlb",
                         id: "cjzr-scddlb"
@@ -413,6 +493,11 @@ export default {
                         name: "文件/图纸管理",
                         url: "/fileupload",
                         id: "wjtzgl"
+                    },
+                    {
+                        name: "新增文件/图纸管理",
+                        url: "/fileupload/addList",
+                        id: "xzwjtz"
                     }
                 ]
             },

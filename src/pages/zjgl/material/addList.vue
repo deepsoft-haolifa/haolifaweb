@@ -1,5 +1,5 @@
 <template>
-    <div class="page-material-list">
+    <div class="material-list">
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
@@ -14,13 +14,9 @@
                     style="width: 200px;"
                 >
             </div>
-            <div class="flex-item"></div>
-            <!-- <router-link to="/applyBuy-material/add">
-                <btn class="b" flat color="#008eff">创建送检单</btn>
-            </router-link>-->
         </div>
         <div class="flex-item scroll-y">
-            <data-list class="f-14" ref="list" :page-size="10" :param="filter" url="/haolifa/material-inspect/purchase-list/0" method="get">
+            <data-list class="f-14" ref="list" :page-size="10" :param="filter" url="/haolifa/material-inspect/purchase-list/1" method="get">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>报检单号</th>
@@ -44,19 +40,49 @@
                     <td>{{statusList[item.status].name}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
-                        <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
-                        <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
-                        <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="commit(item.id)">发起报检</a>
+                        <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
+                        <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="commit(item.id)">质检完成</a>
                     </td>
                 </template>
             </data-list>
         </div>
+
+        <layer v-if="inspectHistory.completeLayer" :title="'质检记录'" width="650px" style>
+            <div class="flex">
+                <input-box v-model="inspectHistory.purchaseNo" class="flex-item mr-20 ml-20" label="采购合同号"></input-box>
+                <input-box v-model="inspectHistory.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
+            </div>
+            <div class="flex mt-15">
+                <input-box v-model="inspectHistory.inspectNo" class="mr-20 ml-20 mt-15" label="送检单号"></input-box>
+                <select-box
+                    class="mt-15"
+                    @change="changeMaterialNo()"
+                    :list="inspectHistory.selectMaterialNo"
+                    v-model="inspectHistory.materialGraphNo"
+                    label="物料图号"
+                ></select-box>
+                <input-box v-model="inspectHistory.materialName" class="mr-20 mt-15" label="物料名称"></input-box>
+            </div>
+            <div class="flex mt-15">
+                <input-box v-model="inspectHistory.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
+                <input-box v-model="inspectHistory.unqualifiedNumber" class="flex-item mr-20 mt-15" label="不合格数量"></input-box>
+                <input-box v-model="inspectHistory.qualifiedNumber" class="flex-item mr-20 mt-15" label="合格数量"></input-box>
+            </div>
+            <div class="flex mt-15">
+                <input-box v-model="inspectHistory.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
+                <input-box v-model="inspectHistory.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="inspectHistory.completeLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="complete()">保存</btn>
+            </div>
+        </layer>
+
         <layer v-if="layer" title="详情" width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content page-supplier-info">
                     <table class="f-14">
                         <tr>
-                            <!--  -->
                             <td style="width: 10%;"></td>
                             <td style="width: 10%;"></td>
                             <td style="width: 10%;"></td>
@@ -186,15 +212,30 @@
 <script>
 import DataList from "@/components/datalist";
 export default {
-    name: "page-material-list",
+    name: "material-list",
     components: { DataList },
     data() {
         return {
+            inspectHistory: {
+                completeLayer: false,
+                selectMaterialNo: [],
+                selectMaterialName: [],
+                handlingSuggestion: "",
+                inspectNo: "",
+                materialName: "",
+                materialGraphNo: "",
+                qualifiedNumber: 0,
+                remark: "",
+                testNumber: 0,
+                unqualifiedNumber: 0,
+                batchNumber: "",
+                purchaseNo: "",
+                supplierName: "",
+                supplierNo: ""
+            },
             filter: {
                 type: 0,
-                status: 0,
-                inspectNo: "",
-                purchaseOrderNo: ""
+                status: 0
             },
             statusList: [
                 { status: 0, name: "全部" },
@@ -210,32 +251,94 @@ export default {
                 inspectNo: ""
             },
             items: [],
-            inspectHistory: [],
             resFileList: []
+            // inspectHistory: []
         };
     },
     methods: {
-        edit(item) {
-            this.$router.push(`/applyBuy-material/edit?id=${item.id}`);
-        },
-        remove(item) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除以下送检单吗？<br><b>${item.inspectNo}</b>`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
-                    this.$http
-                        .get(`/haolifa/material-inspect/delete/${item.id}`)
-                        .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update();
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg || e.message);
-                        });
+        changeMaterialNo() {
+            this.inspectHistory.selectMaterialNo.forEach(item => {
+                console.log("当前值", item);
+                console.log("change值", this.inspectHistory.materialGraphNo);
+                if (item.value == this.inspectHistory.materialGraphNo) {
+                    this.inspectHistory.materialName = item.materialName;
                 }
             });
+        },
+        complete() {
+            let save = {
+                handlingSuggestion: this.inspectHistory.handlingSuggestion,
+                inspectNo: this.inspectHistory.inspectNo,
+                materialGraphName: this.inspectHistory.materialName,
+                materialGraphNo: this.inspectHistory.materialGraphNo,
+                qualifiedNumber: this.inspectHistory.qualifiedNumber,
+                remark: this.inspectHistory.remark,
+                testNumber: this.inspectHistory.testNumber,
+                unqualifiedNumber: this.inspectHistory.unqualifiedNumber,
+                type: 1, // 零件送检
+                batchNumber: this.inspectHistory.batchNumber,
+                purchaseNo: this.inspectHistory.purchaseNo,
+                supplierName: this.inspectHistory.supplierName,
+                supplierNo: this.inspectHistory.supplierNo
+            };
+            this.$http
+                .post(`/haolifa/material-inspect/history/save`, save)
+                .then(res => {
+                    this.$toast("添加成功");
+                    this.$refs.list.update();
+                    this.inspectHistory.completeLayer = false;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        commit(itemId) {
+            this.$http
+                .post(
+                    `/haolifa/material-inspect/updateStatus/${itemId}?status=3`
+                )
+                .then(res => {
+                    this.$refs.list.update();
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        info(item) {
+            // this.$router.push(`/applyBuy-material/info?id=${item.id}&inspectNo=${item.inspectNo}`);
+            this.layer = true;
+            this.inspect.id = item.id;
+            this.inspect.inspectNo = item.inspectNo;
+            this.resFileList = [];
+            this.getInfo();
+            this.getInspectHistory();
+        },
+        addInspectHistory(item) {
+            this.inspectHistory.batchNumber = item.batchNumber;
+            this.inspectHistory.purchaseNo = item.purchaseNo;
+            this.inspectHistory.inspectNo = item.inspectNo;
+            this.inspectHistory.supplierName = item.supplierName;
+            this.inspectHistory.supplierNo = item.supplierNo;
+            let inspectId = item.id;
+            this.$http
+                .get(`/haolifa/material-inspect/info/${inspectId}`)
+                .then(res => {
+                    this.inspectHistory.completeLayer = true;
+                    let items = res.items;
+                    this.inspectHistory.selectMaterialNo = items.map(item => {
+                        return {
+                            value: item.materialGraphNo,
+                            text: item.materialGraphNo,
+                            materialName: item.materialName
+                        };
+                    });
+                    // 默认
+                    this.inspectHistory.materialGraphNo = this.inspectHistory.selectMaterialNo[0].value;
+                    this.inspectHistory.materialName = this.inspectHistory.selectMaterialNo[0].materialName;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         getInfo() {
             this.$http
@@ -275,45 +378,18 @@ export default {
                 )
                 .then(res => {
                     this.inspectHistory = res;
+                    console.log(this.inspectHistory);
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
-        },
-        commit(itemId) {
-            this.$http
-                .post(
-                    `/haolifa/material-inspect/updateStatus/${itemId}?status=2`
-                )
-                .then(res => {
-                    this.$refs.list.update();
-                })
-                .catch(e => {
-                    this.$toast(e.msg || e.message);
-                });
-        },
-        info(item) {
-            this.layer = true;
-            this.inspect.id = item.id;
-            this.inspect.inspectNo = item.inspectNo;
-            this.resFileList = [];
-            this.getInfo();
-            this.getInspectHistory();
-            // this.$router.push(
-            //     `/applyBuy-material/info?id=${item.id}&inspectNo=${
-            //         item.inspectNo
-            //     }`
-            // );
-        },
-        close() {
-            this.close = false;
         }
     }
 };
 </script>
 
 <style lang="less">
-.page-material-list {
+.material-list {
     select {
         background: none;
         border: none;

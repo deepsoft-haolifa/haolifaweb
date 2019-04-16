@@ -11,9 +11,9 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/delivery-record/add">
+            <router-link to="/delivery-record/add">
                 <btn class="b" flat color="#008eff">新增发货记录</btn>
-            </router-link>-->
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" page-num-str="pageNum" :param="filter" url="/haolifa/delivery/pageList" method="post">

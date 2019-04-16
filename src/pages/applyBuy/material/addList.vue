@@ -15,9 +15,9 @@
                 >
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/applyBuy-material/add">
+            <router-link to="/applyBuy-material/add">
                 <btn class="b" flat color="#008eff">创建送检单</btn>
-            </router-link>-->
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list class="f-14" ref="list" :page-size="10" :param="filter" url="/haolifa/material-inspect/purchase-list/0" method="get">

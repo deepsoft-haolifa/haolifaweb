@@ -127,7 +127,7 @@ export default {
         getInfo(orderNo) {
             this.layer = true;
             this.$http
-                .get(`/haolifa/order-product/order-material/${orderNo}`)
+                .get(`/haolifa/order-product/order-material?orderNo=${orderNo}`)
                 .then(res => {
                     this.infoList = res;
                 })

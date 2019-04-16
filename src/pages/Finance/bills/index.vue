@@ -9,8 +9,7 @@
         <th style="width: 60px;">序号</th>
         <th>发货通知单号</th>
         <th style="width:50px;">发货通知单</th>
-        <th>订单号11</th>
-        <th>审批人</th>
+        <th>订单号</th>
         <th>审批结果</th>
         <th>审批信息</th>
         <th>审批时间</th>
@@ -24,15 +23,13 @@
         <td>{{item.deliveryNo}}</td>
         <td><a class='fixed-length' :href="item.deliveryUrl" :title="item.deliveryUrl">{{item.deliveryUrl}}</a></td>
         <td>{{item.contractOrderNo}}</td>
-        <td>{{item.auditUserId}}</td>
-        <td>{{item.auditResult}}</td>
+        <td>{{auditResultList[item.auditResult]}}</td>
         <td>{{item.auditInfo}}</td>
         <td>{{item.auditTime}}</td>
         <td>{{item.createTime}}</td>
         <td>{{item.updateTime}}</td>
         <td class="t-right">
-          <icon-btn small @click="edit(item)">edit</icon-btn>
-          <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
+          <a href="javascript:;" v-if="item.auditResult == 0" class="blue" @click="edit(item)">审核</a>
         </td>
       </template>
     </data-list>
@@ -49,7 +46,8 @@ export default {
     return {
       filter: {
 
-      }
+      },
+        auditResultList:["待审核","审核通过","审核不通过"]
     }
   },
   methods: {

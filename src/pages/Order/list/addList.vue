@@ -320,7 +320,7 @@ export default {
         remove(item) {
             this.$confirm({
                 title: "删除确认",
-                text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
+                text: `您确定要删除以下订单吗？<br>${item.orderNo}`,
                 color: "red",
                 btns: ["取消", "删除"],
                 yes: () => {

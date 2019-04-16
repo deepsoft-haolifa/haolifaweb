@@ -29,7 +29,16 @@
         <template slot="item" slot-scope="{ item, index }">
             <td>{{index}}</td>
             <td>{{item.fileName}}</td>
-            <td>{{item.fileUrl}}</td>
+            <td>
+                <a target="_blank" flat style="color: #008eff" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">{{item.fileUrl}}</a>
+                <a
+                        target="_blank"
+                        flat
+                        style="color: #008eff"
+                        v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                        :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                >{{item.fileUrl}}</a>
+            </td>
             <td>{{item.type == 1 ? '零件图纸' : '其它'}}</td>
             <td>{{item.remark}}</td>
             <td>{{item.createTime}}</td>

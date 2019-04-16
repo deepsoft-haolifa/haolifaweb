@@ -9,13 +9,17 @@ import 'element-ui/lib/theme-chalk/index.css';
 import {
   Tree,
   Button,
-  Dialog
+  Dialog,
+  Select,
+  Option
 } from 'element-ui'
 import './common'
 
 Vue.use(Tree)
 Vue.use(Button)
 Vue.use(Dialog)
+Vue.use(Select)
+Vue.use(Option)
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 

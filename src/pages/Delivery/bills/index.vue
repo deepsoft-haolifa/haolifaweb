@@ -9,21 +9,20 @@
                 <option value="2">成品库</option>
               </select>
               <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
-            </div> -->
+            </div>-->
             <div class="flex-item"></div>
             <router-link to="/delivery-bills/add">
                 <btn class="b" flat color="#008eff">新增发货通知单</btn>
             </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" page-num-str="pageNum" :param="filter" url="/haolifa/delivery/noticeList"
-                       method="post">
+            <data-list ref="list" page-num-str="pageNum" :param="filter" url="/haolifa/delivery/noticeList" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>发货通知单号</th>
                     <th style="width:50px;">发货通知单</th>
                     <th>订单号</th>
-                    <th>审批人</th>
+                    <!-- <th>审批人</th> -->
                     <th>审批结果</th>
                     <th>审批信息</th>
                     <th>审批时间</th>
@@ -35,11 +34,12 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
                     <td>{{item.deliveryNo}}</td>
-                    <td><a class='fixed-length' :href="item.deliveryUrl"
-                           :title="item.deliveryUrl">{{item.deliveryUrl}}</a></td>
+                    <td>
+                        <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{item.deliveryUrl}}</a>
+                    </td>
                     <td>{{item.contractOrderNo}}</td>
-                    <td>{{item.auditUserId}}</td>
-                    <td>{{item.auditResult}}</td>
+                    <!-- <td>{{item.auditUserId}}</td> -->
+                    <td>{{statusList[item.auditResult]}}</td>
                     <td>{{item.auditInfo}}</td>
                     <td>{{item.auditTime}}</td>
                     <td>{{item.createTime}}</td>
@@ -55,55 +55,63 @@
 </template>
 
 <script>
-    import DataList from '@/components/datalist'
+import DataList from "@/components/datalist";
 
-    export default {
-        name: 'page-bills-list',
-        components: {DataList},
-        data() {
-            return {
-                filter: {
-                    // type: ''
-                }
-            }
+export default {
+    name: "page-bills-list",
+    components: { DataList },
+    data() {
+        return {
+            filter: {
+                // type: ''
+            },
+            statusList: { 1: "审核不通过", 2: "审核通过" }
+        };
+    },
+    methods: {
+        edit(id) {
+            this.$router.push(`/delivery-bills/edit?id=${id}`);
         },
-        methods: {
-            edit(id) {
-                this.$router.push(`/delivery-bills/edit?id=${id}`)
-            },
-            addRecord(item) {
-                this.$router.push(`/delivery-record/add?contractOrderNo=${item.contractOrderNo}&deliveryNoticeNo=${item.deliveryNo}`)
-            },
-            remove(item) {
-                this.$confirm({
-                    title: '删除确认',
-                    text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
-                    color: 'red',
-                    btns: ['取消', '删除'],
-                    yes: () => {
-                        this.$http.delete(`/haolifa/material/delete/${item.id}`).then(res => {
-                            this.$toast('删除成功')
-                            this.$refs.list.update()
-                        }).catch(e => {
-                            this.$toast(e.msg)
+        addRecord(item) {
+            this.$router.push(
+                `/delivery-record/add?contractOrderNo=${
+                    item.contractOrderNo
+                }&deliveryNoticeNo=${item.deliveryNo}`
+            );
+        },
+        remove(item) {
+            this.$confirm({
+                title: "删除确认",
+                text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
+                color: "red",
+                btns: ["取消", "删除"],
+                yes: () => {
+                    this.$http
+                        .delete(`/haolifa/material/delete/${item.id}`)
+                        .then(res => {
+                            this.$toast("删除成功");
+                            this.$refs.list.update();
                         })
-                    }
-                })
-            }
+                        .catch(e => {
+                            this.$toast(e.msg);
+                        });
+                }
+            });
         }
     }
+};
 </script>
 
 <style lang="less">
-    .page-part-list {
-        //
-    }
+.page-part-list {
+    //
+}
 
-    .fixed-length {
-        width: 100px;
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
+.fixed-length {
+    width: 100px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 </style>

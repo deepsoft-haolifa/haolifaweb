@@ -36,7 +36,7 @@
                     <td>{{item.createTime}}</td>
                     <td>{{rowStatusList[item.status-3].name}}</td>
                     <td class="t-right">
-                        <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a> -->
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
                     </td>
                 </template>

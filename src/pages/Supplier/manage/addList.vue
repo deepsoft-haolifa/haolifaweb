@@ -6,9 +6,9 @@
                 <input type="text" class="flex-item" placeholder="供应商名称" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/supplier/add">
+            <router-link to="/supplier/add">
                 <btn class="b" flat color="#008eff">新增供应商</btn>
-            </router-link>-->
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :pageSize="10" url="/haolifa/supplier/list">

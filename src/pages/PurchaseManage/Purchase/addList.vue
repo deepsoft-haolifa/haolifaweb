@@ -3,7 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="机加工合同号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">合同状态</option>
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
@@ -11,17 +11,17 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/purchsemanage-entrust/add">
-                <btn class="b" flat color="#008eff">新增机加工订单</btn>
-            </router-link>-->
+            <router-link to="/purchsemanage-purchase/add">
+                <btn class="b" flat color="#008eff">新增采购</btn>
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/purchase-order/list/1">
+            <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/purchase-order/list/0">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>机加工合同号</th>
+                    <th>采购合同号</th>
                     <th>供方单位</th>
-                    <th>加工完成日期</th>
+                    <th>采购完成日期</th>
                     <th>订单状态</th>
                     <th>创建人</th>
                     <th>创建日期</th>
@@ -29,6 +29,9 @@
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
+                    <!--<td>-->
+                    <!--<router-link class="c-4" :to="'/supplier/'+item.id">{{item.suppilerName}}</router-link>-->
+                    <!--</td>-->
                     <td>{{item.purchaseOrderNo}}</td>
                     <td>{{item.supplierName}}</td>
                     <td>{{item.deliveryTime}}</td>
@@ -41,7 +44,7 @@
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 3" class="blue" @click="createInspect(item.id)">生成报检单</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 1" class="blue" @click="updatePurchase(item.id)">编辑</a>
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.status == 2" class="blue" @click="approveProgress(item)">审批进度</a>
-                        <a href="javascript:;" v-if="item.status == 1 || item.status ==4" class="blue" @click="deletePurchase(item.purchaseOrderNo)">删除</a>
+                        <a href="javascript:;" v-if="item.status == 1 ||item.status == 4" class="blue" @click="deletePurchase(item.purchaseOrderNo)">删除</a>
                         <a href="javascript:;" v-if="item.status == 3" class="blue" @click="completePurchase(item.purchaseOrderNo)">采购完成</a>
                     </td>
                 </template>
@@ -74,9 +77,25 @@
                             <td style="width: 10%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="6" class="b">机加工订单</td>
+                            <td colspan="6" class="b">采购订单</td>
                             <td colspan="6" class="b">
-                                <a class="a" flat style="color: #008eff" :href="orderUrl">合同下载</a>
+                                <a class="a" flat style="color: #008eff;margin-right:10px;" :href="orderUrl">合同下载</a>
+                                <!-- <a
+                                    target="_blank"
+                                    v-if="(orderUrl).match('\.(pdf|jpe?g|png|bmp)$') "
+                                    class="a"
+                                    flat
+                                    style="color: #008eff"
+                                    :href="orderUrl"
+                                >合同预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    class="a"
+                                    flat
+                                    style="color: #008eff"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
+                                >合同预览</a>-->
                             </td>
                         </tr>
                         <tr>
@@ -212,7 +231,7 @@
 import DataList from "@/components/datalist";
 // import obj2FormData from '@/utils/obj2FormData'
 export default {
-    name: "purchsemanage-entrust",
+    name: "purchsemanage-purchase",
     components: { DataList },
     data() {
         return {
@@ -244,11 +263,11 @@ export default {
     },
     methods: {
         // info: function(formId) {
-        //     this.$router.push(`/purchsemanage-entrust/info?formId=${formId}`);
+        //     this.$router.push(`/purchsemanage-purchase/info?formId=${formId}`);
         // },
         getInfo(formId) {
             this.layer = true;
-            this.orderUrl = "/haolifa/export/entrustOrder/" + formId;
+            this.orderUrl = "/haolifa/export/purchaseOrder/" + formId;
             this.info.id = formId;
             this.$http
                 .get(`/haolifa/purchase-order/info/${formId}`)
@@ -309,11 +328,10 @@ export default {
                 });
         },
         approveProgress(item) {
-            this.$router.push(
-                `/purchsemanage-entrust/approveProgress?formNo=${
-                    item.purchaseOrderNo
-                }&formId=0`
-            );
+            this.$router.push({
+                path: `/purchsemanage-purchase/approveProgress?`,
+                query: { formNo: item.purchaseOrderNo, formId: 0 }
+            });
         },
         approve: function(orderNo) {
             this.$confirm({
@@ -323,7 +341,7 @@ export default {
                 btns: ["取消", "确认"],
                 yes: () => {
                     this.$http
-                        .get(`/haolifa/purchase-order/approve/${orderNo}/1`)
+                        .get(`/haolifa/purchase-order/approve/${orderNo}/0`)
                         .then(res => {
                             this.$toast("发起成功");
                             this.$refs.list.update();
@@ -335,7 +353,7 @@ export default {
             });
         },
         updatePurchase: function(orderId) {
-            this.$router.push(`/purchsemanage-entrust/add?formId=${orderId}`);
+            this.$router.push(`/purchsemanage-purchase/add?formId=${orderId}`);
         },
         completePurchase: function(orderNo) {
             this.completeLayer = true;
@@ -386,6 +404,34 @@ export default {
         outline: none;
         padding: 5px 20px 5px 10px;
         appearance: none;
+    }
+}
+.page-supplier-info {
+    padding: 30px 20px;
+    tr:first-child td {
+        padding: 0;
+        border: none;
+    }
+    th {
+        font-weight: normal;
+        color: #888;
+    }
+    td {
+        color: #444;
+    }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #fff;
+        border: 1px solid #ddd;
+    }
+    .checkbox-list {
+        flex-wrap: wrap;
+    }
+    .checkbox-item {
+        line-height: 1em;
+        width: 180px;
+        margin: 5px 0;
     }
 }
 </style>

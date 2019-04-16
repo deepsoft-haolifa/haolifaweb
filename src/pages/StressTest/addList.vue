@@ -9,9 +9,9 @@
                 <!-- <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i> -->
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/stresstest/add">
+            <router-link to="/stresstest/add">
                 <btn class="b" flat color="#008eff">新增{{this.$route.meta.title}}</btn>
-            </router-link>-->
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" page-num-str="pageNum" :param="filter" url="/haolifa/pressure-inspect-res/pageInfo" method="post">

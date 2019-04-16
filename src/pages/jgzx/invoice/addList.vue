@@ -11,9 +11,9 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <!-- <router-link to="/jgzx-invoice/add">
-      <btn class="b" flat color="#008eff">新增发票申请</btn>
-            </router-link>-->
+            <router-link to="/jgzx-invoice/add">
+                <btn class="b" flat color="#008eff">新增发票申请</btn>
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/invoice/list/0" method="post">

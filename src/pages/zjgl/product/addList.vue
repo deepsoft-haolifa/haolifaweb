@@ -2,9 +2,9 @@
     <div class="page-product-list">
         <div class="flex-v-center tool-bar">
             <div class="flex-item"></div>
-            <!-- <router-link to="/inspect-product/add">
-        <btn class="b" flat color="#008eff">新增质检记录</btn>
-            </router-link>-->
+            <router-link to="/inspect-product/add">
+                <btn class="b" flat color="#008eff">新增质检记录</btn>
+            </router-link>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/pro-inspect-res/pageInfo" method="post">

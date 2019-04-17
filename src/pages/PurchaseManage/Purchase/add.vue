@@ -230,7 +230,7 @@ export default {
                 )
                 .then(res => {
                     this.$toast(this.isAdd ? "创建成功" : "更新成功");
-                    this.$router.push("/purchsemanage-purchase/list");
+                    this.$router.push("/purchsemanage-purchase/addList");
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);

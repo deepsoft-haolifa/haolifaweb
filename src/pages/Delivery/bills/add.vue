@@ -119,7 +119,7 @@ export default {
                 .post("/haolifa/delivery/saveNotice", form)
                 .then(res => {
                     this.loading = false;
-                    this.$router.replace("/delivery-bills");
+                    this.$router.replace("/delivery-bills/addList");
                 })
                 .catch(e => {
                     this.loading = false;

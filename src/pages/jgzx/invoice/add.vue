@@ -43,7 +43,7 @@ export default {
             this.$http
                 .post("/haolifa/invoice/save", this.form)
                 .then(res => {
-                    this.$router.replace("/jgzx-invoice");
+                    this.$router.replace("/jgzx-invoice/addList");
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);

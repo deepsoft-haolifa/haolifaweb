@@ -19,7 +19,9 @@
                     </div>
 
                     <div class="flex">
-                        <input-box v-model="item.reason" class="flex-item" label="不合格现象描述"></input-box>
+                        <select-box v-model="item.reason" class="flex-item" :list="reasons" label="不合格现象描述"></select-box>
+
+                        <!-- <input-box v-model="item.reason" class="flex-item" label="不合格现象描述"></input-box> -->
                     </div>
                 </div>
                 <div v-if="form.unqualifiedList.length > 1">
@@ -59,8 +61,12 @@ export default {
                         unqualifiedNumber: ""
                     }
                 ]
-            }
+            },
+            reasons: []
         };
+    },
+    mounted() {
+        this.getReasons();
     },
 
     methods: {
@@ -78,11 +84,21 @@ export default {
                 .then(res => {
                     this.loading = false;
                     this.$toast("提交成功");
-                    this.$router.replace("/inspect-product");
+                    this.$router.replace("/inspect-product/addList");
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);
                 });
+        },
+        getReasons() {
+            this.$http.get("/haolifa/pro-inspect-res/reasonList").then(res => {
+                this.reasons = res.map(item => {
+                    return {
+                        value: item,
+                        text: item
+                    };
+                });
+            });
         }
     }
     // ap_20181115201511123488

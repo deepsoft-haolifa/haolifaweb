@@ -180,7 +180,7 @@ export default {
                 .then(res => {
                     this.loading = false;
                     this.$toast("提交成功");
-                    this.$router.replace("/applyBuy-material");
+                    this.$router.replace("/applyBuy-material/addList");
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);

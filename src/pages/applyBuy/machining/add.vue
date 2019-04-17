@@ -140,7 +140,7 @@ export default {
                     .then(res => {
                         this.loading = false;
                         this.$toast("提交成功");
-                        this.$router.replace("/applyBuy-machining");
+                        this.$router.replace("/applyBuy-machining/addList");
                     })
                     .catch(e => {
                         this.$toast(e.message || e.msg);
@@ -154,7 +154,7 @@ export default {
                     .then(res => {
                         this.loading = false;
                         this.$toast("更新成功");
-                        this.$router.replace("/applyBuy-machining");
+                        this.$router.replace("/applyBuy-machining/addList");
                     })
                     .catch(e => {
                         this.$toast(e.message || e.msg);

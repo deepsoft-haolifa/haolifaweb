@@ -133,7 +133,7 @@ export default {
                 .post(`/haolifa/delivery/${form.id ? "update" : "save"}`, form)
                 .then(res => {
                     this.loading = false;
-                    this.$router.replace("/delivery-record");
+                    this.$router.replace("/delivery-record/addList");
                 })
                 .catch(e => {
                     this.loading = false;

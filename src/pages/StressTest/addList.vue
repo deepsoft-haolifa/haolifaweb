@@ -131,7 +131,9 @@ export default {
         remove(item) {
             this.$confirm({
                 title: "删除确认",
-                text: `您确定要删除以下库房吗？<br><b>${item.name}</b>`,
+                text: `您确定要删除以下报检单号吗？<br><b>${
+                    item.inspectNo
+                }</b>`,
                 color: "red",
                 btns: ["取消", "删除"],
                 yes: () => {

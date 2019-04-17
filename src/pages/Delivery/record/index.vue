@@ -28,7 +28,7 @@
                     <th>省市</th>
                     <th>运费总金额</th>
                     <th>创建时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item }">
@@ -42,10 +42,10 @@
                     <td>{{item.collectProvince}}</td>
                     <td>{{item.totalFee}}</td>
                     <td>{{item.createTime}}</td>
-                    <td class="t-right">
+                    <!-- <td class="t-right">
                         <icon-btn small @click="edit(item)">edit</icon-btn>
-                        <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
-                    </td>
+                        <icon-btn small @click="remove(item)">delete</icon-btn>
+                    </td>-->
                 </template>
             </data-list>
         </div>

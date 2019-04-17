@@ -32,7 +32,7 @@
                     <th>毛坯费(元)</th>
                     <th>加工费(元)</th>
                     <th>成品价(元)</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -49,10 +49,10 @@
                     <td>{{item.blankCost}}</td>
                     <td>{{item.processCost}}</td>
                     <td>{{item.productPrice}}</td>
-                    <td class="t-right">
+                    <!-- <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑|</a>
                         <a href="javascript:;" class="red" @click="del(item)" style="margin-right: 3px;">删除</a>
-                    </td>
+                    </td>-->
                 </template>
             </data-list>
         </div>

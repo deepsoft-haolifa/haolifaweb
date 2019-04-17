@@ -43,7 +43,9 @@
                     <td>{{item.totalFee}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <icon-btn small @click="edit(item)">edit</icon-btn>
+                        <!-- <icon-btn small @click="edit(item)">edit</icon-btn> -->
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
+
                         <!-- <icon-btn small @click="remove(item)">delete</icon-btn> -->
                     </td>
                 </template>

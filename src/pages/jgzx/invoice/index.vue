@@ -25,7 +25,7 @@
                     <th>备注</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -36,9 +36,9 @@
                     <td>{{item.remark}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{item.updateTime}}</td>
-                    <td class="t-right">
+                    <!-- <td class="t-right">
                         <a href="javascript:;" v-if="item.status == 1" class="blue" @click="remove(item)">删除</a>
-                    </td>
+                    </td>-->
                 </template>
             </data-list>
         </div>

@@ -41,7 +41,7 @@
                     <th>驱动单价</th>
                     <th>合计单价</th>
                     <th>备注</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -68,10 +68,10 @@
                     <td>{{item.drivePrice}}</td>
                     <td>{{item.totalPrice}}</td>
                     <td>{{item.remark}}</td>
-                    <td class="t-right">
+                    <!-- <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑|</a>
                         <a href="javascript:;" class="red" @click="del(item)" style="margin-right: 3px;">删除</a>
-                    </td>
+                    </td>-->
                 </template>
             </data-list>
         </div>

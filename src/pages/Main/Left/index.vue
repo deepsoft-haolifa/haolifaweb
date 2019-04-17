@@ -273,7 +273,7 @@ export default {
                     },
                     {
                         name: "新增机加工单",
-                        url: "/purchsemanage-entrust/list",
+                        url: "/purchsemanage-entrust/addList",
                         id: "xzjjgdd"
                     }
                 ]

@@ -24,7 +24,7 @@
                     <th>责任人</th>
                     <th>审核状态</th>
                     <th>创建时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
@@ -37,11 +37,11 @@
                     <td>{{item.responsiblePerson}}</td>
                     <td>{{statusList[item.auditResult].name}}</td>
                     <td>{{item.createTime}}</td>
-                    <td class="t-right">
-                        <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.id)">详情</a> | -->
+                    <!-- <td class="t-right">
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item.id)">详情</a> |
                         <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="edit(item)">编辑 |</a>
                         <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
-                    </td>
+                    </td>-->
                 </template>
             </data-list>
         </div>

@@ -28,7 +28,7 @@
                     <th>数量</th>
                     <th>发起时间</th>
                     <th>状态</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -43,7 +43,7 @@
                     <td>{{item.number}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{statusList[item.status+1].name}}</td>
-                    <td class="t-right">
+                    <!-- <td class="t-right">
                         <a
                             href="javascript:;"
                             v-if="item.workshopType == '2' && item.status == 2"
@@ -53,7 +53,7 @@
                         >处理完成</a>
                         <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
                         <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="initApprove(item.entrustNo, 1)">发起审批</a>
-                    </td>
+                    </td>-->
                 </template>
             </data-list>
         </div>

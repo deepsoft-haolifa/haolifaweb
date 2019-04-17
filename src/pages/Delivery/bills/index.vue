@@ -45,8 +45,8 @@
                     <td>{{item.createTime}}</td>
                     <td>{{item.updateTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" style="margin-right: 3px" v-if="item.auditResult != 2" class="blue" @click="edit(item.id)">编辑</a>
-                        <a href="javascript:;" class="blue" @click="addRecord(item)">添加发货记录</a>
+                        <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.auditResult != 2" class="blue" @click="edit(item.id)">编辑</a>
+                        <a href="javascript:;" class="blue" @click="addRecord(item)">添加发货记录</a>-->
                     </td>
                 </template>
             </data-list>
@@ -65,7 +65,7 @@ export default {
             filter: {
                 // type: ''
             },
-            statusList: { 1: "审核不通过", 2: "审核通过" }
+            statusList: { 0: "待审核", 1: "审核通过", 2: "审核不通过" }
         };
     },
     methods: {

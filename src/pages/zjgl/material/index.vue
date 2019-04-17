@@ -41,7 +41,7 @@
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
                         <!-- <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a> -->
-                        <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="commit(item.id)">质检完成</a>
+                        <!-- <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="commit(item.id)">质检完成</a> -->
                     </td>
                 </template>
             </data-list>

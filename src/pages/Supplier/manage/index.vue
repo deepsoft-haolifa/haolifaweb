@@ -35,8 +35,8 @@
                     <td>{{item.phone}}</td>
                     <td>{{isQualifiedStatusList[item.isQualified].text}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
-                        <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a> |
+                        <!-- <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
+                        <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a> |-->
                         <a
                             href="javascript:;"
                             v-if="item.isQualified == 1 || item.isQualified==2"
@@ -44,13 +44,13 @@
                             @click="auditAccessoryInfo(item.suppilerNo)"
                             style="margin-right: 3px;"
                         >审批附件</a>
-                        <a
+                        <!-- <a
                             href="javascript:;"
                             class="red"
                             v-if="item.isQualified == 0"
                             @click="approveSupplier(item.suppilerNo)"
                             style="margin-right: 3px;"
-                        >发起审批</a>
+                        >发起审批</a>-->
                         <a href="javascript:;" class="red" v-if="item.isQualified == 3" @click="approving(item.suppilerNo)" style="margin-right: 3px;">审批进度</a>
                     </td>
                 </template>

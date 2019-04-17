@@ -37,9 +37,9 @@
                     <td>
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
                         <icon-btn small @click="remove(item)">delete</icon-btn>-->
-                        <a href="javascript:;" class="blue" @click="edit(item)">编辑</a> |
-                        <a href="javascript:;" class="blue" @click="info(item)">详情</a> |
-                        <a href="javascript:;" class="red" @click="remove(item)">删除</a>
+                        <!-- <a href="javascript:;" class="blue" @click="edit(item)">编辑</a> | -->
+                        <a href="javascript:;" class="blue" @click="info(item)">详情</a>
+                        <!-- <a href="javascript:;" class="red" @click="remove(item)">删除</a> -->
                     </td>
                 </template>
             </data-list>

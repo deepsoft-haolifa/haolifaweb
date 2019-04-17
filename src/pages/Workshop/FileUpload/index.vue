@@ -24,7 +24,7 @@
                     <th>文件类型</th>
                     <th>备注</th>
                     <th>创建时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
@@ -48,10 +48,10 @@
                     <td>{{item.type == 1 ? '零件图纸' : '其它'}}</td>
                     <td>{{item.remark}}</td>
                     <td>{{item.createTime}}</td>
-                    <td class="t-right">
+                    <!-- <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
-                    </td>
+                    </td>-->
                 </template>
             </data-list>
         </div>

@@ -39,7 +39,7 @@
                     <td>{{item.createTime}}</td>
                     <td>{{statusList[item.status].name}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="infoDeatail(item)">查看</a>
                         <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
                         <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="commit(item.id)">质检完成</a>
                     </td>
@@ -47,7 +47,7 @@
             </data-list>
         </div>
 
-        <layer v-if="inspectHistory.completeLayer" :title="'质检记录'" width="650px" style>
+        <layer v-if="completeLayer" :title="'质检记录'" width="650px" style>
             <div class="flex">
                 <input-box v-model="inspectHistory.purchaseNo" class="flex-item mr-20 ml-20" label="采购合同号"></input-box>
                 <input-box v-model="inspectHistory.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
@@ -73,7 +73,7 @@
                 <input-box v-model="inspectHistory.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
             </div>
             <div class="layer-btns">
-                <btn flat @click="inspectHistory.completeLayer=false">取消</btn>
+                <btn flat @click="completeLayer=false">取消</btn>
                 <btn flat color="#008eff" @click="complete()">保存</btn>
             </div>
         </layer>
@@ -216,8 +216,8 @@ export default {
     components: { DataList },
     data() {
         return {
+            completeLayer: false,
             inspectHistory: {
-                completeLayer: false,
                 selectMaterialNo: [],
                 selectMaterialName: [],
                 handlingSuggestion: "",
@@ -258,7 +258,6 @@ export default {
     methods: {
         changeMaterialNo() {
             this.inspectHistory.selectMaterialNo.forEach(item => {
-                console.log("当前值", item);
                 console.log("change值", this.inspectHistory.materialGraphNo);
                 if (item.value == this.inspectHistory.materialGraphNo) {
                     this.inspectHistory.materialName = item.materialName;
@@ -286,7 +285,7 @@ export default {
                 .then(res => {
                     this.$toast("添加成功");
                     this.$refs.list.update();
-                    this.inspectHistory.completeLayer = false;
+                    this.completeLayer = false;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -304,7 +303,7 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
-        info(item) {
+        infoDeatail(item) {
             // this.$router.push(`/applyBuy-material/info?id=${item.id}&inspectNo=${item.inspectNo}`);
             this.layer = true;
             this.inspect.id = item.id;
@@ -314,6 +313,7 @@ export default {
             this.getInspectHistory();
         },
         addInspectHistory(item) {
+            this.completeLayer = true;
             this.inspectHistory.batchNumber = item.batchNumber;
             this.inspectHistory.purchaseNo = item.purchaseNo;
             this.inspectHistory.inspectNo = item.inspectNo;
@@ -323,7 +323,6 @@ export default {
             this.$http
                 .get(`/haolifa/material-inspect/info/${inspectId}`)
                 .then(res => {
-                    this.inspectHistory.completeLayer = true;
                     let items = res.items;
                     this.inspectHistory.selectMaterialNo = items.map(item => {
                         return {

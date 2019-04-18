@@ -79,13 +79,10 @@
                             <td colspan="14" class="b">
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
-                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
-                                >预览</a>
+                                <!-- <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a> -->
+                                <a target="_blank" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
                             </td>
+                            <!-- v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" -->
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
                         <a :href="info.orderContractExtendUrl">下载</a>
@@ -126,6 +123,22 @@
                             <td colspan="1" rowspan="1">出轴长度</td>
                             <td colspan="1" rowspan="1">轴图号</td>
                         </tr>
+                        <tr v-for="(val,index) in JSON.parse(info.technicalRequire)" :key="index">
+                            <td colspan="1">{{index +1}}</td>
+                            <td colspan="1">{{val.name}}</td>
+                            <td colspan="1">{{val.xinhao}}</td>
+                            <td colspan="1">{{val.guige}}</td>
+                            <td colspan="1">{{val.num}}</td>
+                            <td colspan="1">{{val.biaozhun}}</td>
+                            <td colspan="1">{{val.lianjiek}}</td>
+                            <td colspan="1">{{val.jiaodu}}</td>
+                            <td colspan="1">{{val.zhongxinju}}</td>
+                            <td colspan="1">{{val.xinshi}}</td>
+                            <td colspan="1">{{val.length}}</td>
+                            <td colspan="1">{{val.tuhao}}</td>
+                            <td colspan="1">{{val.jinniuju}}</td>
+                            <td colspan="1">{{val.jishuxinhao}}</td>
+                        </tr>
                         <tr>
                             <td colspan="14" class="b">订单产品列表</td>
                         </tr>
@@ -142,7 +155,8 @@
                             <td colspan="2" class="b">材质说明</td>
                             <td colspan="2" class="b">产品备注</td>
                         </tr>
-                        <tr v-for="(item,index) in JSON.parse(info.orderProductAssociates)" :key="index">
+                        <tr v-for="(item,index) in info.orderProductAssociates" :key="'qq'+index">
+                            <!-- <tr v-for="(item,index) in JSON.parse(info.technicalRequire)" :key="index"> -->
                             <td colspan="1">{{item.productNo}}</td>
                             <td colspan="2">{{item.productName}}</td>
                             <td colspan="1">{{item.productModel}}</td>
@@ -202,21 +216,6 @@ export default {
                     tuhao: "",
                     jinniuju: "",
                     jishuxinhao: ""
-                },
-                {
-                    name: "",
-                    xinhao: "",
-                    guige: "",
-                    num: "",
-                    biaozhun: "",
-                    lianjiek: "",
-                    jiaodu: "",
-                    zhongxinju: "",
-                    xinshi: "",
-                    length: "",
-                    tuhao: "",
-                    jinniuju: "",
-                    jishuxinhao: ""
                 }
             ]
         };
@@ -225,15 +224,18 @@ export default {
         inspectHistorys(item) {
             this.$router.push(`/jhgl-scddlb/inspect?orderNo=${item.orderNo}`);
         },
-        info(item) {
-            this.$router.push(`/cjzr-scddlb/info?orderNo=${item.orderNo}`);
-        },
+        // info(item) {
+        //     this.$router.push(`/cjzr-scddlb/info?orderNo=${item.orderNo}`);
+        // },
         getInfo(orderNo) {
             this.layer = true;
             this.$http
                 .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
                 .then(res => {
                     this.info = res;
+                    // this.info.technicalRequire = JSON.parse(
+                    //     this.info.technicalRequire
+                    // );
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

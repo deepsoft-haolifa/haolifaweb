@@ -31,7 +31,7 @@
             <div class="card a flex-center" @click="addItem()">
                 <div class="flex-v-center">
                     <i class="icon mr-10">add</i>
-                    <span>添加不合格详情</span>
+                    <span>添加检验记录</span>
                 </div>
             </div>
             <div class="flex">

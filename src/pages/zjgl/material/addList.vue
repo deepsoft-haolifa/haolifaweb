@@ -149,8 +149,8 @@
                                 <th>文件名称</th>
                                 <th>下载地址</th>
                             </tr>
-                            <tr v-for="(item,i) in resFileList" :key="i">
-                                <td>{{i}}</td>
+                            <tr v-for="(item,index) in resFileList" :key="index">
+                                <td>{{index}}</td>
                                 <td>{{item.fileName}}</td>
                                 <td>
                                     <a class="fixed-length" :href="item.fileUrl" :title="item.fileUrl">{{item.fileUrl}}</a>

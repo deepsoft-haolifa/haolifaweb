@@ -38,6 +38,7 @@
         <td class="t-right">
           <a href="javascript:;" v-if="item.status == 1"  style="margin-right: 3px" class="blue" @click="edit(item)">车间选择</a>
           <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="audtiNotPass(item)">不通过</a>
+          <a :href="`/haolifa/export/entrust/excel/${item.entrustNo}`" download="" style="margin-right: 3px" class="blue">下载委托单</a>
         </td>
       </template>
     </data-list>

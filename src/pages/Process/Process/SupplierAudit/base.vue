@@ -11,8 +11,8 @@
                 </div>
                 <div class="node-title mb-10">
                     <span class="b">供应商编号：</span>
-                    <router-link class="c-4" :to="'/supplier/'+data.formId">
-                        <span class="mr-15">{{data.formNo}}</span>
+                    <router-link class="c-4" :to="'/process/supplier/'+data.formId">
+                        <span class="mr-15">{{data.formNo}} <a href="javascript:;" class="blue" >查看</a></span>
                     </router-link>
                 </div>
                 <div class="node-title mb-10">

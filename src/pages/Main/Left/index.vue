@@ -154,6 +154,11 @@ export default {
                         id: "ljdrk"
                     },
                     {
+                        name: "喷涂待入库",
+                        url: "/spray-room",
+                        id: "ptdrk"
+                    },
+                    {
                         name: "成品待入库",
                         url: "/product-room",
                         id: "cpdrk"
@@ -321,6 +326,16 @@ export default {
                         name: "新增压力测试列表",
                         url: "/stresstest/addList",
                         id: "xzylcs"
+                    },
+                    {
+                        name: "喷涂质检列表",
+                        url: "/spray/inspect-form/list",
+                        id: "ptzjlb"
+                    },
+                    {
+                        name: "新增喷涂质检",
+                        url: "/spray/inspect-form/addList",
+                        id: "xzptzj"
                     }
                 ]
             },
@@ -451,6 +466,16 @@ export default {
                         name: "生产订单列表",
                         url: "/jhgl-scddlb-list",
                         id: "jhgl-scddlb"
+                    },
+                    {
+                        name: "新增喷涂加工",
+                        url: "/spray/add-list",
+                        id: "xzptjg"
+                    },
+                    {
+                        name: "喷涂加工列表",
+                        url: "/spraylist",
+                        id: "ptjglb"
                     }
                 ]
             },

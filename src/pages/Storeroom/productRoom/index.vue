@@ -11,11 +11,13 @@
             </div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/pro-inspect-res/pageInfo" method="post">
+            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/pro-inspect/pageInfo" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>报检单号</th>
                     <th>订单号</th>
+                    <th>产品编号</th>
+                    <th>成品型号</th>
+                    <th>成品规格</th>
                     <th>入库数量</th>
                     <th>状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -23,25 +25,29 @@
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
-                    <td>{{item.inspectNo}}</td>
                     <td>{{item.orderNo}}</td>
+                    <td>{{item.productNo}}</td>
+                    <td>{{item.productModel}}</td>
+                    <td>{{item.productSpecifications}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{statusList[item.storageStatus].name}}</td>
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.storageStatus == 1" style="margin-right: 3px" class="blue" @click="execStoreRoom(item)">入库</a>
-                        <a href="javascript:;" v-if="item.storageStatus == 1" style="margin-right: 3px" class="blue" @click="storeComplete(item.inspectNo)">入库完成</a>
+                        <!--<a href="javascript:;" v-if="item.storageStatus == 1" style="margin-right: 3px" class="blue" @click="storeComplete(item.inspectNo)">入库完成</a>-->
                     </td>
                 </template>
             </data-list>
         </div>
-        <layer v-if="storeRoom.layerShow" :title="'入库'" width="450px">
+        <layer v-if="storeRoom.layerShow" :title="'入库'" width="600px">
             <div>
                 <div class="flex">
                     <input-box v-model="storeRoom.orderNo" class="flex-item mr-10 ml-20" label="订单号"></input-box>
                     <input-box v-model="storeRoom.productDepartment" class="flex-item mr-10 ml-20" label="生产部门"></input-box>
-                    <select-box class="ml-20" :list="storeRoom.prodeuctModels" v-model="storeRoom.prodeuctModel" @change="loadStoreRocks()" label="成品型号"></select-box>
+                    <input-box v-model="storeRoom.productNo" class="flex-item mr-10 ml-20" label="成品号"></input-box>
+                    <!--<select-box class="ml-20" :list="storeRoom.prodeuctModels" v-model="storeRoom.prodeuctModel" @change="loadStoreRocks()" label="成品型号"></select-box>-->
                 </div>
                 <div class="flex">
+                    <input-box v-model="storeRoom.productModel" class="flex-item mr-10 ml-20" label="成品型号"></input-box>
                     <input-box v-model="storeRoom.productSpecifications" class="flex-item mr-10 ml-20" label="规格"></input-box>
                 </div>
                 <div class="flex">
@@ -74,18 +80,9 @@ export default {
                 layerShow: false,
                 selectStoreRooms: [],
                 storeRoomRacks: [],
-                prodeuctModels: [
-                    { text: "D220", value: "D220" },
-                    { text: "D270", value: "D270" },
-                    { text: "D271", value: "D271" },
-                    { text: "D261", value: "D261" },
-                    { text: "D240", value: "D240" },
-                    { text: "D370", value: "D370" },
-                    { text: "H77", value: "H77" }
-                ],
                 orderNo: "",
                 productDepartment: "",
-                prodeuctModel: "",
+                productModel: "",
                 productNo: "",
                 productSpecifications: "",
                 quantity: 0,
@@ -113,10 +110,10 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
-        storeComplete(inspectNo) {
+        storeComplete(inspectId) {
             this.$http
                 .post(
-                    `/haolifa/pro-inspect-res/updateStorageStatus?inspectNo=${inspectNo}&storageStatus=2`
+                    `/haolifa/pro-inspect/updateStorageStatus?id=${inspectId}&storageStatus=2`
                 )
                 .then(res => {
                     this.$refs.list.update();
@@ -129,8 +126,8 @@ export default {
             let save = {
                 orderNo: this.storeRoom.orderNo,
                 productDepartment: this.storeRoom.productDepartment,
-                productModel: this.storeRoom.prodeuctModel,
-                productNo: this.storeRoom.prodeuctModel,
+                productModel: this.storeRoom.productModel,
+                productNo: this.storeRoom.productNo,
                 productSpecifications: this.storeRoom.productSpecifications,
                 quantity: this.storeRoom.quantity,
                 rackNo: this.storeRoom.rackNo,
@@ -141,6 +138,8 @@ export default {
                 .then(res => {
                     this.$refs.list.update();
                     this.storeRoom.layerShow = false;
+                    // 更新入库状态
+                    this.storeComplete(this.storeRoom.id);
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -148,27 +147,11 @@ export default {
         },
         execStoreRoom(item) {
             this.storeRoom.orderNo = item.orderNo;
-            // 获取成品信息
-            this.$http
-                .get(`/haolifa/order-product/product-list/${item.orderNo}`)
-                .then(res => {
-                    // this.storeRoom.prodeuctModels = res.map(item => {
-                    //     return {
-                    //         value: item.productModel,
-                    //         text: item.productModel
-                    //     };
-                    // });
-                    this.storeRoom.prodeuctModel = this.storeRoom.prodeuctModels[0].value;
-                    res.forEach(item => {
-                        if (item.productModel == this.storeRoom.prodeuctModel) {
-                            this.storeRoom.productSpecifications =
-                                item.productSpecifications;
-                        }
-                    });
-                })
-                .catch(e => {
-                    this.$toast(e.msg || e.message);
-                });
+            this.storeRoom.productNo = item.productNo;
+            this.storeRoom.productModel = item.productModel;
+            this.storeRoom.productSpecifications = item.productSpecifications;
+            this.storeRoom.quantity = item.qualifiedNumber;
+            this.storeRoom.id = item.id;
             this.$http
                 .get(`/haolifa/store-room/listInfo?type=2`)
                 .then(res => {
@@ -201,7 +184,6 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
-            this.storeRoom.materialGraphNo = item.materialGraphNo;
             this.storeRoom.layerShow = true;
         }
     }

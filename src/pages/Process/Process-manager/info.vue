@@ -32,15 +32,15 @@
         </div>
         <layer v-if="layer" :title="'分配审核权限'" width="450px">
             <div class="layer-text" style="padding-bottom: 50px;">
-                <label >角色：</label>
-                <select v-model="role.id"  class="search-bar" @change="rolesChange()">
-                    <option v-for="(item,i) in roles" :value=item.id>{{item.description}}</option>
+                <label>角色：</label>
+                <select v-model="role.id" class="search-bar" @change="rolesChange()">
+                    <option v-for="(item,i) in roles" :value="item.id">{{item.description}}</option>
                 </select>
                 <div>
                     <label>人员：</label>
                     <ul>
                         <li v-for="(item,i) in users">
-                            <input type="checkbox" v-model="checkUsers" :value=item.id />
+                            <input type="checkbox" v-model="checkUsers" :value="item.id">
                             <label>{{item.realName}}</label>
                         </li>
                     </ul>
@@ -55,107 +55,103 @@
 </template>
 
 <script>
-    import DataList from '@/components/datalist'
+import DataList from "@/components/datalist";
 
-    export default {
-        name: 'processmanager-info',
-        components: {DataList},
-        data() {
-            return {
-                allotForm:{
-                    flowId:0,
-                    stepId:0,
-                    roleId:0,
-                    userIds:''
-                },
-                flowId:0,
-                layer:false,
-                roles:[],
-                users:[],
-                checkUsers: [],
-                role:{
-                    id:'',
-                    name:''
-                },
-                infoList: []
-            }
+export default {
+    name: "processmanager-info",
+    components: { DataList },
+    data() {
+        return {
+            allotForm: {
+                flowId: 0,
+                stepId: 0,
+                roleId: 0,
+                userIds: ""
+            },
+            flowId: 0,
+            layer: false,
+            roles: [],
+            users: [],
+            checkUsers: [],
+            role: {
+                id: "",
+                name: ""
+            },
+            infoList: []
+        };
+    },
+    created() {
+        let { itemId } = this.$route.query;
+        this.flowId = itemId;
+        this.allotForm.flowId = itemId;
+        this.info(itemId);
+        this.roleList();
+    },
+    methods: {
+        info: function(itemId) {
+            this.$http
+                .get(`/haolifa/flow/steps/${itemId}`)
+                .then(res => {
+                    this.infoList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
-        created() {
-            let { itemId } = this.$route.query
-            this.flowId = itemId;
-            this.allotForm.flowId = itemId;
-            this.info(itemId);
-            this.roleList();
+        allotRoles: function(stepId) {
+            this.layer = true;
+            this.allotForm.stepId = stepId;
         },
-        methods: {
-            info: function (itemId) {
-                this.$http
-                    .get(`/haolifa/flow/steps/${itemId}`)
-                    .then(res => {
-                        console.log(res)
-                        this.infoList = res;
-                        console.log('infoList', this.infoList)
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message)
-                    })
-            },
-            allotRoles:function(stepId){
-                this.layer = true;
-                this.allotForm.stepId=stepId;
-            },
-            roleList:function () {
-                this.$http
-                    .get(`/haolifa/flow/roles`)
-                    .then(res => {
-                        this.roles = res;
-                        this.role.id=res[0].id;
-                        this.rolesChange()
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message)
-                    })
-            },
-            rolesChange:function(){
-                this.$http
-                    .get(`/haolifa/flow/users/${this.role.id}`)
-                    .then(res => {
-                        this.users = res;
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message)
-                    })
-            },
-            cancel:function () {
-                this.layer=false;
-                this.checkUsers = [];
-            },
-            submit:function () {
-                this.allotForm.roleId = this.role.id;
-                let userIds = '';
-                for(let i=0;i<this.checkUsers.length;i++) {
-                    userIds +=this.checkUsers[i]+','
-                }
-                this.allotForm.userIds = userIds.substr(0,userIds.length-1);
-                console.log(this.allotForm);
-                this.$http
-                    .post(`/haolifa/flow/allotPersons/`,this.allotForm)
-                    .then(res => {
-                        this.layer=false;
-                        this.checkUsers = [];
-                        this.info(this.flowId);
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message)
-                    })
+        roleList: function() {
+            this.$http
+                .get(`/haolifa/flow/roles`)
+                .then(res => {
+                    this.roles = res;
+                    this.role.id = res[0].id;
+                    this.rolesChange();
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        rolesChange: function() {
+            this.$http
+                .get(`/haolifa/flow/users/${this.role.id}`)
+                .then(res => {
+                    this.users = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        cancel: function() {
+            this.layer = false;
+            this.checkUsers = [];
+        },
+        submit: function() {
+            this.allotForm.roleId = this.role.id;
+            let userIds = "";
+            for (let i = 0; i < this.checkUsers.length; i++) {
+                userIds += this.checkUsers[i] + ",";
             }
+            this.allotForm.userIds = userIds.substr(0, userIds.length - 1);
+            this.$http
+                .post(`/haolifa/flow/allotPersons/`, this.allotForm)
+                .then(res => {
+                    this.layer = false;
+                    this.checkUsers = [];
+                    this.info(this.flowId);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
-
     }
+};
 </script>
 
 <style lang="less">
-    .page-manager {
-        //
-    }
+.page-manager {
+    //
+}
 </style>

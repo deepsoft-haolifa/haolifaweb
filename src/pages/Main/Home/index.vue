@@ -52,10 +52,10 @@
                     <div class="home-list-item a flex-v-center" v-for="item in done" :key="item.id">
                         <i class="icon f-16 c-a">hourglass_full</i>
                         <div
-                                style="width:145px"
-                                v-if="item.flowId == 5"
-                                class="c-8 date-time"
-                                @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                            style="width:145px"
+                            v-if="item.flowId == 5"
+                            class="c-8 date-time"
+                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
                         >发起人：{{item.createUserRealName}}</div>
                         <div
                             style="width:145px"
@@ -98,26 +98,32 @@
                 <div class="home-list flex-item scroll-y" v-if="tab2">
                     <div class="home-list-item a flex-v-center">
                         <!--<i class="icon f-16 c-a">hourglass_full</i>-->
+                        <div class="c-8 date-time" style="width:80%">标题</div>
                         <div class="c-8 date-time" style="width:85px;">创建时间</div>
-                        <div class="c-8 date-time" style="width: 100px;">标题</div>
-                        <div class="flex-item text-ellipsis">内容</div>
+                        <!-- <div class="flex-item text-ellipsis">内容</div> -->
                     </div>
                     <div class="home-list-item a flex-v-center" v-for="item in notice" :key="item.id" @click="newDetail(item.id)">
                         <i class="icon f-16 c-a">hourglass_full</i>
+                        <div class="c-8 date-time" style="width: 76%;">{{item.title}}</div>
                         <div class="c-8 date-time" style="width:85px;">{{item.showTime}}</div>
-                        <div class="c-8 date-time" style="width: 100px;">{{item.title}}</div>
-                        <div class="flex-item text-ellipsis">{{item.content}}</div>
+                        <!-- <div class="flex-item text-ellipsis">{{item.content}}</div> -->
                     </div>
                     <div v-if="!notice.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
                     </div>
                 </div>
                 <div class="home-list flex-item scroll-y" v-else>
+                    <div class="home-list-item a flex-v-center">
+                        <!--<i class="icon f-16 c-a">hourglass_full</i>-->
+                        <div class="c-8 date-time" style="width:80%">标题</div>
+                        <div class="c-8 date-time" style="width:85px;">创建时间</div>
+                        <!-- <div class="flex-item text-ellipsis">内容</div> -->
+                    </div>
                     <div class="home-list-item a flex-v-center" v-for="item in news" :key="item.id" @click="newDetail(item.id)">
                         <i class="icon f-16 c-a">hourglass_full</i>
+                        <div class="c-8 date-time" style="width:76%">{{item.title}}</div>
                         <div class="c-8 date-time" style="width:85px;">{{item.showTime}}</div>
-                        <div class="c-8 date-time" style="width: 100px;">{{item.title}}</div>
-                        <div class="flex-item text-ellipsis">{{item.content}}</div>
+                        <!-- <div class="flex-item text-ellipsis">{{item.content}}</div> -->
                     </div>
                     <div v-if="!news.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
@@ -130,8 +136,22 @@
                 <div class="home-tab flex-v-center">
                     <a class="home-tab-item a on">站内信</a>
                 </div>
-                <div class="flex-item scroll-y flex-center">
-                    <no-data></no-data>
+                <div class="home-list flex-item scroll-y">
+                    <div class="home-list-item a flex-v-center">
+                        <i class="icon f-16 c-a">hourglass_full</i>
+                        <div class="c-8 date-time" style="width:80px;">收件人</div>
+                        <div class="flex-item text-ellipsis" style="width: 200px;">标题</div>
+                        <div class="flex-item text-ellipsis">发信日期</div>
+                    </div>
+                    <div class="home-list-item a flex-v-center" v-for="msg in messageList" :key="msg.id" @click="message(msg)">
+                        <i class="icon f-16 c-a">hourglass_full</i>
+                        <div class="c-8 date-time" style="width:80px;">{{msg.users}}</div>
+                        <div class="flex-item text-ellipsis" style="width: 200px;">{{msg.title}}</div>
+                        <div class="flex-item text-ellipsis">{{msg.createTime}}</div>
+                    </div>
+                    <div v-if="!messageList.length" style="pointer-events:none;" class="abs flex-center">
+                        <no-data></no-data>
+                    </div>
                 </div>
             </div>
             <div class="home-card flex-item flex-col">
@@ -156,18 +176,6 @@
                     <div v-if="!orderList.length" style="pointer-events:none;" class="abs flex-center">
                         <no-data></no-data>
                     </div>
-                    <!-- <div
-                        class="quick-item a"
-                        :title="item.description"
-                        @click="$router.push(`/${quickIcons[item.flowId].path}/add/`)"
-                        v-for="(item) in quick"
-                        :key="item.flowId"
-                    >
-                        <div class="quick-icon" :style="{background: quickIcons[item.flowId].color}">
-                            <i class="icon">{{quickIcons[item.flowId].icon || 'people'}}</i>
-                        </div>
-                        <div class="f-12 quick-label">{{item.name}}</div>
-                    </div>-->
                 </div>
             </div>
         </div>
@@ -202,7 +210,10 @@ export default {
             news: [],
             quick: [],
             orderList: [],
-            orderStatusList: []
+            orderStatusList: [],
+            messageList: [],
+            account: "",
+            url: ""
         };
     },
     created() {
@@ -212,12 +223,33 @@ export default {
         this.getQuickStart();
         this.getOrderStatusList();
         this.getOrderList();
+        this.getMessageList();
     },
     methods: {
         getTodo() {
             this.$http.get("/haolifa/todo").then(res => {
                 this.todo = res.list;
             });
+        },
+        getMessageList() {
+            this.account = this.$store.state.account;
+            if (this.account.roles) {
+                if (this.account.roles[0].role == "ROLE_ADMIN") {
+                    this.url = "/haolifa/hlmail/getMails";
+                } else {
+                    let userId = this.$store.state.account.userId;
+                    this.url = `/haolifa/hlmail/getMailsByUserId?userId=${userId}&pageNum=1%pageSize=20`;
+                }
+            } else {
+                let userId = this.$store.state.account.userId;
+                this.url = `/haolifa/hlmail/getMailsByUserId?userId=${userId}&pageNum=1%pageSize=20`;
+            }
+            this.$http.get(this.url).then(res => {
+                this.messageList = res.list;
+            });
+        },
+        message() {
+            this.$router.push(`/message`);
         },
         getDone() {
             this.$http.get("/haolifa/done").then(res => {

@@ -94,7 +94,6 @@ export function resetRouter(menus) {
     },
     children: routes.filter(r => r.meta.open || (r.meta.id && menus.includes(r.meta.id)))
   }])
-  console.log(router)
 }
 
 export default router

@@ -180,7 +180,6 @@ export default {
                         "YYYY-MM-DD HH:mm"
                     );
                     this.data = res;
-                    console.log("historyInfos", this.data.historyInfos);
                     this.handleStep.id = res.instanceId;
                     if (res.dealStep) {
                         this.handleStep.stepId = res.dealStep.stepId;
@@ -193,7 +192,6 @@ export default {
                             }`
                         )
                         .then(res => {
-                            console.log(res);
                             this.replaceInfo.push(res);
                         });
                 })

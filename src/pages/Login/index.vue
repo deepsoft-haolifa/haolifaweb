@@ -8,15 +8,15 @@
                 <h3 class="title">用户登录</h3>
                 <form>
                     <div class="t-inputWrap">
-                        <input type="text" v-model="username" placeholder="请输入用户名">
+                        <input type="text" v-model="username" autocomplete="off" placeholder="请输入用户名">
                         <div class="inputIcon t-user"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="password" v-model="password" @keydown.enter.native="login" placeholder="请输入密码">
+                        <input type="password" v-model="password" autocomplete="off" @keydown.enter.native="login" placeholder="请输入密码">
                         <div class="inputIcon t-password"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="text" class="inputCode" v-model="imageCode" placeholder="请输入验证码">
+                        <input type="text" class="inputCode" autocomplete="off" v-model="imageCode" placeholder="请输入验证码">
                         <div class="codeImg">
                             <img @click="getImageCode()" :src="authImg" alt>
                         </div>
@@ -67,8 +67,8 @@ export default {
         return {
             loading: false,
             useCache: true,
-            username: "admin",
-            password: "admin",
+            username: "",
+            password: "",
             imageCode: "",
             authImg: "",
             errorMsgFlag: false,

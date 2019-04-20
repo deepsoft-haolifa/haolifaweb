@@ -34,41 +34,39 @@
 </template>
 
 <script>
-    import DataList from '@/components/datalist'
+import DataList from "@/components/datalist";
 
-    export default {
-        name: 'page-manager',
-        components: {DataList},
-        data() {
-            return {
-                flowList: []
-            }
+export default {
+    name: "page-manager",
+    components: { DataList },
+    data() {
+        return {
+            flowList: []
+        };
+    },
+    created() {
+        this.getList();
+    },
+    methods: {
+        getList: function() {
+            this.$http
+                .get(`/haolifa/flow/list/`)
+                .then(res => {
+                    this.flowList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
-        created() {
-            this.getList();
-        },
-        methods: {
-            getList: function () {
-                this.$http
-                    .get(`/haolifa/flow/list/`)
-                    .then(res => {
-                        console.log(res)
-                        this.flowList = res;
-                        console.log('flowList', this.flowList)
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message)
-                    })
-            },
-            info:function (itemId) {
-                this.$router.push(`/process-manager/info?itemId=${itemId}`)
-            }
+        info: function(itemId) {
+            this.$router.push(`/process-manager/info?itemId=${itemId}`);
         }
     }
+};
 </script>
 
 <style lang="less">
-    .page-manager {
-        //
-    }
+.page-manager {
+    //
+}
 </style>

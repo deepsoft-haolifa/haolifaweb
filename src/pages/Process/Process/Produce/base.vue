@@ -542,7 +542,6 @@ export default {
     },
     methods: {
         addTechnicalRequire() {
-            console.log(this.updateInfo.technicalRequire);
             this.technicalRequire.push({
                 name: "",
                 xinhao: "",
@@ -625,10 +624,6 @@ export default {
                                                 res.length > 0
                                                     ? (this.handleStep.condition = false)
                                                     : true;
-                                                console.log(
-                                                    "condition",
-                                                    this.handleStep.condition
-                                                );
                                             });
                                     }
                                 }
@@ -645,7 +640,6 @@ export default {
                                         this.purchaseList = JSON.parse(
                                             JSON.stringify(res)
                                         );
-                                        console.log("list", this.purchaseList);
                                     });
                             } else if (this.dealStepId == 55) {
                                 this.$http
@@ -658,7 +652,6 @@ export default {
                                         this.purchaseList = JSON.parse(
                                             JSON.stringify(res)
                                         );
-                                        console.log("list", this.purchaseList);
                                     });
                                 this.updateInfo.purchaseFeedbackTime = moment(
                                     res.purchaseFeedbackTime
@@ -795,7 +788,7 @@ export default {
                                     this.updateInfo.assemblyGroup = null;
                                 });
                         }
-                        if(this.dealStepId != 57) {
+                        if (this.dealStepId != 57) {
                             let updateStatus = {
                                 orderNo: this.data.formNo,
                                 status: status
@@ -815,11 +808,11 @@ export default {
                             // 待生产
                             status = 5;
                         }
-                        if(this.handleStep.backStepId < 53) {
+                        if (this.handleStep.backStepId < 53) {
                             this.$http.post(
                                 `/haolifa/order-product/release-material?orderNo=${
                                     this.data.formNo
-                                    }`
+                                }`
                             );
                         }
                         let updateStatus = {

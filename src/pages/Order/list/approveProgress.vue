@@ -50,9 +50,10 @@ export default {
     },
     methods: {
         getInfo(formNo, formId) {
-            console.log(formNo,formId);
             this.$http
-                .get(`/haolifa/flowInstance/flow/progress?formNo=${formNo}&formId=`)
+                .get(
+                    `/haolifa/flowInstance/flow/progress?formNo=${formNo}&formId=`
+                )
                 .then(res => {
                     console.log(res);
                     this.list = res;

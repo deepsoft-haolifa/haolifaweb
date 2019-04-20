@@ -438,6 +438,22 @@ export default {
                 ]
             },
             {
+                name: "站内信管理",
+                id: "parent-znxgl",
+                children: [
+                    {
+                        name: "站内信列表",
+                        url: "/message",
+                        id: "znxlb"
+                    },
+                    {
+                        name: "新增站内信",
+                        url: "/message/add",
+                        id: "xzznx"
+                    }
+                ]
+            },
+            {
                 name: "经管任务",
                 id: "parent-jgzx",
                 children: [
@@ -548,7 +564,6 @@ export default {
         });
         this.list = menu.filter(m => m.children.length);
         // 默认展开对应的菜单
-        console.log(this.list);
         let id = this.$route.meta.id;
         this.list.forEach(group => {
             let open = false;

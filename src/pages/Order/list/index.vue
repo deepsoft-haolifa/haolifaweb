@@ -68,7 +68,7 @@
                             <td colspan="14" class="b">发货日期 : {{info.deliveryDate}}</td>
                         </tr>
                         <tr>
-                            <td colspan="14" class="b">订单状态 : {{ orderStatusList[`${info.orderStatus}`] }}</td>
+                            <td colspan="14" class="b">订单状态 : {{ orderStatusList[info.orderStatus].text}}</td>
                         </tr>
                         <tr>
                             <td colspan="14" class="b">

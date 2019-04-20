@@ -25,4 +25,11 @@ export default [{
             import ( /* webpackChunkName: "workcar" */ './addList.vue'),
         meta: {level: 2, title: '新增喷涂加工', open: false, id: 'xzptjg'}
     }
+    , {
+        path: '/spray/produce-list',
+        name: 'spray-produce-list',
+        component: () =>
+            import ( /* webpackChunkName: "workcar" */ './produceSprayList.vue'),
+        meta: {level: 2, title: '生产喷涂加工', open: false, id: 'cjzr-scptjg'}
+    }
 ]

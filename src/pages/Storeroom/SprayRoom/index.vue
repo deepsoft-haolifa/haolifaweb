@@ -29,7 +29,6 @@
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.originalGraphNo}}</td>
                     <td>{{item.materialGraphNo}}</td>
-                    <td>{{item.supplierName}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.status==1?'待入库':'已入库'}}</td>
                     <td class="t-right">

@@ -255,20 +255,20 @@ export default {
                 // { value: 2, text: "核料中" },
                 // { value: 3, text: "替换料审批中" },
                 // { value: 4, text: "核料完成" },
-                // { value: 5, text: "待生产" },
-                // { value: 6, text: "待领料" },
-                // { value: 7, text: "生产中" },
-                // { value: 8, text: "生产暂停" },
-                // { value: 9, text: "生产完成" },
-                // { value: 10, text: "质检中" },
-                // { value: 11, text: "已入库" },
-                // { value: 12, text: "申请发货" },
-                // { value: 13, text: "发货完成" },
+                { value: 5, text: "待生产" },
+                { value: 6, text: "待领料" },
+                { value: 7, text: "生产中" },
+                { value: 8, text: "生产暂停" },
+                { value: 9, text: "生产完成" },
+                { value: 10, text: "质检中" },
+                { value: 11, text: "已入库" },
+                { value: 12, text: "申请发货" },
+                { value: 13, text: "发货完成" },
                 // { value: 14, text: "审核不通过" }
             ],
             filter: {
                 orderNo: "",
-                orderStatus: -1
+                orderStatus: 5
             },
             layer: false,
             info: {},
@@ -293,7 +293,7 @@ export default {
     },
     created() {
         this.getReasonList();
-        this.getOrderStatusList();
+        // this.getOrderStatusList();
     },
     methods: {
         getOrderStatusList() {

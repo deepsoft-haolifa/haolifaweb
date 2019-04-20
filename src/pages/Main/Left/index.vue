@@ -502,6 +502,11 @@ export default {
                         name: "生产订单列表",
                         url: "/cjzr-scddlb",
                         id: "cjzr-scddlb"
+                    },
+                    {
+                        name: "喷涂加工列表",
+                        url: "/spray/produce-list",
+                        id: "cjzr-scptjg"
                     }
                 ]
             },

@@ -19,8 +19,8 @@
                 <td>{{item.content}}</td>
                 <td>{{item.createTime}}</td>
                 <td class="t-right">
-                    <a href="javascript:;" style="margin-right: 3px" class="blue" @click="reserve(item)">回执</a> |
-                    <a href="javascript:;" style="margin-right: 3px" class="red" @click="detail(item)">回执记录</a>
+                    <a href="javascript:;" v-if="reserveFlag" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a>
+                    <a href="javascript:;" style="margin-right: 3px" class="blue" @click="detail(item)">回执记录</a>
                 </td>
             </template>
         </data-list>
@@ -96,14 +96,19 @@ export default {
                 userId: "",
                 userName: ""
             },
-            url: ""
+            url: "",
+            reserveFlag: false
         };
     },
     created() {
         this.account = this.$store.state.account;
         if (this.account.roles) {
-            if (this.account.roles[0].role == "ROLE_ADMIN") {
+            if (
+                this.account.roles[0].role == "ROLE_ADMIN" ||
+                this.account.roles[0].role == "ROLE_ZG"
+            ) {
                 this.url = "/haolifa/hlmail/getMails";
+                this.reserveFlag = true;
             } else {
                 this.url = "/haolifa/hlmail/getMailsByUserId";
                 this.filter.userId = this.account.userId;
@@ -114,9 +119,7 @@ export default {
         }
     },
     mounted() {
-        // this.account = this.$store.state.account;
-        // this.filter.userId = this.account.userId;
-        // console.log(1, this.filter.userId);
+        console.log(this.account);
     },
     methods: {
         submit() {
@@ -154,27 +157,6 @@ export default {
             this.reform.userId = this.account.userId;
             this.reform.userName = this.account.username;
             this.reform.content = "";
-        },
-        remove(item) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除以下通知吗？<br>
-               <b>${item.name || "无标题"}</b><br>
-               <span class="f-12">${item.content}</span>`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
-                    this.$http
-                        .delete(`/haolifa/message/delete?id=${item.id}`)
-                        .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update();
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg || e.message);
-                        });
-                }
-            });
         }
     }
 };

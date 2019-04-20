@@ -149,9 +149,9 @@
                         <div class="flex-item text-ellipsis" style="width: 200px;">{{msg.title}}</div>
                         <div class="flex-item text-ellipsis">{{msg.createTime}}</div>
                     </div>
-                    <div v-if="!messageList.length" style="pointer-events:none;" class="abs flex-center">
-                        <no-data></no-data>
-                    </div>
+                </div>
+                <div v-if="!messageList.length" class="flex-item scroll-y flex-center">
+                    <no-data></no-data>
                 </div>
             </div>
             <div class="home-card flex-item flex-col">
@@ -234,7 +234,10 @@ export default {
         getMessageList() {
             this.account = this.$store.state.account;
             if (this.account.roles) {
-                if (this.account.roles[0].role == "ROLE_ADMIN") {
+                if (
+                    this.account.roles[0].role == "ROLE_ADMIN" ||
+                    this.account.roles[0].role == "ROLE_ZG"
+                ) {
                     this.url = "/haolifa/hlmail/getMails";
                 } else {
                     let userId = this.$store.state.account.userId;

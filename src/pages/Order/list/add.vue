@@ -109,7 +109,7 @@ export default {
                     .then(res => {
                         this.$toast(!this.form.id ? "上传成功" : "更新成功");
                         this.loading = false;
-                        this.$router.push("/order");
+                        this.$router.push("/order/addList");
                         this.orderContractUrl = res;
                     })
                     .catch(e => {
@@ -159,7 +159,7 @@ export default {
                 )
                 .then(res => {
                     this.$toast(!this.form.id ? "创建成功" : "更新成功");
-                    this.$router.push("/order");
+                    this.$router.push("/order/addList");
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);

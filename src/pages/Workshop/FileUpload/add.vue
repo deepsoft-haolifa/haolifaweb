@@ -1,7 +1,7 @@
 <template>
     <div class="page-room-add abs scroll-y">
         <div class="form-content">
-            <div class="title b f-18">{{form.id ? '编辑' : '新增'}}库房</div>
+            <div class="title b f-18">{{form.id ? '编辑' : '新增'}}文件/图纸</div>
             <div class="flex-v-center">
                 <input-box v-model="form.fileName" class="mr-10" style="width:50%" label="文件名称"></input-box>
                 <!-- <div class="flex-v-center"> -->

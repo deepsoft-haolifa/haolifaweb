@@ -29,13 +29,13 @@
                     <span>
                         <a target="_blank" flat style="color: #008eff" v-if="(orderUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="orderUrl">机加工订单预览</a>
                         <a
-                                target="_blank"
-                                flat
-                                style="color: #008eff"
-                                v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
+                            target="_blank"
+                            flat
+                            style="color: #008eff"
+                            v-if="!(orderUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ orderUrl"
                         >预览</a>
-                    <!--<span>-->
+                        <!--<span>-->
                         <!--<a class="a" target="_blank" flat style="color: #008eff" :href="orderUrl">下载机加工订单</a>-->
                     </span>
                 </div>
@@ -77,6 +77,7 @@
                         <tr>
                             <th style="width: 60px;">ID</th>
                             <th>实例ID</th>
+                            <!-- <th>订单号</th> -->
                             <th>节点类型</th>
                             <th>节点名称</th>
                             <th>审核人</th>
@@ -185,9 +186,11 @@ export default {
                         this.handleStep.stepId = res.dealStep.stepId;
                     }
                     // this.orderUrl = this.orderUrl + res.formId;
-                    this.$http.get(`/haolifa/purchase-order/info/${res.formId}`).then(result=>{
-                        this.orderUrl = result.order.fileUrl;
-                    });
+                    this.$http
+                        .get(`/haolifa/purchase-order/info/${res.formId}`)
+                        .then(result => {
+                            this.orderUrl = result.order.fileUrl;
+                        });
                 })
                 .catch(e => {
                     this.$toast(e.message || e.msg);

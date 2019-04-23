@@ -25,7 +25,7 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="form.id ? '编辑发票' : '新增发票'" width="450px">
+        <layer v-if="layer" :title="form.id ? '编辑费用' : '新增费用'" width="50%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <input-box v-model="form.commitUser" label="提交人"></input-box>
                 <select-box :list="expensesClassify" v-model="form.expensesClassify" label="费用类别"></select-box>

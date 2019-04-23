@@ -26,7 +26,7 @@ export default [{
     level: 2,
     title: '新增供应商产品',
     open: false,
-    id: 'gyscp'
+    id: 'xzgyscp'
   }
 }, {
   path: '/supplierproduct/edit',
@@ -36,6 +36,6 @@ export default [{
     level: 2,
     title: '编辑供应商产品',
     open: false,
-    id: 'gyscp'
+    id: 'parent-gysgl'
   }
 }]

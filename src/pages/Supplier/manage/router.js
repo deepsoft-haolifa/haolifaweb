@@ -26,7 +26,7 @@ export default [{
         level: 2,
         title: '新增供应商',
         open: false,
-        id: 'gysgl'
+        id: 'xzgys'
     }
 }, {
     path: '/supplier/edit',
@@ -36,7 +36,7 @@ export default [{
         level: 2,
         title: '编辑供应商',
         open: false,
-        id: 'gysgl'
+        id: 'xzgys'
     }
 }, {
     path: '/supplier/accessory-info',
@@ -46,7 +46,7 @@ export default [{
         level: 2,
         title: '供应商审批附件',
         open: false,
-        id: 'gysgl'
+        id: 'parent-gysgl'
     }
 }, {
     path: '/supplier/approveProgress',
@@ -56,7 +56,7 @@ export default [{
         level: 2,
         title: '供应商审批进度',
         open: false,
-        id: 'gysgl'
+        id: 'parent-gysgl'
     }
 }, {
     path: '/supplier/:id',

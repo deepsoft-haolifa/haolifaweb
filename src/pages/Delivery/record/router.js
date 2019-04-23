@@ -26,7 +26,7 @@ export default [{
     level: 3,
     title: '新增发货记录',
     open: false,
-    id: 'fhjlgl'
+    id: 'xzfhjl'
   }
 }, {
   path: '/delivery-record/edit',
@@ -36,6 +36,6 @@ export default [{
     level: 3,
     title: '编辑发货记录',
     open: false,
-    id: 'fhjlgl'
+    id: 'xzfhjl'
   }
 }]

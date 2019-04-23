@@ -26,7 +26,7 @@ export default [{
     level: 3,
     title: '新增报检单',
     open: false,
-    id: 'ljbjd'
+    id: 'cjsjd'
   }
 }, {
   path: '/applyBuy-material/edit',
@@ -36,7 +36,7 @@ export default [{
     level: 3,
     title: '编辑报检单',
     open: false,
-    id: 'ljbjd'
+    id: 'cjsjd'
   }
 }, {
   path: '/applyBuy-material/info',

@@ -26,7 +26,7 @@ export default [{
     level: 3,
     title: '新增机加工报检单',
     open: false,
-    id: 'jjgbjd'
+    id: 'cjjjgd'
   }
 }, {
   path: '/applyBuy-machining/edit',
@@ -36,6 +36,6 @@ export default [{
     level: 3,
     title: '编辑机加工报检单',
     open: false,
-    id: 'jjgbjd'
+    id: 'cjjjgd'
   }
 }]

@@ -114,7 +114,7 @@ export default {
         background: #f5f5f5;
     }
     .content {
-        max-width: 1000px;
+        max-width: 100%;
         margin: 0 auto;
     }
 }

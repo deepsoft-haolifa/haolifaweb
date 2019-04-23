@@ -26,7 +26,7 @@ export default [{
     level: 3,
     title: '新增发票',
     open: false,
-    id: 'kfpgl'
+    id: 'xzfp'
   }
 }, {
   path: '/jgzx-invoice/edit',
@@ -36,6 +36,6 @@ export default [{
     level: 3,
     title: '编辑发票',
     open: false,
-    id: 'kfpgl'
+    id: 'xzfp'
   }
 }]

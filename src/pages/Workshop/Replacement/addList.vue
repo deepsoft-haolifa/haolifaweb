@@ -8,7 +8,7 @@
             </div>
             <div class="flex-item"></div>
             <router-link to="/replacementadd">
-                <btn class="b" flat color="#008eff">新增更换料零件</btn>
+                <btn class="b" flat color="#008eff">新增更换料</btn>
             </router-link>
         </div>
         <div class="flex-item scroll-y">

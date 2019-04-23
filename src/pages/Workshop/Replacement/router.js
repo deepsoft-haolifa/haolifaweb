@@ -5,7 +5,7 @@ export default [{
         import( /* webpackChunkName: "replacement" */ './index.vue'),
     meta: {
         level: 2,
-        title: '更换料申请',
+        title: '更换料列表',
         open: false,
         id: 'cjzr-ghllb'
     }
@@ -29,7 +29,7 @@ export default [{
         level: 2,
         title: '新增更换料',
         open: false,
-        id: 'cjzr-ghllb'
+        id: 'xzghllj'
     }
 }, {
     path: '/replacementedit',

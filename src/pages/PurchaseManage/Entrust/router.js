@@ -24,9 +24,9 @@ export default [{
     component: () => import( /* webpackChunkName: "suppliermanage" */ './add.vue'),
     meta: {
         level: 2,
-        title: '机加工列表',
+        title: '编辑机加工订单',
         open: false,
-        id: 'jjglb'
+        id: 'xzjjgdd'
     }
 }, {
     path: '/purchsemanage-entrust/info',
@@ -46,6 +46,6 @@ export default [{
         level: 2,
         title: '机加工审批进度',
         open: false,
-        id: 'jjglb'
+        id: 'parent-cggl'
     }
 }]

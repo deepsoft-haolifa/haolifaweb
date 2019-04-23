@@ -171,7 +171,6 @@ export default {
     },
     methods: {
         changeSupplier: function() {
-            console.log(this.form.supplierNo);
             this.supplierInfoList.forEach((item, i) => {
                 if (item.suppilerNo == this.form.supplierNo) {
                     this.form.suppilerPhone = item.phone;
@@ -180,6 +179,7 @@ export default {
                     this.form.supplierName = item.suppilerName;
                 }
             });
+            //TUDO
         },
         addItem() {
             this.form.itemList.push({
@@ -249,7 +249,7 @@ export default {
         background: #f5f5f5;
     }
     .content {
-        max-width: 1000px;
+        max-width: 100%;
         margin: 0 auto;
     }
     select {

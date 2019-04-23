@@ -56,15 +56,16 @@
                                     <td style="width: 7%;"></td>
                                     <td style="width: 7%;"></td>
                                     <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
                                     <td style="width: 6%;"></td>
                                     <td style="width: 6%;"></td>
-                                    <td style="width: 9%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="15" class="b">技术清单</td>
+                                    <td colspan="16" class="b">技术清单1</td>
                                 </tr>
 
                                 <tr>
@@ -75,7 +76,7 @@
                                     <td colspan="1" rowspan="2">数量</td>
                                     <td colspan="1" rowspan="2">上法兰标准</td>
                                     <td colspan="3" rowspan="1">上法兰尺寸</td>
-                                    <td colspan="3" rowspan="1">出轴尺寸</td>
+                                    <td colspan="4" rowspan="1">出轴尺寸</td>
                                     <td colspan="1" rowspan="2">静扭矩</td>
                                     <td colspan="1" rowspan="2">执行器型号</td>
                                     <td colspan="1" rowspan="2">操作</td>
@@ -87,6 +88,7 @@
                                     <td colspan="1" rowspan="1">出轴型式</td>
                                     <td colspan="1" rowspan="1">出轴长度</td>
                                     <td colspan="1" rowspan="1">轴图号</td>
+                                    <td colspan="1" rowspan="1">过渡盘</td>
                                 </tr>
                                 <tr v-for="(val,index) in technicalRequire" :key="index">
                                     <td colspan="1">{{index+1}}</td>
@@ -122,6 +124,9 @@
                                     </td>
                                     <td colspan="1">
                                         <input-box type="text" v-model="val.tuhao"></input-box>
+                                    </td>
+                                    <td colspan="1">
+                                        <input-box type="text" v-model="val.guodupan"></input-box>
                                     </td>
                                     <td colspan="1">
                                         <input-box type="text" v-model="val.jinniuju"></input-box>
@@ -165,12 +170,13 @@
                                     <td style="width: 7%;"></td>
                                     <td style="width: 7%;"></td>
                                     <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
-                                    <td style="width: 7%;"></td>
                                     <td style="width: 6%;"></td>
                                     <td style="width: 6%;"></td>
-                                    <td style="width: 9%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
+                                    <td style="width: 6%;"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="15" class="b">技术清单</td>
@@ -184,7 +190,7 @@
                                     <td colspan="1" rowspan="2">数量</td>
                                     <td colspan="1" rowspan="2">上法兰标准</td>
                                     <td colspan="3" rowspan="1">上法兰尺寸</td>
-                                    <td colspan="3" rowspan="1">出轴尺寸</td>
+                                    <td colspan="4" rowspan="1">出轴尺寸</td>
                                     <td colspan="1" rowspan="2">静扭矩</td>
                                     <td colspan="1" rowspan="2">执行器型号</td>
                                     <td colspan="1" rowspan="2">操作</td>
@@ -196,6 +202,7 @@
                                     <td colspan="1" rowspan="1">出轴型式</td>
                                     <td colspan="1" rowspan="1">出轴长度</td>
                                     <td colspan="1" rowspan="1">轴图号</td>
+                                    <td colspan="1" rowspan="1">过渡盘</td>
                                 </tr>
                                 <tr v-for="(val,index) in technicalRequire" :key="index">
                                     <td colspan="1">{{index+1}}</td>
@@ -231,6 +238,9 @@
                                     </td>
                                     <td colspan="1">
                                         <input-box type="text" v-model="val.tuhao"></input-box>
+                                    </td>
+                                    <td colspan="1">
+                                        <input-box type="text" v-model="val.guodupan"></input-box>
                                     </td>
                                     <td colspan="1">
                                         <input-box type="text" v-model="val.jinniuju"></input-box>
@@ -291,7 +301,7 @@
                                     <td colspan="1" rowspan="2">数量</td>
                                     <td colspan="1" rowspan="2">上法兰标准</td>
                                     <td colspan="3" rowspan="1">上法兰尺寸</td>
-                                    <td colspan="3" rowspan="1">出轴尺寸</td>
+                                    <td colspan="4" rowspan="1">出轴尺寸</td>
                                     <td colspan="1" rowspan="2">静扭矩</td>
                                     <td colspan="1" rowspan="2">执行器型号</td>
                                 </tr>
@@ -302,6 +312,7 @@
                                     <td colspan="1" rowspan="1">出轴型式</td>
                                     <td colspan="1" rowspan="1">出轴长度</td>
                                     <td colspan="1" rowspan="1">轴图号</td>
+                                    <td colspan="1" rowspan="1">过渡盘</td>
                                 </tr>
                                 <tr v-for="(val,index) in technicalRequire" :key="index">
                                     <td colspan="1">{{index+1}}</td>
@@ -337,6 +348,9 @@
                                     </td>
                                     <td colspan="1">
                                         <input-box type="text" disabled v-model="val.tuhao"></input-box>
+                                    </td>
+                                    <td colspan="1">
+                                        <input-box type="text" disabled v-model="val.guodupan"></input-box>
                                     </td>
                                     <td colspan="1">
                                         <input-box type="text" disabled v-model="val.jinniuju"></input-box>
@@ -525,6 +539,7 @@ export default {
                     xinshi: "",
                     length: "",
                     tuhao: "",
+                    guodupan: "",
                     jinniuju: "",
                     jishuxinhao: ""
                 }
@@ -554,6 +569,7 @@ export default {
                 xinshi: "",
                 length: "",
                 tuhao: "",
+                guodupan: "",
                 jinniuju: "",
                 jishuxinhao: ""
             });

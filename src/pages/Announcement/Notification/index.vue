@@ -17,10 +17,11 @@
             <template slot="item" slot-scope="{ item, index }">
                 <td>{{index}}</td>
                 <td>{{item.title || '无标题'}}</td>
-                <td>{{item.content || '无内容'}}</td>
+                <td style="max-width: 110px;overflow: hidden;text-overflow: ellipsis;">{{item.content || '无内容'}}</td>
                 <td>{{item.showTime}}</td>
                 <td class="t-right">
                     <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
+                    <a href="javascript:;" style="margin-right: 3px" class="blue" @click="detail(item)">详情</a> |
                     <a href="javascript:;" style="margin-right: 3px" class="red" @click="remove(item)">删除</a>
                 </td>
             </template>
@@ -34,6 +35,33 @@
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
                 <btn flat color="#008eff" @click="submit">保存</btn>
+            </div>
+        </layer>
+        <layer v-if="detailLayer" title="详情" width="50%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content metalwork-info">
+                    <table class="f-14 order-info">
+                        <tr>
+                            <td style="width: 20%;"></td>
+                            <td style="width: 80%;"></td>
+                        </tr>
+                        <tr>
+                            <td class="b">标题 :</td>
+                            <td>{{info.title}}</td>
+                        </tr>
+                        <tr>
+                            <td class="b">日期 :</td>
+                            <td>{{info.showTime}}</td>
+                        </tr>
+                        <tr>
+                            <td class="b">内容 :</td>
+                            <td style="word-wrap: break-word; max-width: 600px">{{info.content}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat color="#008eff" @click="detailLayer = false;">关闭</btn>
             </div>
         </layer>
     </div>
@@ -52,7 +80,9 @@ export default {
                 id: "",
                 title: "",
                 content: ""
-            }
+            },
+            detailLayer: false,
+            info: {}
         };
     },
     methods: {
@@ -82,6 +112,10 @@ export default {
             //     this.form[key] = item[key]
             // }
             // this.layer = true
+        },
+        detail(item) {
+            this.detailLayer = true;
+            this.info = item;
         },
         remove(item) {
             this.$confirm({

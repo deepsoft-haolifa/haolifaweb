@@ -63,14 +63,13 @@
                     <td colspan="14" class="b">技术清单:</td>
                 </tr>
                 <tr>
-                    <td colspan="1" rowspan="2">序号</td>
                     <td colspan="1" rowspan="2">产品名称</td>
                     <td colspan="1" rowspan="2">型号</td>
                     <td colspan="1" rowspan="2">规格</td>
                     <td colspan="1" rowspan="2">数量</td>
                     <td colspan="1" rowspan="2">上法兰标准</td>
                     <td colspan="3" rowspan="1">上法兰尺寸</td>
-                    <td colspan="3" rowspan="1">出轴尺寸</td>
+                    <td colspan="4" rowspan="1">出轴尺寸</td>
                     <td colspan="1" rowspan="2">静扭矩</td>
                     <td colspan="1" rowspan="2">执行器型号</td>
                 </tr>
@@ -81,9 +80,9 @@
                     <td colspan="1" rowspan="1">出轴型式</td>
                     <td colspan="1" rowspan="1">出轴长度</td>
                     <td colspan="1" rowspan="1">轴图号</td>
+                    <td colspan="1" rowspan="1">过渡盘</td>
                 </tr>
                 <tr v-for="(val,index) in JSON.parse(info.technicalRequire)" :key="index">
-                    <td colspan="1">{{index}}</td>
                     <td colspan="1">{{val.name}}</td>
                     <td colspan="1">{{val.xinhao}}</td>
                     <td colspan="1">{{val.guige}}</td>
@@ -95,6 +94,7 @@
                     <td colspan="1">{{val.xinshi}}</td>
                     <td colspan="1">{{val.length}}</td>
                     <td colspan="1">{{val.tuhao}}</td>
+                    <td colspan="1">{{val.guodupan}}</td>
                     <td colspan="1">{{val.jinniuju}}</td>
                     <td colspan="1">{{val.jishuxinhao}}</td>
                 </tr>
@@ -153,6 +153,7 @@ export default {
                     xinshi: "",
                     length: "",
                     tuhao: "",
+                    guodupan: "",
                     jinniuju: "",
                     jishuxinhao: ""
                 },

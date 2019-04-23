@@ -24,9 +24,9 @@ export default [{
     component: () => import( /* webpackChunkName: "suppliermanage" */ './add.vue'),
     meta: {
         level: 2,
-        title: '采购列表',
+        title: '新增采购',
         open: false,
-        id: 'cglb'
+        id: 'xzcght'
     }
 }, {
     path: '/purchsemanage-purchase/info',
@@ -34,7 +34,7 @@ export default [{
     component: () => import( /* webpackChunkName: "suppliermanage" */ './info.vue'),
     meta: {
         level: 2,
-        title: '采购列表',
+        title: '详情',
         open: false,
         id: 'cglb'
     }
@@ -44,8 +44,8 @@ export default [{
     component: () => import( /* webpackChunkName: "suppliermanage" */ './approveProgress.vue'),
     meta: {
         level: 2,
-        title: '采购列表',
+        title: '审批进度',
         open: false,
-        id: 'cglb'
+        id: 'parent-cggl'
     }
 }]

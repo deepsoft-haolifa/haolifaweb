@@ -26,7 +26,7 @@ export default [{
     level: 3,
     title: '新增发货单',
     open: false,
-    id: 'fhdgl'
+    id: 'xzfhtzd'
   }
 }, {
   path: '/delivery-bills/edit',
@@ -36,6 +36,6 @@ export default [{
     level: 3,
     title: '编辑发货单',
     open: false,
-    id: 'fhdgl'
+    id: 'xzfhtzd'
   }
 }]

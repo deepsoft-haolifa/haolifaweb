@@ -29,7 +29,7 @@ export default [{
         level: 2,
         title: '新增文件图纸',
         open: false,
-        id: 'wjtzgl'
+        id: 'xzwjtz'
     }
 }, {
     path: '/fileupload/edit',
@@ -40,6 +40,6 @@ export default [{
         level: 2,
         title: '编辑文件图纸',
         open: false,
-        id: 'wjtzgl'
+        id: 'xzwjtz'
     }
 }]

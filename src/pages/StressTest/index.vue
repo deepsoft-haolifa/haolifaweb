@@ -65,7 +65,7 @@
                 <btn flat color="#008eff" @click="complete()">保存</btn>
             </div>
         </layer>
-        <layer v-if="layer" title="详情" width="50%">
+        <layer v-if="layer" title="详情" width="80%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
                     <table class="f-14 order-info">

@@ -4,15 +4,10 @@
             <div class="title b f-18">{{entrustNo ? '编辑' : '新增'}}机加工单</div>
             <div class="flex">
                 <input-box v-model="form.purchaseNo" class="flex-item mr-20" label="采购合同号"></input-box>
-                <select-box
-                    :list="materialClassify"
-                    v-model="classifyId"
-                    @change="getMaterialGraphNoList()"
-                    label="零件名称"
-                    style="margin-right: 20px;width: 240px;"
-                ></select-box>
-                <select-box :list="materialGraphNoList" v-model="form.materialGraphNo" label="零件图号" style="margin-right: 20px;width: 240px;"></select-box>
+                <select-box :list="materialClassify" v-model="classifyId" @change="getMaterialGraphNoList()" label="零件名称" class="flex-item mr-20"></select-box>
+                <select-box class="flex-item mr-20" :list="materialGraphNoList" v-model="form.materialGraphNo" label="零件图号"></select-box>
             </div>
+            <!-- style="margin-right: 20px;width: 240px;" style="margin-right: 20px;width: 240px;"-->
             <div class="flex">
                 <!--<input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box>-->
                 <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
@@ -41,7 +36,8 @@ export default {
             entrustNo: "",
             classifyId: 0,
             materialClassify: [],
-            materialGraphNoList: []
+            materialGraphNoList: [],
+            reg: /M$/
         };
     },
     created() {
@@ -64,6 +60,7 @@ export default {
                     });
                 this.classifyId = this.materialClassify[0].value;
                 this.form.materialGraphName = this.materialClassify[0].text;
+
                 this.$http
                     .get(
                         `/haolifa/material/getListByClassifyId/${
@@ -74,6 +71,9 @@ export default {
                         this.materialGraphNoList = res.map(item => {
                             return { value: item.graphNo, text: item.graphNo };
                         });
+                        this.materialGraphNoList = this.materialGraphNoList.filter(
+                            item => this.reg.test(item.text)
+                        );
                         this.form.materialGraphNo = this.materialGraphNoList[0].value;
                     });
             });
@@ -90,6 +90,9 @@ export default {
                     this.materialGraphNoList = res.map(item => {
                         return { value: item.graphNo, text: item.graphNo };
                     });
+                    this.materialGraphNoList = this.materialGraphNoList.filter(
+                        item => this.reg.test(item.text)
+                    );
                     this.form.materialGraphNo = this.materialGraphNoList[0].value;
                 });
         },
@@ -175,7 +178,7 @@ export default {
         background: #f5f5f5;
     }
     .content {
-        max-width: 1000px;
+        max-width: 100%;
         margin: 0 auto;
     }
 }

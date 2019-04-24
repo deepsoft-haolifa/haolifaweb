@@ -52,14 +52,14 @@
             </data-list>
         </div>
 
-        <layer v-if="completeLayer" title="编揖喷涂委托" width="50%" style>
+        <layer v-if="completeLayer" title="新增喷涂委托" width="60%" style>
             <div class="flex">
-                <input-box v-model="inspectHistoryAdd.sprayNo" class="flex-item mr-20 ml-20 mt-15" label="喷涂委托单号"></input-box>
-                <input-box v-model="inspectHistoryAdd.materialGraphName" class="flex-item mr-20 mt-15" label="零件名称"></input-box>
+                <input-box v-model="inspectHistoryAdd.sprayNo" class="flex-item mr-20 ml-20" label="喷涂委托单号"></input-box>
+                <select-box class="flex-item mr-20" :list="nameList" v-model="inspectHistoryAdd.materialGraphName" label="零件名称"></select-box>
             </div>
             <div class="flex mt-15">
-                <input-box v-model="inspectHistoryAdd.originalGraphNo" class="flex-item mr-20 ml-20 mt-15" label="原图号"></input-box>
-                <input-box v-model="inspectHistoryAdd.materialGraphNo" class="flex-item mr-20 ml-20 mt-15" label="加工后图号"></input-box>
+                <select-box class="flex-item mr-20 ml-20" :list="tuhaoList" v-model="inspectHistoryAdd.originalGraphNo" label="原图号"></select-box>
+                <input-box v-model="inspectHistoryAdd.materialGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
             </div>
             <div class="flex mt-15">
                 <input-box v-model="inspectHistoryAdd.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
@@ -217,7 +217,9 @@ export default {
                 sprayNo: "",
                 createTime: "",
                 items: []
-            }
+            },
+            nameList: [],
+            tuhaoList: []
         };
     },
     methods: {
@@ -248,6 +250,25 @@ export default {
                 handlingSuggestion: "",
                 remark: ""
             };
+            this.$http
+                .get(`/haolifa/spray/form/${item.sprayNo}`)
+                .then(res => {
+                    this.nameList = res.items.map(item => {
+                        return {
+                            text: item.materialClassifyName,
+                            value: item.materialClassifyName
+                        };
+                    });
+                    this.tuhaoList = res.items.map(item => {
+                        return {
+                            text: item.materialGraphNo,
+                            value: item.materialGraphNo
+                        };
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
             this.completeLayer = true;
         },
         updateStatus(sprayNo, status) {
@@ -260,6 +281,7 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+
         // 查询详情
         sprayInfo(item) {
             // 查询详情：

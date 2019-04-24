@@ -75,7 +75,7 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="form.id ? '编辑' : '新增'" width="900px">
+        <layer v-if="layer" :title="form.id ? '编辑' : '新增'" width="80%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <input-box v-model="form.haoliModel" label="好利型号" class="input-width" style="width:48%;"></input-box>
                 <input-box v-model="form.model" label="型号" class="input-width" style="width:24%;"></input-box>

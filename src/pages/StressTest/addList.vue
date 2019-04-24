@@ -40,7 +40,7 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="completeLayer" :title="'压力测试记录'" width="650px">
+        <layer v-if="completeLayer" :title="'压力测试记录'" width="60%">
             <div class="flex">
                 <input-box v-model="order.orderNo" class="flex-item mr-20 ml-20" label="订单号"></input-box>
                 <select-box class="flex-item mr-20" :list="productNoList" v-model="order.productNo" label="产品编号"></select-box>
@@ -65,7 +65,7 @@
                 <btn flat color="#008eff" @click="complete()">保存</btn>
             </div>
         </layer>
-        <layer v-if="layer" title="详情" width="50%">
+        <layer v-if="layer" title="详情" width="80%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
                     <table class="f-14 order-info">

@@ -31,7 +31,7 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" :title="form.id ? '编辑设备' : '新增设备'" width="450px">
+        <layer v-if="layer" :title="form.id ? '编辑设备' : '新增设备'" width="60%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <input-box v-model="form.name" label="设备名称" hint="必填"></input-box>
                 <input-box v-model="form.equipmentNo" label="设备编号"></input-box>

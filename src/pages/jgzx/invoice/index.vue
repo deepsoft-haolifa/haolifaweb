@@ -4,6 +4,8 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.constractParty" @change="$refs.list.update(true)" placeholder="合同方" style="width: 200px;">
                 发票状态：
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
@@ -20,6 +22,7 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
+                    <th>合同方</th>
                     <th>金额</th>
                     <th>状态</th>
                     <th>备注</th>
@@ -31,6 +34,7 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
                     <td>{{item.orderNo}}</td>
+                    <td>{{item.constractParty}}</td>
                     <td>{{item.totalAmount}}</td>
                     <td>{{statusList[item.status].name}}</td>
                     <td>{{item.remark}}</td>
@@ -60,7 +64,8 @@ export default {
             filter: {
                 type: 1,
                 status: 0,
-                orderNo: ""
+                orderNo: "",
+                constractParty:''
             }
         };
     },

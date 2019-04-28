@@ -7,6 +7,8 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)" placeholder="供应商" style="width: 200px;">
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">合同状态</option>
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
@@ -63,7 +65,8 @@ export default {
             filter: {
                 orderNo: "",
                 status: 0,
-                createUserId: 0
+                createUserId: 0,
+                supplierName:''
             }
         };
     },

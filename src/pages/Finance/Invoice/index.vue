@@ -4,6 +4,8 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.constractParty" @change="$refs.list.update(true)" placeholder="合同方" style="width: 200px;">
                 开票状态：
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
@@ -23,6 +25,7 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
+                    <th>合同方</th>
                     <th>金额</th>
                     <th>发票号</th>
                     <th>类型</th>
@@ -33,6 +36,7 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
                     <td>{{item.orderNo}}</td>
+                    <td>{{item.constractParty}}</td>
                     <td>￥ {{item.totalAmount}}</td>
                     <td>{{item.invoiceNo}}</td>
                     <td>{{allTypes[item.type].text}}</td>
@@ -47,11 +51,13 @@
         </div>
 
         <layer v-if="layer" :title="form.id ? '编辑发票' : '新增发票'" width="60%">
-            <div class="layer-text" style="padding-bottom: 50px;">
+            <div class="layer-text" >
                 <input-box v-model="form.invoiceNo" label="发票编号"></input-box>
                 <input-box v-model="form.orderNo" label="订单编号"></input-box>
                 <select-box :list="allStatusAdd" v-model="form.status" label="发票状态"></select-box>
                 <select-box :list="allTypesAdd" v-model="form.type" label="发票类型"></select-box>
+                <input-box v-model="form.invoiceIssuing" label="开票单位"></input-box>
+                <input-box v-model="form.invoiceCompany" label="收票单位"></input-box>
                 <input-box type="number" v-model="form.totalAmount" label="发票金额"></input-box>
                 <input-box :multi-line="true" type="text" v-model="form.remark" label="备注"></input-box>
             </div>
@@ -118,7 +124,9 @@ export default {
                 orderNo: "",
                 status: 1,
                 totalAmount: "",
-                type: 1
+                type: 1,
+                invoiceIssuing:'',
+                invoiceCompany:''
             }
         };
     },

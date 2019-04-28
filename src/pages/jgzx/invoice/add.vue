@@ -9,6 +9,8 @@
             <div class="flex-v-center">
                 <input-box v-model="form.totalAmount" class="mr-10" label="发票金额" style="width: 50%"></input-box>
             </div>
+            <input-box v-model="form.invoiceIssuing" class="mr-10" label="开票单位" style="width: 50%"></input-box>
+            <input-box v-model="form.invoiceCompany" class="mr-10" label="收票单位" style="width: 50%"></input-box>
             <div class="flex-v-center">
                 <input-box v-model="form.remark" class="mr-10" label="备注" style="width: 50%"></input-box>
             </div>
@@ -28,6 +30,8 @@ export default {
             form: {
                 orderNo: "",
                 totalAmount: 0.0,
+                invoiceIssuing:'',
+                invoiceCompany:'',
                 remark: "",
                 status: 1,
                 type: 1

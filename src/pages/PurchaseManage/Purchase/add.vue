@@ -31,7 +31,7 @@
                 <div class="flex-item">
                     <div class="flex">
                         <select-box :list="nameList" v-model="item.materialName" label="物料名称" class="flex-item mr-10"></select-box>
-                        <select-box :list="tuhaoList" v-model="item.materialGraphNo" label="物料图号" class="flex-item mr-10"></select-box>
+                        <select-box :list="tuhaoList" :onchange="materialInfo(item)" v-model="item.materialGraphNo" label="物料图号" class="flex-item mr-10"></select-box>
                         <!-- <input-box v-model="item.materialName" class="flex-item mr-10" label="物料名称"></input-box>
                         <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号"></input-box>-->
                         <input-box v-model="item.number" type="number" class="mr-10" label="数量"></input-box>
@@ -174,6 +174,13 @@ export default {
         }
     },
     methods: {
+        materialInfo: function(item){
+            // this.$http.get(`/haolifa/price/material/getInfo/0?materialGraphNo=${item.materialGraphNo}`).then(res=>{
+            //    item.specifications = res.specifications;
+            //    item.material = res.material;
+            //
+            // });
+        },
         changeSupplier: function() {
             this.supplierInfoList.forEach((item, i) => {
                 if (item.suppilerNo == this.form.supplierNo) {

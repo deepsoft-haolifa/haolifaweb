@@ -8,7 +8,7 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
-                    <option value="-1">合同状态</option>
+                    <option value="-1">全部</option>
                     <option v-for="item in statusList" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
@@ -19,7 +19,7 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
-                    <!-- <th>供方单位</th> -->
+                    <th>需方单位</th>
                     <!-- <th>采购完成日期</th> -->
                     <th>订单状态</th>
                     <!-- <th>创建人</th> -->
@@ -30,7 +30,7 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
                     <td>{{item.orderNo}}</td>
-                    <!-- <td>{{item.supplierName}}</td> -->
+                    <td>{{item.demandName}}</td>
                     <!-- <td>{{item.deliveryTime}}</td> -->
                     <td>{{statusList[item.orderStatus].text}}</td>
                     <!-- <td>{{item.createUserId}}</td> -->

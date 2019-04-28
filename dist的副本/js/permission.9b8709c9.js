@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["permission"],{2655:function(n,e,i){},"3f85":function(n,e,i){"use strict";var s=i("2655"),t=i.n(s);t.a},"6985b":function(n,e,i){"use strict";i.r(e);var s=function(){var n=this,e=n.$createElement,i=n._self._c||e;return i("div",{staticClass:"page-permission"},[n._v("\n  page-permission\n")])},t=[],a={name:"page-permission"},o=a,c=(i("3f85"),i("c46c")),p=Object(c["a"])(o,s,t,!1,null,null,null);p.options.__file="index.vue";e["default"]=p.exports}}]);
-//# sourceMappingURL=permission.9b8709c9.js.map

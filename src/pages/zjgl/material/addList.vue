@@ -39,29 +39,23 @@
                     <td>{{item.createTime}}</td>
                     <td>{{statusList[item.status].name}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="infoDeatail(item)">查看</a>
                         <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
                         <a href="javascript:;" v-if="item.status == 2" style="margin-right: 3px" class="blue" @click="commit(item.id)">质检完成</a>
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="infoDeatail(item)">查看</a>
                     </td>
                 </template>
             </data-list>
         </div>
 
-        <layer v-if="completeLayer" :title="'质检记录'" width="650px" style>
+        <layer v-if="completeLayer" :title="'质检记录'" width="70%" style>
             <div class="flex">
                 <input-box v-model="inspectHistory.purchaseNo" class="flex-item mr-20 ml-20" label="采购合同号"></input-box>
                 <input-box v-model="inspectHistory.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
             </div>
             <div class="flex mt-15">
-                <input-box v-model="inspectHistory.inspectNo" class="mr-20 ml-20 mt-15" label="送检单号"></input-box>
-                <select-box
-                    class="mt-15"
-                    @change="changeMaterialNo()"
-                    :list="inspectHistory.selectMaterialNo"
-                    v-model="inspectHistory.materialGraphNo"
-                    label="物料图号"
-                ></select-box>
-                <input-box v-model="inspectHistory.materialName" class="mr-20 mt-15" label="物料名称"></input-box>
+                <input-box v-model="inspectHistory.inspectNo" class="flex-item mr-20 ml-20 mt-15" label="送检单号"></input-box>
+                <select-box class="flex-item mt-15" @change="changeMaterialNo()" :list="tuhaoList" v-model="inspectHistory.materialGraphNo" label="物料图号"></select-box>
+                <select-box class="flex-item mt-15" @change="changeMaterialNo()" :list="nameList" v-model="inspectHistory.materialName" label="物料名称"></select-box>
             </div>
             <div class="flex mt-15">
                 <input-box v-model="inspectHistory.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
@@ -233,6 +227,8 @@ export default {
                 supplierName: "",
                 supplierNo: ""
             },
+            tuhaoList: [],
+            nameList: [],
             filter: {
                 type: 0,
                 status: 0
@@ -324,16 +320,29 @@ export default {
                 .get(`/haolifa/material-inspect/info/${inspectId}`)
                 .then(res => {
                     let items = res.items;
-                    this.inspectHistory.selectMaterialNo = items.map(item => {
+                    // this.inspectHistory.selectMaterialNo = items.map(item => {
+                    //     return {
+                    //         value: item.materialGraphNo,
+                    //         text: item.materialGraphNo,
+                    //         materialName: item.materialName
+                    //     };
+                    // });
+                    this.nameList = items.map(item => {
                         return {
-                            value: item.materialGraphNo,
-                            text: item.materialGraphNo,
-                            materialName: item.materialName
+                            value: item.materialName,
+                            text: item.materialName
                         };
                     });
+                    this.tuhaoList = items.map(item => {
+                        return {
+                            value: item.materialGraphNo,
+                            text: item.materialGraphNo
+                        };
+                    });
+
                     // 默认
-                    this.inspectHistory.materialGraphNo = this.inspectHistory.selectMaterialNo[0].value;
-                    this.inspectHistory.materialName = this.inspectHistory.selectMaterialNo[0].materialName;
+                    this.inspectHistory.materialGraphNo = this.tuhaoList[0].value;
+                    this.inspectHistory.materialName = this.nameList[0].value;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

@@ -19,8 +19,8 @@
             <data-list ref="list" page-num-str="pageNum" :param="filter" url="/haolifa/supplier-pro/list" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>年产量</th>
-                    <th>主要客户</th>
+                    <!-- <th>年产量</th>
+                    <th>主要客户</th>-->
                     <th>供货物料图号</th>
                     <th>产品名称</th>
                     <th>产品类型</th>
@@ -30,8 +30,8 @@
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
-                    <td>{{item.annualProduction}}</td>
-                    <td>{{item.mainCustomer}}</td>
+                    <!-- <td>{{item.annualProduction}}</td>
+                    <td>{{item.mainCustomer}}</td>-->
                     <td>{{item.materialGraphNo}}</td>
                     <td>{{item.materialName}}</td>
                     <td>{{materialTypeList[item.materialType]}}</td>

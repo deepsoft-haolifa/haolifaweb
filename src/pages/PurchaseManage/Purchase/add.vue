@@ -30,8 +30,10 @@
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.itemList" :key="i">
                 <div class="flex-item">
                     <div class="flex">
-                        <input-box v-model="item.materialName" class="flex-item mr-10" label="物料名称"></input-box>
-                        <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号"></input-box>
+                        <select-box :list="nameList" v-model="item.materialName" label="物料名称" class="flex-item mr-10"></select-box>
+                        <select-box :list="tuhaoList" v-model="item.materialGraphNo" label="物料图号" class="flex-item mr-10"></select-box>
+                        <!-- <input-box v-model="item.materialName" class="flex-item mr-10" label="物料名称"></input-box>
+                        <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号"></input-box>-->
                         <input-box v-model="item.number" type="number" class="mr-10" label="数量"></input-box>
                         <input-box v-model="item.unit" class="flex-item mr-10" label="单位"></input-box>
                     </div>
@@ -103,7 +105,9 @@ export default {
                     }
                 ]
             },
-            isAdd: true
+            isAdd: true,
+            nameList: [],
+            tuhaoList: []
         };
     },
     mounted() {
@@ -179,7 +183,34 @@ export default {
                     this.form.supplierName = item.suppilerName;
                 }
             });
-            //TUDO
+            this.nameList = this.tuhaoList = [];
+            if (!this.form.supplierNo) return;
+            let params = {
+                pageNum: 1,
+                pageSize: 500,
+                supplierNo: this.form.supplierNo
+            };
+            this.$http
+                .post(`/haolifa/supplier-pro/list`, params)
+                .then(res => {
+                    let list = res.list;
+                    this.nameList = list.map(item => {
+                        return {
+                            value: item.materialName,
+                            text: item.materialName
+                        };
+                    });
+
+                    this.tuhaoList = list.map(item => {
+                        return {
+                            value: item.materialGraphNo,
+                            text: item.materialGraphNo
+                        };
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         addItem() {
             this.form.itemList.push({
@@ -195,7 +226,6 @@ export default {
                 unitWeight: 0
             });
             this.$forceUpdate();
-            console.log(this.form.itemList);
         },
         submit() {
             const requireItem = {
@@ -220,7 +250,6 @@ export default {
             if (!flag) {
                 return;
             }
-            console.log(this.form);
             this.$http
                 .post(
                     this.isAdd

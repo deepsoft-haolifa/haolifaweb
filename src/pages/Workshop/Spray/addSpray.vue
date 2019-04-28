@@ -1,7 +1,7 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <div class="title b f-18 mb-10">{{isAdd ? '编辑' : '新增'}}喷涂委托</div>
+            <div class="title b f-18 mb-10">{{!isAdd ? '编辑' : '新增'}}喷涂委托</div>
             <div class="flex">
                 <input-box v-model="form.planner" class="flex-item" label="计划人" style="margin-right: 20px;"></input-box>
             </div>
@@ -45,108 +45,110 @@
 </template>
 
 <script>
-    export default {
-        name: "spray-add",
-        data() {
-            return {
-                supplierInfoList: [],
-                supplierList: [],
-                form: {
-                    id: null,
-                    planner:'',
-                    items: [
-                        {
-                            materialClassifyName: "",
-                            materialGraphNo: "",
-                            completeTime:'',
-                            material:'',
-                            model:'',
-                            specifications:'',
-                            sprayColor:'',
-                            specialRequires:'',
-                            remark:'',
-                            number:''
-                        }
-                    ]
-                },
-                isAdd: true
-            };
-        },
-        created() {
-             let {sprayNo} = this.$route.query;
-            if(sprayNo != '') {
-                this.isAdd = false;
-                this.getInfo(sprayNo);
-            }
-
-        },
-        methods: {
-            getInfo(sprayNo) {
-                this.$http.get(`/haolifa/spray/form/${sprayNo}`).then(res=>{
+export default {
+    name: "spray-add",
+    data() {
+        return {
+            supplierInfoList: [],
+            supplierList: [],
+            form: {
+                id: null,
+                planner: "",
+                items: [
+                    {
+                        materialClassifyName: "",
+                        materialGraphNo: "",
+                        completeTime: "",
+                        material: "",
+                        model: "",
+                        specifications: "",
+                        sprayColor: "",
+                        specialRequires: "",
+                        remark: "",
+                        number: ""
+                    }
+                ]
+            },
+            isAdd: true
+        };
+    },
+    created() {
+        let { sprayNo } = this.$route.query;
+        if (sprayNo != "") {
+            this.isAdd = false;
+            this.getInfo(sprayNo);
+        }
+    },
+    methods: {
+        getInfo(sprayNo) {
+            this.$http
+                .get(`/haolifa/spray/form/${sprayNo}`)
+                .then(res => {
                     this.form = res;
-                }).catch(e=>{
+                })
+                .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
-            },
-            submit(){
-                if(this.isAdd) {
-                    this.$http.post(`/haolifa/spray/form`,this.form).then(res=>{
+        },
+        submit() {
+            if (this.isAdd) {
+                this.$http
+                    .post(`/haolifa/spray/form`, this.form)
+                    .then(res => {
                         this.$toast("更新成功");
                         this.$router.push("/spray/add-list");
-                    }).catch(e=>{
-                        this.$toast(e.msg || e.message);
                     })
-                } else {
-                    this.$http.put(`/haolifa/spray/form`,this.form).then(res=>{
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                    });
+            } else {
+                this.$http
+                    .put(`/haolifa/spray/form`, this.form)
+                    .then(res => {
                         this.$toast("更新成功");
                         this.$router.push("/spray/add-list");
-                    }).catch(e=>{
-                        this.$toast(e.msg || e.message);
                     })
-                }
-
-
-            },
-            addItem() {
-                this.form.items.push({
-                    materialClassifyName: "",
-                    materialGraphNo: "",
-                    completeTime:'',
-                    material:'',
-                    model:'',
-                    specifications:'',
-                    sprayColor:'',
-                    specialRequires:'',
-                    remark:'',
-                    number:''
-                });
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                    });
             }
-
-
-
+        },
+        addItem() {
+            this.form.items.push({
+                materialClassifyName: "",
+                materialGraphNo: "",
+                completeTime: "",
+                material: "",
+                model: "",
+                specifications: "",
+                sprayColor: "",
+                specialRequires: "",
+                remark: "",
+                number: ""
+            });
         }
-
-    };
+    }
+};
 </script>
 
 <style lang="less">
-    .apply-buy-add {
-        padding: 20px;
-        .card {
-            padding: 10px;
-            margin: 20px 0;
-            background: #f5f5f5;
-        }
-        .content {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        select {
-            background: none;
-            border: none;
-            outline: none;
-            padding: 5px 20px 5px 10px;
-            appearance: none;
-        }
+.apply-buy-add {
+    padding: 20px;
+    .card {
+        padding: 10px;
+        margin: 20px 0;
+        background: #f5f5f5;
     }
+    .content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    select {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px 5px 10px;
+        appearance: none;
+    }
+}
 </style>

@@ -17,7 +17,7 @@
             </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="10"  :param="filter" url="/haolifa/spray/forms" method="post">
+            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/spray/forms" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>喷涂加工单号</th>
@@ -38,20 +38,20 @@
                     <td>{{rowStatusList[item.status].name}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;"  style="margin-right: 3px" class="blue" @click="sprayInfo(item)">查看</a>
-                        <a href="javascript:;" v-if="item.status == 0"  style="margin-right: 3px" class="blue" @click="editForm(item)">编辑</a>
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="sprayInfo(item)">查看</a>
+                        <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="editForm(item)">编辑</a>
                         <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="deleteInfo(item)">删除</a>
                         <a href="javascript:;" v-if="item.status == 0 || item.status == 4" style="margin-right: 3px" class="blue" @click="machine(item)">开始加工</a>
                         <!--<a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="stopMachine(item)">暂停</a>-->
                         <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="completeMachine(item)">加工完成</a>
-                        <a :href="`/haolifa/export/spray/excel/${item.sprayNo}`" download="" style="margin-right: 3px" class="blue">下载委托单</a>
+                        <a :href="`/haolifa/export/spray/excel/${item.sprayNo}`" download style="margin-right: 3px" class="blue">下载委托单</a>
                     </td>
                 </template>
             </data-list>
         </div>
 
         <layer v-if="layer" title="详情" width="70%">
-            <div class="layer-text" style="padding-bottom: 50px;" >
+            <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content page-supplier-info">
                     <table class="f-14">
                         <tr>
@@ -67,7 +67,7 @@
                             <td style="width: 10%;"></td>
                             <td style="width: 10%;"></td>
                         </tr>
-                        <tr >
+                        <tr>
                             <td style="border: none;" colspan="11" class="b" align="center">喷涂加工单</td>
                         </tr>
                         <tr>
@@ -75,7 +75,7 @@
                         </tr>
                         <tr>
                             <th colspan="5">计划人：{{spray.planner}}</th>
-                            <td colspan="6">日  期：{{spray.createTime}}</td>
+                            <td colspan="6">日 期：{{spray.createTime}}</td>
                         </tr>
                         <tr style="border:thin">
                             <td colspan="1" class="b">序号</td>
@@ -95,7 +95,7 @@
                             <td colspan="1">{{item.materialClassifyName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
                             <td colspan="1">{{item.model}}</td>
-                            <td colspan="1">{{item.specification}}</td>
+                            <td colspan="1">{{item.specifications}}</td>
                             <td colspan="1">{{item.material}}</td>
                             <td colspan="1">{{item.number}}</td>
                             <td colspan="1">{{item.sprayColor}}</td>
@@ -157,144 +157,190 @@
 </template>
 
 <script>
-    import DataList from '@/components/datalist'
-    export default {
-        name: 'spray-add-list',
-        components: {DataList},
-        data() {
-            return {
-                layer:false,
-                filter: {
-                    status: -1,
-                    type:0
-                },
-                rowStatusList: [
-                    {status: 0, name: '待审批'},
-                    {status: 1, name: '加工中'},
-                    {status: 2, name: '质检完成'},
-                    {status: 3, name: '加工完成'},
-                    {status: 4, name: '暂停加工'}
-                ],
-                statusList: [
-                    {status: 0, name: '待审批'},
-                    {status: 1, name: '加工中'},
-                    {status: 2, name: '质检完成'},
-                    {status: 3, name: '加工完成'},
-                    {status: 4, name: '暂停加工'},
-                    {status: -1, name: '全部'}
-                ],
-                inspectHistory:[],
-                spray:{
-                    planner:'',
-                    sprayNo:'',
-                    createTime:'',
-                    items:[]
-                }
+import DataList from "@/components/datalist";
+export default {
+    name: "spray-add-list",
+    components: { DataList },
+    data() {
+        return {
+            layer: false,
+            filter: {
+                status: -1,
+                type: 0
+            },
+            rowStatusList: [
+                { status: 0, name: "待审批" },
+                { status: 1, name: "加工中" },
+                { status: 2, name: "质检完成" },
+                { status: 3, name: "加工完成" },
+                { status: 4, name: "暂停加工" }
+            ],
+            statusList: [
+                { status: 0, name: "待审批" },
+                { status: 1, name: "加工中" },
+                { status: 2, name: "质检完成" },
+                { status: 3, name: "加工完成" },
+                { status: 4, name: "暂停加工" },
+                { status: -1, name: "全部" }
+            ],
+            inspectHistory: [],
+            spray: {
+                planner: "",
+                sprayNo: "",
+                createTime: "",
+                items: []
             }
+        };
+    },
+    methods: {
+        downloadForm(item) {
+            this.$http.get(`/haolifa/export/spray/excel/${item.sprayNo}`);
         },
-        methods: {
-            downloadForm(item){
-                this.$http.get(`/haolifa/export/spray/excel/${item.sprayNo}`)
-            },
-            // 编辑
-            editForm(item) {
-                this.$router.push({
-                    path: `/spray/edit?`,
-                    query: { sprayNo: item.sprayNo}
-                });
-            },
-            // 删除
-            deleteInfo(item) {
-                this.$http.delete(`/haolifa/spray/form/${item.sprayNo}`).then(res=>{
+        // 编辑
+        editForm(item) {
+            this.$router.push({
+                path: `/spray/edit?`,
+                query: { sprayNo: item.sprayNo }
+            });
+        },
+        // 删除
+        deleteInfo(item) {
+            this.$http
+                .delete(`/haolifa/spray/form/${item.sprayNo}`)
+                .then(res => {
                     this.$refs.list.update();
-                }).catch(e=>{
-                    this.$toast(e.msg || e.message)
                 })
-            },
-            //开始加工
-            machine(item){
-                this.updateStatus(item.sprayNo, 1);
-            },
-            // 暂停加工
-            stopMachine(item){
-                this.updateStatus(item.sprayNo, 4);
-            },
-            // 加工完成
-            completeMachine(item){
-                this.$confirm({
-                    title: "加工完成确认",
-                    text: `您确定喷涂订单已加工完成？<br>${item.sprayNo}`,
-                    color: "red",
-                    btns: ["取消", "确认"],
-                    yes: () => {
-                        if(item.qualifiedNumber < item.totalNumber) {
-                            let count = item.totalNumber - item.qualifiedNumber;
-                            this.$confirm({
-                                title: "继续确认",
-                                text: '订单显示还有('+count+')个零件未完成，是否继续？',
-                                color: "red",
-                                btns: ["取消", "确认"],
-                                yes: () => {
-                                    this.updateStatus(item.sprayNo, 3);
-                                }
-                            });
-                        } else {
-                            this.updateStatus(item.sprayNo, 3);
-                        }
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        //开始加工
+        machine(item) {
+            this.updateStatus(item.sprayNo, 1);
+        },
+        // 暂停加工
+        stopMachine(item) {
+            this.updateStatus(item.sprayNo, 4);
+        },
+        // 加工完成
+        completeMachine(item) {
+            this.$confirm({
+                title: "加工完成确认",
+                text: `您确定喷涂订单已加工完成？<br>${item.sprayNo}`,
+                color: "red",
+                btns: ["取消", "确认"],
+                yes: () => {
+                    if (item.qualifiedNumber < item.totalNumber) {
+                        let count = item.totalNumber - item.qualifiedNumber;
+                        this.$confirm({
+                            title: "继续确认",
+                            text:
+                                "订单显示还有(" +
+                                count +
+                                ")个零件未完成，是否继续？",
+                            color: "red",
+                            btns: ["取消", "确认"],
+                            yes: () => {
+                                this.updateStatus(item.sprayNo, 3);
+                            }
+                        });
+                    } else {
+                        this.updateStatus(item.sprayNo, 3);
                     }
-                });
-
-            },
-            updateStatus(sprayNo, status) {
-                this.$http.put(`/haolifa/spray/status/${sprayNo}/${status}`).then(res=>{
+                }
+            });
+        },
+        updateStatus(sprayNo, status) {
+            this.$http
+                .put(`/haolifa/spray/status/${sprayNo}/${status}`)
+                .then(res => {
                     this.$refs.list.update();
-                }).catch(e=>{
-                    this.$toast(e.msg || e.message)
                 })
-            },
-            // 查询详情
-            sprayInfo(item) {
-
-                // 查询详情：
-                this.$http.get(`/haolifa/spray/form/${item.sprayNo}`).then(res=>{
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        // 查询详情
+        sprayInfo(item) {
+            // 查询详情：
+            this.$http
+                .get(`/haolifa/spray/form/${item.sprayNo}`)
+                .then(res => {
                     this.spray = res;
-                }).catch(e => {
-                    this.$toast(e.msg || e.message)
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
                 });
-                // 质检记录列表；
-                this.$http.get(`/haolifa/spray/inspect/list/${item.sprayNo}`).then(res=>{
+            // 质检记录列表；
+            this.$http
+                .get(`/haolifa/spray/inspect/list/${item.sprayNo}`)
+                .then(res => {
                     this.inspectHistory = res;
-                }).catch(e => {
-                    this.$toast(e.msg || e.message)
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
                 });
-                this.layer = true;
-            }
+            this.layer = true;
         }
     }
+};
 </script>
 
 <style lang="less">
-    .page-invoice-list{
-        select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
-        .scroll-y{padding-bottom: 40px;}
+.page-invoice-list {
+    select {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px 5px 10px;
+        appearance: none;
+    }
+    .scroll-y {
+        padding-bottom: 40px;
+    }
 
-        //
+    //
+}
+.fixed-length {
+    width: 100px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+select {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 5px 20px 5px 10px;
+    appearance: none;
+}
+.page-supplier-info {
+    padding: 30px 20px;
+    tr:first-child td {
+        padding: 0;
+        border: none;
     }
-    .fixed-length{
-        width: 100px;
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+    th {
+        font-weight: normal;
+        color: #888;
     }
-    select{background: none;border: none;outline: none;padding: 5px 20px 5px 10px;appearance: none;}
-    .page-supplier-info{
-        padding: 30px 20px;
-        tr:first-child td{padding: 0;border: none;}
-        th{font-weight: normal;color: #888;}
-        td{color: #444;}
-        th, td{padding: 10px;border: 1px solid #fff;border: 1px solid #ddd;}
-        .checkbox-list{flex-wrap: wrap;}
-        .checkbox-item{line-height: 1em;width: 180px;margin: 5px 0;}
+    td {
+        color: #444;
     }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #fff;
+        border: 1px solid #ddd;
+    }
+    .checkbox-list {
+        flex-wrap: wrap;
+    }
+    .checkbox-item {
+        line-height: 1em;
+        width: 180px;
+        margin: 5px 0;
+    }
+}
 </style>

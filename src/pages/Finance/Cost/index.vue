@@ -10,14 +10,22 @@
                     <th style="width: 60px;">序号</th>
                     <th>提交人</th>
                     <th>费用类别</th>
+                    <th>二级类别</th>
                     <th>总费用</th>
+                    <th>报销部门</th>
+                    <th>摘要</th>
+                    <th>备注</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
                     <td>{{item.commitUser}}</td>
                     <td>{{item.expensesClassify}}</td>
+                    <td>{{item.secondClassify}}</td>
                     <td>￥ {{item.totalAmount}}</td>
+                    <td>{{item.department}}</td>
+                    <td>{{item.summary}}</td>
+                    <td>{{item.remark}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a>
                         <a href="javascript:;" style="margin-right: 3px" class="red" @click="remove(item)">删除</a>
@@ -28,8 +36,12 @@
         <layer v-if="layer" :title="form.id ? '编辑费用' : '新增费用'" width="50%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <input-box v-model="form.commitUser" label="提交人"></input-box>
-                <select-box :list="expensesClassify" v-model="form.expensesClassify" label="费用类别"></select-box>
+                <select-box :list="expensesClassify" :onchange="getSecondClassify(form.expensesClassify)" v-model="form.expensesClassify" label="费用类别"></select-box>
+                <select-box :list="secondClassifyList" v-if="secondClassifyList.length >0" v-model="form.secondClassify" label="二级费用类别"></select-box>
                 <input-box type="number" v-model="form.totalAmount" label="总费用"></input-box>
+                <input-box  v-model="form.department" label="报销部门"></input-box>
+                <input-box v-model="form.summary" label="报销摘要"></input-box>
+                <input-box  v-model="form.remark" label="备注"></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
@@ -52,9 +64,15 @@ export default {
                 id: "",
                 commitUser: "",
                 expensesClassify: "",
-                totalAmount: ""
+                secondClassify:'',
+                totalAmount: "",
+                department:'',
+                summary:'',
+                remark:''
             },
-            expensesClassify: []
+            expensesClassify: [],
+            firstClassifyList:[],
+            secondClassifyList:[],
         };
     },
     created() {
@@ -62,12 +80,32 @@ export default {
             this.expensesClassify = res.map(item => {
                 return { value: item.classifyName, text: item.classifyName };
             });
-            this.form.expensesClassify == ""
-                ? res[0].classifyName
-                : this.form.expensesClassify;
+            this.firstClassifyList = JSON.parse(JSON.stringify(res));
+            // this.form.expensesClassify == ""
+            //     ? res[0].classifyName
+            //     : this.form.expensesClassify;
+            this.form.expensesClassify = this.expensesClassify[0].value;
+            this.getSecondClassify(res[0].classifyName);
         });
     },
     methods: {
+        getSecondClassify(firstClassify){
+            console.log('firstClassify',firstClassify);
+            console.log('firstClassifyList',this.firstClassifyList);
+            let pid = 0;
+
+            this.firstClassifyList.forEach(item=>{
+                if(item.classifyName == firstClassify) {
+                    console.log('print',item.id);
+                    pid = item.id;
+                }
+            })
+            this.$http.get(`/haolifa/expenses/classify?pId=${pid}`).then(res => {
+                this.secondClassifyList = res.map(item => {
+                    return { value: item.classifyName, text: item.classifyName };
+                });
+            });
+        },
         edit(item) {
             for (let key in this.form) this.form[key] = item[key];
             this.layer = true;

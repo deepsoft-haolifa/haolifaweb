@@ -38,7 +38,7 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="storeRoom.layerShow" :title="'入库'" width="600px">
+        <layer v-if="storeRoom.layerShow" :title="'入库'" width="70%">
             <div>
                 <div class="flex">
                     <input-box v-model="storeRoom.orderNo" class="flex-item mr-10 ml-20" label="订单号"></input-box>
@@ -51,9 +51,9 @@
                     <input-box v-model="storeRoom.productSpecifications" class="flex-item mr-10 ml-20" label="规格"></input-box>
                 </div>
                 <div class="flex">
-                    <input-box v-model="storeRoom.quantity" type="number" class="ml-20 mr-10" label="入库数量"></input-box>
-                    <select-box class="mr-10" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
-                    <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
+                    <input-box v-model="storeRoom.quantity" type="number" class="flex-item ml-20 mr-10" disabled label="入库数量"></input-box>
+                    <select-box class="flex-item mr-10" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
+                    <select-box class="flex-item mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
                 </div>
             </div>
             <div class="layer-btns">
@@ -155,7 +155,6 @@ export default {
             this.$http
                 .get(`/haolifa/store-room/listInfo?type=2`)
                 .then(res => {
-                    console.log(res);
                     this.storeRoom.selectStoreRooms = res.map(item => {
                         return { value: item.roomNo, text: item.name };
                     });

@@ -23,10 +23,10 @@
                     <td>{{item.number}}</td>
                     <td>{{allStatus[item.equipmentStatus].text}}</td>
                     <td>{{item.productFactory}}</td>
-                    <td>{{item.serviceYears}}</td>
+                    <td>{{item.servicedYears}}</td>
                     <td class="t-right">
-                        <icon-btn small @click="edit(item)">edit</icon-btn>
-                        <icon-btn small @click="remove(item)">delete</icon-btn>
+                        <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
+                        <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a>
                     </td>
                 </template>
             </data-list>
@@ -39,11 +39,15 @@
                     <input-box class="flex-item mr-10" v-model="form.number" label="设备数量" hint="必填" type="number"></input-box>
                     <select-box class="flex-item" :list="allStatus" v-model="form.equipmentStatus" hint="必填" label="设备状态"></select-box>
                 </div>
-                <input-box type="number" v-model="form.productFactory" label="生产厂家"></input-box>
-                <input-box type="text" v-model="form.serviceYears" label="服役年限"/>
+                <div class="flex">
+                    <input-box v-model="form.price" type="number" class="flex-item mr-10" label="采购金额"></input-box>
+                    <date-picker v-model="form.purchaseTime" class="flex-item mr-10" label="采购时间"></date-picker>
+                </div>
+                <input-box type="text" v-model="form.productFactory" label="生产厂家"></input-box>
+                <input-box type="number" v-model="form.servicedYears" label="服役年限"/>
             </div>
             <div class="layer-btns">
-                <btn flat @click="cancel">取消</btn>
+                <btn flat @click="layer=false">取消</btn>
                 <btn flat color="#008eff" @click="submit">保存</btn>
             </div>
         </layer>
@@ -70,10 +74,12 @@ export default {
                 id: "",
                 name: "",
                 number: "",
+                price: "",
+                purchaseTime: "",
                 equipmentNo: "",
                 equipmentStatus: 0,
                 productFactory: "",
-                serviceYears: ""
+                servicedYears: ""
             }
         };
     },

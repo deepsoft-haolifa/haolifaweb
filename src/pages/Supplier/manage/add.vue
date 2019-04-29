@@ -37,6 +37,9 @@
                 <input-box v-model="form.suppilerPreparer" class="mr-20" label="填表人"></input-box>
                 <input-box v-model="form.responsiblePerson" label="负责人"></input-box>
             </div>
+            <div class="flex">
+                <upload-box btnText="供应商附件上传" :fileList="fileList" :multiple="multiple" :onchange="uploadFile" :onremove="removeFile" style="width: 50%"></upload-box>
+            </div>
             <div class="f-14 c-6 b" style="margin: 25px 0 0;">员工情况</div>
             <div class="flex-v-center">
                 <input-box v-model="form.staffInfo.totalWorkers" type="number" label="员工总人数"></input-box>
@@ -120,6 +123,7 @@
 </template>
 
 <script>
+import fileToBase64 from "@/utils/fileToBase64";
 import form from "./form";
 import parseJson from "@/utils/parseJson";
 export default {
@@ -133,6 +137,9 @@ export default {
         }
         return {
             loading: false,
+            multiple: true,
+            fileList: [],
+            accessories: [],
             workTypeList: [
                 { text: "正常", value: 0 },
                 { text: "两班倒", value: 1 },
@@ -174,6 +181,34 @@ export default {
                 phone: ""
             });
         },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    })
+                    .then(res => {
+                        this.accessories.push({
+                            fileName: file.name,
+                            fileUrl: res
+                        });
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
+        },
+        removeFile(fileList, i) {
+            return new Promise((resolve, reject) => {
+                this.accessories.splice(i, 1);
+                resolve();
+            });
+        },
         removeOragn(index) {
             this.form.mainOrgan.splice(index, 1);
         },
@@ -202,6 +237,7 @@ export default {
         },
         submit() {
             const { form } = this;
+            form.accessories = this.accessories;
             this.loading = true;
             this.$http
                 .post(`/haolifa/supplier/${form.id ? "update" : "save"}`, form)
@@ -216,15 +252,7 @@ export default {
                 });
         },
         cancel() {
-            this.$confirm({
-                title: "您确定要离开此页面吗？",
-                text: "您的表单将不会保存",
-                color: "red",
-                btns: ["取消", "离开"],
-                yes: () => {
-                    this.$router.back();
-                }
-            });
+            this.$router.back();
         },
         clear() {
             this.$confirm({

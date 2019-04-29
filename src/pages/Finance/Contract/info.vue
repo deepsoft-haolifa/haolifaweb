@@ -207,7 +207,7 @@
                 let {formId}= this.$route.query
                 this.orderUrl = '/haolifa/export/purchaseOrder/'+formId
                 this.info.id = formId;
-                this.$http.get(`/haolifa//purchase-order/info/${formId}`).then(res => {
+                this.$http.get(`/haolifa/purchase-order/info/${formId}`).then(res => {
                     this.order.orderNo = res.order.purchaseOrderNo;
                     this.info = res.order;
                     this.itemList = res.items;

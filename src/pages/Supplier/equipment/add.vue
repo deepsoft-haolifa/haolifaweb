@@ -11,6 +11,10 @@
       <input-box v-model="form.servicedYears" class="flex-item mr-10" label="服役年限"></input-box>
     </div>
     <div class="flex-v-center">
+      <input-box v-model="form.price" type="number" class="mr-10" label="采购金额"></input-box>
+      <date-picker v-model="form.purchaseTime" class="flex-item mr-10" label="采购时间"></date-picker>
+    </div>
+    <div class="flex-v-center">
       <select-box v-model="form.type" :list="typeList" style="width: 25%" label="设备类型"></select-box>
       <input-box v-model="form.specification" class="flex-item ml-10 mr-10" label="型号规格"></input-box>
       <input-box v-model="form.supplierNo" class="flex-item ml-10 mr-10" label="供应商编号"></input-box>
@@ -36,7 +40,9 @@ export default {
         servicedYears: '',
         specification: '',
         type: '',
-        supplierNo: ''
+        supplierNo: '',
+        price:0,
+        purchaseTime:''
       },
       typeList: [{text: '制造设备', value: 0}, {text: '检测设备', value: 1}]
     }

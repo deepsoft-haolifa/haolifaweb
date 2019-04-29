@@ -23,6 +23,8 @@
         <th>设备数量</th>
         <th>生产厂家</th>
         <th>服役年限</th>
+        <th>采购金额</th>
+        <th>采购时间</th>
         <th>型号规格</th>
         <th>设备类型</th>
         <th>供应商编号</th>
@@ -35,6 +37,8 @@
         <td>{{item.number}}</td>
         <td>{{item.productFactory}}</td>
         <td>{{item.servicedYears}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.purchaseTime}}</td>
         <td>{{item.specification}}</td>
         <td>{{typeList[item.type]}}</td>
         <td>{{item.supplierNo}}</td>

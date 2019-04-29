@@ -90,6 +90,28 @@ export default {
         });
     },
     methods: {
+        getSecondClassify(firstClassify) {
+            console.log("firstClassify", firstClassify);
+            console.log("firstClassifyList", this.firstClassifyList);
+            let pid = 0;
+
+            this.firstClassifyList.forEach(item => {
+                if (item.classifyName == firstClassify) {
+                    console.log("print", item.id);
+                    pid = item.id;
+                }
+            });
+            this.$http
+                .get(`/haolifa/expenses/classify?pId=${pid}`)
+                .then(res => {
+                    this.secondClassifyList = res.map(item => {
+                        return {
+                            value: item.classifyName,
+                            text: item.classifyName
+                        };
+                    });
+                });
+        },
         edit(item) {
             // for (let key in this.form) this.form[key] = item[key];
             this.form = item;

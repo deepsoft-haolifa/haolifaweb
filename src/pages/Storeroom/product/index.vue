@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat @click="layer=false">取消</btn>
+                <btn flat @click="form.layer=false">取消</btn>
                 <btn flat color="#008eff" @click="outSave()">保存</btn>
             </div>
         </layer>

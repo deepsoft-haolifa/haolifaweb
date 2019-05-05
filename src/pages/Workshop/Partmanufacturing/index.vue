@@ -37,7 +37,7 @@
                     <td>{{rowStatusList[item.status-1].name}}</td>
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.status == 2"  style="margin-right: 3px" class="blue" @click="updateStatus(item,3)">开始加工</a>
-                        <a href="javascript:;" v-if="item.status == 3" style="margin-right: 3px" class="blue" @click="updateStatus(item, 4)">加工完成</a>
+                        <a href="javascript:;" v-if="item.status == 3 || item.status == 6" style="margin-right: 3px" class="blue" @click="updateStatus(item, 4)">加工完成</a>
                     </td>
                 </template>
             </data-list>
@@ -54,20 +54,22 @@
             return {
                 filter: {
                     type:2,
-                    status: 6
+                    status:-1
                 },
                 rowStatusList:[
                     {status:1,name:'待审批'},
                     {status:2,name:'待加工'},
                     {status:3,name:'加工中'},
                     {status:4,name:'加工完成'},
-                    {status:5,name:'审批不通过'}
+                    {status:5,name:'审批不通过'},
+                    { status: 6, name: "质检完成" }
                 ],
                 statusList:[
-                    {status:6,name:'全部'},
+                    {status:-1,name:'全部'},
                     {status:2,name:'待加工'},
                     {status:3,name:'加工中'},
-                    {status:4,name:'加工完成'}
+                    {status:4,name:'加工完成'},
+                    { status: 6, name: "质检完成" }
                 ]
             }
         },

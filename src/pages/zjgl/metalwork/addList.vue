@@ -36,8 +36,9 @@
                     <td>{{item.createTime}}</td>
                     <td>{{rowStatusList[item.status-3].name}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
+                        <a href="javascript:;" v-if="item.status != 6 && item.status != 4"  style="margin-right: 3px" class="blue" @click="updateEntrustStatus(item)">质检完成</a>
                     </td>
                 </template>
             </data-list>
@@ -175,16 +176,19 @@ export default {
             },
             filter: {
                 type: 3,
-                status: 6
+                status: -1
             },
             rowStatusList: [
                 { status: 3, name: "加工中" },
-                { status: 4, name: "加工完成" }
+                { status: 4, name: "加工完成" },
+                { status: 5, name: "审批不通过" },
+                { status: 6, name: "质检完成" },
             ],
             statusList: [
-                { status: 6, name: "全部" },
+                { status: -1, name: "全部" },
                 { status: 3, name: "加工中" },
-                { status: 4, name: "加工完成" }
+                { status: 4, name: "加工完成" },
+                { status: 6, name: "质检完成" },
             ],
             loading: false,
             entrustNo: "",
@@ -262,6 +266,16 @@ export default {
             this.inspectHistory.materialName = item.materialGraphName;
             this.inspectHistory.inspectNo = item.entrustNo;
             this.inspectHistory.completeLayer = true;
+        },
+        updateEntrustStatus(item) {
+            this.$http
+                .get(`/haolifa/entrust/updateStatus/${item.entrustNo}/6`)
+                .then(res => {
+                    this.$refs.list.update();
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
     }
 };

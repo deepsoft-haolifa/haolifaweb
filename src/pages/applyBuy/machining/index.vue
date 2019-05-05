@@ -70,16 +70,17 @@ export default {
         return {
             filter: {
                 type: 0,
-                status: 6
+                status: -1
             },
             statusList: [
-                { status: 6, name: "全部" },
+                { status: -1, name: "全部" },
                 { status: 0, name: "未提交" },
                 { status: 1, name: "待审批" },
                 { status: 2, name: "待加工" },
                 { status: 3, name: "加工中" },
                 { status: 4, name: "处理完成" },
-                { status: 5, name: "审批不通过" }
+                { status: 5, name: "审批不通过" },
+                { status: 6, name: "质检完成" }
             ]
         };
     },

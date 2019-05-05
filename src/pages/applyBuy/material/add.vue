@@ -4,8 +4,8 @@
             <div class="title b f-18">新增送检单</div>
             <div class="flex">
                 <date-picker v-model="form.arrivalTime" hint="必填" class="flex-item" label="到货时间" style="margin-right: 20px;"></date-picker>
-                <input-box v-model="form.supplierName" class="flex-item" label="供应商名称"></input-box>
-                <!--<input-box v-model="form.batchNumber" class="flex-item" label="批次号"></input-box>-->
+                <input-box v-model="form.supplierName" class="flex-item" label="供应商名称" style="margin-right: 20px;"></input-box>
+                <input-box v-model="form.purchaseNo" class="flex-item" label="合同号"></input-box>
             </div>
             <div class="flex">
                 <upload-box btnText="质量保证书" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" :multiple="multiple" style="width: 50%"></upload-box>
@@ -17,7 +17,7 @@
                         <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="物料图号" hint="必填"></input-box>
                         <input-box v-model="item.materialName" class="flex-item mr-10" label="物料名称" hint="必填"></input-box>
                         <input-box v-model="item.deliveryNumber" type="number" class="mr-10" label="送检数量" hint="必填"></input-box>
-                        <input-box v-model="item.purchaseNo" class="mr-10" label="合同编号" hint="必填"></input-box>
+                        <!--<input-box v-model="item.purchaseNo" class="mr-10" label="合同编号" hint="必填"></input-box>-->
                         <input-box v-model="item.purchaseNumber" type="number" class="mr-10" label="采购数量" hint="必填"></input-box>
                     </div>
                     <div class="flex">
@@ -60,13 +60,14 @@ export default {
                 arrivalTime: "",
                 supplierName: "",
                 batchNumber: "",
+                purchaseNo:'',
                 status: 1,
                 items: [
                     {
                         deliveryNumber: "",
                         materialGraphNo: "",
                         materialName: "",
-                        purchaseNo: "",
+                        // purchaseNo: "",
                         purchaseNumber: "",
                         remark: "",
                         specification: "",
@@ -111,7 +112,7 @@ export default {
                 deliveryNumber: "",
                 materialGraphNo: "",
                 materialName: "",
-                purchaseNo: "",
+                // purchaseNo: "",
                 purchaseNumber: "",
                 remark: "",
                 specification: "",
@@ -157,8 +158,8 @@ export default {
                 purchaseNumber: "采购数量",
                 requirements: "材质要求",
                 specification: "规格",
-                unit: "单位",
-                purchaseNo: "合同编号"
+                unit: "单位"
+                // purchaseNo: "合同编号"
             };
             const { items, arrivalTime } = this.form;
             if (!arrivalTime) {

@@ -230,6 +230,7 @@ export default {
                     for (let key in this.form) {
                         this.form[key] = res[key];
                     }
+                    // this.fileList = this.accessories = res.accessories;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

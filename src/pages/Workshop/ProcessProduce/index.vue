@@ -222,7 +222,7 @@ export default {
     },
     methods: {
         inspectHistorys(item) {
-            this.$router.push(`/jhgl-scddlb/inspect?orderNo=${item.orderNo}`);
+            this.$router.push(`/cjzr-scddlb/checked?orderNo=${item.orderNo}`);
         },
         // info(item) {
         //     this.$router.push(`/cjzr-scddlb/info?orderNo=${item.orderNo}`);

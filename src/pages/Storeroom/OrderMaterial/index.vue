@@ -48,8 +48,8 @@
                     <td class="t-right">
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
                         <icon-btn small @click="remove(item)">delete</icon-btn>-->
-                        <a href="javascript:;" class="blue" @click="getInfo(item.orderNo)">详情</a>
-                        <a :href="`/haolifa/export/requisition/${item.orderNo}`" download="" style="margin-right: 3px" class="blue">下载领料单</a>
+                        <a href="javascript:;" class="blue" @click="getInfo(item.orderNo)">详情 |</a>
+                        <a :href="`/haolifa/export/requisition/${item.orderNo}`" download style="margin-right: 3px" class="blue">下载领料单</a>
                         <!--  <a href="javascript:;" class="blue" @click="entryList(item)">入库详情</a> |
                         <a href="javascript:;" class="blue" @click="outList(item)">出库详情</a>-->
                     </td>
@@ -74,7 +74,7 @@
                             <th>零件图号</th>
                             <th>零件名称</th>
                             <th>价格</th>
-                            <th>是否可替换零件</th>
+                            <!-- <th>是否可替换零件</th> -->
                             <th>需要零件数量</th>
                             <th>缺少零件数量</th>
                             <th>状态</th>
@@ -84,10 +84,10 @@
                             <td>{{item.materialGraphNo}}</td>
                             <td>{{item.materialName}}</td>
                             <td>{{item.price}}</td>
-                            <td>{{item.isReplace == 0 ?'否':'是'}}</td>
+                            <!-- <td>{{item.isReplace == 0 ?'否':'是'}}</td> -->
                             <td>{{item.materialCount}}</td>
                             <td>{{item.lackMaterialCount}}</td>
-                            <td>{{statusList[item.checkStatus].name}}</td>
+                            <td>{{statusList[item.checkStatus-1].name}}</td>
                         </tr>
                     </table>
                 </div>
@@ -108,7 +108,7 @@ export default {
         return {
             filter: {
                 orderNo: "",
-                orderStatusList:[5,6,7,8,9,10,11,12,13]
+                orderStatusList: [5, 6, 7, 8, 9, 10, 11, 12, 13]
             },
             loading: false,
             infoList: {},

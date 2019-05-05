@@ -39,7 +39,7 @@
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="sprayInfo(item)">查看</a>
-                        <a href="javascript:;" v-if="item.status == 3" style="margin-right: 3px" class="blue" @click="completeInspect(item)">质检完成</a>
+                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="completeInspect(item)">质检完成</a>
                         <a
                             href="javascript:;"
                             v-if="item.status !=0 && item.status != 2"

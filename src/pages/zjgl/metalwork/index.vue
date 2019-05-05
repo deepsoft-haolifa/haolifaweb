@@ -175,16 +175,19 @@ export default {
             },
             filter: {
                 type: 3,
-                status: 6
+                status:-1
             },
             rowStatusList: [
                 { status: 3, name: "加工中" },
-                { status: 4, name: "加工完成" }
+                { status: 4, name: "加工完成" },
+                { status: 5, name: "审批不通过" },
+                { status: 6, name: "质检完成" },
             ],
             statusList: [
-                { status: 6, name: "全部" },
+                { status: -1, name: "全部" },
                 { status: 3, name: "加工中" },
-                { status: 4, name: "加工完成" }
+                { status: 4, name: "加工完成" },
+                { status: 6, name: "质检完成" },
             ],
             loading: false,
             entrustNo: "",

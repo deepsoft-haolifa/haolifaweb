@@ -36,11 +36,11 @@
                     <!-- <td>{{item.createUserId}}</td> -->
                     <td>{{item.createTime}}</td>
                     <td>
-                        <a target="_blank" v-if="(item.orderContractExtendUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.orderContractUrl">预览</a>
+                        <a target="_blank" v-if="(item.orderContractExtendUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.orderContractExtendUrl">预览</a>
                         <a
                             target="_blank"
                             v-if="!(item.orderContractExtendUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractUrl"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractExtendUrl"
                         >预览</a>
                     </td>
                     <td class="t-right">

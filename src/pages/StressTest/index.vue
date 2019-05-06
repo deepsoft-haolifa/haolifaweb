@@ -31,7 +31,7 @@
                         <a class="fixed-length" :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a>
                     </td>
                     <td>{{item.deliveryDate}}</td>
-                    <td>{{orderStatusList[item.orderStatus-5].text}}</td>
+                    <td>{{orderStatusList[item.orderStatus-7].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <!-- <a href="javascript:;" class="blue" @click="progress(item)" style="margin-right: 3px;">添加压力测试记录|</a> -->
@@ -92,7 +92,7 @@
                             <td colspan="14" class="b">发货日期 : {{info.deliveryDate}}</td>
                         </tr>
                         <tr>
-                            <td colspan="14" class="b">订单状态 : {{ orderStatusList[info.orderStatus-5].text }}</td>
+                            <td colspan="14" class="b">订单状态 : {{ orderStatusList[info.orderStatus-7].text }}</td>
                         </tr>
                         <tr>
                             <td colspan="14" class="b">

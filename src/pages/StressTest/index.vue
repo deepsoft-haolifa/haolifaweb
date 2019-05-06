@@ -253,8 +253,6 @@ export default {
             completeLayer: false,
             loading: false,
             orderStatusList: [
-                { value: 5, text: "待生产" },
-                { value: 6, text: "待领料" },
                 { value: 7, text: "生产中" },
                 { value: 8, text: "生产暂停" },
                 { value: 9, text: "生产完成" },
@@ -265,7 +263,7 @@ export default {
             ],
             filter: {
                 orderNo: "",
-                orderStatus: 5
+                orderStatus: 7
             },
             layer: false,
             info: {},

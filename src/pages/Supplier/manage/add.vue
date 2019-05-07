@@ -230,6 +230,19 @@ export default {
                     for (let key in this.form) {
                         this.form[key] = res[key];
                     }
+                    this.accessories = [...res.accessories];
+                    res.accessories.forEach(item => {
+                        let fileObj = {
+                            name: item.fileName,
+                            size: "",
+                            type: "",
+                            status: "ready",
+                            url: item.fileUrl,
+                            uid: new Date().getTime(),
+                            source: ""
+                        };
+                        this.fileList.push(fileObj);
+                    });
                     // this.fileList = this.accessories = res.accessories;
                 })
                 .catch(e => {

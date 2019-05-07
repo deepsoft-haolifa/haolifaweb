@@ -21,6 +21,7 @@
                     <th>合同编号</th>
                     <th>需方单位</th>
                     <!-- <th>采购完成日期</th> -->
+                    <th>发货状态</th>
                     <th>订单状态</th>
                     <!-- <th>创建人</th> -->
                     <th>创建日期</th>
@@ -32,6 +33,7 @@
                     <td>{{item.orderNo}}</td>
                     <td>{{item.demandName}}</td>
                     <!-- <td>{{item.deliveryTime}}</td> -->
+                    <td>{{deliverStatusList[item.deliverStatus].text}}</td>
                     <td>{{statusList[item.orderStatus].text}}</td>
                     <!-- <td>{{item.createUserId}}</td> -->
                     <td>{{item.createTime}}</td>
@@ -60,6 +62,11 @@ export default {
     data() {
         return {
             natureList: ["国有", "三资", "集体", "联营", "私营"],
+            deliverStatusList:[
+                {value:0,text:'待发货'},
+                {value:1,text:'部分发货'},
+                {value:2,text:'发货完成'}
+            ],
             statusList: [
                 { value: 0, text: "创建" },
                 { value: 1, text: "审批中" },

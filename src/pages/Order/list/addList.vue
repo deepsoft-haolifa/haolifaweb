@@ -22,6 +22,7 @@
                     <th>订单编号</th>
                     <!-- <th style="width:50px;">订单合同URL</th> -->
                     <th>发货日期</th>
+                    <th>发货状态</th>
                     <th>订单状态</th>
                     <th>创建时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -34,6 +35,7 @@
                         <a class="fixed-length" :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a>
                     </td>-->
                     <td>{{item.deliveryDate}}</td>
+                    <td>{{deliverStatusList[item.deliverStatus].text}}</td>
                     <td>{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
@@ -249,6 +251,11 @@ export default {
         return {
             loading: false,
             btnFlag: false,
+            deliverStatusList:[
+                {value:0,text:'待发货'},
+                {value:1,text:'部分发货'},
+                {value:2,text:'发货完成'}
+            ],
             orderStatusList: [
                 { value: 0, text: "创建" },
                 { value: 1, text: "审批中" },

@@ -43,7 +43,7 @@
                         <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="deleteInfo(item)">删除 |</a>
                         <a href="javascript:;" v-if="item.status == 0 || item.status == 4" style="margin-right: 3px" class="blue" @click="machine(item)">开始加工 |</a>
                         <!--<a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="stopMachine(item)">暂停</a>-->
-                        <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="completeMachine(item)">加工完成 |</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status == 2" style="margin-right: 3px" class="blue" @click="completeMachine(item)">加工完成 |</a>
                         <a :href="`/haolifa/export/spray/excel/${item.sprayNo}`" download style="margin-right: 3px" class="blue">下载委托单</a>
                     </td>
                 </template>

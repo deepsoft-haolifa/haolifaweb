@@ -36,6 +36,7 @@
                     <td>{{isQualifiedStatusList[item.isQualified].text}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
+                        <a href="javascript:;" class="blue" @click="infoDetail(item)" style="margin-right: 3px;">详情</a> |
                         <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a> |
                         <a
                             href="javascript:;"
@@ -100,6 +101,9 @@ export default {
         },
         edit(item) {
             this.$router.push(`/supplier/edit?id=${item.id}`);
+        },
+        infoDetail(item) {
+            this.$router.push(`/supplier/${item.id}`);
         },
         remove(item) {
             this.$confirm({

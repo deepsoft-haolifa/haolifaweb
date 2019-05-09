@@ -4,8 +4,8 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.fileName" @change="$refs.list.update(true)" placeholder="文件名称" style="width: 200px;">
-                <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)">
-                    <option value="-1">文件类型</option>
+                <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)" placeholder="文件类型">
+                    <option value="0">全部</option>
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
@@ -45,7 +45,8 @@
                             :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
                         >{{item.fileUrl}}</a>
                     </td>
-                    <td>{{item.type == 1 ? '零件图纸' : '其它'}}</td>
+                    <td>{{statusList[item.type-1].name}}</td>
+                    <!-- <td>{{statusList[item.type].name}}</td> -->
                     <td>{{item.remark}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
@@ -69,16 +70,27 @@ export default {
                 fileName: "",
                 type: 0
             },
-            statusList: [
-                { status: 0, name: "全部" },
-                { status: 1, name: "零件图纸" },
-                { status: 2, name: "其它" }
-            ]
+            statusList: []
         };
+    },
+    created() {
+        this.getFileTypeStatus();
     },
     methods: {
         edit(item) {
             this.$router.push(`/fileupload/edit?id=${item.id}`);
+        },
+        getFileTypeStatus() {
+            this.$http
+                .get(`/haolifa/file/fileTypeList`)
+                .then(res => {
+                    this.statusList = res.map(item => {
+                        return { status: item.code, name: item.desc };
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         remove(item) {
             this.$confirm({

@@ -66,6 +66,6 @@ export default [{
         level: 2,
         title: '供应商详情',
         open: false,
-        id: 'gysgl'
+        id: 'parent-gysgl'
     }
 }]

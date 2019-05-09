@@ -37,13 +37,14 @@
                     <td class="t-right">
                         <!-- <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
                         <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a> |-->
+                        <a href="javascript:;" class="blue" @click="infoDetail(item)" style="margin-right: 3px;">详情</a>
                         <a
                             href="javascript:;"
                             v-if="item.isQualified == 1 || item.isQualified==2"
                             class="blue"
                             @click="auditAccessoryInfo(item.suppilerNo)"
                             style="margin-right: 3px;"
-                        >审批附件</a>
+                        >| 审批附件</a>
                         <!-- <a
                             href="javascript:;"
                             class="red"
@@ -51,7 +52,7 @@
                             @click="approveSupplier(item.suppilerNo)"
                             style="margin-right: 3px;"
                         >发起审批</a>-->
-                        <a href="javascript:;" class="red" v-if="item.isQualified == 3" @click="approving(item.suppilerNo)" style="margin-right: 3px;">审批进度</a>
+                        <a href="javascript:;" class="red" v-if="item.isQualified == 3" @click="approving(item.suppilerNo)" style="margin-right: 3px;">| 审批进度</a>
                     </td>
                 </template>
             </data-list>
@@ -97,6 +98,9 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+        },
+        infoDetail(item) {
+            this.$router.push(`/supplier/${item.id}`);
         },
         edit(item) {
             this.$router.push(`/supplier/edit?id=${item.id}`);

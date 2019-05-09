@@ -30,10 +30,7 @@ export default {
     name: "page-room-add",
     data() {
         return {
-            typeList: [
-                { text: "零件图纸", value: 1 },
-                { text: "其它", value: 2 }
-            ],
+            typeList: [],
             fileList: [],
             loading: false,
             form: {
@@ -60,6 +57,7 @@ export default {
     },
     created() {
         let { id } = this.$route.query;
+        this.getFileTypeStatus();
         if (id !== undefined && this.$route.name === "fileupload-edit")
             this.getInfo(id);
     },
@@ -72,6 +70,31 @@ export default {
                         if (this.form[key] !== undefined)
                             this.form[key] = res[key];
                     }
+                    this.form.type = this.form.type + "";
+                    let fileObj = {
+                        name: this.form.fileUrl.substring(
+                            this.form.fileUrl.lastIndexOf("/") + 1
+                        ),
+                        size: "",
+                        type: "",
+                        status: "ready",
+                        url: this.form.fileUrl,
+                        uid: new Date().getTime(),
+                        source: ""
+                    };
+                    this.fileList.push(fileObj);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getFileTypeStatus() {
+            this.$http
+                .get(`/haolifa/file/fileTypeList`)
+                .then(res => {
+                    this.typeList = res.map(item => {
+                        return { value: item.code, text: item.desc };
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

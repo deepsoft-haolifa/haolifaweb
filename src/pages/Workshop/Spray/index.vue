@@ -163,14 +163,14 @@ export default {
                 type: 0
             },
             rowStatusList: [
-                { status: 0, name: "待审批" },
+                { status: 0, name: "待加工" },
                 { status: 1, name: "加工中" },
                 { status: 2, name: "质检完成" },
                 { status: 3, name: "加工完成" },
                 { status: 4, name: "暂停加工" }
             ],
             statusList: [
-                { status: 0, name: "待审批" },
+                { status: 0, name: "待加工" },
                 { status: 1, name: "加工中" },
                 { status: 2, name: "质检完成" },
                 { status: 3, name: "加工完成" },

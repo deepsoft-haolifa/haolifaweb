@@ -249,9 +249,9 @@ export default {
         inspectHistorys(item) {
             this.$router.push(`/jhgl-scddlb/inspect?orderNo=${item.orderNo}`);
         },
-        info(item) {
-            this.$router.push(`/jhgl-scddlb/info?orderNo=${item.orderNo}`);
-        },
+        // info(item) {
+        //     this.$router.push(`/jhgl-scddlb/info?orderNo=${item.orderNo}`);
+        // },
         getInfo(orderNo) {
             this.layer = true;
             this.$http

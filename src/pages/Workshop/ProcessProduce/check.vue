@@ -10,33 +10,22 @@
             <div class="flex-item scroll-y ml-20" v-for="(item, i) in inspectHistory">
                 <table class="data-table">
                     <tr>
-                        <th>质检单号</th>
                         <th>订单号</th>
+                        <th>型号</th>
+                        <th>规格</th>
                         <th>检测数量</th>
                         <th>合格数量</th>
                         <th>不合格数量</th>
+                        <th>不合格原因</th>
                     </tr>
                     <tr>
-                        <td>{{item.inspectNo}}</td>
                         <td>{{item.orderNo}}</td>
+                        <td>{{item.productModel}}</td>
+                        <td>{{item.productSpecifications}}</td>
                         <td>{{item.testingNumber}}</td>
                         <td>{{item.qualifiedNumber}}</td>
                         <td>{{item.unqualifiedNumber}}</td>
-                    </tr>
-                    <tr>
-                        <th colspan="5" style="text-align: center">不合格列表</th>
-                    </tr>
-                    <tr>
-                        <th>成品型号</th>
-                        <th>成品规格</th>
-                        <th>不合格数量</th>
-                        <th colspan="2">不合格原因</th>
-                    </tr>
-                    <tr v-for="(unitem,i) in item.unqualifiedList">
-                        <td>{{unitem.productModel}}</td>
-                        <td>{{unitem.productSpecifications}}</td>
-                        <td>{{unitem.unqualifiedNumber}}</td>
-                        <td colspan="2">{{unitem.reason}}</td>
+                        <th colspan="2">{{item.reason}}</th>
                     </tr>
                 </table>
                 <hr>
@@ -71,19 +60,9 @@ export default {
                 inspectNo: ""
             };
             this.$http
-                .post(`/haolifa/pro-inspect-res/pageInfo`, params)
+                .post(`/haolifa/pro-inspect/pageInfo`, params)
                 .then(res => {
-                    res.list.forEach(item => {
-                        this.$http
-                            .get(
-                                `/haolifa/pro-inspect-res/info/${
-                                    item.inspectNo
-                                }`
-                            )
-                            .then(res => {
-                                this.inspectHistory.push(res);
-                            });
-                    });
+                    this.inspectHistory = res.list;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

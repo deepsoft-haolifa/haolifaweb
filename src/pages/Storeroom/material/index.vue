@@ -39,7 +39,7 @@
                     <td>{{item.model}}</td>
                     <td>{{item.specifications}}</td>
                     <td>{{item.price}}</td>
-                    <td>{{item.price*item.currentQuantity}}</td>
+                    <td>{{item.price*item.currentQuantity|numFilter}}</td>
                     <td>{{item.currentQuantity}}</td>
                     <td>
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
@@ -119,6 +119,19 @@
                     }
                 });
             }
+        },
+        filters: {
+
+            numFilter(value) {
+
+                // 截取当前数据到小数点后两位
+
+                let realVal = parseFloat(value).toFixed(2)
+
+                return realVal
+
+            }
+
         }
     };
 </script>

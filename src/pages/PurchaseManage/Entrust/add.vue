@@ -1,7 +1,7 @@
 <template>
     <div class="apply-buy-add">
         <div class="content">
-            <div class="title b f-18 mb-10">{{isAdd ? '编辑' : '新增'}}机加工订单</div>
+            <div class="title b f-18 mb-10">{{isAdd ? '新增' : '编辑'}}机加工订单</div>
             <div class="flex">
                 <input-box v-model="form.demander" class="flex-item" label="需方" style="margin-right: 20px;"></input-box>
                 <input-box v-model="form.demanderAddr" class="flex-item" label="需方地址" style="margin-right: 20px;"></input-box>

@@ -3,7 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" placeholder="供应商名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.supplierName" placeholder="供应商名称" @change="$refs.list.update(true)" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
             <router-link to="/supplier/add">
@@ -11,7 +11,7 @@
             </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="post" :pageSize="10" url="/haolifa/supplier/list">
+            <data-list ref="list" method="post" :pageSize="10" :param="filter" url="/haolifa/supplier/list">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>企业名称</th>
@@ -68,6 +68,10 @@ export default {
     components: { DataList },
     data() {
         return {
+            filter:{
+                supplierName:'',
+                supplierNo:''
+            },
             natureList: ["国有", "三资", "集体", "联营", "私营"],
             isQualifiedStatusList: [
                 { value: 0, text: "待评定" },

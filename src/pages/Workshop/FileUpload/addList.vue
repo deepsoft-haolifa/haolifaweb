@@ -51,7 +51,8 @@
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
+                        <a :href="item.fileUrl" style="margin-right: 3px" class="blue">下载</a> |
+                        <a href="javascript:;" style="margin-right: 3px" class="red" @click="remove(item)">删除</a>
                     </td>
                 </template>
             </data-list>

@@ -139,9 +139,22 @@ export default {
             });
         },
         submit() {
+            if (!this.form.fileName) {
+                this.$toast("文件名称不能为空");
+                return;
+            }
+            if (!this.form.type) {
+                this.$toast("请选择文件类型");
+                return;
+            }
+            if (!this.form.fileUrl) {
+                this.$toast("请上传零件图纸");
+                return;
+            }
             const { form } = this;
             this.loading = true;
             const method = form.id ? "put" : "post";
+
             this.$http[method](
                 `/haolifa/file/${form.id ? "update" : "save"}`,
                 form

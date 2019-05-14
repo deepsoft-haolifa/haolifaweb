@@ -52,11 +52,12 @@ export default {
         status: -1
       },
       allStatus: [
-          {value: -1, text:'全部'},
+          {value: 0, text: '未处理'},
           {value: 1, text: '待审批'},
           {value: 2, text: '待采购'},
           {value: 3, text: '已处理'},
           {value: 4, text: '审批不通过'},
+          {value: -1, text:'全部'}
       ]
     }
   },

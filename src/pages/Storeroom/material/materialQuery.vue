@@ -23,6 +23,7 @@
                     <th>型号</th>
                     <th>规格</th>
                     <th>库存</th>
+                    <th>锁定数量</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -32,6 +33,7 @@
                     <td>{{item.model}}</td>
                     <td>{{item.specifications}}</td>
                     <td>{{item.currentQuantity}}</td>
+                    <td>{{item.lockQuantity}}</td>
                 </template>
             </data-list>
         </div>

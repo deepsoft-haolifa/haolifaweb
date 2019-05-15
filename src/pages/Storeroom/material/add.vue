@@ -47,6 +47,7 @@ export default {
         id: '',
         actualWeight: '',
         currentQuantity: '',
+        lockQuantity: '',
         graphNo: '',
         material: '',
         materialClassifyId: '',

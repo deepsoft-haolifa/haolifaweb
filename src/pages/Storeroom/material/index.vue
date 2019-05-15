@@ -28,7 +28,8 @@
                     <th>规格</th>
                     <th>单价</th>
                     <th>金额</th>
-                    <th>库存</th>
+                    <th>当前库存</th>
+                    <th>锁定数量</th>
                     <th class="t-center" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
@@ -41,6 +42,7 @@
                     <td>{{item.price}}</td>
                     <td>{{item.price*item.currentQuantity|numFilter}}</td>
                     <td>{{item.currentQuantity}}</td>
+                    <td>{{item.lockQuantity}}</td>
                     <td>
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
                         <icon-btn small @click="remove(item)">delete</icon-btn>-->

@@ -37,7 +37,7 @@
                     <td>{{rowStatusList[item.status-3].name}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
+                        <a href="javascript:;" v-if="item.status != 6" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a>
                         <a href="javascript:;" v-if="item.status != 6 && item.status != 4"  style="margin-right: 3px" class="blue" @click="updateEntrustStatus(item)">质检完成</a>
                     </td>
                 </template>

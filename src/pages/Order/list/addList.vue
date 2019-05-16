@@ -251,10 +251,10 @@ export default {
         return {
             loading: false,
             btnFlag: false,
-            deliverStatusList:[
-                {value:0,text:'待发货'},
-                {value:1,text:'部分发货'},
-                {value:2,text:'发货完成'}
+            deliverStatusList: [
+                { value: 0, text: "待发货" },
+                { value: 1, text: "部分发货" },
+                { value: 2, text: "发货完成" }
             ],
             orderStatusList: [
                 { value: 0, text: "创建" },

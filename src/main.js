@@ -40,14 +40,20 @@ new Vue({
 axios.interceptors.response.use(function (response) {
   if (response.data) {
     if (response.data.code === '0000') return response.data.result
-    if (response.data.code === '1') router.replace('/login')
-    else return Promise.reject(response.data || response)
+    if (response.data.code === '1') {
+      router.replace('/login')
+    } else return Promise.reject(response.data || response)
   } else {
     return Promise.reject(response.data || response)
   }
 }, function (e) {
   if (e.response.status == 401) {
-    return Promise.reject(e.response.data.msg)
+    if (e.response.data.code === '1') {
+      router.replace('/login')
+      return Promise.reject("用户会话超时，请重新登录");
+    } else {
+      return Promise.reject(e.response.data.msg)
+    }
   }
   return Promise.reject(e)
 })

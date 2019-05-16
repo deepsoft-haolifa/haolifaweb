@@ -190,11 +190,11 @@ export default {
     data() {
         return {
             loading: false,
-            deliverStatusList:[
-                {value:0,text:'待发货'},
-                {value:1,text:'部分发货'},
-                {value:2,text:'发货完成'}
-                ],
+            deliverStatusList: [
+                { value: 0, text: "待发货" },
+                { value: 1, text: "部分发货" },
+                { value: 2, text: "发货完成" }
+            ],
             orderStatusList: [
                 { value: 5, text: "待生产" },
                 { value: 6, text: "待领料" },
@@ -204,7 +204,7 @@ export default {
             ],
             filter: {
                 orderNo: "",
-                orderStatus: 5
+                orderStatus: 7
             },
             layer: false,
             info: {},

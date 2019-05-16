@@ -34,7 +34,7 @@
                     <td>{{orderStatusList[item.orderStatus-5].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="progress(item)" style="margin-right: 3px;">添加质检记录|</a>
+                        <a href="javascript:;" v-if="item.orderStatus != 9" class="blue" @click="progress(item)" style="margin-right: 3px;">添加质检记录|</a>
                         <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                     </td>
                 </template>

@@ -87,6 +87,7 @@
                                     v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
                                     :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
                                 >预览</a>
+                                <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -174,11 +175,88 @@
                             <td colspan="2">{{item.materialDescription}}</td>
                             <td colspan="2">{{item.productRemark}}</td>
                         </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="14" class="b">审批附件:</td>
+                        </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="6" class="b">文件名称</td>
+                            <td colspan="6" class="b">文件地址</td>
+                            <td colspan="2" class="b">——</td>
+                        </tr>
+                        <tr v-for="(accessory,index) in accessoryList" :key="index">
+                            <td colspan="6">{{accessory.fileName}}</td>
+                            <td colspan="6">{{accessory.fileUrl}}</td>
+                            <td colspan="2">
+                                <a
+                                        target="_blank"
+                                        v-if="!(accessory.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                        :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
             <div class="layer-btns">
                 <btn flat color="#008eff" @click="layer=false">关闭</btn>
+            </div>
+        </layer>
+        <layer v-if="btnFlag" style="z-index:101" title="核料清单详情" width="70%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content metalwork-info">
+                    <table class="f-14 order-info">
+                        <tr>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 8%;"></td>
+                            <td style="width: 8%;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">核料清单</td>
+                        </tr>
+                        <tr>
+                            <th>物料名称</th>
+                            <th colspan="2">物料图号</th>
+                            <th colspan="2">型号</th>
+                            <th>规格</th>
+                            <th>单价</th>
+                            <th>单位</th>
+                            <th>需要数量</th>
+                            <th>缺少数量</th>
+                            <th>核料状态</th>
+                            <th>是否替换</th>
+                            <th>替换零件</th>
+                            <th>备注</th>
+                        </tr>
+                        <tr v-for="(item, i) in preCheckMaterList">
+                            <td>{{item.materialName}}</td>
+                            <td colspan="2">{{item.materialGraphNo}}</td>
+                            <td colspan="2">{{item.model}}</td>
+                            <td>{{item.specifications}}</td>
+                            <td>{{item.price}}</td>
+                            <td>{{item.unit}}</td>
+                            <td>{{item.materialCount}}</td>
+                            <td>{{item.lackMaterialCount}}</td>
+                            <td>{{checkStatusList[item.checkStatus-1].text}}</td>
+                            <td>{{item.checkStatus==3?'是':'否'}}</td>
+                            <td>{{item.replaceMaterialGraphNo}}</td>
+                            <td>{{item.remark}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat color="#008eff" @click="btnFlag = false">关闭</btn>
             </div>
         </layer>
     </div>
@@ -209,6 +287,10 @@ export default {
                 orderNo: "",
                 orderStatus: 5
             },
+            //核料清单列表
+            preCheckMaterList: [],
+            accessoryList: [],
+            btnFlag:false,
             layer: false,
             info: {},
             arr: [
@@ -246,6 +328,17 @@ export default {
         };
     },
     methods: {
+        getAccessory(orderNo) {
+            this.$http.get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`).then(res => {
+                res.forEach(item => {
+                    if (item.fileUrl != '') {
+                        this.accessoryList.push(item)
+                    }
+                })
+            }).catch(e => {
+                this.$toast(e.msg || e.message);
+            })
+        },
         inspectHistorys(item) {
             this.$router.push(`/jhgl-scddlb/inspect?orderNo=${item.orderNo}`);
         },
@@ -262,6 +355,7 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+            this.getAccessory(orderNo)
         },
         getOrderStatusList() {
             this.$http
@@ -270,6 +364,18 @@ export default {
                     for (let i in res) {
                         this.orderStatusList[res[i].code] = res[i].desc;
                     }
+                });
+        },
+        getPreCheckMater(orderNo) {
+            this.btnFlag = true;
+            //核料清单查询
+            this.$http
+                .get(`/haolifa/order-product/order-material?orderNo=${orderNo}`)
+                .then(res => {
+                    this.preCheckMaterList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
                 });
         }
     }

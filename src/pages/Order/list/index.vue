@@ -3,10 +3,12 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)"
+                       placeholder="订单号" style="width: 200px;">
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
-                    <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
+                    <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}
+                    </option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -36,7 +38,8 @@
                     <td>{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
+                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1"
+                           style="margin-right: 3px;">审批进度|</a>
                         <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                     </td>
                 </template>
@@ -76,13 +79,15 @@
                             <td colspan="14" class="b">
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
-                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
+                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') "
+                                   :href="info.orderContractUrl">预览</a>
                                 <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                        target="_blank"
+                                        v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                        :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
                                 >预览</a>
-                                <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
+                                <a href="javascript:;" @click="getPreCheckMater(info.orderNo)"
+                                   style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -169,6 +174,25 @@
                             <td colspan="2">{{item.materialDescription}}</td>
                             <td colspan="2">{{item.productRemark}}</td>
                         </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="14" class="b">审批附件:</td>
+                        </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="6" class="b">文件名称</td>
+                            <td colspan="6" class="b">文件地址</td>
+                            <td colspan="2" class="b">——</td>
+                        </tr>
+                        <tr v-for="(accessory,index) in accessoryList" :key="index">
+                            <td colspan="6">{{accessory.fileName}}</td>
+                            <td colspan="6">{{accessory.fileUrl}}</td>
+                            <td colspan="2">
+                                <a
+                                        target="_blank"
+                                        v-if="!(accessory.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                        :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -238,222 +262,237 @@
 </template>
 
 <script>
-import DataList from "@/components/datalist";
+    import DataList from "@/components/datalist";
 
-export default {
-    name: "page-orders-list",
-    components: { DataList },
-    data() {
-        return {
-            btnFlag: false,
-            layer: false,
-            loading: false,
-            deliverStatusList:[
-                {value:0,text:'待发货'},
-                {value:1,text:'部分发货'},
-                {value:2,text:'发货完成'}
-            ],
-            orderStatusList: [
-                { value: 0, text: "创建" },
-                { value: 1, text: "审批中" },
-                { value: 2, text: "核料中" },
-                { value: 3, text: "替换料审批中" },
-                { value: 4, text: "核料完成" },
-                { value: 5, text: "待生产" },
-                { value: 6, text: "待领料" },
-                { value: 7, text: "生产中" },
-                { value: 8, text: "生产暂停" },
-                { value: 9, text: "生产完成" },
-                { value: 10, text: "质检中" },
-                { value: 11, text: "已入库" },
-                { value: 12, text: "申请发货" },
-                { value: 13, text: "发货完成" },
-                { value: 14, text: "审核不通过" }
-            ],
-            filter: {
-                orderNo: "",
-                orderStatus: -1
-            },
-            info: {},
-            // orderStatusList: {},
-            arr: [
-                {
-                    name: "",
-                    xinhao: "",
-                    guige: "",
-                    num: "",
-                    biaozhun: "",
-                    lianjiek: "",
-                    jiaodu: "",
-                    zhongxinju: "",
-                    xinshi: "",
-                    length: "",
-                    tuhao: "",
-                    jinniuju: "",
-                    guodupan: "",
-                    jishuxinhao: ""
-                }
-            ],
-            //核料清单列表
-            preCheckMaterList: [],
-            checkStatusList: [
-                { value: 1, text: "成功" },
-                { value: 2, text: "待采购" },
-                { value: 3, text: "可替换" }
-            ]
-        };
-    },
-    created() {
-        // this.getOrderStatusList();
-    },
-    methods: {
-        getOrderStatusList() {
-            this.$http
-                .get("/haolifa/order-product/order-status-list")
-                .then(res => {
-                    this.orderStatusList = res.map(item => {
-                        return { value: item.code, text: item.desc };
-                    });
-                });
+    export default {
+        name: "page-orders-list",
+        components: {DataList},
+        data() {
+            return {
+                btnFlag: false,
+                layer: false,
+                loading: false,
+                deliverStatusList: [
+                    {value: 0, text: '待发货'},
+                    {value: 1, text: '部分发货'},
+                    {value: 2, text: '发货完成'}
+                ],
+                orderStatusList: [
+                    {value: 0, text: "创建"},
+                    {value: 1, text: "审批中"},
+                    {value: 2, text: "核料中"},
+                    {value: 3, text: "替换料审批中"},
+                    {value: 4, text: "核料完成"},
+                    {value: 5, text: "待生产"},
+                    {value: 6, text: "待领料"},
+                    {value: 7, text: "生产中"},
+                    {value: 8, text: "生产暂停"},
+                    {value: 9, text: "生产完成"},
+                    {value: 10, text: "质检中"},
+                    {value: 11, text: "已入库"},
+                    {value: 12, text: "申请发货"},
+                    {value: 13, text: "发货完成"},
+                    {value: 14, text: "审核不通过"}
+                ],
+                filter: {
+                    orderNo: "",
+                    orderStatus: -1
+                },
+                info: {},
+                // orderStatusList: {},
+                arr: [
+                    {
+                        name: "",
+                        xinhao: "",
+                        guige: "",
+                        num: "",
+                        biaozhun: "",
+                        lianjiek: "",
+                        jiaodu: "",
+                        zhongxinju: "",
+                        xinshi: "",
+                        length: "",
+                        tuhao: "",
+                        jinniuju: "",
+                        guodupan: "",
+                        jishuxinhao: ""
+                    }
+                ],
+                //核料清单列表
+                preCheckMaterList: [],
+                accessoryList: [],
+                checkStatusList: [
+                    {value: 1, text: "成功"},
+                    {value: 2, text: "待采购"},
+                    {value: 3, text: "可替换"}
+                ]
+            };
         },
-        getPreCheckMater(orderNo) {
-            this.btnFlag = true;
-            //核料清单查询
-            this.$http
-                .get(`/haolifa/order-product/order-material?orderNo=${orderNo}`)
-                .then(res => {
-                    this.preCheckMaterList = res;
-                })
-                .catch(e => {
-                    this.$toast(e.msg || e.message);
-                });
-        },
-        progress(item) {
-            let id = "";
-            this.$http
-                .post("/haolifa/flowInstance/create", {
-                    flowId: 1,
-                    formId: item.id,
-                    formType: 1,
-                    formNo: item.orderNo,
-                    summary: "生产订单审批"
-                })
-                .then(res => {
-                    id = res.instanceId;
-                    // this.loading = false;
-                    // this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
-                    this.$http
-                        .post("/haolifa/order-product/updateStatus", {
-                            orderNo: item.orderNo,
-                            status: 1
-                        })
-                        .then(res => {
-                            this.loading = false;
-                            this.$toast(`发起流程成功,流程ID: ${id}`);
-                        });
-                });
-        },
-        // 审批进度查看
-        approveProgress(item) {
-            this.$router.push(
-                `/order/approveProgress?formNo=${item.orderNo}&formId=0`
-            );
-        },
-        infoShow(item) {
-            // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
-            this.layer = true;
-            this.getInfo(item.orderNo);
+        created() {
             // this.getOrderStatusList();
         },
-        getInfo(orderNo) {
-            this.$http
-                .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
-                .then(res => {
-                    this.info = res;
-                })
-                .catch(e => {
+        methods: {
+            getAccessory(orderNo) {
+                this.$http.get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`).then(res => {
+                    res.forEach(item => {
+                        if (item.fileUrl != '') {
+                            this.accessoryList.push(item)
+                        }
+                    })
+                }).catch(e => {
                     this.$toast(e.msg || e.message);
-                });
-        },
-        close() {
-            this.layer = false;
-        },
-        remove(item) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
-                    this.$http
-                        .delete(`/haolifa/order-product/delete/${item.id}`)
-                        .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update();
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg);
+                })
+            },
+            getOrderStatusList() {
+                this.$http
+                    .get("/haolifa/order-product/order-status-list")
+                    .then(res => {
+                        this.orderStatusList = res.map(item => {
+                            return {value: item.code, text: item.desc};
                         });
-                }
-            });
+                    });
+            },
+            getPreCheckMater(orderNo) {
+                this.btnFlag = true;
+                //核料清单查询
+                this.$http
+                    .get(`/haolifa/order-product/order-material?orderNo=${orderNo}`)
+                    .then(res => {
+                        this.preCheckMaterList = res;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                    });
+            },
+            progress(item) {
+                let id = "";
+                this.$http
+                    .post("/haolifa/flowInstance/create", {
+                        flowId: 1,
+                        formId: item.id,
+                        formType: 1,
+                        formNo: item.orderNo,
+                        summary: "生产订单审批"
+                    })
+                    .then(res => {
+                        id = res.instanceId;
+                        // this.loading = false;
+                        // this.$toast(`发起流程成功,流程ID: ${res.instanceId}`);
+                        this.$http
+                            .post("/haolifa/order-product/updateStatus", {
+                                orderNo: item.orderNo,
+                                status: 1
+                            })
+                            .then(res => {
+                                this.loading = false;
+                                this.$toast(`发起流程成功,流程ID: ${id}`);
+                            });
+                    });
+            },
+            // 审批进度查看
+            approveProgress(item) {
+                this.$router.push(
+                    `/order/approveProgress?formNo=${item.orderNo}&formId=0`
+                );
+            },
+            infoShow(item) {
+                // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
+                this.layer = true;
+                this.getInfo(item.orderNo);
+                this.getAccessory(item.orderNo)
+                // this.getOrderStatusList();
+            },
+            getInfo(orderNo) {
+                this.$http
+                    .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
+                    .then(res => {
+                        this.info = res;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                    });
+            },
+            close() {
+                this.layer = false;
+            },
+            remove(item) {
+                this.$confirm({
+                    title: "删除确认",
+                    text: `您确定要删除以下发货通知单吗？<br>${item.deliveryNo}`,
+                    color: "red",
+                    btns: ["取消", "删除"],
+                    yes: () => {
+                        this.$http
+                            .delete(`/haolifa/order-product/delete/${item.id}`)
+                            .then(res => {
+                                this.$toast("删除成功");
+                                this.$refs.list.update();
+                            })
+                            .catch(e => {
+                                this.$toast(e.msg);
+                            });
+                    }
+                });
+            }
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">
-.page-orders-list {
-    select {
-        background: none;
-        border: none;
-        outline: none;
-        padding: 5px 20px 5px 10px;
-        appearance: none;
+    .page-orders-list {
+        select {
+            background: none;
+            border: none;
+            outline: none;
+            padding: 5px 20px 5px 10px;
+            appearance: none;
+        }
+        .scroll-y {
+            padding-bottom: 40px;
+        }
     }
-    .scroll-y {
-        padding-bottom: 40px;
-    }
-}
 
-.fixed-length {
-    width: 100px;
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.metalwork-info {
-    padding: 30px 20px;
-    tr:first-child td {
-        padding: 0;
-        border: none;
+    .fixed-length {
+        width: 100px;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
-    th {
-        font-weight: normal;
-        color: #888;
+
+    .metalwork-info {
+        padding: 30px 20px;
+        tr:first-child td {
+            padding: 0;
+            border: none;
+        }
+        th {
+            font-weight: normal;
+            color: #888;
+        }
+        td {
+            color: #444;
+        }
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #fff;
+            border: 1px solid #ddd;
+        }
+        .checkbox-list {
+            flex-wrap: wrap;
+        }
+        .checkbox-item {
+            line-height: 1em;
+            width: 180px;
+            margin: 5px 0;
+        }
     }
-    td {
-        color: #444;
+
+    .order-info {
+        th,
+        td {
+            white-space: unset !important;
+        }
     }
-    th,
-    td {
-        padding: 10px;
-        border: 1px solid #fff;
-        border: 1px solid #ddd;
-    }
-    .checkbox-list {
-        flex-wrap: wrap;
-    }
-    .checkbox-item {
-        line-height: 1em;
-        width: 180px;
-        margin: 5px 0;
-    }
-}
-.order-info {
-    th,
-    td {
-        white-space: unset !important;
-    }
-}
 </style>

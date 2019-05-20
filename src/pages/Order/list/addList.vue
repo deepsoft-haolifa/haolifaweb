@@ -231,6 +231,25 @@
                             <td colspan="2">{{item.materialDescription}}</td>
                             <td colspan="2">{{item.productRemark}}</td>
                         </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="14" class="b">审批附件:</td>
+                        </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="6" class="b">文件名称</td>
+                            <td colspan="6" class="b">文件地址</td>
+                            <td colspan="2" class="b">——</td>
+                        </tr>
+                        <tr v-for="(accessory,index) in accessoryList" :key="index">
+                            <td colspan="6">{{accessory.fileName}}</td>
+                            <td colspan="6">{{accessory.fileUrl}}</td>
+                            <td colspan="2">
+                                <a
+                                        target="_blank"
+                                        v-if="!(accessory.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                        :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -314,6 +333,7 @@ export default {
             ],
             //核料清单列表
             preCheckMaterList: [],
+            accessoryList: [],
             checkStatusList: [
                 { value: 1, text: "成功" },
                 { value: 2, text: "待采购" },
@@ -325,6 +345,17 @@ export default {
         // this.getOrderStatusList();
     },
     methods: {
+        getAccessory(orderNo) {
+            this.$http.get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`).then(res => {
+                res.forEach(item => {
+                    if (item.fileUrl != '') {
+                        this.accessoryList.push(item)
+                    }
+                })
+            }).catch(e => {
+                this.$toast(e.msg || e.message);
+            })
+        },
         getOrderStatusList() {
             this.$http
                 .get("/haolifa/order-product/order-status-list")
@@ -379,7 +410,7 @@ export default {
             // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
             this.layer = true;
             this.getInfo(item.orderNo);
-
+            this.getAccessory(item.orderNo)
             // this.getOrderStatusList();
         },
         getInfo(orderNo) {

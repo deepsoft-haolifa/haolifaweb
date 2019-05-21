@@ -83,6 +83,7 @@
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <!-- <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a> -->
                                 <a target="_blank" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
+                                <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" -->
                             <!-- <td colspan="6" class="b">

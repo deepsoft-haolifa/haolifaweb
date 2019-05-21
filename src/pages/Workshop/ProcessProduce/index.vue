@@ -197,7 +197,7 @@
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="layer=false">关闭</btn>
+                <btn flat color="#008eff" @click="closeLayer">关闭</btn>
             </div>
         </layer>
         <layer v-if="btnFlag" style="z-index:101" title="核料清单详情" width="70%">
@@ -317,6 +317,10 @@ export default {
         };
     },
     methods: {
+        closeLayer() {
+          this.layer = false;
+          this.accessoryList = []
+        },
         getAccessory(orderNo) {
             this.$http.get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`).then(res => {
                 res.forEach(item => {

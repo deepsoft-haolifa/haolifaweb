@@ -436,6 +436,8 @@ export default {
         // },
         close() {
             this.layer = false;
+            this.accessoryList = []
+
         },
         remove(item) {
             this.$confirm({

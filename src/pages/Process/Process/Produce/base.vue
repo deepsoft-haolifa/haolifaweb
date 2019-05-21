@@ -464,7 +464,7 @@
                             <td>{{auditResults[item.auditResult].name}}</td>
                             <td>{{item.auditInfo}}</td>
                             <td v-if="item.accessories != null">
-                                <a v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
+                                <a target="_blank" v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a><br/>
                             </td>
                             <td v-else>无</td>
                         </tr>

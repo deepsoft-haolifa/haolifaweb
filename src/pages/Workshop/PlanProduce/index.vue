@@ -130,7 +130,7 @@
                             <td colspan="1" rowspan="1">轴图号</td>
                             <td colspan="1" rowspan="1">过渡盘</td>
                         </tr>
-                        <tr v-for="(val,index) in JSON.parse(info.technicalRequire)" :key="index">
+                        <tr v-for="(val) in JSON.parse(info.technicalRequire)">
                             <td colspan="1">{{val.name}}</td>
                             <td colspan="1">{{val.xinhao}}</td>
                             <td colspan="1">{{val.guige}}</td>
@@ -162,7 +162,7 @@
                             <td colspan="2" class="b">材质说明</td>
                             <td colspan="2" class="b">产品备注</td>
                         </tr>
-                        <tr v-for="(item,index) in info.orderProductAssociates" :key="index">
+                        <tr v-for="(item) in info.orderProductAssociates">
                             <td colspan="1">{{item.productNo}}</td>
                             <td colspan="2">{{item.productName}}</td>
                             <td colspan="1">{{item.productModel}}</td>
@@ -183,13 +183,15 @@
                             <td colspan="6" class="b">文件地址</td>
                             <td colspan="2" class="b">——</td>
                         </tr>
-                        <tr v-for="(accessory,index) in accessoryList" :key="index">
+                        <tr v-for="(accessory) in accessoryList">
                             <td colspan="6">{{accessory.fileName}}</td>
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
+                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') "
+                                   :href="accessory.fileUrl">预览</a>
                                 <a
                                         target="_blank"
-                                        v-if="!(accessory.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                        v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
                                         :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
                                 >预览</a>
                             </td>
@@ -238,7 +240,7 @@
                             <th>替换零件</th>
                             <th>备注</th>
                         </tr>
-                        <tr v-for="(item, i) in preCheckMaterList">
+                        <tr v-for="item in preCheckMaterList">
                             <td>{{item.materialName}}</td>
                             <td colspan="2">{{item.materialGraphNo}}</td>
                             <td colspan="2">{{item.model}}</td>
@@ -282,6 +284,11 @@ export default {
                 { value: 7, text: "生产中" },
                 { value: 8, text: "生产暂停" },
                 { value: 9, text: "生产完成" }
+            ],
+            checkStatusList: [
+                {value: 1, text: "成功"},
+                {value: 2, text: "待采购"},
+                {value: 3, text: "可替换"}
             ],
             filter: {
                 orderNo: "",

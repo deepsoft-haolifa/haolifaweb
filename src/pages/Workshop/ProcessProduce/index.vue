@@ -183,9 +183,11 @@
                             <td colspan="6">{{accessory.fileName}}</td>
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
+                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') "
+                                   :href="accessory.fileUrl">预览</a>
                                 <a
                                         target="_blank"
-                                        v-if="!(accessory.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                        v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
                                         :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
                                 >预览</a>
                             </td>
@@ -278,6 +280,11 @@ export default {
                 { value: 7, text: "生产中" },
                 { value: 8, text: "生产暂停" },
                 { value: 9, text: "生产完成" }
+            ],
+            checkStatusList: [
+                {value: 1, text: "成功"},
+                {value: 2, text: "待采购"},
+                {value: 3, text: "可替换"}
             ],
             filter: {
                 orderNo: "",

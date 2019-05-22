@@ -187,6 +187,27 @@
                             <td colspan="2">{{item.materialDescription}}</td>
                             <td colspan="2">{{item.productRemark}}</td>
                         </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="14" class="b">审批附件:</td>
+                        </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="6" class="b">文件名称</td>
+                            <td colspan="6" class="b">文件地址</td>
+                            <td colspan="2" class="b">——</td>
+                        </tr>
+                        <tr v-for="(accessory) in accessoryList">
+                            <td colspan="6">{{accessory.fileName}}</td>
+                            <td colspan="6">{{accessory.fileUrl}}</td>
+                            <td colspan="2">
+                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') "
+                                   :href="accessory.fileUrl">预览</a>
+                                <a
+                                        target="_blank"
+                                        v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                        :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <div class="mt-15 ml-20 mr-20" v-if="recordList.length" style="overflow-x: auto">
@@ -233,7 +254,7 @@
                 </div>
             </div>
             <div class="layer-btns">
-                <btn flat color="#008eff" @click="close">关闭</btn>
+                <btn flat color="#008eff" @click="closeLayer()">关闭</btn>
             </div>
         </layer>
     </div>
@@ -272,6 +293,7 @@ export default {
             },
             layer: false,
             info: {},
+            accessoryList: [],
             //产品编号
             productNoList: [],
             productModelList: [],
@@ -296,6 +318,21 @@ export default {
         // this.getOrderStatusList();
     },
     methods: {
+        closeLayer(){
+            this.layer = false;
+            this.accessoryList = []
+        },
+        getAccessory(orderNo) {
+            this.$http.get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`).then(res => {
+                res.forEach(item => {
+                    if (item.fileUrl != '') {
+                        this.accessoryList.push(item)
+                    }
+                })
+            }).catch(e => {
+                this.$toast(e.msg || e.message);
+            })
+        },
         getOrderStatusList() {
             this.$http
                 .get("/haolifa/order-product/order-status-list")

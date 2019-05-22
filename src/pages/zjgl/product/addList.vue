@@ -398,6 +398,7 @@ export default {
             // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
             this.layer = true;
             this.getInfo(item.orderNo);
+            this.getAccessory(item.orderNo)
             // this.getOrderStatusList();
         },
         getInfo(orderNo) {

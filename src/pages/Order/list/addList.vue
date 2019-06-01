@@ -41,6 +41,7 @@
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="progress(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">发起流程|</a>
                         <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
+                        <a href="javascript:;" class="blue" @click="fileUpload(item)" style="margin-right: 3px;">附件上传|</a>
                         <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                         <a href="javascript:;" class="red" @click="remove(item)" v-if="item.orderStatus==0||item.orderStatus==14" style="margin-right: 3px;">|删除</a>
                     </td>
@@ -103,6 +104,15 @@
             </div>
             <div class="layer-btns">
                 <btn flat color="#008eff" @click="btnFlag = false">关闭</btn>
+            </div>
+        </layer>
+        <layer v-if="fileLayer" :title="'附件上传'" width="70%" style>
+            <div class="flex">
+                <upload-box btnText="上传订单合同" :multiple="multiple" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" style="width: 100%"></upload-box>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="fileLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="fileSave()">保存</btn>
             </div>
         </layer>
         <layer v-if="layer" title="详情" width="80%">
@@ -243,12 +253,11 @@
                             <td colspan="6">{{accessory.fileName}}</td>
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
-                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') "
-                                   :href="accessory.fileUrl">预览</a>
+                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
                                 <a
-                                        target="_blank"
-                                        v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                        :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
                                 >预览</a>
                             </td>
                         </tr>
@@ -264,14 +273,16 @@
 
 <script>
 import DataList from "@/components/datalist";
-
+import fileToBase64 from "../../../utils/fileToBase64";
 export default {
     name: "page-orders-addlist",
     components: { DataList },
     data() {
         return {
             loading: false,
+            multiple: true,
             btnFlag: false,
+            fileLayer: false,
             deliverStatusList: [
                 { value: 0, text: "待发货" },
                 { value: 1, text: "部分发货" },
@@ -340,7 +351,12 @@ export default {
                 { value: 1, text: "成功" },
                 { value: 2, text: "待采购" },
                 { value: 3, text: "可替换" }
-            ]
+            ],
+            fileList: [],
+            fileForm: {
+                orderNo: "",
+                orderUploadDTOs: []
+            }
         };
     },
     created() {
@@ -348,15 +364,20 @@ export default {
     },
     methods: {
         getAccessory(orderNo) {
-            this.$http.get(`/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`).then(res => {
-                res.forEach(item => {
-                    if (item.fileUrl != '') {
-                        this.accessoryList.push(item)
-                    }
+            this.$http
+                .get(
+                    `/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`
+                )
+                .then(res => {
+                    res.forEach(item => {
+                        if (item.fileUrl != "") {
+                            this.accessoryList.push(item);
+                        }
+                    });
                 })
-            }).catch(e => {
-                this.$toast(e.msg || e.message);
-            })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         getOrderStatusList() {
             this.$http
@@ -366,6 +387,50 @@ export default {
                         return { value: item.code, text: item.desc };
                     });
                 });
+        },
+        removeFile() {
+            return new Promise((resolve, reject) => {
+                this.form.orderContractUrl = "";
+                resolve();
+            });
+        },
+        fileUpload(item) {
+            this.fileLayer = true;
+            this.fileForm.orderNo = item.orderNo;
+        },
+        fileSave() {
+            this.$http
+                .post(`/haolifa/order-product/order-status-list`, this.fileForm)
+                .then(res => {
+                    console.log(res);
+                });
+        },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    })
+                    .then(res => {
+                        this.fileForm.orderUploadDTOs.push({
+                            base64Source: base64Str,
+                            fileName: file.name,
+                            deliveryDate: ""
+                        });
+                        // this.accessories.push({
+                        //     fileName: file.name,
+                        //     fileUrl: res
+                        // });
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
         },
         getPreCheckMater(orderNo) {
             this.btnFlag = true;
@@ -412,7 +477,7 @@ export default {
             // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
             this.layer = true;
             this.getInfo(item.orderNo);
-            this.getAccessory(item.orderNo)
+            this.getAccessory(item.orderNo);
             // this.getOrderStatusList();
         },
         getInfo(orderNo) {
@@ -436,8 +501,7 @@ export default {
         // },
         close() {
             this.layer = false;
-            this.accessoryList = []
-
+            this.accessoryList = [];
         },
         remove(item) {
             this.$confirm({

@@ -3,9 +3,10 @@
         <div class="form-content">
             <div class="title b f-18">{{form.id ? '编辑' : '新增'}}文件/图纸</div>
             <div class="flex-v-center">
-                <input-box v-model="form.fileName" class="mr-10" style="width:50%" label="文件名称"></input-box>
+                <input-box v-model="form.fileNo" class="mr-10" style="width:33%" label="文件编号"></input-box>
+                <input-box v-model="form.fileName" class="mr-10" style="width:33%" label="文件名称"></input-box>
                 <!-- <div class="flex-v-center"> -->
-                <select-box v-model="form.type" class="mr-10" :list="typeList" label="文件类型"></select-box>
+                <select-box v-model="form.type" class="mr-10" style="width:33%" :list="typeList" label="文件类型"></select-box>
                 <!-- </div> -->
             </div>
             <div class="flex">
@@ -36,6 +37,7 @@ export default {
             form: {
                 id: "",
                 fileName: "",
+                fileNo: "",
                 type: "",
                 fileUrl: "",
                 remark: "",
@@ -101,15 +103,15 @@ export default {
                 });
         },
         cancel() {
-            this.$confirm({
-                title: "您确定要离开此页面吗？",
-                text: "您的表单将不会保存",
-                color: "red",
-                btns: ["取消", "离开"],
-                yes: () => {
-                    this.$router.back();
-                }
-            });
+            // this.$confirm({
+            //     title: "您确定要离开此页面吗？",
+            //     text: "您的表单将不会保存",
+            //     color: "red",
+            //     btns: ["取消", "离开"],
+            //     yes: () => {
+            this.$router.back();
+            //     }
+            // });
         },
         uploadFile(file, fileList) {
             this.loading = true;
@@ -141,6 +143,10 @@ export default {
         submit() {
             if (!this.form.fileName) {
                 this.$toast("文件名称不能为空");
+                return;
+            }
+            if (!this.form.fileNo) {
+                this.$toast("文件编号不能为空");
                 return;
             }
             if (!this.form.type) {

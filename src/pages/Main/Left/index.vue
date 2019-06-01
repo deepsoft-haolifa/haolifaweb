@@ -31,15 +31,25 @@ export default {
     data() {
         return {
             list: [],
+            // Material icons 图标
             iconList: [
                 "settings",
                 "assessment",
                 "account_balance",
                 "extension",
                 "supervisor_account",
-                "",
+                "payment",
                 "euro_symbol",
-                "volume_up"
+                "volume_up",
+                "all_out",
+                "polymer",
+                "drafts",
+                "mail",
+                "view_quilt",
+                "view_module",
+                "art_track",
+                "gesture",
+                "dashboard"
             ]
         };
     },

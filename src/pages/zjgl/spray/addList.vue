@@ -25,6 +25,7 @@
                     <th>总数量</th>
                     <th>检验合格数量</th>
                     <th>状态</th>
+                    <th>质检状态</th>
                     <th>发起时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
@@ -36,43 +37,137 @@
                     <td>{{item.totalNumber}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{rowStatusList[item.status].name}}</td>
+                    <td>{{inspectStatusList[item.inspectStatus]}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="sprayInfo(item)">查看</a>
-                        <a href="javascript:;" style="margin-right: 3px" class="blue" @click="completeInspect(item)">质检完成</a>
-                        <a
-                            href="javascript:;"
-                            v-if="item.status !=0 && item.status != 2"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="addSprayInspect(item)"
-                        >添加质检记录</a>
+                        <a href="javascript:;" v-if="item.inspectStatus !=2" style="margin-right: 3px" class="blue" @click="completeInspect(item)">| 质检完成</a>
+                        <a href="javascript:;" v-if="item.inspectStatus !=2" style="margin-right: 3px" class="blue" @click="addSprayInspect(item)">| 添加质检记录</a>
                     </td>
                 </template>
             </data-list>
         </div>
 
-        <layer v-if="completeLayer" title="新增喷涂委托" width="60%" style>
-            <div class="flex">
-                <input-box v-model="inspectHistoryAdd.sprayNo" class="flex-item mr-20 ml-20" label="喷涂委托单号"></input-box>
-                <select-box class="flex-item mr-20" :list="nameList" v-model="inspectHistoryAdd.materialGraphName" label="零件名称"></select-box>
-            </div>
-            <div class="flex mt-15">
-                <select-box class="flex-item mr-20 ml-20" :list="tuhaoList" v-model="inspectHistoryAdd.originalGraphNo" label="原图号"></select-box>
-                <input-box v-model="inspectHistoryAdd.materialGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
-            </div>
-            <div class="flex mt-15">
-                <input-box v-model="inspectHistoryAdd.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
-                <input-box v-model="inspectHistoryAdd.unqualifiedNumber" class="flex-item mr-20 mt-15" label="不合格数量"></input-box>
-                <input-box v-model="inspectHistoryAdd.qualifiedNumber" class="flex-item mr-20 mt-15" label="合格数量"></input-box>
-            </div>
-            <div class="flex mt-15">
-                <input-box v-model="inspectHistoryAdd.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
-                <input-box v-model="inspectHistoryAdd.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
-            </div>
-            <div class="layer-btns">
-                <btn flat @click="completeLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="complete()">保存</btn>
+        <layer v-if="completeLayer" title="新增喷涂委托" width="70%" style>
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content page-supplier-info">
+                    <table class="f-14">
+                        <tr>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                        </tr>
+                        <tr>
+                            <td style="border: none;" colspan="11" class="b" align="center">喷涂加工单详情</td>
+                        </tr>
+                        <tr>
+                            <th colspan="11">喷涂单号：{{spray.sprayNo}}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="5">计划人：{{spray.planner}}</th>
+                            <td colspan="6">日 期：{{spray.createTime}}</td>
+                        </tr>
+                        <tr style="border:thin">
+                            <td colspan="1" class="b">序号</td>
+                            <td colspan="1" class="b">零件名称</td>
+                            <td colspan="1" class="b">零件图号</td>
+                            <td colspan="1" class="b">型号</td>
+                            <td colspan="1" class="b">规格</td>
+                            <td colspan="1" class="b">材质</td>
+                            <td colspan="1" class="b">数量</td>
+                            <td colspan="1" class="b">喷涂颜色</td>
+                            <td colspan="1" class="b">特殊要求</td>
+                            <td colspan="1" class="b">完成时间</td>
+                            <td colspan="1" class="b">备注</td>
+                        </tr>
+                        <tr style="border:thin" v-for="(item,i) in spray.items">
+                            <td colspan="1">{{i+1}}</td>
+                            <td colspan="1">{{item.materialClassifyName}}</td>
+                            <td colspan="1">{{item.materialGraphNo}}</td>
+                            <td colspan="1">{{item.model}}</td>
+                            <td colspan="1">{{item.specifications}}</td>
+                            <td colspan="1">{{item.material}}</td>
+                            <td colspan="1">{{item.number}}</td>
+                            <td colspan="1">{{item.sprayColor}}</td>
+                            <td colspan="1">{{item.specialRequires}}</td>
+                            <td colspan="1">{{item.completeTime}}</td>
+                            <td colspan="1">{{item.remark}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length" style="overflow-x: auto">
+                    <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
+                        <div class="flex-item" style="text-align: center;line-height: 24px;">已添加质检记录</div>
+                    </div>
+                    <div class="flex-item scroll-y page-supplier-info" style="overflow-x: auto">
+                        <table class="data-table">
+                            <tr style="display:none">
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 12%;"></td>
+                                <td style="width: 12%;"></td>
+                            </tr>
+                            <tr>
+                                <th>喷涂单号</th>
+                                <th>零件名称</th>
+                                <th>零件原图号</th>
+                                <th>零件图号</th>
+                                <th>检测数量</th>
+                                <th>合格数量</th>
+                                <th>不合格数量</th>
+                                <th>处理意见</th>
+                                <th>不合格现象描述</th>
+                            </tr>
+                            <tr v-for="(item, i) in inspectHistory">
+                                <td>{{item.sprayNo}}</td>
+                                <td>{{item.materialGraphName}}</td>
+                                <td>{{item.originalGraphNo}}</td>
+                                <td>{{item.materialGraphNo}}</td>
+                                <td>{{item.testNumber}}</td>
+                                <td>{{item.qualifiedNumber}}</td>
+                                <td>{{item.unqualifiedNumber}}</td>
+                                <td>{{item.handlingSuggestion}}</td>
+                                <td>{{item.remark}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <input-box v-model="inspectHistoryAdd.sprayNo" class="flex-item mr-20 ml-20" label="喷涂委托单号"></input-box>
+                    <select-box class="flex-item mr-20" :list="nameList" v-model="inspectHistoryAdd.materialGraphName" label="零件名称"></select-box>
+                </div>
+                <div class="flex mt-15">
+                    <select-box class="flex-item mr-20 ml-20" :list="tuhaoList" v-model="inspectHistoryAdd.originalGraphNo" label="原图号"></select-box>
+                    <input-box v-model="inspectHistoryAdd.materialGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
+                </div>
+                <div class="flex mt-15">
+                    <input-box v-model="inspectHistoryAdd.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
+                    <input-box v-model="inspectHistoryAdd.unqualifiedNumber" class="flex-item mr-20 mt-15" label="不合格数量"></input-box>
+                    <input-box v-model="inspectHistoryAdd.qualifiedNumber" class="flex-item mr-20 mt-15" label="合格数量"></input-box>
+                </div>
+                <div class="flex mt-15">
+                    <input-box v-model="inspectHistoryAdd.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
+                    <input-box v-model="inspectHistoryAdd.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
+                </div>
+                <div class="layer-btns">
+                    <btn flat @click="completeLayer=false">取消</btn>
+                    <btn flat color="#008eff" @click="complete()">保存</btn>
+                </div>
             </div>
         </layer>
 
@@ -203,6 +298,7 @@ export default {
                 { status: 3, name: "加工完成" },
                 { status: 4, name: "暂停加工" }
             ],
+            inspectStatusList: { 0: "待质检", 1: "质检中", 2: "质检完成" },
             statusList: [
                 { status: 0, name: "待审批" },
                 { status: 1, name: "加工中" },
@@ -269,11 +365,14 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+            this.sprayInfo(item);
+            this.layer = false;
             this.completeLayer = true;
         },
         updateStatus(sprayNo, status) {
             this.$http
-                .put(`/haolifa/spray/status/${sprayNo}/${status}`)
+                .put(`/haolifa//spray/inspectStatus/${sprayNo}/${status}`)
+                // .put(`/haolifa/spray/status/${sprayNo}/${status}`)
                 .then(res => {
                     this.$refs.list.update();
                 })

@@ -1,15 +1,15 @@
 <template>
     <div class="page-part-list">
         <div class="flex-v-center tool-bar">
-            <!-- <div class="flex-v-center search-bar" style="margin-right: 20px;">
-              <i class="icon f-20 c-8">search</i>
-              <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)">
-                <option value="">所有库房</option>
-                <option value="1">原料库</option>
-                <option value="2">成品库</option>
-              </select>
-              <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
-            </div>-->
+            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+                <!-- <i class="icon f-20 c-8">search</i>
+                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true)">
+                    <option value="0">待发货</option>
+                    <option value="1">部分发货</option>
+                    <option value="2">发货完成</option>
+                </select>
+                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>-->
+            </div>
             <div class="flex-item"></div>
             <!-- <router-link to="/delivery-bills/add">
                 <btn class="b" flat color="#008eff">新增发货通知单</btn>
@@ -22,7 +22,7 @@
                     <th>发货通知单号</th>
                     <th style="width:50px;">发货通知单</th>
                     <th>订单号</th>
-                    <!-- <th>审批人</th> -->
+                    <th>发货状态</th>
                     <th>审批结果</th>
                     <th>审批信息</th>
                     <th>审批时间</th>
@@ -38,7 +38,7 @@
                         <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{item.deliveryUrl}}</a>
                     </td>
                     <td>{{item.contractOrderNo}}</td>
-                    <!-- <td>{{item.auditUserId}}</td> -->
+                    <td>{{deliverStatusList[item.deliverStatus]}}</td>
                     <td>{{statusList[item.auditResult]}}</td>
                     <td>{{item.auditInfo}}</td>
                     <td>{{item.auditTime}}</td>
@@ -63,9 +63,10 @@ export default {
     data() {
         return {
             filter: {
-                // type: ''
+                // deliverStatusList: "0"
             },
-            statusList: { 0: "待审核", 1: "审核通过", 2: "审核不通过" }
+            statusList: { 0: "待审核", 1: "审核通过", 2: "审核不通过" },
+            deliverStatusList: { 0: "待发货", 1: "部分发货", 2: "发货完成" }
         };
     },
     methods: {

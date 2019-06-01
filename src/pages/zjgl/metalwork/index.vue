@@ -22,6 +22,8 @@
                     <th>数量</th>
                     <th>发起时间</th>
                     <th>状态</th>
+                    <th>质检状态</th>
+
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
@@ -35,6 +37,8 @@
                     <td>{{item.number}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{rowStatusList[item.status-3].name}}</td>
+                    <td>{{inspectStatusList[item.inspectStatus]}}</td>
+
                     <td class="t-right">
                         <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a> -->
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
@@ -175,19 +179,20 @@ export default {
             },
             filter: {
                 type: 3,
-                status:-1
+                status: -1
             },
+            inspectStatusList: { 0: "待质检", 1: "质检中", 2: "质检完成" },
             rowStatusList: [
                 { status: 3, name: "加工中" },
                 { status: 4, name: "加工完成" },
                 { status: 5, name: "审批不通过" },
-                { status: 6, name: "质检完成" },
+                { status: 6, name: "质检完成" }
             ],
             statusList: [
                 { status: -1, name: "全部" },
                 { status: 3, name: "加工中" },
                 { status: 4, name: "加工完成" },
-                { status: 6, name: "质检完成" },
+                { status: 6, name: "质检完成" }
             ],
             loading: false,
             entrustNo: "",

@@ -3,6 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.fileNo" @change="$refs.list.update(true)" placeholder="文件编号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.fileName" @change="$refs.list.update(true)" placeholder="文件名称" style="width: 200px;">
                 <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)" placeholder="文件类型">
                     <option value="0">全部</option>
@@ -19,6 +20,7 @@
             <data-list ref="list" method="post" :page-size="10" :param="filter" url="/haolifa/file/pageInfo">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
+                    <th>文件编号</th>
                     <th>文件名称</th>
                     <th>文件URL</th>
                     <th>文件类型</th>
@@ -28,6 +30,7 @@
                 </tr>
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
+                    <td>{{item.fileNo}}</td>
                     <td>{{item.fileName}}</td>
                     <td>
                         <a
@@ -75,6 +78,7 @@ export default {
     data() {
         return {
             filter: {
+                fileNo: "",
                 fileName: "",
                 type: 0
             },

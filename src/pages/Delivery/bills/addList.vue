@@ -22,7 +22,7 @@
                     <th>发货通知单号</th>
                     <th style="width:50px;">发货通知单</th>
                     <th>订单号</th>
-                    <!-- <th>审批人</th> -->
+                    <th>发货状态</th>
                     <th>审批结果</th>
                     <th>审批信息</th>
                     <th>审批时间</th>
@@ -38,7 +38,7 @@
                         <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{item.deliveryUrl}}</a>
                     </td>
                     <td>{{item.contractOrderNo}}</td>
-                    <!-- <td>{{item.auditUserId}}</td> -->
+                    <td>{{deliverStatusList[item.deliverStatus]}}</td>
                     <td>{{statusList[item.auditResult]}}</td>
                     <td>{{item.auditInfo}}</td>
                     <td>{{item.auditTime}}</td>
@@ -46,7 +46,7 @@
                     <td>{{item.updateTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" v-if="item.auditResult != 2" class="blue" @click="edit(item.id)">编辑</a>
-                        <a href="javascript:;" class="blue" @click="addRecord(item)">添加发货记录</a>
+                        <a href="javascript:;" v-if="item.deliverStatus != '2'" class="blue" @click="addRecord(item)">| 添加发货记录</a>
                     </td>
                 </template>
             </data-list>
@@ -65,7 +65,8 @@ export default {
             filter: {
                 // type: ''
             },
-            statusList: { 0: "待审核", 1: "审核通过", 2: "审核不通过" }
+            statusList: { 0: "待审核", 1: "审核通过", 2: "审核不通过" },
+            deliverStatusList: { 0: "待发货", 1: "部分发货", 2: "发货完成" }
         };
     },
     methods: {

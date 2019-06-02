@@ -21,6 +21,7 @@
                     <th>订单编号</th>
                     <!-- <th style="width:50px;">订单合同URL</th> -->
                     <th>发货日期</th>
+                    <th>订单数量</th>
                     <th>发货状态</th>
                     <th>订单状态</th>
                     <th>创建时间</th>
@@ -34,6 +35,7 @@
                         <a class="fixed-length" :href="item.orderContractExtendUrl" :title="item.orderContractExtendUrl">{{item.orderContractExtendUrl}}</a>
                     </td>-->
                     <td>{{item.deliveryDate}}</td>
+                    <td>{{item.totalCount}}</td>
                     <td>{{deliverStatusList[item.deliverStatus].text}}</td>
                     <td>{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>

@@ -22,6 +22,7 @@
                     <th>报检单号</th>
                     <th>采购合同号</th>
                     <th>批次号</th>
+                    <th>检验合格数</th>
                     <th>到货日期</th>
                     <th>供应商名称</th>
                     <th>发起时间</th>
@@ -34,6 +35,7 @@
                     <td>{{item.inspectNo}}</td>
                     <td>{{item.purchaseNo}}</td>
                     <td>{{item.batchNumber}}</td>
+                    <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.arrivalTime}}</td>
                     <td>{{item.supplierName}}</td>
                     <td>{{item.createTime}}</td>

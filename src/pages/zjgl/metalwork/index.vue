@@ -20,6 +20,7 @@
                     <th>物料名称</th>
                     <th>物料图号</th>
                     <th>数量</th>
+                    <th>检验合格数量</th>
                     <th>发起时间</th>
                     <th>状态</th>
                     <th>质检状态</th>
@@ -35,6 +36,7 @@
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
                     <td>{{item.number}}</td>
+                    <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{rowStatusList[item.status-3].name}}</td>
                     <td>{{inspectStatusList[item.inspectStatus]}}</td>

@@ -42,7 +42,7 @@
                     <td>{{item.price}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue"  v-if="item.operationType==2" @click="outProduct(item)">出库</a>
+                        <a href="javascript:;" class="blue"  v-if="item.operationType==2 && item.execute == 0" @click="outProduct(item)">出库</a>
                     </td>
                 </template>
             </data-list>

@@ -54,7 +54,7 @@
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="edit(item)">编辑</a> |
-                        <a v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl" style="margin-right: 3px" class="blue">下载</a> |
+                        <a v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl" style="margin-right: 3px" class="blue">下载</a>
                         <a
                             v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') "
                             href="javascript:;"

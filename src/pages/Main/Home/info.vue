@@ -29,7 +29,7 @@
                     <td colspan="14" class="b">发货日期 : {{info.deliveryDate}}</td>
                 </tr>
                 <tr>
-                    <td colspan="14" class="b">订单状态 : {{ orderStatusList[info.orderStatus].desc }}</td>
+                    <td colspan="14" class="b">订单状态 : {{ orderStatusList[info.orderStatus] }}</td>
                 </tr>
                 <tr>
                     <td colspan="14" class="b">
@@ -46,6 +46,21 @@
                         订单备份合同:
                         <a :href="info.orderContractExtendUrl">下载</a>
                     </td>-->
+                </tr>
+                <tr>
+                    <td colspan="14" class="b" v-if="fileDetailList.length">订单附件:</td>
+                    <td colspan="14" class="b" v-else>订单附件:无</td>
+                </tr>
+                <tr v-for="(item,index) in fileDetailList" :key="index">
+                    <td colspan="3" class="b">{{item.fileName}}</td>
+                    <td colspan="12" class="b">
+                        <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
+                        <a
+                            target="_blank"
+                            v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                        >预览</a>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="7" class="b">装配车间: {{info.assemblyShop}}</td>
@@ -172,7 +187,8 @@ export default {
                     jinniuju: "",
                     jishuxinhao: ""
                 }
-            ]
+            ],
+            fileDetailList: []
         };
     },
     created() {
@@ -190,13 +206,21 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+            this.$http
+                .get(`/haolifa/order-product/accessory/${orderNo}`)
+                .then(res => {
+                    this.fileDetailList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         getOrderStatusList() {
             this.$http
                 .get("/haolifa/order-product/order-status-list")
                 .then(res => {
                     for (let i in res) {
-                        this.orderStatusList[res[i].code] = res[i].desc;
+                        this.orderStatusList[i] = res[i].desc;
                     }
                 });
         }

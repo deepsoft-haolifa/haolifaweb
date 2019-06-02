@@ -111,6 +111,21 @@
                             </td>-->
                         </tr>
                         <tr>
+                            <td colspan="14" class="b" v-if="fileDetailList.length">订单附件:</td>
+                            <td colspan="14" class="b" v-else>订单附件:无</td>
+                        </tr>
+                        <tr v-for="(item,index) in fileDetailList" :key="index">
+                            <td colspan="3" class="b">{{item.fileName}}</td>
+                            <td colspan="12" class="b">
+                                <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
+                            </td>
+                        </tr>
+                        <tr>
                             <td colspan="7" class="b">装配车间: {{info.assemblyShop}}</td>
                             <td colspan="7" class="b">装配小组: {{info.assemblyGroup}}</td>
                         </tr>
@@ -284,7 +299,9 @@ export default {
                 unqualifiedNumber: ""
             },
             reasonList: [],
-            recordList: []
+            recordList: [],
+            //附件详情数组
+            fileDetailList: []
         };
     },
     created() {
@@ -378,6 +395,14 @@ export default {
                 .post(`/haolifa/pressure-inspect/pageInfo`, params)
                 .then(res => {
                     this.recordList = res.list;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+            this.$http
+                .get(`/haolifa/order-product/accessory/${orderNo}`)
+                .then(res => {
+                    this.fileDetailList = res;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

@@ -109,8 +109,8 @@
             </div>
         </layer>
         <layer v-if="fileLayer" :title="'附件上传'" width="70%" style>
-            <div class="flex">
-                <upload-box btnText="上传订单合同" :multiple="multiple" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" style="width: 100%"></upload-box>
+            <div class="flex" style="padding-left: 50px;">
+                <upload-box btnText="上传订单附件" :multiple="multiple" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" style="width: 100%"></upload-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="fileLayer=false">取消</btn>
@@ -162,6 +162,21 @@
                         订单备份合同:
                         <a :href="info.orderContractExtendUrl">下载</a>
                             </td>-->
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b" v-if="fileDetailList.length">订单附件:</td>
+                            <td colspan="14" class="b" v-else>订单附件:无</td>
+                        </tr>
+                        <tr v-for="(item,index) in fileDetailList" :key="index">
+                            <td colspan="3" class="b">{{item.fileName}}</td>
+                            <td colspan="12" class="b">
+                                <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="7" class="b">装配车间: {{info.assemblyShop}}</td>
@@ -358,7 +373,9 @@ export default {
             fileForm: {
                 orderNo: "",
                 orderUploadDTOs: []
-            }
+            },
+            //附件详情数组
+            fileDetailList: []
         };
     },
     created() {
@@ -390,21 +407,51 @@ export default {
                     });
                 });
         },
-        removeFile() {
+        removeFile(fileList, i) {
             return new Promise((resolve, reject) => {
-                this.form.orderContractUrl = "";
+                this.fileForm.orderUploadDTOs.splice(i, 1);
                 resolve();
             });
         },
         fileUpload(item) {
             this.fileLayer = true;
             this.fileForm.orderNo = item.orderNo;
+            this.$http
+                .get(`/haolifa/order-product/accessory/${item.orderNo}`)
+                .then(res => {
+                    this.fileForm.orderUploadDTOs = [...res];
+                    res.forEach(item => {
+                        let fileObj = {
+                            name: item.fileName,
+                            size: "",
+                            type: "",
+                            status: "ready",
+                            url: item.fileUrl,
+                            uid: new Date().getTime(),
+                            source: ""
+                        };
+                        this.fileList.push(fileObj);
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         fileSave() {
+            this.loading = true;
             this.$http
-                .post(`/haolifa/order-product/order-status-list`, this.fileForm)
+                .post(
+                    `/haolifa/order-product/accessory/${this.fileForm.orderNo}`,
+                    this.fileForm.orderUploadDTOs
+                )
                 .then(res => {
-                    console.log(res);
+                    this.loading = false;
+                    this.fileLayer = false;
+                    this.$toast(`上传附件成功`);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                    this.loading = false;
                 });
         },
         uploadFile(file, fileList) {
@@ -418,9 +465,8 @@ export default {
                     })
                     .then(res => {
                         this.fileForm.orderUploadDTOs.push({
-                            base64Source: base64Str,
-                            fileName: file.name,
-                            deliveryDate: ""
+                            fileUrl: res,
+                            fileName: file.name
                         });
                         // this.accessories.push({
                         //     fileName: file.name,
@@ -480,6 +526,14 @@ export default {
             this.layer = true;
             this.getInfo(item.orderNo);
             this.getAccessory(item.orderNo);
+            this.$http
+                .get(`/haolifa/order-product/accessory/${item.orderNo}`)
+                .then(res => {
+                    this.fileDetailList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
             // this.getOrderStatusList();
         },
         getInfo(orderNo) {

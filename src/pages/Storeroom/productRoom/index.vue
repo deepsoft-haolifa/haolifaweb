@@ -8,6 +8,7 @@
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>-->
+                <btn class="ml-20" @click="exportExcel">导出</btn>
             </div>
         </div>
         <div class="flex-item scroll-y">
@@ -61,6 +62,24 @@
                 <btn flat color="#008eff" @click="complete()">保存</btn>
             </div>
         </layer>
+        <layer v-if="exportLayer" :title="'导出'" width="30%">
+            <div class="flex ml-20 mr-20">
+                <date-picker v-model="exportForm.startDate" hint="必填" class="flex-item" label="开始时间"></date-picker>
+            </div>
+            <div class="flex ml-20 mr-20">
+                <date-picker v-model="exportForm.endDate" hint="必填" class="flex-item" label="结束时间"></date-picker>
+            </div>
+            <div class="flex ml-20 mr-20">
+                <input-box v-model="exportForm.orderNo" class="flex-item" label="订单号"></input-box>
+            </div>
+            <div class="flex ml-20 mr-20">
+                <select-box v-model="exportForm.entryStatus" class="flex-item" :list="entryStatusList" label="状态"></select-box>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="exportLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="download()">确定</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -91,7 +110,19 @@ export default {
             },
             filter: {
                 storageStatus: 1
-            }
+            },
+            exportLayer: false,
+            exportForm: {
+                entryStatus: 0,
+                startDate: "",
+                orderNo: "",
+                endDate: ""
+            },
+            entryStatusList: [
+                { value: 0, text: "全部" },
+                { value: 1, text: "待入库" },
+                { value: 2, text: "已入库" }
+            ]
         };
     },
     methods: {
@@ -184,6 +215,37 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
             this.storeRoom.layerShow = true;
+        },
+        exportExcel() {
+            this.exportLayer = true;
+            this.exportForm = {
+                entryStatus: 0,
+                startDate: "",
+                orderNo: "",
+                endDate: ""
+            };
+        },
+        download() {
+            if (!this.exportForm.startDate) {
+                this.$toast("请选择开始时间");
+                return;
+            }
+            if (!this.exportForm.endDate) {
+                this.$toast("请选择结束时间");
+                return;
+            }
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                `/haolifa/export/product-entry?startDate=${
+                    this.exportForm.startDate
+                }&endDate=${this.exportForm.endDate}&entryStatus=${
+                    this.exportForm.entryStatus
+                }&orderNo=${this.exportForm.orderNo}`
+            );
+            a.click();
+            this.exportLayer = false;
         }
     }
 };

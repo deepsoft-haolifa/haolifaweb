@@ -10,6 +10,7 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.sprayNo" @change="$refs.list.update(true)" placeholder="喷涂加工号" style="width: 200px;">
+                <btn class="ml-20" @click="exportExcel">导出</btn>
             </div>
         </div>
         <div class="flex-item scroll-y">
@@ -56,152 +57,212 @@
                 <btn flat color="#008eff" @click="complete()">保存</btn>
             </div>
         </layer>
+        <layer v-if="exportLayer" :title="'导出'" width="30%">
+            <div class="flex ml-20 mr-20">
+                <date-picker v-model="exportForm.startDate" hint="必填" class="flex-item" label="开始时间"></date-picker>
+            </div>
+            <div class="flex ml-20 mr-20">
+                <date-picker v-model="exportForm.endDate" hint="必填" class="flex-item" label="结束时间"></date-picker>
+            </div>
+            <div class="flex ml-20 mr-20">
+                <input-box v-model="exportForm.sprayNo" class="flex-item" label="喷图加工号"></input-box>
+            </div>
+            <div class="flex ml-20 mr-20">
+                <select-box v-model="exportForm.entryStatus" class="flex-item" :list="entryStatusList" label="状态"></select-box>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="exportLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="download()">确定</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
 <script>
-    import DataList from "@/components/datalist";
-    export default {
-        name: "material-list",
-        components: { DataList },
-        data() {
-            return {
-                filter: {
-                    status: 0
-                },
-                statusList: [
-                    { status: 0, name: "全部" },
-                    { status: 1, name: "待入库" },
-                    { status: 2, name: "已入库" }
-                ],
-                storeRoom: {
-                    layerShow: false,
-                    selectStoreRooms: [],
-                    storeRoomRacks: [],
-                    materialGraphNo: "",
-                    roomNo: "",
-                    rackNo: "",
-                    quantity: 0,
-                    supplier: "",
-                    materialBatchNo: "",
-                    orderNo: "",
-                    price: 0
-                },
-                itemId:0
+import DataList from "@/components/datalist";
+export default {
+    name: "material-list",
+    components: { DataList },
+    data() {
+        return {
+            filter: {
+                status: 0
+            },
+            statusList: [
+                { status: 0, name: "全部" },
+                { status: 1, name: "待入库" },
+                { status: 2, name: "已入库" }
+            ],
+            storeRoom: {
+                layerShow: false,
+                selectStoreRooms: [],
+                storeRoomRacks: [],
+                materialGraphNo: "",
+                roomNo: "",
+                rackNo: "",
+                quantity: 0,
+                supplier: "",
+                materialBatchNo: "",
+                orderNo: "",
+                price: 0
+            },
+            itemId: 0,
+            exportLayer: false,
+            exportForm: {
+                entryStatus: 0,
+                startDate: "",
+                sprayNo: "",
+                endDate: ""
+            },
+            entryStatusList: [
+                { value: 0, text: "全部" },
+                { value: 1, text: "待入库" },
+                { value: 2, text: "已入库" }
+            ]
+        };
+    },
+    methods: {
+        loadStoreRocks() {
+            this.$http
+                .get(`/haolifa/store-room/rack/list/${this.storeRoom.roomNo}`)
+                .then(res => {
+                    console.log("库位", res);
+                    this.storeRoom.storeRoomRacks = res.map(item => {
+                        return { value: item.rackNo, text: item.rackName };
+                    });
+                    // 默认值
+                    this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        storeComplete(id) {
+            this.$http
+                .put(`/haolifa/spray/inspect/history/status/${id}`)
+                .then(res => {})
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        complete() {
+            let save = {
+                materialGraphNo: this.storeRoom.materialGraphNo,
+                roomNo: this.storeRoom.roomNo,
+                rackNo: this.storeRoom.rackNo,
+                quantity: this.storeRoom.quantity,
+                orderNo: this.storeRoom.orderNo,
+                price: 0
+            };
+            this.$http
+                .put(`/haolifa/store-room/entryOut/entryMaterial`, save)
+                .then(res => {
+                    this.storeComplete(this.itemId);
+                    this.$toast("入库成功");
+                    this.$refs.list.update();
+                    this.storeRoom.layerShow = false;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        execStoreRoom(item) {
+            this.itemId = item.id;
+            // 获取库房库位
+            this.$http
+                .get(`/haolifa/store-room/listInfo?type=1`)
+                .then(res => {
+                    console.log(res);
+                    this.storeRoom.selectStoreRooms = res.map(item => {
+                        return { value: item.roomNo, text: item.name };
+                    });
+                    if (this.storeRoom.selectStoreRooms.length > 0) {
+                        this.storeRoom.roomNo = this.storeRoom.selectStoreRooms[0].value;
+                    }
+                    this.$http
+                        .get(
+                            `/haolifa/store-room/rack/list/${
+                                this.storeRoom.roomNo
+                            }`
+                        )
+                        .then(res => {
+                            console.log("库位", res);
+                            this.storeRoom.storeRoomRacks = res.map(item => {
+                                return {
+                                    value: item.rackNo,
+                                    text: item.rackName
+                                };
+                            });
+                            // 默认值
+                            if (this.storeRoom.storeRoomRacks.length > 0) {
+                                this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
+                            }
+                        })
+                        .catch(e => {
+                            this.$toast(e.msg || e.message);
+                        });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+            this.storeRoom.materialGraphNo = item.materialGraphNo;
+            this.storeRoom.orderNo = item.sprayNo;
+            this.storeRoom.quantity = item.qualifiedNumber;
+            this.storeRoom.layerShow = true;
+        },
+        exportExcel() {
+            this.exportLayer = true;
+            this.exportForm = {
+                entryStatus: 0,
+                startDate: "",
+                sprayNo: "",
+                endDate: ""
             };
         },
-        methods: {
-            loadStoreRocks() {
-                this.$http
-                    .get(`/haolifa/store-room/rack/list/${this.storeRoom.roomNo}`)
-                    .then(res => {
-                        console.log("库位", res);
-                        this.storeRoom.storeRoomRacks = res.map(item => {
-                            return { value: item.rackNo, text: item.rackName };
-                        });
-                        // 默认值
-                        this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message);
-                    });
-            },
-            storeComplete(id) {
-                this.$http
-                    .put(`/haolifa/spray/inspect/history/status/${id}`)
-                    .then(res => {
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message);
-                    });
-            },
-            complete() {
-                let save = {
-                    materialGraphNo: this.storeRoom.materialGraphNo,
-                    roomNo: this.storeRoom.roomNo,
-                    rackNo: this.storeRoom.rackNo,
-                    quantity: this.storeRoom.quantity,
-                    orderNo: this.storeRoom.orderNo,
-                    price: 0
-                };
-                this.$http
-                    .put(`/haolifa/store-room/entryOut/entryMaterial`, save)
-                    .then(res => {
-                        this.storeComplete(this.itemId);
-                        this.$toast("入库成功");
-                        this.$refs.list.update();
-                        this.storeRoom.layerShow = false;
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message);
-                    });
-            },
-            execStoreRoom(item) {
-                this.itemId = item.id;
-                // 获取库房库位
-                this.$http
-                    .get(`/haolifa/store-room/listInfo?type=1`)
-                    .then(res => {
-                        console.log(res);
-                        this.storeRoom.selectStoreRooms = res.map(item => {
-                            return { value: item.roomNo, text: item.name };
-                        });
-                        if (this.storeRoom.selectStoreRooms.length > 0) {
-                            this.storeRoom.roomNo = this.storeRoom.selectStoreRooms[0].value;
-                        }
-                        this.$http
-                            .get(
-                                `/haolifa/store-room/rack/list/${
-                                    this.storeRoom.roomNo
-                                    }`
-                            )
-                            .then(res => {
-                                console.log("库位", res);
-                                this.storeRoom.storeRoomRacks = res.map(item => {
-                                    return {
-                                        value: item.rackNo,
-                                        text: item.rackName
-                                    };
-                                });
-                                // 默认值
-                                if (this.storeRoom.storeRoomRacks.length > 0) {
-                                    this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
-                                }
-                            })
-                            .catch(e => {
-                                this.$toast(e.msg || e.message);
-                            });
-                    })
-                    .catch(e => {
-                        this.$toast(e.msg || e.message);
-                    });
-                this.storeRoom.materialGraphNo = item.materialGraphNo
-                this.storeRoom.orderNo = item.sprayNo;
-                this.storeRoom.quantity = item.qualifiedNumber;
-                this.storeRoom.layerShow = true;
+        download() {
+            if (!this.exportForm.startDate) {
+                this.$toast("请选择开始时间");
+                return;
             }
+            if (!this.exportForm.endDate) {
+                this.$toast("请选择结束时间");
+                return;
+            }
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                `/haolifa/export/spray-entry?startDate=${
+                    this.exportForm.startDate
+                }&endDate=${this.exportForm.endDate}&entryStatus=${
+                    this.exportForm.entryStatus
+                }&sprayNo=${this.exportForm.sprayNo}`
+            );
+            a.click();
+            this.exportLayer = false;
         }
-    };
+    }
+};
 </script>
 
 <style lang="less">
-    .fixed-length {
-        width: 100px;
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+.fixed-length {
+    width: 100px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.material-list {
+    select {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px 5px 10px;
+        appearance: none;
     }
-    .material-list {
-        select {
-            background: none;
-            border: none;
-            outline: none;
-            padding: 5px 20px 5px 10px;
-            appearance: none;
-        }
-        .scroll-y {
-            padding-bottom: 40px;
-        }
+    .scroll-y {
+        padding-bottom: 40px;
     }
+}
 </style>

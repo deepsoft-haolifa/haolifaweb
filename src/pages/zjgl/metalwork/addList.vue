@@ -371,7 +371,7 @@ export default {
         updateEntrustStatus(item) {
             this.$http
                 .get(
-                    `/haolifa//entrust/updateInspectStatus/${item.entrustNo}/2`
+                    `/haolifa/entrust/updateInspectStatus/${item.entrustNo}/2`
                 )
                 // .get(`/haolifa/entrust/updateStatus/${item.entrustNo}/6`)
                 .then(res => {

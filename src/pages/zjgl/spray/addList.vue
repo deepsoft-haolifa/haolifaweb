@@ -48,7 +48,7 @@
             </data-list>
         </div>
 
-        <layer v-if="completeLayer" title="新增喷涂委托" width="70%" style>
+        <layer v-if="completeLayer" title="新增喷涂质检记录" width="70%" style>
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content page-supplier-info">
                     <table class="f-14">
@@ -371,7 +371,7 @@ export default {
         },
         updateStatus(sprayNo, status) {
             this.$http
-                .put(`/haolifa//spray/inspectStatus/${sprayNo}/${status}`)
+                .put(`/haolifa/spray/inspectStatus/${sprayNo}/${status}`)
                 // .put(`/haolifa/spray/status/${sprayNo}/${status}`)
                 .then(res => {
                     this.$refs.list.update();

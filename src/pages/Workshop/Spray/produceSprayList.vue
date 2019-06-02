@@ -25,6 +25,7 @@
                     <th>总数量</th>
                     <th>检验合格数量</th>
                     <th>状态</th>
+                    <th>质检状态</th>
                     <th>发起时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
@@ -36,6 +37,7 @@
                     <td>{{item.totalNumber}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{rowStatusList[item.status].name}}</td>
+                    <td>{{inspectStatusList[item.inspectStatus]}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="sprayInfo(item)">查看</a>
@@ -175,6 +177,7 @@ export default {
                 { status: 3, name: "加工完成" },
                 { status: 4, name: "暂停加工" }
             ],
+            inspectStatusList: { 0: "待质检", 1: "质检中", 2: "质检完成" },
             statusList: [
                 { status: 0, name: "待加工" },
                 { status: 1, name: "加工中" },

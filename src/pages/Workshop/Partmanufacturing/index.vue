@@ -23,6 +23,7 @@
                     <th>检验合格数</th>
                     <th>发起时间</th>
                     <th>状态</th>
+                    <th>质检状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
@@ -37,6 +38,7 @@
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{rowStatusList[item.status-1].name}}</td>
+                    <td>{{inspectStatusList[item.inspectStatus]}}</td>
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.status == 2"  style="margin-right: 3px" class="blue" @click="updateStatus(item,3)">开始加工</a>
                         <a href="javascript:;" v-if="item.status == 3 || item.status == 6" style="margin-right: 3px" class="blue" @click="updateStatus(item, 4)">加工完成</a>
@@ -58,6 +60,7 @@
                     type:2,
                     status:-1
                 },
+                inspectStatusList: { 0: "待质检", 1: "质检中", 2: "质检完成" },
                 rowStatusList:[
                     {status:1,name:'待审批'},
                     {status:2,name:'待加工'},

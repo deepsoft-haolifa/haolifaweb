@@ -23,7 +23,7 @@
                     <th>检验合格数</th>
                     <th>发起时间</th>
                     <th>状态</th>
-                    <th>质检状态</th>
+                    <!--<th>质检状态</th>-->
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
@@ -38,7 +38,7 @@
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{rowStatusList[item.status-1].name}}</td>
-                    <td>{{inspectStatusList[item.inspectStatus]}}</td>
+                    <!--<td>{{inspectStatusList[item.inspectStatus]}}</td>-->
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="edit(item)">车间选择 |</a>
                         <a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="audtiNotPass(item)">不通过 |</a>

@@ -130,8 +130,8 @@
                     <input-box :disabled="true" v-model="inspectHistoryAdd.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
                 </div>
                 <div class="flex mt-15">
-                    <input-box :disabled="true" class="mt-15 ml-20" v-model="inspectHistoryAdd.materialGraphNo" label="物料图号"></input-box>
-                    <input-box :disabled="true" v-model="inspectHistoryAdd.materialName" class="mr-20 mt-15 ml-20" label="物料名称"></input-box>
+                    <input-box :disabled="true" class="flex-item mt-15 ml-20" v-model="inspectHistoryAdd.materialGraphNo" label="物料图号"></input-box>
+                    <input-box :disabled="true" v-model="inspectHistoryAdd.materialName" class="flex-item mr-20 mt-15 ml-20" label="物料名称"></input-box>
                 </div>
                 <div class="flex mt-15">
                     <input-box v-model="inspectHistoryAdd.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>

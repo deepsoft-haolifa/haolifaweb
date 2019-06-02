@@ -40,26 +40,231 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="completeLayer" :title="'质检记录'" width="650px">
-            <div class="flex">
-                <input-box v-model="order.orderNo" class="flex-item mr-20 ml-20" label="订单号"></input-box>
-                <select-box class="flex-item mr-20" :list="productNoList" v-model="order.productNo" label="产品编号"></select-box>
-            </div>
-            <div class="flex">
-                <select-box class="flex-item mr-20 ml-20" :list="productModelList" v-model="order.productModel" label="成品型号"></select-box>
-                <select-box class="flex-item mr-20" :list="productSpecificationsList" v-model="order.productSpecifications" label="成品规格"></select-box>
-            </div>
-            <div class="flex">
-                <input-box v-model="order.testingNumber" class="flex-item mr-20 ml-20" label="检测数量"></input-box>
-                <input-box v-model="order.qualifiedNumber" class="flex-item mr-20" label="合格数量"></input-box>
-            </div>
-            <div class="flex">
-                <input-box v-model="order.unqualifiedNumber" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
-                <select-box class="flex-item mr-20" :list="reasonList" v-model="order.reason" label="不合格原因"></select-box>
-            </div>
-            <div class="layer-btns">
-                <btn flat @click="completeLayer=false">取消</btn>
-                <btn flat color="#008eff" @click="complete()">保存</btn>
+        <layer v-if="completeLayer" :title="'添加质检记录'" width="70%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content metalwork-info">
+                    <table class="f-14 order-info">
+                        <tr>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 7%;"></td>
+                            <td style="width: 8%;"></td>
+                            <td style="width: 8%;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">订单编号 : {{info.orderNo}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">发货日期 : {{info.deliveryDate}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">订单状态 : {{ orderStatusList[info.orderStatus-5].text }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">
+                                订单合同:
+                                <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
+                                <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                >预览</a>
+                            </td>
+                            <!-- <td colspan="6" class="b">
+                        订单备份合同:
+                        <a :href="info.orderContractExtendUrl">下载</a>
+                            </td>-->
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b" v-if="fileDetailList.length">订单附件:</td>
+                            <td colspan="14" class="b" v-else>订单附件:无</td>
+                        </tr>
+                        <tr v-for="(item,index) in fileDetailList" :key="index">
+                            <td colspan="3" class="b">{{item.fileName}}</td>
+                            <td colspan="12" class="b">
+                                <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="b">装配车间: {{info.assemblyShop}}</td>
+                            <td colspan="7" class="b">装配小组: {{info.assemblyGroup}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="7" class="b">采购反馈时间: {{info.purchaseFeedbackTime}}</td>
+                            <td colspan="7" class="b">生产反馈时间: {{info.productionFeedbackTime}}</td>
+                        </tr>
+                        <!-- <tr>
+                    <td colspan="6" class="b">工厂反馈完成时间: {{info.finishFeedbackTime}}</td>
+                    <td colspan="6" class="b">反馈确认人: {{info.feedbackTimeConfirmUser}}</td>
+                        </tr>-->
+                        <tr>
+                            <td colspan="14" class="b">技术清单:</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" rowspan="2">产品名称</td>
+                            <td colspan="1" rowspan="2">型号</td>
+                            <td colspan="1" rowspan="2">规格</td>
+                            <td colspan="1" rowspan="2">数量</td>
+                            <td colspan="1" rowspan="2">上法兰标准</td>
+                            <td colspan="3" rowspan="1">上法兰尺寸</td>
+                            <td colspan="4" rowspan="1">出轴尺寸</td>
+                            <td colspan="1" rowspan="2">静扭矩</td>
+                            <td colspan="1" rowspan="2">执行器型号</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" rowspan="1">连接孔</td>
+                            <td colspan="1" rowspan="1">角度</td>
+                            <td colspan="1" rowspan="1">中心距</td>
+                            <td colspan="1" rowspan="1">出轴型式</td>
+                            <td colspan="1" rowspan="1">出轴长度</td>
+                            <td colspan="1" rowspan="1">轴图号</td>
+                            <td colspan="1" rowspan="1">过渡盘</td>
+                        </tr>
+                        <tr v-for="(val,index) in JSON.parse(info.technicalRequire)" :key="index">
+                            <td colspan="1">{{val.name}}</td>
+                            <td colspan="1">{{val.xinhao}}</td>
+                            <td colspan="1">{{val.guige}}</td>
+                            <td colspan="1">{{val.num}}</td>
+                            <td colspan="1">{{val.biaozhun}}</td>
+                            <td colspan="1">{{val.lianjiek}}</td>
+                            <td colspan="1">{{val.jiaodu}}</td>
+                            <td colspan="1">{{val.zhongxinju}}</td>
+                            <td colspan="1">{{val.xinshi}}</td>
+                            <td colspan="1">{{val.length}}</td>
+                            <td colspan="1">{{val.tuhao}}</td>
+                            <td colspan="1">{{val.guodupan}}</td>
+                            <td colspan="1">{{val.jinniuju}}</td>
+                            <td colspan="1">{{val.jishuxinhao}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">订单产品列表</td>
+                        </tr>
+                        <tr>
+                            <td colspan="1" class="b">产品编号</td>
+                            <td colspan="2" class="b">产品名称</td>
+                            <td colspan="1" class="b">型号</td>
+                            <td colspan="1" class="b">标签属性</td>
+                            <td colspan="1" class="b">规格</td>
+                            <td colspan="2" class="b">颜色</td>
+                            <td colspan="1" class="b">产品数量</td>
+                            <!-- <td colspan="1" class="b">单价</td> -->
+                            <td colspan="1" class="b">总计价格</td>
+                            <td colspan="2" class="b">材质说明</td>
+                            <td colspan="2" class="b">产品备注</td>
+                        </tr>
+                        <tr v-for="(item,index) in info.orderProductAssociates" :key="'fo'+index">
+                            <td colspan="1">{{item.productNo}}</td>
+                            <td colspan="2">{{item.productName}}</td>
+                            <td colspan="1">{{item.productModel}}</td>
+                            <td colspan="1">{{item.lable}}</td>
+                            <td colspan="1">{{item.specifications}}</td>
+                            <td colspan="2">{{item.productColor}}</td>
+                            <td colspan="1">{{item.productNumber}}</td>
+                            <!-- <td colspan="1">{{item.price}}</td> -->
+                            <td colspan="1">{{item.totalPrice}}</td>
+                            <td colspan="2">{{item.materialDescription}}</td>
+                            <td colspan="2">{{item.productRemark}}</td>
+                        </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="14" class="b">审批附件:</td>
+                        </tr>
+                        <tr v-if="accessoryList.length > 0">
+                            <td colspan="6" class="b">文件名称</td>
+                            <td colspan="6" class="b">文件地址</td>
+                            <td colspan="2" class="b">——</td>
+                        </tr>
+                        <tr v-for="(accessory) in accessoryList">
+                            <td colspan="6">{{accessory.fileName}}</td>
+                            <td colspan="6">{{accessory.fileUrl}}</td>
+                            <td colspan="2">
+                                <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mt-15 ml-20 mr-20" v-if="recordList.length" style="overflow-x: auto">
+                    <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
+                        <div class="flex-item" style="text-align: center;line-height: 24px;">已添加质检记录</div>
+                    </div>
+                    <div class="flex-item scroll-y page-supplier-info" style="overflow-x: auto">
+                        <table class="data-table">
+                            <tr style="display:none">
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 11%;"></td>
+                                <td style="width: 12%;"></td>
+                            </tr>
+                            <tr>
+                                <th>产品编号</th>
+                                <th>成品型号</th>
+                                <th>成品规格</th>
+                                <th>检测数量</th>
+                                <th>合格数量</th>
+                                <th>不合格数量</th>
+                                <th>不合格原因</th>
+                                <th>状态</th>
+                                <th>创建日期</th>
+                            </tr>
+                            <tr v-for="(item, i) in recordList">
+                                <td>{{item.productNo}}</td>
+                                <td>{{item.productModel}}</td>
+                                <td>{{item.productSpecifications}}</td>
+                                <td>{{item.testingNumber}}</td>
+                                <td>{{item.qualifiedNumber}}</td>
+                                <td>{{item.unqualifiedNumber}}</td>
+                                <td>{{item.reason}}</td>
+                                <td>{{item.storageStatus == 1?'待入库':'已入库'}}</td>
+                                <td>{{item.createTime}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex">
+                    <input-box v-model="order.orderNo" class="flex-item mr-20 ml-20" label="订单号"></input-box>
+                    <select-box class="flex-item mr-20" :list="productNoList" v-model="order.productNo" label="产品编号"></select-box>
+                </div>
+                <div class="flex">
+                    <select-box class="flex-item mr-20 ml-20" :list="productModelList" v-model="order.productModel" label="成品型号"></select-box>
+                    <select-box class="flex-item mr-20" :list="productSpecificationsList" v-model="order.productSpecifications" label="成品规格"></select-box>
+                </div>
+                <div class="flex">
+                    <input-box v-model="order.testingNumber" class="flex-item mr-20 ml-20" label="检测数量"></input-box>
+                    <input-box v-model="order.qualifiedNumber" class="flex-item mr-20" label="合格数量"></input-box>
+                </div>
+                <div class="flex">
+                    <input-box v-model="order.unqualifiedNumber" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
+                    <select-box class="flex-item mr-20" :list="reasonList" v-model="order.reason" label="不合格原因"></select-box>
+                </div>
+                <div class="layer-btns">
+                    <btn flat @click="completeLayer=false">取消</btn>
+                    <btn flat color="#008eff" @click="complete()">保存</btn>
+                </div>
             </div>
         </layer>
         <layer v-if="layer" title="详情" width="70%">
@@ -413,6 +618,8 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+            this.getInfo(item.orderNo);
+            this.getAccessory(item.orderNo);
         },
         infoShow(item) {
             // this.$router.push(`/order/info?orderNo=${item.orderNo}`);

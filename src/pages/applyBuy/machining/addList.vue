@@ -51,7 +51,7 @@
                             class="blue"
                             @click="machining(item.entrustNo, 4)"
                         >处理完成</a>
-                        <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
+                        <a href="javascript:;" v-if="item.status == 0 || item.status==5" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
                         <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="initApprove(item.entrustNo, 1)">发起审批</a>
                     </td>
                 </template>

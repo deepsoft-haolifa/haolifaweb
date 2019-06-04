@@ -239,7 +239,7 @@
                                 <td>{{item.testingNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
-                                <td>{{item.reason}}</td>
+                                <td>{{item.reasons.toString()}}</td>
                                 <td>{{item.storageStatus == 1?'待入库':'已入库'}}</td>
                                 <td>{{item.createTime}}</td>
                             </tr>
@@ -259,9 +259,16 @@
                     <input-box v-model="order.testingNumber" class="flex-item mr-20 ml-20" label="检测数量"></input-box>
                     <input-box v-model="order.qualifiedNumber" class="flex-item mr-20" label="合格数量"></input-box>
                 </div>
-                <div class="flex">
-                    <input-box v-model="order.unqualifiedNumber" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
-                    <select-box class="flex-item mr-20" :list="reasonList" v-model="order.reason" label="不合格原因"></select-box>
+                <div class="flex" v-for="(item,index) in order.unqualifiedList" :key="index">
+                    <input-box v-model="item.number" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
+                    <el-select v-model="item.reason" style="border-top:0" class="flex-item mr-20 ml-20" placeholder="请选择不合格原因" :multiple="true">
+                        <el-option v-for="item in reasonList" :key="item.value" :label="item.text" :value="item.value"></el-option>
+                    </el-select>
+                    <!-- <select-box class="flex-item mr-20" :list="reasonList" v-model="item.reason" label="不合格原因"></select-box> -->
+                    <icon-btn small v-if="order.unqualifiedList.length > 1" @click="removeReason(index)">close</icon-btn>
+                </div>
+                <div style="padding-left:100px;">
+                    <icon-btn bg small v-tooltip="'更多不合格数量及因'" @click="addReason">add</icon-btn>
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
@@ -466,7 +473,7 @@
                                 <td>{{item.testingNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
-                                <td>{{item.reason}}</td>
+                                <td>{{item.reasons.toString()}}</td>
                                 <td>{{item.storageStatus == 1?'待入库':'已入库'}}</td>
                                 <td>{{item.createTime}}</td>
                             </tr>
@@ -528,7 +535,8 @@ export default {
                 qualifiedNumber: "",
                 reason: "",
                 testingNumber: "",
-                unqualifiedNumber: ""
+                unqualifiedNumber: "",
+                unqualifiedList: [{ number: "0", reason: "" }]
             },
             reasonList: [],
             recordList: [],
@@ -650,6 +658,17 @@ export default {
                 .post(`/haolifa/pro-inspect/pageInfo`, params)
                 .then(res => {
                     this.recordList = res.list;
+                    this.recordList.map(item => {
+                        return (item.reasons = item.reasonList.map(obj => {
+                            return (
+                                "数量:" +
+                                obj.number +
+                                ",原因:" +
+                                obj.reason +
+                                ";"
+                            );
+                        }));
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -667,8 +686,18 @@ export default {
             this.layer = false;
         },
         complete() {
+            const params = { ...this.order };
+            const arr = params.unqualifiedList.map(item => {
+                return item.number;
+            });
+            params.unqualifiedList = params.unqualifiedList.map(item => {
+                return { number: item.number, reason: item.reason.toString() };
+            });
+            params.unqualifiedNumber = arr.reduce((num, item, index) => {
+                return parseInt(num) + parseInt(item);
+            });
             this.$http
-                .post(`/haolifa/pro-inspect/save`, this.order)
+                .post(`/haolifa/pro-inspect/save`, params)
                 .then(res => {
                     this.$toast("添加成功");
                     this.completeLayer = false;
@@ -687,8 +716,15 @@ export default {
                 qualifiedNumber: "",
                 reason: "",
                 testingNumber: "",
-                unqualifiedNumber: ""
+                unqualifiedNumber: "",
+                unqualifiedList: [{ number: "0", reason: "" }]
             };
+        },
+        addReason() {
+            this.order.unqualifiedList.push({ number: "0", reason: "" });
+        },
+        removeReason(index) {
+            this.order.unqualifiedList.splice(index, 1);
         }
     }
 };
@@ -748,5 +784,10 @@ export default {
     td {
         white-space: unset !important;
     }
+}
+.el-select .el-input__inner {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
 }
 </style>

@@ -403,19 +403,19 @@ export default {
         },
         complete() {
             let save = {
-                handlingSuggestion: this.inspectHistory.handlingSuggestion,
-                inspectNo: this.inspectHistory.inspectNo,
-                materialGraphName: this.inspectHistory.materialName,
-                materialGraphNo: this.inspectHistory.materialGraphNo,
-                qualifiedNumber: this.inspectHistory.qualifiedNumber,
-                remark: this.inspectHistory.remark,
-                testNumber: this.inspectHistory.testNumber,
-                unqualifiedNumber: this.inspectHistory.unqualifiedNumber,
+                handlingSuggestion: this.addInspectHistory.handlingSuggestion,
+                inspectNo: this.addInspectHistory.inspectNo,
+                materialGraphName: this.addInspectHistory.materialName,
+                materialGraphNo: this.addInspectHistory.materialGraphNo,
+                qualifiedNumber: this.addInspectHistory.qualifiedNumber,
+                remark: this.addInspectHistory.remark,
+                testNumber: this.addInspectHistory.testNumber,
+                unqualifiedNumber: this.addInspectHistory.unqualifiedNumber,
                 type: 1, // 零件送检
-                batchNumber: this.inspectHistory.batchNumber,
-                purchaseNo: this.inspectHistory.purchaseNo,
-                supplierName: this.inspectHistory.supplierName,
-                supplierNo: this.inspectHistory.supplierNo
+                batchNumber: this.addInspectHistory.batchNumber,
+                purchaseNo: this.addInspectHistory.purchaseNo,
+                supplierName: this.addInspectHistory.supplierName,
+                supplierNo: this.addInspectHistory.supplierNo
             };
             this.$http
                 .post(`/haolifa/material-inspect/history/save`, save)

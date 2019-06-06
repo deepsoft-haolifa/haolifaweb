@@ -151,11 +151,7 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
                                 <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
@@ -171,11 +167,7 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -271,11 +263,7 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
                             </td>
                         </tr>
                     </table>
@@ -283,6 +271,12 @@
             </div>
             <div class="layer-btns">
                 <btn flat color="#008eff" @click="close">关闭</btn>
+            </div>
+        </layer>
+        <layer v-if="loading">
+            <div class="abs t-center" style="padding: 20px;">
+                <loading size="30"/>
+                <div style="margin-top: 10px;">正在保存</div>
             </div>
         </layer>
     </div>
@@ -416,10 +410,11 @@ export default {
         fileUpload(item) {
             this.fileLayer = true;
             this.fileForm.orderNo = item.orderNo;
+            this.fileList = [];
             this.$http
                 .get(`/haolifa/order-product/accessory/${item.orderNo}`)
                 .then(res => {
-                    this.fileForm.orderUploadDTOs = [...res];
+                    this.fileForm.orderUploadDTOs = res;
                     res.forEach(item => {
                         let fileObj = {
                             name: item.fileName,
@@ -468,10 +463,6 @@ export default {
                             fileUrl: res,
                             fileName: file.name
                         });
-                        // this.accessories.push({
-                        //     fileName: file.name,
-                        //     fileUrl: res
-                        // });
                         this.loading = false;
                     })
                     .catch(e => {

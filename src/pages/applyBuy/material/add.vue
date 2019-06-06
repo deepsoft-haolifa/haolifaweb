@@ -60,7 +60,7 @@ export default {
                 arrivalTime: "",
                 supplierName: "",
                 batchNumber: "",
-                purchaseNo:'',
+                purchaseNo: "",
                 status: 1,
                 items: [
                     {
@@ -144,8 +144,10 @@ export default {
             });
         },
         removeFile(fileList, i) {
+            console.log(i.length);
             return new Promise((resolve, reject) => {
                 this.resFileList.splice(i, 1);
+                console.log(this.resFileList);
                 resolve();
             });
         },

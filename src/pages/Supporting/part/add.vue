@@ -14,7 +14,7 @@
                 <input-box v-model="form.unit" class="mr-10" label="单位(如：根，个)" style="width: 25%"></input-box>
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.currentQuantity" class="mr-10" label="当前库存数量" style="width: 25%"></input-box>
+                <!--<input-box v-model="form.currentQuantity" class="mr-10" label="当前库存数量" style="width: 25%"></input-box>-->
                 <input-box v-model="form.supportQuantity" class="mr-10" label="配套数量" style="width: 25%"></input-box>
                 <input-box v-model="form.safeQuantity" class="mr-10" label="安全库存" style="width: 25%"></input-box>
                 <input-box v-model="form.safetyFactor" class="mr-10" label="安全库存系数" style="width: 25%"></input-box>
@@ -49,7 +49,7 @@ export default {
             form: {
                 id: "",
                 actualWeight: "",
-                currentQuantity: "",
+                // currentQuantity: "",
                 graphNo: "",
                 material: "",
                 materialClassifyId: "",

@@ -25,6 +25,7 @@
                     <th>加工方</th>
                     <th>物料名称</th>
                     <th>物料图号</th>
+                    <th>加工后图号</th>
                     <th>数量</th>
                     <th>发起时间</th>
                     <th>状态</th>
@@ -40,6 +41,7 @@
                     <td>{{item.workshopType == '0' ? '暂无':item.supplierName}}</td>
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
+                    <td>{{item.processedGraphNo}}</td>
                     <td>{{item.number}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{statusList[item.status+1].name}}</td>

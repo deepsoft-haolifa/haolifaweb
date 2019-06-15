@@ -19,6 +19,7 @@
                     <th>批次号</th>
                     <th>物料名称</th>
                     <th>物料图号</th>
+                    <th>加工后图号</th>
                     <th>数量</th>
                     <th>检验合格数</th>
                     <th>发起时间</th>
@@ -34,6 +35,7 @@
                     <td>{{item.batchNumber}}</td>
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
+                    <td>{{item.processedGraphNo}}</td>
                     <td>{{item.number}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.createTime}}</td>

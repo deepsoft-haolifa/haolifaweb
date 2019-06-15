@@ -22,11 +22,11 @@
                     style="width: 50%"
                     type="text"
                 ></input-box>
-                <input-box
-                    v-model="form.supplierNo"
-                    class="flex-item mr-10"
-                    label="外部车间编号"
-                ></input-box>
+                <!--<input-box-->
+                    <!--v-model="form.supplierNo"-->
+                    <!--class="flex-item mr-10"-->
+                    <!--label="外部车间编号"-->
+                <!--&gt;</input-box>-->
             </div>
             <div
                 class="flex-v-center"

@@ -19,6 +19,7 @@
                     <th>批次号</th>
                     <th>物料名称</th>
                     <th>物料图号</th>
+                    <th>加工后图号</th>
                     <th>数量</th>
                     <th>检验合格数量</th>
                     <th>发起时间</th>
@@ -34,6 +35,7 @@
                     <td>{{item.batchNumber}}</td>
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
+                    <td>{{item.processedGraphNo}}</td>
                     <td>{{item.number}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.createTime}}</td>
@@ -57,23 +59,25 @@
                             <td style="width: 20%;"></td>
                             <td style="width: 20%;"></td>
                             <td style="width: 20%;"></td>
+                            <td style="width: 20%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">机加工单</td>
+                            <td colspan="6" class="b">机加工单</td>
                         </tr>
                         <tr>
                             <th colspan="3">机加工单号：{{entrust.entrustNo}}</th>
-                            <td colspan="2">发起日期：{{entrust.createTime}}</td>
+                            <td colspan="3">发起日期：{{entrust.createTime}}</td>
                         </tr>
                         <tr>
                             <th colspan="3">采购合同号：{{entrust.purchaseNo}}</th>
-                            <td colspan="2">批次号：{{entrust.batchNumber}}</td>
+                            <td colspan="3">批次号：{{entrust.batchNumber}}</td>
                         </tr>
                         <tr>
                             <td colspan="1" class="b">采购合同编号</td>
                             <td colspan="1" class="b">批次号</td>
                             <td colspan="1" class="b">物料名称</td>
                             <td colspan="1" class="b">物料图号</td>
+                            <td colspan="1" class="b">加工后图号</td>
                             <td colspan="1" class="b">数量</td>
                         </tr>
                         <tr>
@@ -81,6 +85,7 @@
                             <td colspan="1">{{entrust.batchNumber}}</td>
                             <td colspan="1">{{entrust.materialGraphName}}</td>
                             <td colspan="1">{{entrust.materialGraphNo}}</td>
+                            <td colspan="1">{{entrust.processedGraphNo}}</td>
                             <td colspan="1">{{entrust.number}}</td>
                         </tr>
                     </table>
@@ -105,7 +110,7 @@
                             <th>质检单号</th>
                             <th>类别</th>
                             <th>物料名称</th>
-                            <th>物料图号</th>
+                            <th>加工后图号</th>
                             <th>检测数量</th>
                             <th>合格数量</th>
                             <th>不合格数量</th>
@@ -158,23 +163,25 @@
                             <td style="width: 20%;"></td>
                             <td style="width: 20%;"></td>
                             <td style="width: 20%;"></td>
+                            <td style="width: 20%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="5" class="b">机加工单</td>
+                            <td colspan="6" class="b">机加工单</td>
                         </tr>
                         <tr>
                             <th colspan="3">机加工单号：{{entrust.entrustNo}}</th>
-                            <td colspan="2">发起日期：{{entrust.createTime}}</td>
+                            <td colspan="3">发起日期：{{entrust.createTime}}</td>
                         </tr>
                         <tr>
                             <th colspan="3">采购合同号：{{entrust.purchaseNo}}</th>
-                            <td colspan="2">批次号：{{entrust.batchNumber}}</td>
+                            <td colspan="3">批次号：{{entrust.batchNumber}}</td>
                         </tr>
                         <tr>
                             <td colspan="1" class="b">采购合同编号</td>
                             <td colspan="1" class="b">批次号</td>
                             <td colspan="1" class="b">物料名称</td>
                             <td colspan="1" class="b">物料图号</td>
+                            <td colspan="1" class="b">加工后图号</td>
                             <td colspan="1" class="b">数量</td>
                         </tr>
                         <tr>
@@ -182,6 +189,7 @@
                             <td colspan="1">{{entrust.batchNumber}}</td>
                             <td colspan="1">{{entrust.materialGraphName}}</td>
                             <td colspan="1">{{entrust.materialGraphNo}}</td>
+                            <td colspan="1">{{entrust.processedGraphNo}}</td>
                             <td colspan="1">{{entrust.number}}</td>
                         </tr>
                     </table>
@@ -206,7 +214,7 @@
                             <th>质检单号</th>
                             <th>类别</th>
                             <th>物料名称</th>
-                            <th>物料图号</th>
+                            <th>加工后图号</th>
                             <th>检测数量</th>
                             <th>合格数量</th>
                             <th>不合格数量</th>
@@ -360,7 +368,7 @@ export default {
             this.inspectHistoryAdd.purchaseNo = item.purchaseNo;
             this.inspectHistoryAdd.supplierName = item.supplierName;
             this.inspectHistoryAdd.supplierNo = item.supplierNo;
-            this.inspectHistoryAdd.materialGraphNo = item.materialGraphNo;
+            this.inspectHistoryAdd.materialGraphNo = item.processedGraphNo;
             this.inspectHistoryAdd.materialName = item.materialGraphName;
             this.inspectHistoryAdd.inspectNo = item.entrustNo;
             this.completeLayer = true;

@@ -17,6 +17,7 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>订单编号</th>
+                    <th>需方</th>
                     <!-- <th style="width:50px;">订单合同URL</th> -->
                     <th>发货日期</th>
                     <th>订单数量</th>
@@ -29,6 +30,7 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
                     <td>{{item.orderNo}}</td>
+                    <td>{{item.demandName}}</td>
                     <!-- <td>
                         <a class="fixed-length" :href="item.orderContractExtendUrl" :title="item.orderContractExtendUrl">{{item.orderContractExtendUrl}}</a>
                     </td>-->

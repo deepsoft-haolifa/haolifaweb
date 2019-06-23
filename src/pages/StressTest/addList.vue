@@ -577,6 +577,7 @@ export default {
             // this.getOrderStatusList();
         },
         getInfo(orderNo) {
+            this.info = {};
             this.$http
                 .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
                 .then(res => {

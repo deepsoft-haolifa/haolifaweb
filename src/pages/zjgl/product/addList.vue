@@ -271,7 +271,7 @@
                     <icon-btn bg small v-tooltip="'更多不合格数量及因'" @click="addReason">add</icon-btn>
                 </div>
                 <div class="layer-btns">
-                    <btn flat @click="completeLayer=false">取消</btn>
+                    <btn flat @click="closeLayer">取消</btn>
                     <btn flat color="#008eff" @click="complete()">保存</btn>
                 </div>
             </div>
@@ -550,9 +550,11 @@ export default {
     methods: {
         closeLayer() {
             this.layer = false;
+            this.completeLayer = false;
             this.accessoryList = [];
         },
         getAccessory(orderNo) {
+            this.accessoryList = [];
             this.$http
                 .get(
                     `/haolifa/flowInstance/flow/accessoryInfo?formNo=${orderNo}&formId=0`
@@ -639,6 +641,7 @@ export default {
             // this.getOrderStatusList();
         },
         getInfo(orderNo) {
+            this.info = {};
             this.$http
                 .get(`/haolifa/order-product/details?orderNo=${orderNo}`)
                 .then(res => {

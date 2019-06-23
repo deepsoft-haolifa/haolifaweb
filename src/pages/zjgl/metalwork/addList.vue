@@ -315,6 +315,7 @@ export default {
             this.getInspectHistory();
         },
         getInfo() {
+            this.entrust = {};
             this.$http
                 .get(`/haolifa/entrust/info/${this.entrustNo}`)
                 .then(res => {
@@ -378,9 +379,7 @@ export default {
         },
         updateEntrustStatus(item) {
             this.$http
-                .get(
-                    `/haolifa/entrust/updateInspectStatus/${item.entrustNo}/2`
-                )
+                .get(`/haolifa/entrust/updateInspectStatus/${item.entrustNo}/2`)
                 // .get(`/haolifa/entrust/updateStatus/${item.entrustNo}/6`)
                 .then(res => {
                     this.$refs.list.update();

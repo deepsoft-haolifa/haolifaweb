@@ -13,6 +13,7 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
+            <btn class="b" flat color="#008eff" @click="exportExcel">费用导出</btn>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/entryOut/pageInfo" method="get">
@@ -68,6 +69,23 @@
                 <btn flat color="#008eff" @click="outSave()">保存</btn>
             </div>
         </layer>
+        <layer v-if="exportLayer" :title="'导出'" width="30%">
+            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportForm.startDate" hint="必填" class="flex-item" label="开始时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportForm.endDate" hint="必填" class="flex-item" label="结束时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="exportForm.orderNo" class="flex-item" label="订单号"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="exportLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="download()">确定</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -100,6 +118,12 @@ export default {
                 rackNo: "",
                 roomNo: "",
                 productModel: ""
+            },
+            exportLayer: false,
+            exportForm: {
+                startDate: "",
+                endDate: "",
+                orderNo: ""
             }
         };
     },
@@ -189,6 +213,36 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+        },
+        exportExcel() {
+            this.exportLayer = true;
+            this.exportForm = {
+                orderNo: "",
+                startDate: "",
+                endDate: ""
+            };
+        },
+        download() {
+            if (!this.exportForm.startDate) {
+                this.$toast("请选择开始时间");
+                return;
+            }
+            if (!this.exportForm.endDate) {
+                this.$toast("请选择结束时间");
+                return;
+            }
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                `/haolifa/export/product-out?startDate=${
+                    this.exportForm.startDate
+                }&endDate=${this.exportForm.endDate}&orderNo=${
+                    this.exportForm.orderNo
+                }&operationType=1`
+            );
+            a.click();
+            this.exportLayer = false;
         }
     }
 };

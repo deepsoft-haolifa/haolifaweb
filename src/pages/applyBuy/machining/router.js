@@ -4,7 +4,7 @@ export default [{
   component: () => import( /* webpackChunkName: "diliverylist" */ './index.vue'),
   meta: {
     level: 2,
-    title: '机加工报检单列表',
+    title: '加工委托单列表',
     open: false,
     id: 'jjgbjd'
   }
@@ -14,7 +14,7 @@ export default [{
   component: () => import( /* webpackChunkName: "diliveryadd" */ './addList.vue'),
   meta: {
     level: 3,
-    title: '新增机加工报检单',
+    title: '创建加工委托单',
     open: false,
     id: 'cjjjgd'
   }
@@ -24,7 +24,7 @@ export default [{
   component: () => import( /* webpackChunkName: "diliveryadd" */ './add.vue'),
   meta: {
     level: 3,
-    title: '新增机加工报检单',
+    title: '加工委托单',
     open: false,
     id: 'cjjjgd'
   }

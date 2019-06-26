@@ -13,7 +13,7 @@
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="exportExcel">费用导出</btn>
+            <btn class="b" flat color="#008eff" @click="exportExcel">成品出库导出</btn>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" page-num-str="currentPage" :param="filter" url="/haolifa/store-room/entryOut/pageInfo" method="get">
@@ -25,7 +25,7 @@
                     <th>成品规格</th>
                     <th>操作类型</th>
                     <th>数量</th>
-                    <th>金额</th>
+                    <th>单价</th>
                     <th>创建时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>

@@ -2,13 +2,8 @@
     <div class="page-part-list">
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
-                <!-- <i class="icon f-20 c-8">search</i>
-                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true)">
-                    <option value="0">待发货</option>
-                    <option value="1">部分发货</option>
-                    <option value="2">发货完成</option>
-                </select>
-                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>-->
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.contractOrderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
             <!-- <router-link to="/delivery-bills/add">
@@ -64,6 +59,8 @@ export default {
         return {
             filter: {
                 // deliverStatusList: "0"
+                contractOrderNo: "",
+                deliveryNo: ""
             },
             statusList: { 0: "待审核", 1: "审核通过", 2: "审核不通过" },
             deliverStatusList: { 0: "待发货", 1: "部分发货", 2: "发货完成" }

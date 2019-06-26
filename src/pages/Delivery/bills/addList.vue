@@ -4,7 +4,6 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.contractOrderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
-                <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
             <router-link to="/delivery-bills/add">

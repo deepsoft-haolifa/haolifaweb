@@ -89,9 +89,9 @@ export default {
                 let graphNo = encodeURI(this.form.materialGraphNo);
                 this.$http
                     .get(
-                        `/haolifa/store-room/material-batch-nos/${
+                        `/haolifa/store-room/material-batch-nos?roomNo=${
                             this.form.roomNo
-                        }/${storeRoomRackNo}/${graphNo}`
+                            }&rackNo=${storeRoomRackNo}&graphNo=${graphNo}`
                     )
                     .then(res => {
                         this.materialBatchNoList = res.map(item => {

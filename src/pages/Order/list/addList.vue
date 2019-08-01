@@ -4,9 +4,17 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                订单状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
-                    <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
+                    <option v-for="item in newOrderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
+                </select>
+                发货状态：
+                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true)">
+                    <option value="-1">全部</option>
+                    <option value="0">待发货</option>
+                    <option value="1">部分发货</option>
+                    <option value="2">发货完成</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -37,10 +45,10 @@
                     <!-- <td>
                         <a class="fixed-length" :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a>
                     </td>-->
-                    <td>{{item.deliveryDate}}</td>
-                    <td>{{item.totalCount}}</td>
-                    <td>{{deliverStatusList[item.deliverStatus].text}}</td>
-                    <td>{{orderStatusList[item.orderStatus].text}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.deliveryDate}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.totalCount}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{deliverStatusList[item.deliverStatus].text}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="progress(item)" v-if="item.orderStatus==0" style="margin-right: 3px;">发起流程|</a>
@@ -153,7 +161,11 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                >预览</a>
                                 <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
@@ -169,7 +181,11 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -265,7 +281,11 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                     </table>
@@ -318,9 +338,22 @@ export default {
                 { value: 13, text: "发货完成" },
                 { value: 14, text: "审核不通过" }
             ],
+            newOrderStatusList: [
+                { value: 0, text: "创建" },
+                { value: 1, text: "审批中" },
+                { value: 2, text: "核料中" },
+                { value: 3, text: "替换料审批中" },
+                { value: 4, text: "核料完成" },
+                { value: 5, text: "待生产" },
+                { value: 6, text: "待领料" },
+                { value: 7, text: "生产中" },
+                { value: 9, text: "生产完成" },
+                { value: 14, text: "审核不通过" }
+            ],
             filter: {
                 orderNo: "",
-                orderStatus: -1
+                orderStatus: -1,
+                deliverStatus: 0
             },
             layer: false,
             info: {},
@@ -629,5 +662,8 @@ export default {
     td {
         white-space: unset !important;
     }
+}
+.cell-color {
+    color: #de8a0c;
 }
 </style>

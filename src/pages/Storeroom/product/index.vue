@@ -66,7 +66,7 @@
             </div>
             <div class="layer-btns">
                 <btn flat @click="form.layerShow=false">取消</btn>
-                <btn flat color="#008eff" @click="outSave()">保存</btn>
+                <el-button size="mini" :loading="loading" type="primary" @click="outSave">保存</el-button>
             </div>
         </layer>
         <layer v-if="exportLayer" :title="'导出'" width="30%">
@@ -119,6 +119,7 @@ export default {
                 roomNo: "",
                 productModel: ""
             },
+            loading: false,
             exportLayer: false,
             exportForm: {
                 startDate: "",
@@ -204,13 +205,16 @@ export default {
                 customerNo: this.form.customerNo,
                 customerName: this.form.customerName
             };
+            this.loading = true;
             this.$http
                 .put(`/haolifa/store-room/entryOut/outProduct`, save)
                 .then(res => {
+                    this.loading = false;
                     this.form.layerShow = false;
                     this.$refs.list.update();
                 })
                 .catch(e => {
+                    this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
         },

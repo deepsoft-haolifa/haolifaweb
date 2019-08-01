@@ -21,8 +21,8 @@
                 <input-box v-model="form.storeRoomRackId" class="flex-item mr-10" multi-line label="库房货位Id"></input-box>-->
             </div>
             <div class="flex-v-center" style="margin: 20px 0;">
-                <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>
-                <btn big flat bg class="mr-20" @click="cancel">取消</btn>
+                <el-button class="mr-20" size="mini" :loading="loading" type="primary" @click="submit" :disabled="!canSubmit">提交</el-button>
+                <btn big flat bg class="ml-20 mr-20" @click="cancel">取消</btn>
             </div>
         </div>
     </div>
@@ -48,6 +48,7 @@ export default {
                 name: "",
                 materialBatchNo: ""
             },
+            loading: false,
             name: "",
             roomList: [],
             rackList: [],

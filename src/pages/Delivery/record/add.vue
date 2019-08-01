@@ -34,8 +34,8 @@
                 <input-box v-model="form.remark" class="flex-item mr-10" multi-line label="备注"></input-box>
             </div>
             <div class="flex-v-center" style="margin: 20px 0;">
-                <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>
-                <btn big flat bg class="mr-20" @click="cancel">取消</btn>
+                <el-button size="mini" class="mr-20" :loading="loading" type="primary" :disabled="!canSubmit" @click="submit">保存</el-button>
+                <btn big flat bg class="ml-20 mr-20" @click="cancel">取消</btn>
             </div>
             <layer v-if="loading">
                 <div class="abs t-center" style="padding: 20px;">

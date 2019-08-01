@@ -272,7 +272,7 @@
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="closeLayer">取消</btn>
-                    <btn flat color="#008eff" @click="complete()">保存</btn>
+                    <el-button size="mini" :loading="loading" type="primary" @click="complete">保存</el-button>
                 </div>
             </div>
         </layer>
@@ -699,13 +699,16 @@ export default {
             params.unqualifiedNumber = arr.reduce((num, item, index) => {
                 return parseInt(num) + parseInt(item);
             });
+            this.loading = true;
             this.$http
                 .post(`/haolifa/pro-inspect/save`, params)
                 .then(res => {
                     this.$toast("添加成功");
+                    this.loading = false;
                     this.completeLayer = false;
                 })
                 .catch(e => {
+                    this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
         },

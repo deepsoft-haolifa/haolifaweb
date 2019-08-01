@@ -64,7 +64,7 @@
             </div>
             <div class="layer-btns">
                 <btn flat @click="storeRoom.layerShow=false">取消</btn>
-                <btn flat color="#008eff" @click="complete()">保存</btn>
+                <el-button size="mini" :loading="loading" type="primary" @click="complete">保存</el-button>
             </div>
         </layer>
         <layer v-if="exportLayer" :title="'导出'" width="30%">
@@ -124,7 +124,8 @@ export default {
                 { value: 0, text: "全部" },
                 { value: 1, text: "待入库" },
                 { value: 2, text: "已入库" }
-            ]
+            ],
+            loading: false
         };
     },
     methods: {
@@ -164,6 +165,7 @@ export default {
                 orderNo: this.storeRoom.orderNo,
                 price: Number(this.storeRoom.price)
             };
+            this.loading = true;
             this.$http
                 .put(`/haolifa/store-room/entryOut/entryMaterial`, save)
                 .then(res => {
@@ -171,8 +173,10 @@ export default {
                     this.$toast("入库成功");
                     this.$refs.list.update();
                     this.storeRoom.layerShow = false;
+                    this.loading = false;
                 })
                 .catch(e => {
+                    this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
         },

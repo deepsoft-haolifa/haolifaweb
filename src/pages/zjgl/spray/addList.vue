@@ -166,7 +166,7 @@
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
-                    <btn flat color="#008eff" @click="complete()">保存</btn>
+                    <el-button size="mini" :loading="loading" type="primary" @click="complete">保存</el-button>
                 </div>
             </div>
         </layer>
@@ -315,7 +315,8 @@ export default {
                 items: []
             },
             nameList: [],
-            tuhaoList: []
+            tuhaoList: [],
+            loading: false
         };
     },
     methods: {
@@ -323,14 +324,17 @@ export default {
             this.updateStatus(item.sprayNo, 2);
         },
         complete() {
+            this.loading = true;
             this.$http
                 .post(`/haolifa/spray/inspect`, this.inspectHistoryAdd)
                 .then(res => {
+                    this.loading = false;
                     this.$toast("添加成功");
                     this.completeLayer = false;
                     this.$refs.list.update();
                 })
                 .catch(e => {
+                    this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
         },

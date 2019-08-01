@@ -551,4 +551,7 @@ export default {
         white-space: unset !important;
     }
 }
+.cell-color {
+    color: #de8a0c;
+}
 </style>

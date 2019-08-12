@@ -1,5 +1,5 @@
 <template>
-    <div class=" abs scroll-y">
+    <div class="abs scroll-y">
         <div class="form-content page-supplier-info">
             <div class="b f-18 flex-v-center" style="margin-bottom: 20px;">
                 <icon-btn class="mr-15" @click="$router.back()">arrow_back</icon-btn>
@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length">
-            <div class="flex-item scroll-y ml-20"  v-for="(item, i) in inspectHistory">
+            <div class="flex-item scroll-y ml-20" v-for="(item, i) in inspectHistory">
                 <table class="data-table">
                     <tr>
                         <th>订单号</th>
@@ -25,53 +25,92 @@
                         <td>{{item.testingNumber}}</td>
                         <td>{{item.qualifiedNumber}}</td>
                         <td>{{item.unqualifiedNumber}}</td>
-                        <th colspan="2">{{item.reason}}</th>
+                        <th colspan="2">{{item.reasons.toString()}}</th>
                     </tr>
                 </table>
-                <hr/>
+                <hr>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    // import parseJson from '@/utils/parseJson'
-    export default {
-        name: 'purchsemanage-purchaseinfo',
-        data () {
-            return {
-                loading: false,
-                orderNo:'',
-                inspectHistory:[],
-                pressureInspectHistory:[]
-            }
-        },
-        created () {
-            this.orderNo = this.$route.query.orderNo;
-            this.getInspectHistory()
-        },
-        methods: {
-            getInspectHistory() {
-                let params = {orderNo:this.orderNo, storageStatus:0,pageNum:1,pageSize:10000,inspectNo:''}
-                this.$http.post(`/haolifa/pro-inspect/pageInfo`, params).then(res=>
-                {
+// import parseJson from '@/utils/parseJson'
+export default {
+    name: "purchsemanage-purchaseinfo",
+    data() {
+        return {
+            loading: false,
+            orderNo: "",
+            inspectHistory: [],
+            pressureInspectHistory: []
+        };
+    },
+    created() {
+        this.orderNo = this.$route.query.orderNo;
+        this.getInspectHistory();
+    },
+    methods: {
+        getInspectHistory() {
+            let params = {
+                orderNo: this.orderNo,
+                storageStatus: 0,
+                pageNum: 1,
+                pageSize: 10000,
+                inspectNo: ""
+            };
+            this.$http
+                .post(`/haolifa/pro-inspect/pageInfo`, params)
+                .then(res => {
                     this.inspectHistory = res.list;
-                }).catch(e=>{
-                    this.$toast(e.msg || e.message)
+                    this.inspectHistory.map(item => {
+                        return (item.reasons = item.reasonList.map(obj => {
+                            if (obj.number)
+                                return (
+                                    "数量:" +
+                                    obj.number +
+                                    ",原因:" +
+                                    obj.reason +
+                                    ";"
+                                );
+                        }));
+                    });
                 })
-            }
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
     }
+};
 </script>
 
 <style lang="less">
-    .page-supplier-info{
-        padding: 30px 20px;
-        tr:first-child td{padding: 0;border: none;}
-        th{font-weight: normal;color: #888;}
-        td{color: #444;}
-        th, td{padding: 10px;border: 1px solid #fff;border: 1px solid #ddd;}
-        .checkbox-list{flex-wrap: wrap;}
-        .checkbox-item{line-height: 1em;width: 180px;margin: 5px 0;}
+.page-supplier-info {
+    padding: 30px 20px;
+    tr:first-child td {
+        padding: 0;
+        border: none;
     }
+    th {
+        font-weight: normal;
+        color: #888;
+    }
+    td {
+        color: #444;
+    }
+    th,
+    td {
+        padding: 10px;
+        border: 1px solid #fff;
+        border: 1px solid #ddd;
+    }
+    .checkbox-list {
+        flex-wrap: wrap;
+    }
+    .checkbox-item {
+        line-height: 1em;
+        width: 180px;
+        margin: 5px 0;
+    }
+}
 </style>

@@ -25,7 +25,7 @@
                         <td>{{item.testingNumber}}</td>
                         <td>{{item.qualifiedNumber}}</td>
                         <td>{{item.unqualifiedNumber}}</td>
-                        <th colspan="2">{{item.reason}}</th>
+                        <th colspan="2">{{item.reasons.toString()}}</th>
                     </tr>
                 </table>
                 <hr>
@@ -63,6 +63,18 @@ export default {
                 .post(`/haolifa/pro-inspect/pageInfo`, params)
                 .then(res => {
                     this.inspectHistory = res.list;
+                    this.inspectHistory.map(item => {
+                        return (item.reasons = item.reasonList.map(obj => {
+                            if (obj.number)
+                                return (
+                                    "数量:" +
+                                    obj.number +
+                                    ",原因:" +
+                                    obj.reason +
+                                    ";"
+                                );
+                        }));
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

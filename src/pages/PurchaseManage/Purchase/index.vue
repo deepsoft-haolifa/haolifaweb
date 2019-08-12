@@ -24,6 +24,7 @@
                     <th>供方单位</th>
                     <th>采购完成日期</th>
                     <td>采购总数量</td>
+                    <td>检验合格数量</td>
                     <th>订单状态</th>
                     <th>创建人</th>
                     <th>创建日期</th>
@@ -38,6 +39,7 @@
                     <td>{{item.supplierName}}</td>
                     <td>{{item.deliveryTime}}</td>
                     <td>{{item.totalCount}}</td>
+                    <td>{{item.qualifiedNumber}}</td>
                     <td>{{statusList[item.status-1].name}}</td>
                     <td>{{item.createUserId}}</td>
                     <td>{{item.createTime}}</td>

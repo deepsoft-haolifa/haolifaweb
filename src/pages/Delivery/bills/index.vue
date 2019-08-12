@@ -113,7 +113,13 @@ export default {
 
 <style lang="less">
 .page-part-list {
-    //
+    select {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px 5px 10px;
+        appearance: none;
+    }
 }
 
 .fixed-length {

@@ -7,6 +7,7 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.demandName" @change="$refs.list.update(true)" placeholder="需方单位" style="width: 200px;">
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
                     <option v-for="item in statusList" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
@@ -88,7 +89,8 @@ export default {
                 { value: 13, text: "发货完成" }
             ],
             filter: {
-                // orderNo:'',
+                demandName: "",
+                orderNo: "",
                 orderStatus: -1
                 // createUserId:0
             }

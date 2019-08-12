@@ -1,26 +1,18 @@
 <template>
     <div class="page-product-list flex-col">
         <div class="flex-v-center tool-bar">
-            <!-- <div class="flex-v-center search-bar" style="margin-right: 20px;">
-      <i class="icon f-20 c-8">search</i>
-      <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)">
-        <option value="">所有库房</option>
-        <option value="1">原料库</option>
-        <option value="2">成品库</option>
-      </select>
-      <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
-            </div>-->
-            <!-- <div class="flex-item"></div>
-    <router-link to="/product/add">
-      <btn class="b" flat color="#008eff">新增成品</btn>
-            </router-link>-->
-            <span class="f-16" style="margin-left: 10px;">{{this.$route.meta.title}}</span>
+            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号">
+            </div>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/order-product/pageInfo" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>订单号</th>
+                    <th>发货状态</th>
+                    <th>生产状态</th>
                     <th>装配车间</th>
                     <th>装配小组</th>
                     <th>创建时间</th>
@@ -33,6 +25,8 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td class="c-a">{{index}}</td>
                     <td>{{item.orderNo}}</td>
+                    <td>{{deliverStatusList[item.deliverStatus].text}}</td>
+                    <td>{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.assemblyShop}}</td>
                     <td>{{item.assemblyGroup}}</td>
                     <td>{{item.createTime}}</td>
@@ -118,7 +112,29 @@ export default {
                 { status: 3, name: "释放料" },
                 { status: 4, name: "领料完成" }
             ],
-            layer: false
+            layer: false,
+            deliverStatusList: [
+                { value: 0, text: "待发货" },
+                { value: 1, text: "部分发货" },
+                { value: 2, text: "发货完成" }
+            ],
+            orderStatusList: [
+                { value: 0, text: "创建" },
+                { value: 1, text: "审批中" },
+                { value: 2, text: "核料中" },
+                { value: 3, text: "替换料审批中" },
+                { value: 4, text: "核料完成" },
+                { value: 5, text: "待生产" },
+                { value: 6, text: "待领料" },
+                { value: 7, text: "生产中" },
+                { value: 8, text: "生产暂停" },
+                { value: 9, text: "生产完成" },
+                { value: 10, text: "质检中" },
+                { value: 11, text: "已入库" },
+                { value: 12, text: "申请发货" },
+                { value: 13, text: "发货完成" },
+                { value: 14, text: "审核不通过" }
+            ]
         };
     },
     methods: {

@@ -114,6 +114,10 @@ export default {
             }
         },
         addItem() {
+            if (this.form.items.length == 5) {
+                this.$toast("最多只能添加5条零件项");
+                return;
+            }
             this.form.items.push({
                 materialClassifyName: "",
                 materialGraphNo: "",

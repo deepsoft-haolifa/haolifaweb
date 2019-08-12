@@ -18,6 +18,8 @@
                     <th style="width: 60px;">序号</th>
                     <th>订单编号</th>
                     <th>订单合同URL</th>
+                    <th>订单总数量</th>
+                    <th>检验合格数量</th>
                     <th>发货日期</th>
                     <th>订单状态</th>
                     <th>创建时间</th>
@@ -30,6 +32,8 @@
                     <td>
                         <a class="fixed-length" :href="item.orderContractUrl" :title="item.orderContractUrl">{{item.orderContractUrl}}</a>
                     </td>
+                    <td>{{item.totalCount}}</td>
+                    <td>{{item.pressureQualifiedNumber}}</td>
                     <td>{{item.deliveryDate}}</td>
                     <td>{{orderStatusList[item.orderStatus-7].text}}</td>
                     <td>{{item.createTime}}</td>

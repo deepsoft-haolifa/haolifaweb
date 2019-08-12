@@ -21,7 +21,9 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
+                    <th>合同总金额</th>
                     <th>供方单位</th>
+                    <th>已付款</th>
                     <th>采购完成日期</th>
                     <th>合同类型</th>
                     <th>订单状态</th>
@@ -32,7 +34,9 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
                     <td>{{item.purchaseOrderNo}}</td>
+                    <td>{{item.totalPrice}}</td>
                     <td>{{item.supplierName}}</td>
+                    <td>{{item.paidAccount}}</td>
                     <td>{{item.deliveryTime}}</td>
                     <td>{{item.orderType == 0?'零件采购':'毛坯加工'}}</td>
                     <td>{{statusList[item.status-1].name}}</td>
@@ -66,7 +70,7 @@ export default {
                 orderNo: "",
                 status: 0,
                 createUserId: 0,
-                supplierName:''
+                supplierName: ""
             }
         };
     },
@@ -97,5 +101,14 @@ export default {
         padding: 5px 20px 5px 10px;
         appearance: none;
     }
+}
+.select-form {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 5px 20px 5px 10px;
+    appearance: none;
+    border-bottom: 1px solid #d8d8d8;
+    border-radius: 0;
 }
 </style>

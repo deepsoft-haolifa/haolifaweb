@@ -19,8 +19,10 @@
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>
+                    <th>合同总金额</th>
                     <th>需方单位</th>
                     <!-- <th>采购完成日期</th> -->
+                    <th>已收款</th>
                     <th>发货状态</th>
                     <th>订单状态</th>
                     <!-- <th>创建人</th> -->
@@ -31,8 +33,10 @@
                 <template slot="item" slot-scope="{ item, index }">
                     <td>{{index}}</td>
                     <td>{{item.orderNo}}</td>
+                    <td>{{item.totalPrice}}</td>
                     <td>{{item.demandName}}</td>
                     <!-- <td>{{item.deliveryTime}}</td> -->
+                    <td>{{item.receivedAccount}}</td>
                     <td>{{deliverStatusList[item.deliverStatus].text}}</td>
                     <td>{{statusList[item.orderStatus].text}}</td>
                     <!-- <td>{{item.createUserId}}</td> -->
@@ -62,10 +66,10 @@ export default {
     data() {
         return {
             natureList: ["国有", "三资", "集体", "联营", "私营"],
-            deliverStatusList:[
-                {value:0,text:'待发货'},
-                {value:1,text:'部分发货'},
-                {value:2,text:'发货完成'}
+            deliverStatusList: [
+                { value: 0, text: "待发货" },
+                { value: 1, text: "部分发货" },
+                { value: 2, text: "发货完成" }
             ],
             statusList: [
                 { value: 0, text: "创建" },

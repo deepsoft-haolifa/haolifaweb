@@ -20,6 +20,7 @@
                     <th style="width:50px;">订单合同URL</th>
                     <th>发货日期</th>
                     <th>订单数量</th>
+                    <th>检验合格数量</th>
                     <th>发货状态</th>
                     <th>订单状态</th>
                     <th>创建时间</th>
@@ -34,6 +35,7 @@
                     </td>
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.deliveryDate}}</td>
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.totalCount}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.qualifiedNumber}}</td>
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{deliverStatusList[item.deliverStatus].text}}</td>
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{orderStatusList[item.orderStatus-5].text}}</td>
                     <td>{{item.createTime}}</td>

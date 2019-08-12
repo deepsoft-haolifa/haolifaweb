@@ -4,6 +4,13 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.contractOrderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                发货状态:
+                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true)">
+                    <option value="-1">全部</option>
+                    <option value="0">待发货</option>
+                    <option value="1">部分发货</option>
+                    <option value="2">发货完成</option>
+                </select>
             </div>
             <div class="flex-item"></div>
             <!-- <router-link to="/delivery-bills/add">
@@ -18,12 +25,14 @@
                     <th style="width:50px;">发货通知单</th>
                     <th>订单号</th>
                     <th>发货状态</th>
+                    <th>订单总数量</th>
+                    <th>已发货数量</th>
                     <th>审批结果</th>
                     <th>审批信息</th>
                     <th>审批时间</th>
                     <th>创建时间</th>
                     <th>更新时间</th>
-                    <th class="t-right" style="width: 80px;">操作</th>
+                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -34,15 +43,17 @@
                     </td>
                     <td>{{item.contractOrderNo}}</td>
                     <td>{{deliverStatusList[item.deliverStatus]}}</td>
+                    <td>{{item.totalCount}}</td>
+                    <td>{{item.deliveredNumber}}</td>
                     <td>{{statusList[item.auditResult]}}</td>
                     <td>{{item.auditInfo}}</td>
                     <td>{{item.auditTime}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{item.updateTime}}</td>
-                    <td class="t-right">
-                        <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.auditResult != 2" class="blue" @click="edit(item.id)">编辑</a>
-                        <a href="javascript:;" class="blue" @click="addRecord(item)">添加发货记录</a>-->
-                    </td>
+                    <!-- <td class="t-right"> -->
+                    <!-- <a href="javascript:;" style="margin-right: 3px" v-if="item.auditResult != 2" class="blue" @click="edit(item.id)">编辑</a>
+                    <a href="javascript:;" class="blue" @click="addRecord(item)">添加发货记录</a>-->
+                    <!-- </td> -->
                 </template>
             </data-list>
         </div>
@@ -58,7 +69,7 @@ export default {
     data() {
         return {
             filter: {
-                // deliverStatusList: "0"
+                deliverStatus: 0,
                 contractOrderNo: "",
                 deliveryNo: ""
             },

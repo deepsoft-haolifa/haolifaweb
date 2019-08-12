@@ -4,6 +4,7 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.supplierName" @change="$refs.list.update(true)" placeholder="供方单位" style="width: 200px;">
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option value="0">合同状态</option>
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
@@ -22,6 +23,7 @@
                     <th>采购合同号</th>
                     <th>供方单位</th>
                     <th>采购完成日期</th>
+                    <td>采购总数量</td>
                     <th>订单状态</th>
                     <th>创建人</th>
                     <th>创建日期</th>
@@ -35,6 +37,7 @@
                     <td>{{item.purchaseOrderNo}}</td>
                     <td>{{item.supplierName}}</td>
                     <td>{{item.deliveryTime}}</td>
+                    <td>{{item.totalCount}}</td>
                     <td>{{statusList[item.status-1].name}}</td>
                     <td>{{item.createUserId}}</td>
                     <td>{{item.createTime}}</td>
@@ -245,6 +248,7 @@ export default {
             ],
             filter: {
                 orderNo: "",
+                supplierName: "",
                 status: 0,
                 createUserId: 0
             },

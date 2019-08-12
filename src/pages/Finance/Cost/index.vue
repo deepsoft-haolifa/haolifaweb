@@ -29,6 +29,7 @@
                     <th>报销部门</th>
                     <th>报销摘要</th>
                     <th>费用类别</th>
+                    <th>凭证号</th>
                     <th>费用类别明细</th>
                     <th>总费用</th>
                     <th>备注</th>
@@ -40,6 +41,7 @@
                     <td>{{item.department}}</td>
                     <td>{{item.summary}}</td>
                     <td>{{item.expensesClassify}}</td>
+                    <td>{{item.voucherNo}}</td>
                     <td>{{item.secondClassify}}</td>
                     <td>￥ {{item.totalAmount}}</td>
                     <td>{{item.remark}}</td>
@@ -55,6 +57,7 @@
                 <input-box v-model="form.commitUser" label="报销人"></input-box>
                 <input-box v-model="form.department" label="报销部门"></input-box>
                 <input-box v-model="form.summary" label="报销摘要"></input-box>
+                <input-box v-model="form.voucherNo" label="凭证号"></input-box>
                 <select-box :list="expensesClassifyList" @change="exChange" v-model="form.expensesClassify" label="费用类别"></select-box>
                 <select-box :list="secondClassifyList" v-model="form.secondClassify" label="费用类别明细"></select-box>
                 <input-box type="number" v-model="form.totalAmount" label="总费用"></input-box>
@@ -108,6 +111,7 @@ export default {
                 totalAmount: "",
                 summary: "",
                 department: "",
+                voucherNo: "",
                 remark: ""
             },
             filter: {
@@ -166,8 +170,7 @@ export default {
                 });
         },
         edit(item) {
-            // for (let key in this.form) this.form[key] = item[key];
-            this.form = item;
+            this.form = Object.assign({}, item);
             let id;
             this.exList.forEach(item => {
                 if (item.text == this.form.expensesClassify) id = item.value;

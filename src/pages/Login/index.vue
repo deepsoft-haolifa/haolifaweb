@@ -16,7 +16,7 @@
                         <div class="inputIcon t-password"></div>
                     </div>
                     <div class="t-inputWrap">
-                        <input type="text" class="inputCode" autocomplete="off" v-model="imageCode" placeholder="请输入验证码">
+                        <input type="text" class="inputCode" autocomplete="off" v-model="imageCode" @keyup.enter="login" placeholder="请输入验证码">
                         <div class="codeImg">
                             <img @click="getImageCode()" :src="authImg" alt>
                         </div>

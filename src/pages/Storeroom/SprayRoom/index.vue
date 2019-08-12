@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/spray/inspect/list/room" method="post">
+            <data-list ref="list" :page-size="20" :param="filter" url="/haolifa/spray/inspect/list/room" method="post">
                 <tr slot="header">
                     <th>喷涂单号</th>
                     <th>零件名称</th>

@@ -22,7 +22,7 @@
             <btn class="b" flat color="#008eff" @click="exportExcel">费用导出</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list class="f-14" ref="list" :param="filter" method="get" :page-size="10" url="/haolifa/expenses/list">
+            <data-list class="f-14" ref="list" :param="filter" method="get" :page-size="20" url="/haolifa/expenses/list">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>报销人</th>

@@ -21,7 +21,7 @@
             <btn class="b" flat color="#008eff" @click="layer=true">添加发票</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list class="f-14" ref="list" method="post" :page-size="10" :param="filter" url="/haolifa/invoice/list/1">
+            <data-list class="f-14" ref="list" method="post" :page-size="20" :param="filter" url="/haolifa/invoice/list/1">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>

@@ -17,7 +17,7 @@
             </router-link>-->
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/purchase-order/list/1">
+            <data-list ref="list" method="get" :page-size="20" :param="filter" url="/haolifa/purchase-order/list/1">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>机加工合同号</th>

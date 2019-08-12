@@ -20,13 +20,14 @@
             </router-link>-->
         </div>
         <div class="flex-item scroll-y">
-            <data-list class="f-14" ref="list" :page-size="10" :param="filter" url="/haolifa/material-inspect/purchase-list/0" method="get">
+            <data-list class="f-14" ref="list" :page-size="20" :param="filter" url="/haolifa/material-inspect/purchase-list/0" method="get">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>报检单号</th>
                     <th>采购合同号</th>
                     <th>批次号</th>
                     <th>送检总数</th>
+                    <th>检验合格数</th>
                     <th>到货日期</th>
                     <th>供应商名称</th>
                     <th>发起时间</th>
@@ -40,6 +41,7 @@
                     <td>{{item.purchaseNo}}</td>
                     <td>{{item.batchNumber}}</td>
                     <td>{{item.totalCount}}</td>
+                    <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.arrivalTime}}</td>
                     <td>{{item.supplierName}}</td>
                     <td>{{item.createTime}}</td>

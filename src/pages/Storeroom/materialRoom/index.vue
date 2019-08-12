@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/material-inspect/history/page-list" method="get">
+            <data-list ref="list" :page-size="20" :param="filter" url="/haolifa/material-inspect/history/page-list" method="get">
                 <tr slot="header">
                     <th>报检单号</th>
                     <th>采购合同号</th>

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="post" :page-size="10" :param="filter" url="/haolifa/order-product/pageInfo">
+            <data-list ref="list" method="post" :page-size="20" :param="filter" url="/haolifa/order-product/pageInfo">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>合同编号</th>

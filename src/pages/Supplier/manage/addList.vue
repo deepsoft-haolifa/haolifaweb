@@ -11,7 +11,7 @@
             </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="post" :pageSize="10" :param="filter" url="/haolifa/supplier/list">
+            <data-list ref="list" method="post" :pageSize="20" :param="filter" url="/haolifa/supplier/list">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>企业名称</th>
@@ -68,9 +68,9 @@ export default {
     components: { DataList },
     data() {
         return {
-            filter:{
-                supplierName:'',
-                supplierNo:''
+            filter: {
+                supplierName: "",
+                supplierNo: ""
             },
             natureList: ["国有", "三资", "集体", "联营", "私营"],
             isQualifiedStatusList: [

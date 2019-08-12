@@ -17,7 +17,7 @@
             </router-link>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/spray/forms" method="post">
+            <data-list ref="list" :page-size="20" :param="filter" url="/haolifa/spray/forms" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>喷涂加工单号</th>

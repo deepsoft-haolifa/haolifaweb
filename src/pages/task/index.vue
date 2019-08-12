@@ -4,11 +4,10 @@
             <button class="btn btn-small" style="background:#ccc" @click="toFinish">已办事项</button>
             <span style="height: 22px;margin: 0 5px;border: 2px solid #ccc"></span>
             <button class="btn btn-small" @click="totask">待办事项</button>
-            <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
-            </div>
+            <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;"></div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" method="get" :page-size="10" :param="filter" url="/haolifa/todo">
+            <data-list ref="list" method="get" :page-size="20" :param="filter" url="/haolifa/todo">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>发起人</th>
@@ -24,11 +23,41 @@
                     <td>{{item.formNo}}</td>
                     <td>{{item.createTime}}</td>
                     <td>
-                        <a  v-if="item.flowId == 1" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
-                        <a  v-if="item.flowId == 2" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
-                        <a  v-if="item.flowId == 3" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
-                        <a  v-if="item.flowId == 4" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
-                        <a  v-if="item.flowId == 5" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
+                        <a
+                            v-if="item.flowId == 1"
+                            href="javascript:;"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >详情</a>
+                        <a
+                            v-if="item.flowId == 2"
+                            href="javascript:;"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >详情</a>
+                        <a
+                            v-if="item.flowId == 3"
+                            href="javascript:;"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >详情</a>
+                        <a
+                            v-if="item.flowId == 4"
+                            href="javascript:;"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >详情</a>
+                        <a
+                            v-if="item.flowId == 5"
+                            href="javascript:;"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
+                        >详情</a>
                     </td>
                 </template>
             </data-list>

@@ -20,6 +20,7 @@
                     <th>订单合同URL</th>
                     <th>发货日期</th>
                     <th>订单数量</th>
+                    <th>检验合格数量</th>
                     <th>订单状态</th>
                     <th>创建时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -33,6 +34,7 @@
                     </td>
                     <td>{{item.deliveryDate}}</td>
                     <td>{{item.totalCount}}</td>
+                    <td>{{item.qualifiedNumber}}</td>
                     <td>{{orderStatusList[item.orderStatus-5].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
@@ -190,7 +192,7 @@
                             <td colspan="6" class="b">文件地址</td>
                             <td colspan="2" class="b">——</td>
                         </tr>
-                        <tr v-for="(accessory) in accessoryList">
+                        <tr v-for="(accessory,index) in accessoryList" :key="index">
                             <td colspan="6">{{accessory.fileName}}</td>
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
@@ -232,7 +234,7 @@
                                 <th>状态</th>
                                 <th>创建日期</th>
                             </tr>
-                            <tr v-for="(item, i) in recordList">
+                            <tr v-for="(item, i) in recordList" :key="i">
                                 <td>{{item.productNo}}</td>
                                 <td>{{item.productModel}}</td>
                                 <td>{{item.productSpecifications}}</td>
@@ -424,7 +426,7 @@
                             <td colspan="6" class="b">文件地址</td>
                             <td colspan="2" class="b">——</td>
                         </tr>
-                        <tr v-for="(accessory) in accessoryList">
+                        <tr v-for="(accessory,j) in accessoryList" :key="j">
                             <td colspan="6">{{accessory.fileName}}</td>
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">

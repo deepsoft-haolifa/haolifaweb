@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/entrust/list" method="post">
+            <data-list ref="list" :page-size="20" :param="filter" url="/haolifa/entrust/list" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>机加工单号</th>

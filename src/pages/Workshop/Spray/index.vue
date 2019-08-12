@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="flex-item scroll-y">
-            <data-list ref="list" :page-size="10" :param="filter" url="/haolifa/spray/forms" method="post">
+            <data-list ref="list" :page-size="20" :param="filter" url="/haolifa/spray/forms" method="post">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>喷涂加工单号</th>
@@ -86,7 +86,7 @@
                             <td colspan="1" class="b">完成时间</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr v-for="(item,i) in spray.items">
+                        <tr v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.materialClassifyName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
@@ -130,7 +130,7 @@
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.sprayNo}}</td>
                                 <td>{{item.materialGraphName}}</td>
                                 <td>{{item.originalGraphNo}}</td>

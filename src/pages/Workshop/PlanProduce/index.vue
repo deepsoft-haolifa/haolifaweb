@@ -32,10 +32,10 @@
                     <td>
                         <a class="fixed-length" :href="item.orderContractExtendUrl" :title="item.orderContractExtendUrl">{{item.orderContractExtendUrl}}</a>
                     </td>
-                    <td>{{item.deliveryDate}}</td>
-                    <td>{{item.totalCount}}</td>
-                    <td>{{deliverStatusList[item.deliverStatus].text}}</td>
-                    <td>{{orderStatusList[item.orderStatus-5].text}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.deliveryDate}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{item.totalCount}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{deliverStatusList[item.deliverStatus].text}}</td>
+                    <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{orderStatusList[item.orderStatus-5].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a
@@ -443,5 +443,8 @@ export default {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+.cell-color {
+    color: #de8a0c;
 }
 </style>

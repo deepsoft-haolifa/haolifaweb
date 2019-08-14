@@ -212,9 +212,10 @@
                                 <th>复检数量</th>
                                 <th>不合格数量</th>
                                 <th>不合格原因</th>
+                                <th>附件</th>
                                 <th>创建日期</th>
                             </tr>
-                            <tr v-for="(item, i) in recordList">
+                            <tr v-for="(item, i) in recordList" :key="i">
                                 <td>{{item.productNo}}</td>
                                 <td>{{item.productModel}}</td>
                                 <td>{{item.productSpecifications}}</td>
@@ -223,6 +224,11 @@
                                 <td>{{item.reinspectNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.reason}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.createTime}}</td>
                             </tr>
                         </table>
@@ -246,6 +252,17 @@
                 </div>
                 <div class="flex">
                     <select-box class="flex-item mr-20 ml-20" :list="reasonList" v-model="order.reason" label="不合格原因"></select-box>
+                </div>
+                <div class="flex">
+                    <upload-box
+                        class="ml-20 mb-10"
+                        btnText="上传附件"
+                        :fileList="fileList"
+                        :onchange="uploadFile"
+                        :multiple="true"
+                        :onremove="removeFile"
+                        style="width: 50%"
+                    ></upload-box>
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
@@ -421,9 +438,10 @@
                                 <th>复检数量</th>
                                 <th>不合格数量</th>
                                 <th>不合格原因</th>
+                                <th>附件</th>
                                 <th>创建日期</th>
                             </tr>
-                            <tr v-for="(item, i) in recordList">
+                            <tr v-for="(item, i) in recordList" :key="i">
                                 <td>{{item.productNo}}</td>
                                 <td>{{item.productModel}}</td>
                                 <td>{{item.productSpecifications}}</td>
@@ -432,6 +450,11 @@
                                 <td>{{item.reinspectNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.reason}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.createTime}}</td>
                             </tr>
                         </table>
@@ -447,6 +470,7 @@
 
 <script>
 import DataList from "@/components/datalist";
+import fileToBase64 from "@/utils/fileToBase64";
 
 export default {
     name: "stresstest-addList",
@@ -484,10 +508,12 @@ export default {
                 reason: "",
                 testingNumber: "",
                 reinspectNumber: "",
-                unqualifiedNumber: ""
+                unqualifiedNumber: "",
+                accessoryList: []
             },
             reasonList: [],
             fileDetailList: [],
+            fileList: [],
             recordList: []
         };
     },
@@ -523,6 +549,7 @@ export default {
         //添加记录
         progress(item) {
             this.completeLayer = true;
+            this.fileList = [];
             this.reset();
             this.order.orderNo = item.orderNo;
             this.$http
@@ -608,6 +635,34 @@ export default {
         close() {
             this.layer = false;
         },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    })
+                    .then(res => {
+                        this.order.accessoryList.push({
+                            fileName: file.name,
+                            fileUrl: res
+                        });
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
+        },
+        removeFile(fileList, i) {
+            return new Promise((resolve, reject) => {
+                this.order.accessoryList.splice(index, 1);
+                resolve();
+            });
+        },
         complete() {
             this.loading = true;
             this.$http
@@ -633,7 +688,8 @@ export default {
                 reason: "",
                 testingNumber: "",
                 reinspectNumber: "",
-                unqualifiedNumber: ""
+                unqualifiedNumber: "",
+                accessoryList: []
             };
         }
     }

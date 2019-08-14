@@ -231,6 +231,7 @@
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
                                 <th>不合格原因</th>
+                                <th>附件</th>
                                 <th>状态</th>
                                 <th>创建日期</th>
                             </tr>
@@ -242,6 +243,11 @@
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.reasons.toString()}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.storageStatus == 1?'待入库':'已入库'}}</td>
                                 <td>{{item.createTime}}</td>
                             </tr>
@@ -260,6 +266,17 @@
                 <div class="flex">
                     <input-box v-model="order.testingNumber" class="flex-item mr-20 ml-20" label="检测数量"></input-box>
                     <input-box v-model="order.qualifiedNumber" class="flex-item mr-20" label="合格数量"></input-box>
+                </div>
+                <div class="flex">
+                    <upload-box
+                        class="ml-20 mb-10"
+                        btnText="上传附件"
+                        :fileList="fileList"
+                        :onchange="uploadFile"
+                        :multiple="true"
+                        :onremove="removeFile"
+                        style="width: 50%"
+                    ></upload-box>
                 </div>
                 <div class="flex" v-for="(item,index) in order.unqualifiedList" :key="index">
                     <input-box v-model="item.number" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
@@ -465,10 +482,11 @@
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
                                 <th>不合格原因</th>
+                                <th>附件</th>
                                 <th>状态</th>
                                 <th>创建日期</th>
                             </tr>
-                            <tr v-for="(item, i) in recordList">
+                            <tr v-for="(item, i) in recordList" :key="i">
                                 <td>{{item.productNo}}</td>
                                 <td>{{item.productModel}}</td>
                                 <td>{{item.productSpecifications}}</td>
@@ -476,6 +494,11 @@
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.reasons.toString()}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.storageStatus == 1?'待入库':'已入库'}}</td>
                                 <td>{{item.createTime}}</td>
                             </tr>
@@ -492,6 +515,7 @@
 
 <script>
 import DataList from "@/components/datalist";
+import fileToBase64 from "@/utils/fileToBase64";
 
 export default {
     name: "product-addList",
@@ -538,10 +562,12 @@ export default {
                 reason: "",
                 testingNumber: "",
                 unqualifiedNumber: "",
+                accessoryList: [],
                 unqualifiedList: [{ number: "0", reason: "" }]
             },
             reasonList: [],
             recordList: [],
+            fileList: [],
             fileDetailList: []
         };
     },
@@ -581,6 +607,34 @@ export default {
                     });
                 });
         },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    })
+                    .then(res => {
+                        this.order.accessoryList.push({
+                            fileName: file.name,
+                            fileUrl: res
+                        });
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
+        },
+        removeFile(fileList, i) {
+            return new Promise((resolve, reject) => {
+                this.order.accessoryList.splice(index, 1);
+                resolve();
+            });
+        },
         getReasonList() {
             this.$http
                 .get(`/haolifa/pro-inspect/reasonList`)
@@ -599,6 +653,7 @@ export default {
         //添加质检记录
         progress(item) {
             this.completeLayer = true;
+            this.fileList = [];
             this.reset();
             this.order.orderNo = item.orderNo;
             this.$http
@@ -665,13 +720,14 @@ export default {
                     this.recordList = res.list;
                     this.recordList.map(item => {
                         return (item.reasons = item.reasonList.map(obj => {
-                            return (
-                                "数量:" +
-                                obj.number +
-                                ",原因:" +
-                                obj.reason +
-                                ";"
-                            );
+                            if (obj.number)
+                                return (
+                                    "数量:" +
+                                    obj.number +
+                                    ",原因:" +
+                                    obj.reason +
+                                    ";"
+                                );
                         }));
                     });
                 })
@@ -725,6 +781,7 @@ export default {
                 reason: "",
                 testingNumber: "",
                 unqualifiedNumber: "",
+                accessoryList: [],
                 unqualifiedList: [{ number: "0", reason: "" }]
             };
         },

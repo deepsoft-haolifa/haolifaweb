@@ -253,6 +253,7 @@
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
                                 <th>不合格原因</th>
+                                <th>附件</th>
                                 <th>状态</th>
                                 <th>创建日期</th>
                             </tr>
@@ -263,7 +264,12 @@
                                 <td>{{item.testingNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
-                                <td>{{item.reason}}</td>
+                                <td>{{item.reasons.toString()}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.storageStatus == 1?'待入库':'已入库'}}</td>
                                 <td>{{item.createTime}}</td>
                             </tr>
@@ -454,6 +460,18 @@ export default {
                 .post(`/haolifa/pro-inspect/pageInfo`, params)
                 .then(res => {
                     this.recordList = res.list;
+                    this.recordList.map(item => {
+                        return (item.reasons = item.reasonList.map(obj => {
+                            if (obj.number)
+                                return (
+                                    "数量:" +
+                                    obj.number +
+                                    ",原因:" +
+                                    obj.reason +
+                                    ";"
+                                );
+                        }));
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

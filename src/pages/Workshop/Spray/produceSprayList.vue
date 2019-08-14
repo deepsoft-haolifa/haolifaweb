@@ -45,7 +45,13 @@
                         <!--<a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="deleteInfo(item)">删除</a>-->
                         <a href="javascript:;" v-if="item.status == 0 || item.status == 4" style="margin-right: 3px" class="blue" @click="machine(item)">开始加工</a>
                         <!--<a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="stopMachine(item)">暂停</a>-->
-                        <a href="javascript:;" v-if="item.status == 1 || item.status == 2" style="margin-right: 3px" class="blue" @click="completeMachine(item)">加工完成</a>
+                        <a
+                            href="javascript:;"
+                            v-if="item.status == 1 || item.status == 2"
+                            style="margin-right: 3px"
+                            class="blue"
+                            @click="completeMachine(item)"
+                        >加工完成</a>
                         <a :href="`/haolifa/export/spray/excel/${item.sprayNo}`" download style="margin-right: 3px" class="blue">下载委托单</a>
                     </td>
                 </template>
@@ -92,7 +98,7 @@
                             <td colspan="1" class="b">完成时间</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr style="border:thin" v-for="(item,i) in spray.items">
+                        <tr style="border:thin" v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.materialClassifyName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
@@ -136,7 +142,7 @@
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.sprayNo}}</td>
                                 <td>{{item.materialGraphName}}</td>
                                 <td>{{item.originalGraphNo}}</td>

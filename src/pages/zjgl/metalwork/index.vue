@@ -141,6 +141,7 @@
                             <th>不合格数量</th>
                             <th>处理意见</th>
                             <th>不合格现象描述</th>
+                            <th>附件</th>
                         </tr>
                         <tr v-for="(item, i) in inspectHistory" :key="i">
                             <td>{{item.inspectNo}}</td>
@@ -152,6 +153,11 @@
                             <td>{{item.unqualifiedNumber}}</td>
                             <td>{{item.handlingSuggestion}}</td>
                             <td>{{item.remark}}</td>
+                            <td>
+                                <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                    <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                </div>
+                            </td>
                         </tr>
                     </table>
                 </div>

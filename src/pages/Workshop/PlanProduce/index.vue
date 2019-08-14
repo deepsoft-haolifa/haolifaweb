@@ -147,7 +147,7 @@
                             <td colspan="1" rowspan="1">轴图号</td>
                             <td colspan="1" rowspan="1">过渡盘</td>
                         </tr>
-                        <tr v-for="(val) in JSON.parse(info.technicalRequire)">
+                        <tr v-for="(val,i) in JSON.parse(info.technicalRequire)" :key="i">
                             <td colspan="1">{{val.name}}</td>
                             <td colspan="1">{{val.xinhao}}</td>
                             <td colspan="1">{{val.guige}}</td>
@@ -179,7 +179,7 @@
                             <td colspan="2" class="b">材质说明</td>
                             <td colspan="2" class="b">产品备注</td>
                         </tr>
-                        <tr v-for="(item) in info.orderProductAssociates">
+                        <tr v-for="(item,i) in info.orderProductAssociates" :key="i">
                             <td colspan="1">{{item.productNo}}</td>
                             <td colspan="2">{{item.productName}}</td>
                             <td colspan="1">{{item.productModel}}</td>
@@ -200,7 +200,7 @@
                             <td colspan="6" class="b">文件地址</td>
                             <td colspan="2" class="b">——</td>
                         </tr>
-                        <tr v-for="(accessory) in accessoryList">
+                        <tr v-for="(accessory,i) in accessoryList" :key="i">
                             <td colspan="6">{{accessory.fileName}}</td>
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
@@ -256,7 +256,7 @@
                             <th>替换零件</th>
                             <th>备注</th>
                         </tr>
-                        <tr v-for="item in preCheckMaterList">
+                        <tr v-for="(item,i) in preCheckMaterList" :key="i">
                             <td>{{item.materialName}}</td>
                             <td colspan="2">{{item.materialGraphNo}}</td>
                             <td colspan="2">{{item.model}}</td>

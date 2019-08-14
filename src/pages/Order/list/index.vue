@@ -260,7 +260,7 @@
                             <th>替换零件</th>
                             <th>备注</th>
                         </tr>
-                        <tr v-for="(item, i) in preCheckMaterList">
+                        <tr v-for="(item, i) in preCheckMaterList" :key="i">
                             <td>{{item.materialName}}</td>
                             <td colspan="2">{{item.materialGraphNo}}</td>
                             <td colspan="2">{{item.model}}</td>

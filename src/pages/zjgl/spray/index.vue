@@ -82,7 +82,7 @@
                             <td colspan="1" class="b">完成时间</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr v-for="(item,i) in spray.items">
+                        <tr v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.materialClassifyName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
@@ -124,9 +124,10 @@
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
                                 <th>处理意见</th>
+                                <th>附件</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.sprayNo}}</td>
                                 <td>{{item.materialGraphName}}</td>
                                 <td>{{item.originalGraphNo}}</td>
@@ -135,6 +136,11 @@
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.handlingSuggestion}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.remark}}</td>
                             </tr>
                         </table>

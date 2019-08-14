@@ -25,7 +25,7 @@
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
-                <template slot="item" slot-scope="{ item, index }">
+                <template slot="item" slot-scope="{ item}">
                     <td>{{item.sprayNo}}</td>
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.originalGraphNo}}</td>

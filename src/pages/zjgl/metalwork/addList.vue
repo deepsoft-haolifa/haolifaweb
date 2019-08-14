@@ -94,18 +94,19 @@
                 <div class="form-content metalwork-info">
                     <table class="data-table">
                         <tr>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 11%;"></td>
-                            <td style="width: 12%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
+                            <td style="width: 10%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="9" class="b">已添加质检记录</td>
+                            <td colspan="10" class="b">已添加质检记录</td>
                         </tr>
                         <tr>
                             <th>质检单号</th>
@@ -117,6 +118,7 @@
                             <th>不合格数量</th>
                             <th>处理意见</th>
                             <th>不合格现象描述</th>
+                            <th>附件</th>
                         </tr>
                         <tr v-for="(item, i) in inspectHistory" :key="i">
                             <td>{{item.inspectNo}}</td>
@@ -128,6 +130,11 @@
                             <td>{{item.unqualifiedNumber}}</td>
                             <td>{{item.handlingSuggestion}}</td>
                             <td>{{item.remark}}</td>
+                            <td>
+                                <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                    <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                </div>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -147,6 +154,17 @@
                 <div class="flex mt-15">
                     <input-box v-model="inspectHistoryAdd.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
                     <input-box v-model="inspectHistoryAdd.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
+                </div>
+                <div class="flex">
+                    <upload-box
+                        class="ml-20 mb-10"
+                        btnText="上传附件"
+                        :fileList="fileList"
+                        :onchange="uploadFile"
+                        :multiple="true"
+                        :onremove="removeFile"
+                        style="width: 50%"
+                    ></upload-box>
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
@@ -209,7 +227,7 @@
                             <td style="width: 12%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="9" class="b">质检记录</td>
+                            <td colspan="10" class="b">质检记录</td>
                         </tr>
                         <tr>
                             <th>质检单号</th>
@@ -221,6 +239,7 @@
                             <th>不合格数量</th>
                             <th>处理意见</th>
                             <th>不合格现象描述</th>
+                            <th>附件</th>
                         </tr>
                         <tr v-for="(item, i) in inspectHistory" :key="i">
                             <td>{{item.inspectNo}}</td>
@@ -232,6 +251,11 @@
                             <td>{{item.unqualifiedNumber}}</td>
                             <td>{{item.handlingSuggestion}}</td>
                             <td>{{item.remark}}</td>
+                            <td>
+                                <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                    <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                </div>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -245,6 +269,8 @@
 
 <script>
 import DataList from "@/components/datalist";
+import fileToBase64 from "@/utils/fileToBase64";
+
 export default {
     name: "metalwork-list",
     components: { DataList },
@@ -263,7 +289,8 @@ export default {
                 batchNumber: "",
                 purchaseNo: "",
                 supplierName: "",
-                supplierNo: ""
+                supplierNo: "",
+                accessoryList: []
             },
             inspectHistoryAdd: {
                 handlingSuggestion: "",
@@ -301,6 +328,7 @@ export default {
             entrustNo: "",
             entrust: {},
             items: [],
+            fileList: [],
             layer: false
         };
     },
@@ -352,7 +380,8 @@ export default {
                 batchNumber: this.inspectHistoryAdd.batchNumber,
                 purchaseNo: this.inspectHistoryAdd.purchaseNo,
                 supplierName: this.inspectHistoryAdd.supplierName,
-                supplierNo: this.inspectHistoryAdd.supplierNo
+                supplierNo: this.inspectHistoryAdd.supplierNo,
+                accessoryList: this.inspectHistoryAdd.accessoryList
             };
             this.loading = true;
             this.$http
@@ -368,8 +397,37 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    })
+                    .then(res => {
+                        this.inspectHistoryAdd.accessoryList.push({
+                            fileName: file.name,
+                            fileUrl: res
+                        });
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
+        },
+        removeFile(fileList, i) {
+            return new Promise((resolve, reject) => {
+                this.inspectHistoryAdd.accessoryList.splice(index, 1);
+                resolve();
+            });
+        },
         addInspectHistory(item) {
             this.resetInspectHistoryAdd();
+            this.fileList = [];
             this.inspectHistoryAdd.batchNumber = item.batchNumber;
             this.inspectHistoryAdd.purchaseNo = item.purchaseNo;
             this.inspectHistoryAdd.supplierName = item.supplierName;
@@ -377,6 +435,7 @@ export default {
             this.inspectHistoryAdd.materialGraphNo = item.processedGraphNo;
             this.inspectHistoryAdd.materialName = item.materialGraphName;
             this.inspectHistoryAdd.inspectNo = item.entrustNo;
+            this.inspectHistoryAdd.accessoryList = [];
             this.completeLayer = true;
             this.entrustNo = item.entrustNo;
             this.getInfo();
@@ -406,7 +465,8 @@ export default {
                 batchNumber: "",
                 purchaseNo: "",
                 supplierName: "",
-                supplierNo: ""
+                supplierNo: "",
+                accessoryList: []
             };
         }
     }

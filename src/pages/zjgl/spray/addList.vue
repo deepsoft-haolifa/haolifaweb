@@ -88,7 +88,7 @@
                             <td colspan="1" class="b">完成时间</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr style="border:thin" v-for="(item,i) in spray.items">
+                        <tr style="border:thin" v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.materialClassifyName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
@@ -130,9 +130,10 @@
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
                                 <th>处理意见</th>
+                                <th>附件</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.sprayNo}}</td>
                                 <td>{{item.materialGraphName}}</td>
                                 <td>{{item.originalGraphNo}}</td>
@@ -141,6 +142,11 @@
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.handlingSuggestion}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.remark}}</td>
                             </tr>
                         </table>
@@ -163,6 +169,17 @@
                 <div class="flex mt-15">
                     <input-box v-model="inspectHistoryAdd.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
                     <input-box v-model="inspectHistoryAdd.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
+                </div>
+                <div class="flex">
+                    <upload-box
+                        class="ml-20 mb-10"
+                        btnText="上传附件"
+                        :fileList="fileList"
+                        :onchange="uploadFile"
+                        :multiple="true"
+                        :onremove="removeFile"
+                        style="width: 50%"
+                    ></upload-box>
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
@@ -211,7 +228,7 @@
                             <td colspan="1" class="b">完成时间</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr style="border:thin" v-for="(item,i) in spray.items">
+                        <tr style="border:thin" v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.materialClassifyName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
@@ -253,9 +270,10 @@
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
                                 <th>处理意见</th>
+                                <th>附件</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.sprayNo}}</td>
                                 <td>{{item.materialGraphName}}</td>
                                 <td>{{item.originalGraphNo}}</td>
@@ -264,6 +282,11 @@
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.handlingSuggestion}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.remark}}</td>
                             </tr>
                         </table>
@@ -279,6 +302,8 @@
 
 <script>
 import DataList from "@/components/datalist";
+import fileToBase64 from "@/utils/fileToBase64";
+
 export default {
     name: "spray-add-list",
     components: { DataList },
@@ -316,6 +341,7 @@ export default {
             },
             nameList: [],
             tuhaoList: [],
+            fileList: [],
             loading: false
         };
     },
@@ -348,8 +374,10 @@ export default {
                 qualifiedNumber: 0,
                 unqualifiedNumber: 0,
                 handlingSuggestion: "",
+                accessoryList: [],
                 remark: ""
             };
+            this.fileList = [];
             this.$http
                 .get(`/haolifa/spray/form/${item.sprayNo}`)
                 .then(res => {
@@ -372,6 +400,34 @@ export default {
             this.sprayInfo(item);
             this.layer = false;
             this.completeLayer = true;
+        },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    })
+                    .then(res => {
+                        this.inspectHistoryAdd.accessoryList.push({
+                            fileName: file.name,
+                            fileUrl: res
+                        });
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
+        },
+        removeFile(fileList, i) {
+            return new Promise((resolve, reject) => {
+                this.inspectHistoryAdd.accessoryList.splice(index, 1);
+                resolve();
+            });
         },
         updateStatus(sprayNo, status) {
             this.$http

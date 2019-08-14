@@ -96,7 +96,7 @@
                             <td colspan="1" class="b">不合格数量</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr v-for="(item,i) in items">
+                        <tr v-for="(item,i) in items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.purchaseNo}}</td>
                             <td colspan="1">{{item.materialName}}</td>
@@ -157,10 +157,11 @@
                                 <th>检测数量</th>
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
+                                <th>附件</th>
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.inspectNo}}</td>
                                 <td>{{item.type == 1?'采购零件':'机加工零件'}}</td>
                                 <td>{{item.materialGraphName}}</td>
@@ -168,6 +169,11 @@
                                 <td>{{item.testNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.handlingSuggestion}}</td>
                                 <td>{{item.remark}}</td>
                             </tr>
@@ -191,6 +197,17 @@
                 <div class="flex mt-15">
                     <input-box v-model="addInspectHistory.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
                     <input-box v-model="addInspectHistory.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
+                </div>
+                <div class="flex">
+                    <upload-box
+                        class="ml-20 mb-10"
+                        btnText="上传附件"
+                        :fileList="fileList"
+                        :onchange="uploadFile"
+                        :multiple="true"
+                        :onremove="removeFile"
+                        style="width: 50%"
+                    ></upload-box>
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
@@ -244,7 +261,7 @@
                             <td colspan="1" class="b">不合格数量</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr v-for="(item,i) in items">
+                        <tr v-for="(item,i) in items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.purchaseNo}}</td>
                             <td colspan="1">{{item.materialName}}</td>
@@ -305,10 +322,11 @@
                                 <th>检测数量</th>
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
+                                <th>附件</th>
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.inspectNo}}</td>
                                 <td>{{item.type == 1?'采购零件':'机加工零件'}}</td>
                                 <td>{{item.materialGraphName}}</td>
@@ -316,6 +334,11 @@
                                 <td>{{item.testNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.handlingSuggestion}}</td>
                                 <td>{{item.remark}}</td>
                             </tr>
@@ -332,6 +355,8 @@
 
 <script>
 import DataList from "@/components/datalist";
+import fileToBase64 from "@/utils/fileToBase64";
+
 export default {
     name: "material-list",
     components: { DataList },
@@ -368,7 +393,8 @@ export default {
                 batchNumber: "",
                 purchaseNo: "",
                 supplierName: "",
-                supplierNo: ""
+                supplierNo: "",
+                accessoryList: []
             },
             tuhaoList: [],
             nameList: [],
@@ -391,8 +417,8 @@ export default {
             },
             items: [],
             resFileList: [],
-            loading: false
-            // inspectHistory: []
+            loading: false,
+            fileList: []
         };
     },
     methods: {
@@ -418,7 +444,8 @@ export default {
                 batchNumber: this.addInspectHistory.batchNumber,
                 purchaseNo: this.addInspectHistory.purchaseNo,
                 supplierName: this.addInspectHistory.supplierName,
-                supplierNo: this.addInspectHistory.supplierNo
+                supplierNo: this.addInspectHistory.supplierNo,
+                accessoryList: this.addInspectHistory.accessoryList
             };
             this.loading = true;
             this.$http
@@ -446,6 +473,34 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        uploadFile(file, fileList) {
+            this.loading = true;
+            this.loadingMsg = "正在上传";
+            fileToBase64(file.source).then(base64Str => {
+                this.$http
+                    .post("/haolifa/file/uploadFileBase64", {
+                        base64Source: base64Str,
+                        fileName: file.name
+                    })
+                    .then(res => {
+                        this.addInspectHistory.accessoryList.push({
+                            fileName: file.name,
+                            fileUrl: res
+                        });
+                        this.loading = false;
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                        this.loading = false;
+                    });
+            });
+        },
+        removeFile(fileList, i) {
+            return new Promise((resolve, reject) => {
+                this.addInspectHistory.accessoryList.splice(index, 1);
+                resolve();
+            });
+        },
         infoDeatail(item) {
             // this.$router.push(`/applyBuy-material/info?id=${item.id}&inspectNo=${item.inspectNo}`);
             this.layer = true;
@@ -457,6 +512,8 @@ export default {
         },
         addInspectHistoryFun(item) {
             this.completeLayer = true;
+            this.fileList = [];
+            this.reset();
             this.addInspectHistory.batchNumber = item.batchNumber;
             this.addInspectHistory.purchaseNo = item.purchaseNo;
             this.addInspectHistory.inspectNo = item.inspectNo;
@@ -544,6 +601,25 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+        },
+        reset() {
+            this.addInspectHistory = {
+                selectMaterialNo: [],
+                selectMaterialName: [],
+                handlingSuggestion: "",
+                inspectNo: "",
+                materialName: "",
+                materialGraphNo: "",
+                qualifiedNumber: 0,
+                remark: "",
+                testNumber: 0,
+                unqualifiedNumber: 0,
+                batchNumber: "",
+                purchaseNo: "",
+                supplierName: "",
+                supplierNo: "",
+                accessoryList: []
+            };
         }
     }
 };

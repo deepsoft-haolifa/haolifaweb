@@ -85,7 +85,7 @@
                             <th>意见</th>
                             <th>审核附件</th>
                         </tr>
-                        <tr v-for="(item, i) in data.historyInfos">
+                        <tr v-for="(item, i) in data.historyInfos" :key="i">
                             <td>{{item.historyId}}</td>
                             <td>{{item.instanceId}}</td>
                             <td>{{item.auditResult == 3?'发起':'审批'}}</td>
@@ -117,7 +117,7 @@
 
         <layer v-if="backStepLayer" :title="'退回节点'" width="450px">
             <div class="node">
-                <div class="node-item" v-for="item in backSteps">
+                <div class="node-item" v-for="(item,i) in backSteps" :key="i">
                     <radio-box v-model="handleStep.backStepId" :label="item.stepId"></radio-box>
                     {{item.stepName}}
                 </div>

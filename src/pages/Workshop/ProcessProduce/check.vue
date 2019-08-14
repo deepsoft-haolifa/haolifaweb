@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length">
-            <div class="flex-item scroll-y ml-20" v-for="(item, i) in inspectHistory">
+            <div class="flex-item scroll-y ml-20" v-for="(item, i) in inspectHistory" :key="i">
                 <table class="data-table">
                     <tr>
                         <th>订单号</th>

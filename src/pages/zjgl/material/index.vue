@@ -127,7 +127,7 @@
                             <td colspan="1" class="b">不合格数量</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
-                        <tr v-for="(item,i) in items">
+                        <tr v-for="(item,i) in items" :key="i">
                             <td colspan="1">{{i+1}}</td>
                             <td colspan="1">{{item.purchaseNo}}</td>
                             <td colspan="1">{{item.materialName}}</td>
@@ -188,10 +188,11 @@
                                 <th>检测数量</th>
                                 <th>合格数量</th>
                                 <th>不合格数量</th>
+                                <th>附件</th>
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory">
+                            <tr v-for="(item, i) in inspectHistory" :key="i">
                                 <td>{{item.inspectNo}}</td>
                                 <td>{{item.type == 1?'采购零件':'机加工零件'}}</td>
                                 <td>{{item.materialGraphName}}</td>
@@ -199,6 +200,11 @@
                                 <td>{{item.testNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
+                                <td>
+                                    <div v-for="(obj,i) in item.accessoryList" :key="i">
+                                        <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
+                                    </div>
+                                </td>
                                 <td>{{item.handlingSuggestion}}</td>
                                 <td>{{item.remark}}</td>
                             </tr>

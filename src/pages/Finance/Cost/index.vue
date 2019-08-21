@@ -170,7 +170,9 @@ export default {
                 });
         },
         edit(item) {
-            this.form = Object.assign({}, item);
+            for (let key in this.form) {
+                this.form[key] = item[key];
+            }
             let id;
             this.exList.forEach(item => {
                 if (item.text == this.form.expensesClassify) id = item.value;
@@ -240,7 +242,12 @@ export default {
                 id: "",
                 commitUser: "",
                 expensesClassify: "",
-                totalAmount: ""
+                secondClassify: "",
+                totalAmount: "",
+                summary: "",
+                department: "",
+                voucherNo: "",
+                remark: ""
             };
             this.layer = false;
         },

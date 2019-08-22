@@ -99,6 +99,11 @@ export default {
                 });
         },
         submit() {
+            this.form.items.map(item => {
+                if (item.relationNo) {
+                    item.sprayColor = this.getColor(item.relationNo);
+                }
+            });
             if (this.isAdd) {
                 this.$http
                     .post(`/haolifa/spray/form`, this.form)
@@ -136,7 +141,8 @@ export default {
                 sprayColor: "",
                 specialRequires: "",
                 remark: "",
-                number: ""
+                number: "",
+                relationNo: ""
             });
         },
         getSprayColorList() {
@@ -165,6 +171,16 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
+        },
+        getColor(key) {
+            let color;
+            this.sprayColorList.map(item => {
+                if (item.value == key) {
+                    color = item.text;
+                    return;
+                }
+            });
+            return color;
         }
     }
 };

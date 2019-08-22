@@ -10,14 +10,17 @@
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
                 <div class="flex-item">
                     <div class="flex">
-                        <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box>
+                        <!-- <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box> -->
+                        <select-box :list="classifyNameList" v-model="item.materialClassifyName" label="零件名称"></select-box>
                         <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="零件图号"></input-box>
                         <input-box v-model="item.model" class="mr-10" label="型号"></input-box>
                         <input-box v-model="item.specifications" class="flex-item mr-10" label="规格"></input-box>
                     </div>
                     <div class="flex">
                         <input-box v-model="item.material" class="flex-item mr-10" label="材质"></input-box>
-                        <input-box v-model="item.sprayColor" class="flex-item mr-10" label="喷涂颜色"></input-box>
+                        <select-box :list="sprayColorList" v-model="item.relationNo" label="喷涂颜色"></select-box>
+
+                        <!-- <input-box v-model="item.sprayColor" class="flex-item mr-10" label="喷涂颜色"></input-box> -->
                         <input-box v-model="item.number" type="number" class="mr-10" label="数量"></input-box>
                         <date-picker v-model="item.completeTime" class="flex-item" label="完成时间" style="margin-right: 20px;"></date-picker>
                     </div>
@@ -51,6 +54,8 @@ export default {
         return {
             supplierInfoList: [],
             supplierList: [],
+            sprayColorList: [],
+            classifyNameList: [],
             form: {
                 id: null,
                 planner: "",
@@ -65,7 +70,8 @@ export default {
                         sprayColor: "",
                         specialRequires: "",
                         remark: "",
-                        number: ""
+                        number: "",
+                        relationNo: ""
                     }
                 ]
             },
@@ -78,6 +84,8 @@ export default {
             this.isAdd = false;
             this.getInfo(sprayNo);
         }
+        this.getSprayColorList();
+        this.getClassifyNameList();
     },
     methods: {
         getInfo(sprayNo) {
@@ -130,6 +138,33 @@ export default {
                 remark: "",
                 number: ""
             });
+        },
+        getSprayColorList() {
+            this.$http
+                .get(`/haolifa/spray/color/all`)
+                .then(res => {
+                    this.sprayColorList = res.map(item => {
+                        return { value: item.relationNo, text: item.color };
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getClassifyNameList() {
+            this.$http
+                .get(`/haolifa/material/classify/list`)
+                .then(res => {
+                    this.classifyNameList = res.map(item => {
+                        return {
+                            value: item.classifyName,
+                            text: item.classifyName
+                        };
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
     }
 };

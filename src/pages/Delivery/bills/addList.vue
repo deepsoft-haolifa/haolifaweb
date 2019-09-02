@@ -42,9 +42,9 @@
                         <a class="fixed-length" :href="item.deliveryUrl" :title="item.deliveryUrl">{{item.deliveryUrl}}</a>
                     </td>
                     <td>{{item.contractOrderNo}}</td>
+                    <td>{{deliverStatusList[item.deliverStatus]}}</td>
                     <td>{{item.totalCount}}</td>
                     <td>{{item.deliveredNumber}}</td>
-                    <td>{{deliverStatusList[item.deliverStatus]}}</td>
                     <td>{{statusList[item.auditResult]}}</td>
                     <td>{{item.auditInfo}}</td>
                     <td>{{item.auditTime}}</td>

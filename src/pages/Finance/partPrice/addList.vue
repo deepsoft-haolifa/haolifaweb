@@ -67,9 +67,10 @@
                 <input-box v-model="form.unit" label="单位" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.actualWeight" label="单重" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.tonPrice" label="吨价(元)" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.blankCost" label="毛坯费(元)" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.processCost" label="加工费(元)" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.productPrice" label="成品价(元)" class="input-width" style="width:24%;"></input-box>
+                <!-- <input-box v-model="form.taxRate" label="税率" class="input-width" style="width:24%;"></input-box> -->
+                <input-box v-model="form.blankCost" label="毛坯费(含税)" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.productPrice" label="成品价(含税)" class="input-width" style="width:24%;"></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="layer = false">取消</btn>

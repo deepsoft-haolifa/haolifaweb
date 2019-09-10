@@ -19,7 +19,7 @@
             <data-list class="f-14" ref="list" :page-size="20" :param="filter" url="/haolifa/material-inspect/purchase-list/1" method="get">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
-                    <th>报检单号</th>
+                    <th>送检单号</th>
                     <th>采购合同号</th>
                     <th>批次号</th>
                     <th>送检总数</th>

@@ -4,6 +4,10 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号">
+                生产状态：
+                <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
+                    <option v-for="item in scStatusList" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
+                </select>
             </div>
         </div>
         <div class="flex-item scroll-y">
@@ -102,7 +106,8 @@ export default {
         return {
             filter: {
                 orderNo: "",
-                orderStatusList: [5, 6, 7, 8, 9, 10, 11, 12, 13]
+                orderStatusList: [5, 6, 7, 8, 9, 10, 11, 12, 13],
+                orderStatus: "7"
             },
             loading: false,
             infoList: {},
@@ -134,6 +139,13 @@ export default {
                 { value: 12, text: "申请发货" },
                 { value: 13, text: "发货完成" },
                 { value: 14, text: "审核不通过" }
+            ],
+            scStatusList: [
+                { value: 7, text: "生产中" },
+                { value: 8, text: "生产暂停" },
+                { value: 9, text: "生产完成" },
+                { value: 10, text: "质检中" },
+                { value: 11, text: "已入库" }
             ]
         };
     },

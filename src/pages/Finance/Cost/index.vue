@@ -54,14 +54,14 @@
         </div>
         <layer v-if="layer" :title="form.id ? '编辑费用' : '新增费用'" width="50%">
             <div class="layer-text" style="padding-bottom: 50px;">
-                <input-box v-model="form.commitUser" label="报销人"></input-box>
-                <input-box v-model="form.department" label="报销部门"></input-box>
-                <input-box v-model="form.summary" label="报销摘要"></input-box>
-                <input-box v-model="form.voucherNo" label="凭证号"></input-box>
+                <input-box v-model="form.commitUser" hint="必填" label="报销人"></input-box>
+                <input-box v-model="form.department" hint="必填" label="报销部门"></input-box>
+                <input-box v-model="form.summary" hint="必填" label="报销摘要"></input-box>
+                <input-box v-model="form.voucherNo" hint="必填" label="凭证号"></input-box>
                 <select-box :list="expensesClassifyList" @change="exChange" v-model="form.expensesClassify" label="费用类别"></select-box>
                 <select-box :list="secondClassifyList" v-model="form.secondClassify" label="费用类别明细"></select-box>
-                <input-box type="number" v-model="form.totalAmount" label="总费用"></input-box>
-                <input-box v-model="form.remark" label="备注"></input-box>
+                <input-box type="number" v-model="form.totalAmount" hint="必填" label="总费用"></input-box>
+                <input-box v-model="form.remark" hint="必填" label="备注"></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
@@ -213,7 +213,7 @@ export default {
             for (let key in this.form) {
                 let item = this.form[key];
                 if (!item && item !== 0 && key !== "id") {
-                    this.$toast("请输入完整信息" + key);
+                    this.$toast("请输入完整信息");
                     return false;
                 }
             }

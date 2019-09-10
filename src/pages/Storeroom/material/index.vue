@@ -3,17 +3,31 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="型号" style="width: 100px;">
-                <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;">
-                <select v-model="filter.classifyId" class="f-14" @change="$refs.list.update(true)">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.graphNo"
+                    @change="$refs.list.update(true);getMoney()"
+                    placeholder="图号"
+                    style="width: 200px;"
+                >
+                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true);getMoney()" placeholder="型号" style="width: 100px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.specifications"
+                    @change="$refs.list.update(true);getMoney()"
+                    placeholder="规格"
+                    style="width: 100px;"
+                >
+                <select v-model="filter.classifyId" class="f-14" @change="$refs.list.update(true);getMoney()">
                     <option value="0">全部</option>
                     <option v-for="item in classifyList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
             <div class="flex-item"></div>
-            <btn class="b" flat color="#008eff" @click="exportExcelIn">零件待入库导出</btn>
+            <!-- <btn class="b" flat color="#008eff" @click="exportExcelIn">零件待入库导出</btn> -->
             <btn class="b" flat color="#008eff" @click="exportExcelOut">零件出库导出</btn>
             <a class="b" style="color:rgb(0, 142, 255)" href="/haolifa/export/material/surplus">零件结存导出</a>
             <span class="f-16" style="margin-left: 10px;color:red">库存总金额(元):{{money}}</span>
@@ -202,7 +216,8 @@ export default {
             a.setAttribute("download", ""); // download属性
             a.setAttribute(
                 "href",
-                `/haolifa/export/product-out?startDate=${
+                // `/haolifa/export/product-out?startDate=${
+                `/haolifa/export/material/record?startDate=${
                     this.exportOutForm.startDate
                 }&endDate=${this.exportOutForm.endDate}&materialGraphNo=${
                     this.exportOutForm.materialGraphNo

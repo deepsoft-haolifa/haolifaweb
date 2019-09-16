@@ -29,9 +29,12 @@
                     <th>单位</th>
                     <th>单重</th>
                     <th>吨价(元)</th>
-                    <th>毛坯费(元)</th>
+                    <th>税率</th>
+                    <th>毛坯费不含税(元)</th>
+                    <th>喷涂费(元)</th>
                     <th>加工费(元)</th>
-                    <th>成品价(元)</th>
+                    <th>成品价不含税(元)</th>
+                    <th>成品价含税(元)</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
@@ -46,9 +49,12 @@
                     <td>{{item.unit}}</td>
                     <td>{{item.actualWeight}}</td>
                     <td>{{item.tonPrice}}</td>
+                    <td>{{item.taxRate}}</td>
                     <td>{{item.blankCost}}</td>
+                    <td>{{item.sprayCost}}</td>
                     <td>{{item.processCost}}</td>
-                    <td>{{item.productPrice}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.priceTax}}</td>
                     <td class="t-right">
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑|</a>
                         <a href="javascript:;" class="red" @click="del(item)" style="margin-right: 3px;">删除</a>
@@ -68,9 +74,11 @@
                 <input-box v-model="form.actualWeight" label="单重" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.tonPrice" label="吨价(元)" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.processCost" label="加工费(元)" class="input-width" style="width:24%;"></input-box>
-                <!-- <input-box v-model="form.taxRate" label="税率" class="input-width" style="width:24%;"></input-box> -->
-                <input-box v-model="form.blankCost" label="毛坯费(含税)" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.productPrice" label="成品价(含税)" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.taxRate" label="税率" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.blankCost" label="毛坯费(不含税)" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.sprayCost" label="喷涂费" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.price" label="成品价(不含税)" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.priceTax" label="成品价(含税)" class="input-width" style="width:24%;"></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="layer = false">取消</btn>

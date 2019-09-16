@@ -567,6 +567,17 @@ export default {
                         id: "rwlb"
                     }
                 ]
+            },
+            {
+                name: "报表管理",
+                id: "parent-bjgl",
+                children: [
+                    {
+                        name: "财务报表",
+                        url: "/report-forms/list",
+                        id: "bjcwbj"
+                    }
+                ]
             }
         ];
         menu.forEach(m => {

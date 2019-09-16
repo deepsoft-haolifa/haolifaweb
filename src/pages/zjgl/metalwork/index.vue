@@ -45,7 +45,6 @@
                     <td>{{inspectStatusList[item.inspectStatus]}}</td>
 
                     <td class="t-right">
-                        <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="addInspectHistory(item)">添加质检记录</a> -->
                         <a href="javascript:;" style="margin-right: 3px" class="blue" @click="info(item)">查看</a>
                     </td>
                 </template>
@@ -152,7 +151,7 @@
                             <td>{{item.qualifiedNumber}}</td>
                             <td>{{item.unqualifiedNumber}}</td>
                             <td>{{item.handlingSuggestion}}</td>
-                            <td>{{item.remark}}</td>
+                            <td>{{item.reasons.toString()}}</td>
                             <td>
                                 <div v-for="(obj,i) in item.accessoryList" :key="i">
                                     <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
@@ -244,6 +243,18 @@ export default {
                 .get(`/haolifa/material-inspect/history/list/${this.entrustNo}`)
                 .then(res => {
                     this.inspectHistory = res;
+                    this.inspectHistory.map(item => {
+                        return (item.reasons = item.reasonList.map(obj => {
+                            if (obj.number)
+                                return (
+                                    "数量:" +
+                                    obj.number +
+                                    ",原因:" +
+                                    obj.reason +
+                                    ";"
+                                );
+                        }));
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

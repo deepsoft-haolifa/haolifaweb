@@ -175,7 +175,7 @@
                                     </div>
                                 </td>
                                 <td>{{item.handlingSuggestion}}</td>
-                                <td>{{item.remark}}</td>
+                                <td>{{item.reasons.toString()}}</td>
                             </tr>
                         </table>
                     </div>
@@ -191,12 +191,18 @@
                 </div>
                 <div class="flex mt-15">
                     <input-box v-model="addInspectHistory.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
-                    <input-box v-model="addInspectHistory.unqualifiedNumber" class="flex-item mr-20 mt-15" label="不合格数量"></input-box>
                     <input-box v-model="addInspectHistory.qualifiedNumber" class="flex-item mr-20 mt-15" label="合格数量"></input-box>
+                </div>
+                <div class="flex" v-for="(item,index) in addInspectHistory.reasonList" :key="index">
+                    <input-box v-model="item.number" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
+                    <input-box v-model="item.reason" class="flex-item" label="不合格现象描述"></input-box>
+                    <icon-btn small v-if="addInspectHistory.reasonList.length > 1" @click="removeReason(index)">close</icon-btn>
+                </div>
+                <div style="padding-left:100px;">
+                    <icon-btn bg small v-tooltip="'更多不合格数量及因'" @click="addReason">add</icon-btn>
                 </div>
                 <div class="flex mt-15">
                     <input-box v-model="addInspectHistory.handlingSuggestion" class="flex-item mr-20 ml-20 mt-15" label="处理意见"></input-box>
-                    <input-box v-model="addInspectHistory.remark" class="flex-item mr-20 mt-15" label="不合格现象描述"></input-box>
                 </div>
                 <div class="flex">
                     <upload-box
@@ -340,7 +346,7 @@
                                     </div>
                                 </td>
                                 <td>{{item.handlingSuggestion}}</td>
-                                <td>{{item.remark}}</td>
+                                <td>{{item.reasons.toString()}}</td>
                             </tr>
                         </table>
                     </div>
@@ -394,7 +400,13 @@ export default {
                 purchaseNo: "",
                 supplierName: "",
                 supplierNo: "",
-                accessoryList: []
+                accessoryList: [],
+                reasonList: [
+                    {
+                        reason: "",
+                        number: ""
+                    }
+                ]
             },
             tuhaoList: [],
             nameList: [],
@@ -596,7 +608,18 @@ export default {
                 )
                 .then(res => {
                     this.inspectHistory = res;
-                    console.log(this.inspectHistory);
+                    this.inspectHistory.map(item => {
+                        return (item.reasons = item.reasonList.map(obj => {
+                            if (obj.number)
+                                return (
+                                    "数量:" +
+                                    obj.number +
+                                    ",原因:" +
+                                    obj.reason +
+                                    ";"
+                                );
+                        }));
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -618,8 +641,20 @@ export default {
                 purchaseNo: "",
                 supplierName: "",
                 supplierNo: "",
-                accessoryList: []
+                accessoryList: [],
+                reasonList: [
+                    {
+                        reason: "",
+                        number: ""
+                    }
+                ]
             };
+        },
+        addReason() {
+            this.addInspectHistory.reasonList.push({ number: "0", reason: "" });
+        },
+        removeReason(index) {
+            this.addInspectHistory.reasonList.splice(index, 1);
         }
     }
 };

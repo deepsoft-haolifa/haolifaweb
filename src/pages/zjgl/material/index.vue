@@ -206,7 +206,7 @@
                                     </div>
                                 </td>
                                 <td>{{item.handlingSuggestion}}</td>
-                                <td>{{item.remark}}</td>
+                                <td>{{item.reasons.toString()}}</td>
                             </tr>
                         </table>
                     </div>
@@ -388,7 +388,18 @@ export default {
                 )
                 .then(res => {
                     this.inspectHistory = res;
-                    console.log(this.inspectHistory);
+                    this.inspectHistory.map(item => {
+                        return (item.reasons = item.reasonList.map(obj => {
+                            if (obj.number)
+                                return (
+                                    "数量:" +
+                                    obj.number +
+                                    ",原因:" +
+                                    obj.reason +
+                                    ";"
+                                );
+                        }));
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

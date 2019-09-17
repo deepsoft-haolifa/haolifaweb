@@ -5,13 +5,13 @@
             <div class="flex">
                 <input-box v-model="form.purchaseNo" class="flex-item mr-20" label="采购合同号"></input-box>
                 <select-box :list="materialClassify" v-model="classifyId" @change="getMaterialGraphNoList()" label="零件名称" class="flex-item mr-20"></select-box>
-                <select-box class="flex-item mr-20" :list="materialGraphNoList" v-model="form.materialGraphNo" label="零件图号"></select-box>
+                <select-box class="flex-item mr-20" :list="materialGraphNoList" @change="getBatch" v-model="form.materialGraphNo" label="零件图号"></select-box>
             </div>
             <!-- style="margin-right: 20px;width: 240px;" style="margin-right: 20px;width: 240px;"-->
             <div class="flex">
                 <!--<input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box>-->
                 <input-box v-model="form.processedGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
-                <input-box v-model="form.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
+                <select-box class="flex-item mr-20" :list="batchNumberList" v-model="form.batchNumber" label="批次号"></select-box>
                 <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
             </div>
             <div class="flex">
@@ -41,7 +41,8 @@ export default {
             classifyId: 0,
             materialClassify: [],
             materialGraphNoList: [],
-            reg: /M$/
+            reg: /M$/,
+            batchNumberList: []
         };
     },
     created() {
@@ -79,6 +80,7 @@ export default {
                             item => this.reg.test(item.text)
                         );
                         this.form.materialGraphNo = this.materialGraphNoList[0].value;
+                        this.getBatch();
                     });
             });
         },
@@ -98,6 +100,25 @@ export default {
                         item => this.reg.test(item.text)
                     );
                     this.form.materialGraphNo = this.materialGraphNoList[0].value;
+                });
+        },
+        getBatch() {
+            this.$http
+                .get(
+                    `/haolifa/store-room/material-batch-nos?graphNo=${
+                        this.form.materialGraphNo
+                    }`
+                )
+                .then(res => {
+                    this.batchNumberList = res.map(item => {
+                        return {
+                            value: item.materialBatchNo,
+                            text: item.materialBatchNo
+                        };
+                    });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
                 });
         },
         getInfo(entrustNo) {

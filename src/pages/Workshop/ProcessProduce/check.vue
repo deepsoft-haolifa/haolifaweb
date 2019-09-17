@@ -25,7 +25,7 @@
                         <td>{{item.testingNumber}}</td>
                         <td>{{item.qualifiedNumber}}</td>
                         <td>{{item.unqualifiedNumber}}</td>
-                        <th colspan="2">{{item.reasons.toString()}}</th>
+                        <th colspan="2">{{item.reasonArr.toString()}}</th>
                     </tr>
                 </table>
                 <hr>
@@ -64,7 +64,7 @@ export default {
                 .then(res => {
                     this.inspectHistory = res.list;
                     this.inspectHistory.map(item => {
-                        return (item.reasons = item.reasonList.map(obj => {
+                         return (item.reasonArr = item.reasonList.map(obj => {
                             if (obj.number)
                                 return (
                                     "数量:" +

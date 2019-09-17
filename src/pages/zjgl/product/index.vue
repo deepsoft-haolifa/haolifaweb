@@ -264,7 +264,7 @@
                                 <td>{{item.testingNumber}}</td>
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
-                                <td>{{item.reasons.toString()}}</td>
+                                <td>{{item.reasonArr.toString()}}</td>
                                 <td>
                                     <div v-for="(obj,i) in item.accessoryList" :key="i">
                                         <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
@@ -461,7 +461,7 @@ export default {
                 .then(res => {
                     this.recordList = res.list;
                     this.recordList.map(item => {
-                        return (item.reasons = item.reasonList.map(obj => {
+                         return (item.reasonArr = item.reasonList.map(obj => {
                             if (obj.number)
                                 return (
                                     "数量:" +

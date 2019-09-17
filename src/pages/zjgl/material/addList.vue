@@ -132,7 +132,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length" style="overflow-x: auto">
+                <div class="mt-15 ml-20 mr-20" v-if="inList.length" style="overflow-x: auto">
                     <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
                         <div class="flex-item" style="text-align: center;line-height: 24px;">已添加零件质检记录</div>
                     </div>
@@ -161,7 +161,7 @@
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory" :key="i">
+                            <tr v-for="(item, i) in inList" :key="i">
                                 <td>{{item.inspectNo}}</td>
                                 <td>{{item.type == 1?'采购零件':'机加工零件'}}</td>
                                 <td>{{item.materialGraphName}}</td>
@@ -175,7 +175,7 @@
                                     </div>
                                 </td>
                                 <td>{{item.handlingSuggestion}}</td>
-                                <td>{{item.reasons.toString()}}</td>
+                                <td>{{item.reasonArr?item.reasonArr.toString():""}}</td>
                             </tr>
                         </table>
                     </div>
@@ -303,7 +303,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="mt-15 ml-20 mr-20" v-if="inspectHistory.length" style="overflow-x: auto">
+                <div class="mt-15 ml-20 mr-20" v-if="inList.length" style="overflow-x: auto">
                     <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
                         <div class="flex-item" style="text-align: center;line-height: 24px;">质检记录</div>
                     </div>
@@ -332,7 +332,7 @@
                                 <th>处理意见</th>
                                 <th>不合格现象描述</th>
                             </tr>
-                            <tr v-for="(item, i) in inspectHistory" :key="i">
+                            <tr v-for="(item, i) in inList" :key="i">
                                 <td>{{item.inspectNo}}</td>
                                 <td>{{item.type == 1?'采购零件':'机加工零件'}}</td>
                                 <td>{{item.materialGraphName}}</td>
@@ -346,7 +346,7 @@
                                     </div>
                                 </td>
                                 <td>{{item.handlingSuggestion}}</td>
-                                <td>{{item.reasons.toString()}}</td>
+                                <td>{{item.reasonArr?item.reasonArr.toString():""}}</td>
                             </tr>
                         </table>
                     </div>
@@ -430,7 +430,8 @@ export default {
             items: [],
             resFileList: [],
             loading: false,
-            fileList: []
+            fileList: [],
+            inList: []
         };
     },
     methods: {
@@ -457,7 +458,8 @@ export default {
                 purchaseNo: this.addInspectHistory.purchaseNo,
                 supplierName: this.addInspectHistory.supplierName,
                 supplierNo: this.addInspectHistory.supplierNo,
-                accessoryList: this.addInspectHistory.accessoryList
+                accessoryList: this.addInspectHistory.accessoryList,
+                reasonList: this.addInspectHistory.reasonList
             };
             this.loading = true;
             this.$http
@@ -607,18 +609,21 @@ export default {
                     }`
                 )
                 .then(res => {
-                    this.inspectHistory = res;
-                    this.inspectHistory.map(item => {
-                        return (item.reasons = item.reasonList.map(obj => {
-                            if (obj.number)
-                                return (
-                                    "数量:" +
-                                    obj.number +
-                                    ",原因:" +
-                                    obj.reason +
-                                    ";"
-                                );
-                        }));
+                    this.inList = res;
+                    this.inList.map(item => {
+                        if (item.reasonList)
+                            return (item.reasonArr = item.reasonList.map(
+                                obj => {
+                                    if (obj.number)
+                                        return (
+                                            "数量:" +
+                                            obj.number +
+                                            ",原因:" +
+                                            obj.reason +
+                                            ";"
+                                        );
+                                }
+                            ));
                     });
                 })
                 .catch(e => {

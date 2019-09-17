@@ -141,7 +141,7 @@
                                         <a target="_blank" :href="obj.fileUrl">{{obj.fileName}}</a>
                                     </div>
                                 </td>
-                                <td>{{item.reasons.toString()}}</td>
+                                <td>{{item.reasonArr.toString()}}</td>
                             </tr>
                         </table>
                     </div>
@@ -209,7 +209,7 @@ export default {
                 .then(res => {
                     this.inspectHistory = res;
                     this.inspectHistory.map(item => {
-                        return (item.reasons = item.reasonList.map(obj => {
+                         return (item.reasonArr = item.reasonList.map(obj => {
                             if (obj.number)
                                 return (
                                     "数量:" +

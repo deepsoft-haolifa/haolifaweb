@@ -11,6 +11,7 @@
             <div class="flex">
                 <!--<input-box v-model="form.batchNumber" class="flex-item mr-20 " label="批次号"></input-box>-->
                 <input-box v-model="form.processedGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
+                <input-box v-model="form.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
                 <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
             </div>
             <div class="flex">
@@ -32,7 +33,8 @@ export default {
                 materialGraphNo: null,
                 number: 0,
                 actionType: 1,
-                processedGraphNo:''
+                processedGraphNo: "",
+                batchNumber: ""
                 // batchNumber:new Date().getTime()
             },
             entrustNo: "",

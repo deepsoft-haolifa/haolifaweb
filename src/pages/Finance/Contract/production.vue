@@ -8,9 +8,17 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="生产订单号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.demandName" @change="$refs.list.update(true)" placeholder="需方单位" style="width: 200px;">
+                订单状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
                     <option v-for="item in statusList" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
+                </select>
+                发货状态：
+                <select v-model="filter.deliverStatus" class="f-14" @change="$refs.list.update(true)">
+                    <option value="-1">全部</option>
+                    <option value="0">待发货</option>
+                    <option value="1">部分发货</option>
+                    <option value="2">发货完成</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -39,7 +47,7 @@
                     <!-- <td>{{item.deliveryTime}}</td> -->
                     <td>{{item.receivedAccount}}</td>
                     <td>{{deliverStatusList[item.deliverStatus].text}}</td>
-                    <td>{{statusList[item.orderStatus].text}}</td>
+                    <td>{{statusListArr[item.orderStatus].text}}</td>
                     <!-- <td>{{item.createUserId}}</td> -->
                     <td>{{item.createTime}}</td>
                     <td>
@@ -81,17 +89,36 @@ export default {
                 { value: 5, text: "待生产" },
                 { value: 6, text: "待领料" },
                 { value: 7, text: "生产中" },
+                // { value: 8, text: "生产暂停" },
+                { value: 9, text: "生产完成" },
+                // { value: 10, text: "质检中" },
+                // { value: 11, text: "已入库" },
+                // { value: 12, text: "申请发货" },
+                // { value: 13, text: "发货完成" }
+                { value: 14, text: "审核不通过" }
+            ],
+            statusListArr: [
+                { value: 0, text: "创建" },
+                { value: 1, text: "审批中" },
+                { value: 2, text: "核料中" },
+                { value: 3, text: "替换料审批中" },
+                { value: 4, text: "核料完成" },
+                { value: 5, text: "待生产" },
+                { value: 6, text: "待领料" },
+                { value: 7, text: "生产中" },
                 { value: 8, text: "生产暂停" },
                 { value: 9, text: "生产完成" },
                 { value: 10, text: "质检中" },
                 { value: 11, text: "已入库" },
                 { value: 12, text: "申请发货" },
-                { value: 13, text: "发货完成" }
+                { value: 13, text: "发货完成" },
+                { value: 14, text: "审核不通过" }
             ],
             filter: {
                 demandName: "",
                 orderNo: "",
-                orderStatus: -1
+                orderStatus: -1,
+                deliverStatus: -1
                 // createUserId:0
             }
         };

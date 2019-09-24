@@ -337,7 +337,7 @@ export default {
             filter: {
                 orderNo: "",
                 orderStatus: -1,
-                deliverStatus: 0
+                deliverStatus: -1
             },
             info: {},
             // orderStatusList: {},

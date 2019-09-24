@@ -353,7 +353,7 @@ export default {
             filter: {
                 orderNo: "",
                 orderStatus: -1,
-                deliverStatus: 0
+                deliverStatus: -1
             },
             layer: false,
             info: {},

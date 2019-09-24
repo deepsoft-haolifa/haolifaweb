@@ -11,17 +11,18 @@
                 <div class="flex-item">
                     <div class="flex">
                         <!-- <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box> -->
-                        <select-box :list="classifyNameList" v-model="item.materialClassifyName" label="零件名称"></select-box>
+                        <select-box :list="classifyNameList" v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></select-box>
                         <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="零件图号"></input-box>
-                        <input-box v-model="item.model" class="mr-10" label="型号"></input-box>
-                        <input-box v-model="item.specifications" class="flex-item mr-10" label="规格"></input-box>
+                        <input-box v-model="item.model" class="flex-item mr-10" label="型号"></input-box>
                     </div>
                     <div class="flex">
+                        <input-box v-model="item.specifications" class="flex-item mr-10" label="规格"></input-box>
+                        <input-box v-model="item.batchNumber" class="flex-item mr-10" label="批次号"></input-box>
                         <input-box v-model="item.material" class="flex-item mr-10" label="材质"></input-box>
-                        <select-box :list="sprayColorList" v-model="item.relationNo" label="喷涂颜色"></select-box>
-
-                        <!-- <input-box v-model="item.sprayColor" class="flex-item mr-10" label="喷涂颜色"></input-box> -->
-                        <input-box v-model="item.number" type="number" class="mr-10" label="数量"></input-box>
+                    </div>
+                    <div class="flex">
+                        <select-box :list="sprayColorList" v-model="item.relationNo" class="flex-item mr-10" label="喷涂颜色"></select-box>
+                        <input-box v-model="item.number" type="number" class="flex-item mr-10" label="数量"></input-box>
                         <date-picker v-model="item.completeTime" class="flex-item" label="完成时间" style="margin-right: 20px;"></date-picker>
                     </div>
                     <div class="flex">
@@ -55,7 +56,10 @@ export default {
             supplierInfoList: [],
             supplierList: [],
             sprayColorList: [],
-            classifyNameList: [],
+            classifyNameList: [
+                { value: "阀体", text: "阀体" },
+                { value: "阀板", text: "阀板" }
+            ],
             form: {
                 id: null,
                 planner: "",
@@ -71,7 +75,8 @@ export default {
                         specialRequires: "",
                         remark: "",
                         number: "",
-                        relationNo: ""
+                        relationNo: "",
+                        batchNumber: ""
                     }
                 ]
             },
@@ -157,21 +162,21 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
-        getClassifyNameList() {
-            this.$http
-                .get(`/haolifa/material/classify/list`)
-                .then(res => {
-                    this.classifyNameList = res.map(item => {
-                        return {
-                            value: item.classifyName,
-                            text: item.classifyName
-                        };
-                    });
-                })
-                .catch(e => {
-                    this.$toast(e.msg || e.message);
-                });
-        },
+        // getClassifyNameList() {
+        //     this.$http
+        //         .get(`/haolifa/material/classify/list`)
+        //         .then(res => {
+        //             this.classifyNameList = res.map(item => {
+        //                 return {
+        //                     value: item.classifyName,
+        //                     text: item.classifyName
+        //                 };
+        //             });
+        //         })
+        //         .catch(e => {
+        //             this.$toast(e.msg || e.message);
+        //         });
+        // },
         getColor(key) {
             let color;
             this.sprayColorList.map(item => {

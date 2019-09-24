@@ -4,7 +4,7 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 入库状态：
-                <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+                <select v-model="filter.status" class="f-14" @change="$refs.list.update()">
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
@@ -171,14 +171,15 @@ export default {
                 .then(res => {
                     this.storeComplete(this.itemId);
                     this.$toast("入库成功");
-                    this.$refs.list.update();
                     this.storeRoom.layerShow = false;
                     this.loading = false;
+                    this.$refs.list.update();
                 })
                 .catch(e => {
                     this.loading = false;
                     this.$toast(e.msg || e.message);
                 });
+            this.$refs.list.update();
         },
         execStoreRoom(item) {
             this.itemId = item.id;

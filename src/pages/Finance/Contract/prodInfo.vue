@@ -19,6 +19,7 @@
                 </tr>
                 <tr>
                     <th>订单号</th>
+                    <th>发票编号</th>
                     <th>总金额(￥)</th>
                     <th>打款日期</th>
                     <th>录入人</th>
@@ -27,6 +28,7 @@
                 </tr>
                 <tr v-for="item in payList" :key="item.id">
                     <td>{{item.orderNo}}</td>
+                    <td>{{item.invoiceNo}}</td>
                     <td>{{item.amount.toLocaleString()}}</td>
                     <td>{{item.payTime}}</td>
                     <td>{{item.createUserId}}</td>
@@ -40,16 +42,21 @@
                     <div class="flex-item">
                         <div class="flex">
                             <input-box v-model="order.orderNo" disabled hint="必填" class="flex-item mr-10" label="合同订单号"></input-box>
+                            <input-box v-model="order.invoiceNo" hint="必填" class="flex-item mr-10" label="发票编号"></input-box>
                             <input-box type="number" v-model="order.amount" hint="必填" class="flex-item mr-10" label="总金额"></input-box>
-                            <date-picker v-model="order.payTime" hint="必填" class="mr-10" label="收款日期" style="margin-right: 20px;"></date-picker>
+                        </div>
+                        <div class="flex">
+                            <date-picker v-model="order.payTime" hint="必填" class="flex-item mr-10" label="收款日期" style="margin-right: 20px;"></date-picker>
                             <div class="flex-item" style="line-height:82px;">
                                 合同类型:
-                                <select type="number" style="width:60%" v-model="order.orderType" hint="必填" class="f-14 mr-10 select-form" label="合同类型">
+                                <select type="number" style="width:70%" v-model="order.orderType" hint="必填" class="f-14 mr-10 select-form" label="合同类型">
                                     <option value="1">采购</option>
                                     <option value="2">生产</option>
                                 </select>
                                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
                             </div>
+                        </div>
+                        <div class="flex-item" style="text-align:center">
                             <button class="btn btn-sm" @click="save()">保存</button>
                         </div>
                     </div>
@@ -75,6 +82,7 @@ export default {
                 amount: "",
                 orderNo: "",
                 payTime: "",
+                invoiceNo: "",
                 orderType: 1
             }
         };
@@ -110,6 +118,10 @@ export default {
                 this.$toast("请填写总金额");
                 return;
             }
+            if (!this.order.invoiceNo) {
+                this.$toast("请填写发票编号");
+                return;
+            }
             if (!this.order.payTime) {
                 this.$toast("请选择收款日期");
                 return;
@@ -121,6 +133,7 @@ export default {
                     this.$toast("提交成功");
                     this.order.amount = "";
                     this.order.payTime = "";
+                    this.order.invoiceNo = "";
                     this.addFlag = false;
                     this.payClick(this.order.orderNo);
                 })

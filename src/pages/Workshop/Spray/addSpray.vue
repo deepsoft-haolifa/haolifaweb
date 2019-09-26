@@ -12,12 +12,12 @@
                     <div class="flex">
                         <!-- <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box> -->
                         <select-box :list="classifyNameList" v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></select-box>
-                        <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="零件图号"></input-box>
+                        <input-box v-model="item.materialGraphNo" @blur="getBatchNumber(i,item.materialGraphNo)" class="flex-item mr-10" label="零件图号"></input-box>
                         <input-box v-model="item.model" class="flex-item mr-10" label="型号"></input-box>
                     </div>
                     <div class="flex">
                         <input-box v-model="item.specifications" class="flex-item mr-10" label="规格"></input-box>
-                        <input-box v-model="item.batchNumber" class="flex-item mr-10" label="批次号"></input-box>
+                        <select-box :list="item.batchNumberList" v-model="item.batchNumber" class="flex-item mr-10" label="批次号"></select-box>
                         <input-box v-model="item.material" class="flex-item mr-10" label="材质"></input-box>
                     </div>
                     <div class="flex">
@@ -76,7 +76,8 @@ export default {
                         remark: "",
                         number: "",
                         relationNo: "",
-                        batchNumber: ""
+                        batchNumber: "",
+                        batchNumberList: []
                     }
                 ]
             },
@@ -98,6 +99,23 @@ export default {
                 .get(`/haolifa/spray/form/${sprayNo}`)
                 .then(res => {
                     this.form = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getBatchNumber(i, materialGraphNo) {
+            this.$http
+                .get(
+                    `/haolifa/store-room/material-batch-nos?graphNo=${materialGraphNo}`
+                )
+                .then(res => {
+                    this.form.items[i].batchNumberList = res.map(item => {
+                        return {
+                            value: item.materialBatchNo,
+                            text: item.materialBatchNo
+                        };
+                    });
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

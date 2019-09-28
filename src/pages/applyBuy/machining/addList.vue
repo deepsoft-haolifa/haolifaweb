@@ -38,7 +38,8 @@
                     <td>{{item.entrustNo}}</td>
                     <td>{{item.batchNumber}}</td>
                     <td>{{item.purchaseNo}}</td>
-                    <td>{{item.workshopType == '1' ?'内部车间':item.workshopType == '2'?'外部车间':'暂无'}}</td>
+                    <!-- <td>{{item.workshopType == '1' ?'内部车间1':item.workshopType == '2'?'外部车间':'暂无'}}</td> -->
+                    <td>{{workShopList[item.workshopType].name}}</td>
                     <td>{{item.workshopType == '0' ? '暂无':item.supplierName}}</td>
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
@@ -85,6 +86,12 @@ export default {
                 { status: 4, name: "处理完成" },
                 { status: 5, name: "审批不通过" },
                 { status: 6, name: "质检完成" }
+            ],
+            workShopList: [
+                { status: 0, name: "暂无" },
+                { status: 1, name: "内部车间1" },
+                { status: 2, name: "外部" },
+                { status: 3, name: "内部车间2" }
             ]
         };
     },

@@ -113,7 +113,8 @@ export default {
                     this.batchNumberList = res.map(item => {
                         return {
                             value: item.materialBatchNo,
-                            text: item.materialBatchNo
+                            text:
+                                item.materialBatchNo + "(" + item.quantity + ")"
                         };
                     });
                 })

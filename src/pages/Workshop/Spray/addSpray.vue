@@ -91,7 +91,7 @@ export default {
             this.getInfo(sprayNo);
         }
         this.getSprayColorList();
-        this.getClassifyNameList();
+        // this.getClassifyNameList();
     },
     methods: {
         getInfo(sprayNo) {
@@ -113,7 +113,8 @@ export default {
                     this.form.items[i].batchNumberList = res.map(item => {
                         return {
                             value: item.materialBatchNo,
-                            text: item.materialBatchNo
+                            text:
+                                item.materialBatchNo + "(" + item.quantity + ")"
                         };
                     });
                 })
@@ -123,10 +124,12 @@ export default {
         },
         submit() {
             this.form.items.map(item => {
+                delete item.batchNumberList;
                 if (item.relationNo) {
                     item.sprayColor = this.getColor(item.relationNo);
                 }
             });
+            console.log(this.form);
             if (this.isAdd) {
                 this.$http
                     .post(`/haolifa/spray/form`, this.form)

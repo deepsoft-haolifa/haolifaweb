@@ -183,57 +183,71 @@ export default {
         },
         execStoreRoom(item) {
             this.itemId = item.id;
-            // 获取库房库位
             this.$http
-                .get(`/haolifa/store-room/listInfo?type=1`)
+                .get(`/haolifa/material-inspect/history-info/${item.id}`)
                 .then(res => {
-                    console.log(res);
-                    this.storeRoom.selectStoreRooms = res.map(item => {
-                        return { value: item.roomNo, text: item.name };
-                    });
-                    if (this.storeRoom.selectStoreRooms.length > 0) {
-                        this.storeRoom.roomNo = this.storeRoom.selectStoreRooms[0].value;
+                    if (res.status == 2) {
+                        this.$toast("已入库完成，请刷新界面!");
+                        return;
                     }
+                    // 获取库房库位
                     this.$http
-                        .get(
-                            `/haolifa/store-room/rack/list/${
-                                this.storeRoom.roomNo
-                            }`
-                        )
+                        .get(`/haolifa/store-room/listInfo?type=1`)
                         .then(res => {
-                            console.log("库位", res);
-                            this.storeRoom.storeRoomRacks = res.map(item => {
-                                return {
-                                    value: item.rackNo,
-                                    text: item.rackName
-                                };
+                            this.storeRoom.selectStoreRooms = res.map(item => {
+                                return { value: item.roomNo, text: item.name };
                             });
-                            // 默认值
-                            if (this.storeRoom.storeRoomRacks.length > 0) {
-                                this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
+                            if (this.storeRoom.selectStoreRooms.length > 0) {
+                                this.storeRoom.roomNo = this.storeRoom.selectStoreRooms[0].value;
                             }
+                            this.$http
+                                .get(
+                                    `/haolifa/store-room/rack/list/${
+                                        this.storeRoom.roomNo
+                                    }`
+                                )
+                                .then(res => {
+                                    console.log("库位", res);
+                                    this.storeRoom.storeRoomRacks = res.map(
+                                        item => {
+                                            return {
+                                                value: item.rackNo,
+                                                text: item.rackName
+                                            };
+                                        }
+                                    );
+                                    // 默认值
+                                    if (
+                                        this.storeRoom.storeRoomRacks.length > 0
+                                    ) {
+                                        this.storeRoom.rackNo = this.storeRoom.storeRoomRacks[0].value;
+                                    }
+                                })
+                                .catch(e => {
+                                    this.$toast(e.msg || e.message);
+                                });
                         })
                         .catch(e => {
                             this.$toast(e.msg || e.message);
                         });
+                    if (item.type == 2) {
+                        let length = item.materialGraphNo.length;
+                        this.storeRoom.materialGraphNo =
+                            item.materialGraphNo.substring(0, length - 1) + "J";
+                    } else {
+                        this.storeRoom.materialGraphNo = item.materialGraphNo;
+                    }
+
+                    this.storeRoom.price = item.purchasePrice;
+                    this.storeRoom.supplier = item.supplierName;
+                    this.storeRoom.materialBatchNo = item.batchNumber;
+                    this.storeRoom.orderNo = item.purchaseNo;
+                    this.storeRoom.quantity = item.qualifiedNumber;
+                    this.storeRoom.layerShow = true;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
                 });
-            if (item.type == 2) {
-                let length = item.materialGraphNo.length;
-                this.storeRoom.materialGraphNo =
-                    item.materialGraphNo.substring(0, length - 1) + "J";
-            } else {
-                this.storeRoom.materialGraphNo = item.materialGraphNo;
-            }
-
-            this.storeRoom.price = item.purchasePrice;
-            this.storeRoom.supplier = item.supplierName;
-            this.storeRoom.materialBatchNo = item.batchNumber;
-            this.storeRoom.orderNo = item.purchaseNo;
-            this.storeRoom.quantity = item.qualifiedNumber;
-            this.storeRoom.layerShow = true;
         },
         exportExcel() {
             this.exportLayer = true;

@@ -117,6 +117,20 @@ export default {
                                 item.materialBatchNo + "(" + item.quantity + ")"
                         };
                     });
+                    this.form.items.push({
+                        materialClassifyName: "",
+                        materialGraphNo: "",
+                        completeTime: "",
+                        material: "",
+                        model: "",
+                        specifications: "",
+                        sprayColor: "",
+                        specialRequires: "",
+                        remark: "",
+                        number: "",
+                        relationNo: ""
+                    });
+                    this.form.items.pop();
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

@@ -17,6 +17,7 @@
                     <th>机加工单号</th>
                     <th>采购合同号</th>
                     <th>批次号</th>
+                    <th>车间类型</th>
                     <th>物料名称</th>
                     <th>物料图号</th>
                     <th>加工后图号</th>
@@ -33,6 +34,7 @@
                     <td>{{item.entrustNo}}</td>
                     <td>{{item.purchaseNo}}</td>
                     <td>{{item.batchNumber}}</td>
+                    <td>{{workShopList[item.workshopType]}}</td>
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
                     <td>{{item.processedGraphNo}}</td>
@@ -80,7 +82,8 @@ export default {
                 { status: 4, name: "加工完成" },
                 { status: 5, name: "审批不通过" },
                 { status: 6, name: "质检完成" }
-            ]
+            ],
+            workShopList: ["暂无", "内部车间1", "外部", "内部车间2"]
         };
     },
     methods: {

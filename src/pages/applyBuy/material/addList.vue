@@ -174,7 +174,7 @@
                                 <td>{{item.qualifiedNumber}}</td>
                                 <td>{{item.unqualifiedNumber}}</td>
                                 <td>{{item.handlingSuggestion}}</td>
-                                <td>{{item.remark}}</td>
+                                <td>{{item.reasonArr ? item.reasonArr.toString() :""}}</td>
                             </tr>
                         </table>
                     </div>
@@ -279,6 +279,22 @@ export default {
                 )
                 .then(res => {
                     this.inspectHistory = res;
+                    this.inspectHistory.map(item => {
+                        if (item.reasonList)
+                            return (item.reasonArr = item.reasonList.map(
+                                obj => {
+                                    if (obj.number)
+                                        return (
+                                            "数量:" +
+                                            obj.number +
+                                            ",原因:" +
+                                            obj.reason +
+                                            ";"
+                                        );
+                                }
+                            ));
+                    });
+                    console.log(this.inspectHistory);
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

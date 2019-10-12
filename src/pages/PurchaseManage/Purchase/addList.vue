@@ -280,13 +280,14 @@ export default {
         // },
         getInfo(formId) {
             this.layer = true;
-            this.orderUrl = "/haolifa/export/purchaseOrder/" + formId;
+            // this.orderUrl = "/haolifa/export/purchaseOrder/" + formId;
             this.info.id = formId;
             this.$http
                 .get(`/haolifa/purchase-order/info/${formId}`)
                 .then(res => {
                     this.info = res.order;
                     this.itemList = res.items;
+                    this.orderUrl = res.order.fileUrl;
                     this.info.operateTime = res.order.operateTime.substring(
                         0,
                         10

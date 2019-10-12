@@ -20,6 +20,7 @@
                 <td>{{item.createTime}}</td>
                 <td class="t-right">
                     <a href="javascript:;" v-if="reserveFlag" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a>
+                    <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a> -->
                     <a href="javascript:;" style="margin-right: 3px" class="blue" @click="detail(item)">回执记录</a>
                 </td>
             </template>

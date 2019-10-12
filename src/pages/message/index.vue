@@ -16,11 +16,13 @@
                 <td>{{index}}</td>
                 <td>{{item.users}}</td>
                 <td>{{item.title }}</td>
-                <td>{{item.content}}</td>
+                <td>
+                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content.toString().substring(0,20)}}...</a>
+                </td>
                 <td>{{item.createTime}}</td>
                 <td class="t-right">
-                    <a href="javascript:;" v-if="reserveFlag" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a>
-                    <!-- <a href="javascript:;" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a> -->
+                    <!-- <a href="javascript:;" v-if="reserveFlag" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a> -->
+                    <a href="javascript:;" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a>
                     <a href="javascript:;" style="margin-right: 3px" class="blue" @click="detail(item)">回执记录</a>
                 </td>
             </template>
@@ -67,6 +69,34 @@
                 <btn flat color="#008eff" @click="submit()">保存</btn>
             </div>
         </layer>
+        <layer v-if="detailFlag" title="详情" width="50%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content metalwork-info">
+                    <table class="f-14">
+                        <tr>
+                            <td style="width: 15%;"></td>
+                            <td style="width: 85%;"></td>
+                        </tr>
+
+                        <tr>
+                            <th style="word-break:break-all;white-space: inherit">收件人</th>
+                            <td>{{infoDet.users}}</td>
+                        </tr>
+                        <tr>
+                            <th style="word-break:break-all;white-space: inherit">标题</th>
+                            <td>{{infoDet.title}}</td>
+                        </tr>
+                        <tr>
+                            <th>内容</th>
+                            <td style="word-break:break-all;white-space: inherit">{{infoDet.content}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="detailFlag=false">关闭</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -98,15 +128,17 @@ export default {
                 userName: ""
             },
             url: "",
-            reserveFlag: false
+            reserveFlag: false,
+            detailFlag: false,
+            infoDet: {}
         };
     },
     created() {
         this.account = this.$store.state.account;
         if (this.account.roles) {
             if (
-                this.account.roles[0].role == "ROLE_ADMIN" ||
-                this.account.roles[0].role == "ROLE_ZG"
+                this.account.roles[0].role == "ROLE_ADMIN"
+                // this.account.roles[0].role == "ROLE_ZG"
             ) {
                 this.url = "/haolifa/hlmail/getMails";
                 this.reserveFlag = true;
@@ -158,6 +190,10 @@ export default {
             this.reform.userId = this.account.userId;
             this.reform.userName = this.account.username;
             this.reform.content = "";
+        },
+        infoDetail(info) {
+            this.infoDet = info;
+            this.detailFlag = true;
         }
     }
 };

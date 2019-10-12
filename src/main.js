@@ -5,6 +5,7 @@ import router from './router/'
 import store from './store/'
 import axios from 'axios'
 import 'element-ui/lib/theme-chalk/index.css';
+import echarts from 'echarts'
 // import obj2FormData from './utils/obj2FormData'
 import {
   Tree,
@@ -21,6 +22,7 @@ Vue.use(Dialog)
 Vue.use(Select)
 Vue.use(Option)
 Vue.config.productionTip = false
+Vue.prototype.$echarts = echarts
 Vue.prototype.$http = axios
 
 new Vue({

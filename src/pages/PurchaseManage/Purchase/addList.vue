@@ -167,12 +167,12 @@
                             <td colspan="1"></td>
                             <td colspan="1">{{info.totalWeight}}</td>
                             <td colspan="1"></td>
-                            <td colspan="1">{{info.totalAmount}}</td>
+                            <td colspan="1">{{info.totalPrice}}</td>
                             <td colspan="1"></td>
                         </tr>
                         <tr>
                             <th colspan="6">人民币大写</th>
-                            <td colspan="6"></td>
+                            <td colspan="6">{{info.totalPriceCN}}</td>
                         </tr>
                         <tr>
                             <td colspan="12">

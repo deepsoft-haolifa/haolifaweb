@@ -3,17 +3,22 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.department" @change="$refs.list.update(true)" placeholder="部门" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.department" @change="$refs.list.update(true)"
+                       placeholder="部门" style="width: 200px;">
                 费用类别：
                 <select v-model="filter.classifyName" class="f-14 ml-20" @change="queryChange">
                     <option value>全部</option>
-                    <option v-for="item in expensesClassifyList" :value="item.value" v-bind:key="item.value">{{item.value}}</option>
+                    <option v-for="item in expensesClassifyList" :value="item.value" v-bind:key="item.value">
+                        {{item.value}}
+                    </option>
                 </select>
                 <i class="icon" style="margin-left: -20px;margin-right:20px;pointer-events:none;">arrow_drop_down</i>
                 费用类别明细：
                 <select v-model="filter.secondClassifyName" class="f-14 ml-20" @change="$refs.list.update(true)">
                     <option value>全部</option>
-                    <option v-for="item in secondClassifyList" :value="item.value" v-bind:key="item.value">{{item.value}}</option>
+                    <option v-for="item in secondClassifyList" :value="item.value" v-bind:key="item.value">
+                        {{item.value}}
+                    </option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
@@ -22,7 +27,8 @@
             <btn class="b" flat color="#008eff" @click="exportExcel">费用导出</btn>
         </div>
         <div class="flex-item scroll-y">
-            <data-list class="f-14" ref="list" :param="filter" method="get" :page-size="20" url="/haolifa/expenses/list">
+            <data-list class="f-14" ref="list" :param="filter" method="get" :page-size="20"
+                       url="/haolifa/expenses/list">
                 <tr slot="header">
                     <th style="width: 60px;">序号</th>
                     <th>报销人</th>
@@ -58,10 +64,11 @@
                 <input-box v-model="form.department" hint="必填" label="报销部门"></input-box>
                 <input-box v-model="form.summary" hint="必填" label="报销摘要"></input-box>
                 <input-box v-model="form.voucherNo" hint="必填" label="凭证号"></input-box>
-                <select-box :list="expensesClassifyList" @change="exChange" v-model="form.expensesClassify" label="费用类别"></select-box>
+                <select-box :list="expensesClassifyList" @change="exChange" v-model="form.expensesClassify"
+                            label="费用类别"></select-box>
                 <select-box :list="secondClassifyList" v-model="form.secondClassify" label="费用类别明细"></select-box>
                 <input-box type="number" v-model="form.totalAmount" hint="必填" label="总费用"></input-box>
-                <input-box v-model="form.remark" hint="必填" label="备注"></input-box>
+                <input-box v-model="form.remark" label="备注"></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
@@ -80,10 +87,12 @@
                     <input-box v-model="exportForm.department" class="flex-item" label="部门"></input-box>
                 </div>
                 <div class="flex ml-20 mr-20">
-                    <select-box v-model="exportForm.firstClassifyName" class="flex-item" @change="exportChange" :list="expensesClassifyList" label="费用类别"></select-box>
+                    <select-box v-model="exportForm.firstClassifyName" class="flex-item" @change="exportChange"
+                                :list="expensesClassifyList" label="费用类别"></select-box>
                 </div>
                 <div class="flex ml-20 mr-20">
-                    <select-box v-model="exportForm.secondClassifyName" class="flex-item" :list="secondClassifyList" label="费用类别明细"></select-box>
+                    <select-box v-model="exportForm.secondClassifyName" class="flex-item" :list="secondClassifyList"
+                                label="费用类别明细"></select-box>
                 </div>
             </div>
             <div class="layer-btns">
@@ -95,270 +104,277 @@
 </template>
 
 <script>
-import DataList from "@/components/datalist";
+    import DataList from "@/components/datalist";
 
-export default {
-    name: "page-cost",
-    components: { DataList },
-    data() {
-        return {
-            layer: false,
-            form: {
-                id: "",
-                commitUser: "",
-                expensesClassify: "",
-                secondClassify: "",
-                totalAmount: "",
-                summary: "",
-                department: "",
-                voucherNo: "",
-                remark: ""
-            },
-            filter: {
-                classifyName: "",
-                department: "",
-                secondClassifyName: ""
-            },
-            expensesClassifyList: [],
-            secondClassifyList: [],
-            exList: [],
-            exportLayer: false,
-            exportForm: {
-                firstClassifyName: "",
-                department: "",
-                secondClassifyName: "",
-                startDate: "",
-                endDate: ""
-            }
-        };
-    },
-    created() {
-        this.$http.get("/haolifa/expenses/classify?pId=0").then(res => {
-            this.expensesClassifyList = res.map(item => {
-                return { value: item.classifyName, text: item.classifyName };
-            });
-            this.exList = res.map(item => {
-                return { value: item.id, text: item.classifyName };
-            });
-
-            this.form.expensesClassify == ""
-                ? res[0].classifyName
-                : this.form.expensesClassify;
-        });
-    },
-    methods: {
-        getSecondClassify(firstClassify) {
-            console.log("firstClassify", firstClassify);
-            console.log("firstClassifyList", this.firstClassifyList);
-            let pid = 0;
-
-            this.firstClassifyList.forEach(item => {
-                if (item.classifyName == firstClassify) {
-                    console.log("print", item.id);
-                    pid = item.id;
+    export default {
+        name: "page-cost",
+        components: {DataList},
+        data() {
+            return {
+                layer: false,
+                form: {
+                    id: "",
+                    commitUser: "",
+                    expensesClassify: "",
+                    secondClassify: "",
+                    totalAmount: "",
+                    summary: "",
+                    department: "",
+                    voucherNo: "",
+                    remark: ""
+                },
+                filter: {
+                    classifyName: "",
+                    department: "",
+                    secondClassifyName: ""
+                },
+                expensesClassifyList: [],
+                secondClassifyList: [],
+                exList: [],
+                exportLayer: false,
+                exportForm: {
+                    firstClassifyName: "",
+                    department: "",
+                    secondClassifyName: "",
+                    startDate: "",
+                    endDate: ""
                 }
-            });
-            this.$http
-                .get(`/haolifa/expenses/classify?pId=${pid}`)
-                .then(res => {
-                    this.secondClassifyList = res.map(item => {
-                        return {
-                            value: item.classifyName,
-                            text: item.classifyName
-                        };
-                    });
-                });
-        },
-        edit(item) {
-            for (let key in this.form) {
-                this.form[key] = item[key];
-            }
-            let id;
-            this.exList.forEach(item => {
-                if (item.text == this.form.expensesClassify) id = item.value;
-            });
-            if (id)
-                this.$http
-                    .get(`/haolifa/expenses/classify?pId=${id}`)
-                    .then(res => {
-                        this.secondClassifyList = res.map(item => {
-                            return {
-                                value: item.classifyName,
-                                text: item.classifyName
-                            };
-                        });
-                    });
-            this.layer = true;
-        },
-        exChange() {
-            let id,
-                ex = this.form.expensesClassify;
-            this.secondClassifyList = [];
-            this.exList.forEach(item => {
-                if (item.text == ex) id = item.value;
-            });
-            if (id)
-                this.$http
-                    .get(`/haolifa/expenses/classify?pId=${id}`)
-                    .then(res => {
-                        this.secondClassifyList = res.map(item => {
-                            return {
-                                value: item.classifyName,
-                                text: item.classifyName
-                            };
-                        });
-                    });
-        },
-        vertify() {
-            for (let key in this.form) {
-                let item = this.form[key];
-                if (!item && item !== 0 && key !== "id") {
-                    this.$toast("请输入完整信息");
-                    return false;
-                }
-            }
-            return true;
-        },
-        submit() {
-            if (!this.vertify()) return;
-            const { form } = this;
-            form.totalAmount = +form.totalAmount;
-            this.$http
-                .post(
-                    "/haolifa/expenses/" + (form.id ? "update" : "save"),
-                    form
-                )
-                .then(res => {
-                    this.$refs.list.update();
-                    this.cancel();
-                    this.$toast("保存成功");
-                })
-                .catch(e => {
-                    this.$toast(e.message || e.meg);
-                });
-        },
-        cancel() {
-            this.form = {
-                id: "",
-                commitUser: "",
-                expensesClassify: "",
-                secondClassify: "",
-                totalAmount: "",
-                summary: "",
-                department: "",
-                voucherNo: "",
-                remark: ""
             };
-            this.layer = false;
         },
-        remove(item) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除以下发票记录吗？<br>
+        created() {
+            this.$http.get("/haolifa/expenses/classify?pId=0").then(res => {
+                this.expensesClassifyList = res.map(item => {
+                    return {value: item.classifyName, text: item.classifyName};
+                });
+                this.exList = res.map(item => {
+                    return {value: item.id, text: item.classifyName};
+                });
+
+                this.form.expensesClassify == ""
+                    ? res[0].classifyName
+                    : this.form.expensesClassify;
+            });
+        },
+        methods: {
+            getSecondClassify(firstClassify) {
+                console.log("firstClassify", firstClassify);
+                console.log("firstClassifyList", this.firstClassifyList);
+                let pid = 0;
+
+                this.firstClassifyList.forEach(item => {
+                    if (item.classifyName == firstClassify) {
+                        console.log("print", item.id);
+                        pid = item.id;
+                    }
+                });
+                this.$http
+                    .get(`/haolifa/expenses/classify?pId=${pid}`)
+                    .then(res => {
+                        this.secondClassifyList = res.map(item => {
+                            return {
+                                value: item.classifyName,
+                                text: item.classifyName
+                            };
+                        });
+                    });
+            },
+            edit(item) {
+                for (let key in this.form) {
+                    this.form[key] = item[key];
+                }
+                let id;
+                this.exList.forEach(item => {
+                    if (item.text == this.form.expensesClassify) id = item.value;
+                });
+                if (id)
+                    this.$http
+                        .get(`/haolifa/expenses/classify?pId=${id}`)
+                        .then(res => {
+                            this.secondClassifyList = res.map(item => {
+                                return {
+                                    value: item.classifyName,
+                                    text: item.classifyName
+                                };
+                            });
+                        });
+                this.layer = true;
+            },
+            exChange() {
+                let id,
+                    ex = this.form.expensesClassify;
+                this.secondClassifyList = [];
+                this.exList.forEach(item => {
+                    if (item.text == ex) id = item.value;
+                });
+                if (id)
+                    this.$http
+                        .get(`/haolifa/expenses/classify?pId=${id}`)
+                        .then(res => {
+                            this.secondClassifyList = res.map(item => {
+                                return {
+                                    value: item.classifyName,
+                                    text: item.classifyName
+                                };
+                            });
+                        });
+            },
+            vertify() {
+                for (let key in this.form) {
+                    let item = this.form[key];
+                    !item &&
+                    item !== 0 &&
+                    key !== "id" &&
+                    key !== "orderNo" &&
+                    key !== "remark"
+                    if (!item && item !== 0 && key !== "id" && key !== "remark" && key !== "secondClassify") {
+                        // if (key !== "id" || key !== "remark" || key !== "secondClassify") {
+                        this.$toast("请输入完整信息");
+                        return false;
+                        // }
+                    }
+                }
+                return true;
+            },
+            submit() {
+                if (!this.vertify()) return;
+                const {form} = this;
+                form.totalAmount = +form.totalAmount;
+                this.$http
+                    .post(
+                        "/haolifa/expenses/" + (form.id ? "update" : "save"),
+                        form
+                    )
+                    .then(res => {
+                        this.$refs.list.update();
+                        this.cancel();
+                        this.$toast("保存成功");
+                    })
+                    .catch(e => {
+                        this.$toast(e.message || e.meg);
+                    });
+            },
+            cancel() {
+                this.form = {
+                    id: "",
+                    commitUser: "",
+                    expensesClassify: "",
+                    secondClassify: "",
+                    totalAmount: "",
+                    summary: "",
+                    department: "",
+                    voucherNo: "",
+                    remark: ""
+                };
+                this.layer = false;
+            },
+            remove(item) {
+                this.$confirm({
+                    title: "删除确认",
+                    text: `您确定要删除以下发票记录吗？<br>
           提交人：<b>${item.commitUser}</b><br>
           类别：<b>${item.expensesClassify}</b><br>
           总费用：<b>￥${item.totalAmount}</b><br>`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
+                    color: "red",
+                    btns: ["取消", "删除"],
+                    yes: () => {
+                        this.$http
+                            .get(`/haolifa/expenses/delete/${item.id}`)
+                            .then(res => {
+                                this.$toast("删除成功");
+                                this.$refs.list.update();
+                            })
+                            .catch(e => {
+                                this.$toast(e.msg || e.message);
+                            });
+                    }
+                });
+            },
+            exportExcel() {
+                this.exportLayer = true;
+                this.exportForm = {
+                    firstClassifyName: "",
+                    department: "",
+                    secondClassifyName: "",
+                    startDate: "",
+                    endDate: ""
+                };
+            },
+            exportChange() {
+                let id,
+                    ex = this.exportForm.firstClassifyName;
+                this.secondClassifyList = [];
+                this.exList.forEach(item => {
+                    if (item.text == ex) id = item.value;
+                });
+                if (id)
                     this.$http
-                        .get(`/haolifa/expenses/delete/${item.id}`)
+                        .get(`/haolifa/expenses/classify?pId=${id}`)
                         .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update();
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg || e.message);
+                            this.secondClassifyList = res.map(item => {
+                                return {
+                                    value: item.classifyName,
+                                    text: item.classifyName
+                                };
+                            });
                         });
+            },
+            download() {
+                if (!this.exportForm.startDate) {
+                    this.$toast("请选择开始时间");
+                    return;
                 }
-            });
-        },
-        exportExcel() {
-            this.exportLayer = true;
-            this.exportForm = {
-                firstClassifyName: "",
-                department: "",
-                secondClassifyName: "",
-                startDate: "",
-                endDate: ""
-            };
-        },
-        exportChange() {
-            let id,
-                ex = this.exportForm.firstClassifyName;
-            this.secondClassifyList = [];
-            this.exList.forEach(item => {
-                if (item.text == ex) id = item.value;
-            });
-            if (id)
-                this.$http
-                    .get(`/haolifa/expenses/classify?pId=${id}`)
-                    .then(res => {
-                        this.secondClassifyList = res.map(item => {
-                            return {
-                                value: item.classifyName,
-                                text: item.classifyName
-                            };
+                if (!this.exportForm.endDate) {
+                    this.$toast("请选择结束时间");
+                    return;
+                }
+                const a = document.createElement("a"); // 创建a标签
+                a.setAttribute("download", ""); // download属性
+                a.setAttribute(
+                    "href",
+                    `/haolifa/export/expenses?startDate=${
+                        this.exportForm.startDate
+                    }&endDate=${this.exportForm.endDate}&firstClassifyName=${
+                        this.exportForm.firstClassifyName
+                    }&department=${this.exportForm.department}&secondClassifyName=${
+                        this.exportForm.secondClassifyName
+                    }`
+                );
+                a.click();
+                this.exportLayer = false;
+            },
+            queryChange() {
+                let id,
+                    ex = this.filter.classifyName;
+                this.secondClassifyList = [];
+                this.exList.forEach(item => {
+                    if (item.text == ex) id = item.value;
+                });
+                console.log(id);
+                if (id)
+                    this.$http
+                        .get(`/haolifa/expenses/classify?pId=${id}`)
+                        .then(res => {
+                            this.secondClassifyList = res.map(item => {
+                                return {
+                                    value: item.classifyName,
+                                    text: item.classifyName
+                                };
+                            });
                         });
-                    });
-        },
-        download() {
-            if (!this.exportForm.startDate) {
-                this.$toast("请选择开始时间");
-                return;
+                this.$refs.list.update(true);
             }
-            if (!this.exportForm.endDate) {
-                this.$toast("请选择结束时间");
-                return;
-            }
-            const a = document.createElement("a"); // 创建a标签
-            a.setAttribute("download", ""); // download属性
-            a.setAttribute(
-                "href",
-                `/haolifa/export/expenses?startDate=${
-                    this.exportForm.startDate
-                }&endDate=${this.exportForm.endDate}&firstClassifyName=${
-                    this.exportForm.firstClassifyName
-                }&department=${this.exportForm.department}&secondClassifyName=${
-                    this.exportForm.secondClassifyName
-                }`
-            );
-            a.click();
-            this.exportLayer = false;
-        },
-        queryChange() {
-            let id,
-                ex = this.filter.classifyName;
-            this.secondClassifyList = [];
-            this.exList.forEach(item => {
-                if (item.text == ex) id = item.value;
-            });
-            console.log(id);
-            if (id)
-                this.$http
-                    .get(`/haolifa/expenses/classify?pId=${id}`)
-                    .then(res => {
-                        this.secondClassifyList = res.map(item => {
-                            return {
-                                value: item.classifyName,
-                                text: item.classifyName
-                            };
-                        });
-                    });
-            this.$refs.list.update(true);
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">
-.page-cost {
-    select {
-        background: none;
-        border: none;
-        outline: none;
-        padding: 5px 20px 5px 10px;
-        appearance: none;
+    .page-cost {
+        select {
+            background: none;
+            border: none;
+            outline: none;
+            padding: 5px 20px 5px 10px;
+            appearance: none;
+        }
     }
-}
 </style>

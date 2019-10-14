@@ -143,12 +143,12 @@
                     <td colspan="1"></td>
                     <td colspan="1">{{info.totalWeight}}</td>
                     <td colspan="1"></td>
-                    <td colspan="1">{{info.totalAmount}}</td>
+                    <td colspan="1">{{info.totalPrice}}</td>
                     <td colspan="1"></td>
                 </tr>
                 <tr>
                     <th colspan="6">人民币大写</th>
-                    <td colspan="6"></td>
+                    <td colspan="6">{{info.totalPriceCN}}</td>
                 </tr>
                 <tr>
                     <td colspan="12">
@@ -238,7 +238,6 @@ export default {
     methods: {
         getInfo() {
             let { formId } = this.$route.query;
-            this.orderUrl = "/haolifa/export/purchaseOrder/" + formId;
             this.info.id = formId;
             this.$http
                 .get(`/haolifa/purchase-order/info/${formId}`)
@@ -246,6 +245,7 @@ export default {
                     this.order.orderNo = res.order.purchaseOrderNo;
                     this.info = res.order;
                     this.itemList = res.items;
+                    this.orderUrl = res.order.fileUrl;
                     this.info.operateTime = res.order.operateTime.substring(
                         0,
                         10

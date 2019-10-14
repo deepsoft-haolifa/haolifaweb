@@ -140,12 +140,12 @@
                             <td colspan="1"></td>
                             <td colspan="1">{{info.totalWeight}}</td>
                             <td colspan="1"></td>
-                            <td colspan="1">{{info.totalAmount}}</td>
+                            <td colspan="1">{{info.totalPrice}}</td>
                             <td colspan="1"></td>
                         </tr>
                         <tr>
                             <th colspan="6">人民币大写</th>
-                            <td colspan="6"></td>
+                            <td colspan="6">{{info.totalPriceCN}}</td>
                         </tr>
                         <tr>
                             <td colspan="12">
@@ -253,12 +253,13 @@ export default {
         // },
         getInfo(formId) {
             this.layer = true;
-            this.orderUrl = "/haolifa/export/entrustOrder/" + formId;
+            // this.orderUrl = "/haolifa/export/entrustOrder/" + formId;
             this.info.id = formId;
             this.$http
                 .get(`/haolifa/purchase-order/info/${formId}`)
                 .then(res => {
                     this.info = res.order;
+                    this.orderUrl = res.order.fileUrl;
                     this.itemList = res.items;
                     this.info.operateTime = res.order.operateTime.substring(
                         0,

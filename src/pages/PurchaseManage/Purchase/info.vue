@@ -82,12 +82,12 @@
                     <td colspan="1"></td>
                     <td colspan="1">{{info.totalWeight}}</td>
                     <td colspan="1"></td>
-                    <td colspan="1">{{info.totalAmount}}</td>
+                    <td colspan="1">{{info.totalPrice}}</td>
                     <td colspan="1"></td>
                 </tr>
                 <tr>
                     <th colspan="6">人民币大写</th>
-                    <td colspan="6"></td>
+                    <td colspan="6">{{info.totalPriceCN}}</td>
                 </tr>
                 <tr>
                     <td colspan="12"><span class="b">1、交货日期</span>{{info.deliveryTime}}&nbsp;&nbsp;&nbsp;供方须严格按交期交货，如需调整日期，须及时知会本公司并经本公司批准，否则延误交货须扣除该批货款10%。</td>
@@ -148,12 +148,12 @@
         methods: {
             getInfo () {
                 let {formId}= this.$route.query
-                this.orderUrl = '/haolifa/export/purchaseOrder/'+formId
                 console.log(formId);
                 this.info.id = formId;
                 this.$http.get(`/haolifa/purchase-order/info/${formId}`).then(res => {
                     this.info = res.order;
                     this.itemList = res.items;
+                    this.orderUrl = res.order.fileUrl;
                     this.info.operateTime = res.order.operateTime.substring(0,10);
                     this.info.confirmTime = res.order.confirmTime.substring(0,10);
                     this.info.createTime = res.order.createTime.substring(0,10);

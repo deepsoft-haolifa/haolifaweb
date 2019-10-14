@@ -3,7 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-item"></div>
         </div>
-        <data-list ref="list" :param="filter" :url="url">
+        <data-list ref="list" :param="filter" url="/haolifa/hlmail/getSendMails">
             <tr slot="header">
                 <th style="width: 60px;">序号</th>
                 <th>发件人</th>
@@ -82,7 +82,7 @@
 
                         <tr>
                             <th style="word-break:break-all;white-space: inherit">收件人</th>
-                            <td>{{infoDet.users}}</td>
+                            <td>{{infoDet.revUser}}</td>
                         </tr>
                         <tr>
                             <th style="word-break:break-all;white-space: inherit">标题</th>
@@ -137,41 +137,26 @@ export default {
     },
     created() {
         this.account = this.$store.state.account;
-        if (this.account.roles) {
-            if (
-                this.account.roles[0].role == "ROLE_ADMIN"
-                // this.account.roles[0].role == "ROLE_ZG"
-            ) {
-                this.url = "/haolifa/hlmail/getMails";
-                this.reserveFlag = true;
-            } else {
-                this.url = "/haolifa/hlmail/getMailsByUserId";
-                this.filter.userId = this.account.userId;
-            }
-        } else {
-            this.url = "/haolifa/hlmail/getMailsByUserId";
-            this.filter.userId = this.account.userId;
-        }
+        // if (this.account.roles) {
+        //     if (
+        //         this.account.roles[0].role == "ROLE_ADMIN"
+        //         // this.account.roles[0].role == "ROLE_ZG"
+        //     ) {
+        //         this.url = "/haolifa/hlmail/getMails";
+        //         this.reserveFlag = true;
+        //     } else {
+        //         this.url = "/haolifa/hlmail/getSendMails";
+        //         this.filter.userId = this.account.userId;
+        //     }
+        // } else {
+        //     this.url = "/haolifa/hlmail/getMailsByUserId";
+        //     this.filter.userId = this.account.userId;
+        // }
     },
     mounted() {
         console.log(this.account);
     },
     methods: {
-        submit() {
-            if (!this.reform.content) {
-                this.$toast("内容不能为空");
-                return;
-            }
-            this.$http
-                .post("/haolifa/hlmail/sendMailReve", this.reform)
-                .then(res => {
-                    this.$toast("回执成功");
-                    this.relayer = false;
-                })
-                .catch(e => {
-                    this.$toast(e.msg || e.message);
-                });
-        },
         detail(item) {
             this.layer = true;
             let param = { mailId: item.id };

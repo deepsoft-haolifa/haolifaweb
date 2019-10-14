@@ -19,7 +19,7 @@ export default [{
         id: 'xzznx'
     }
 }, {
-    path: '/message-sent',
+    path: '/message/sent',
     name: 'message-sent',
     component: () => import( /* webpackChunkName: "orderadd" */ './sentIndex.vue'),
     meta: {

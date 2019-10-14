@@ -460,6 +460,10 @@ export default {
                         name: "新增站内信",
                         url: "/message/add",
                         id: "xzznx"
+                    },{
+                        name: "已发站内信",
+                        url: "/message/sent",
+                        id: "yfznx"
                     }
                 ]
             },

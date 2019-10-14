@@ -7,6 +7,7 @@
             <tr slot="header">
                 <th style="width: 60px;">序号</th>
                 <th>发件人</th>
+                <th>收件人</th>
                 <th>标题</th>
                 <th>内容</th>
                 <th>创建时间</th>
@@ -15,6 +16,7 @@
             <template slot="item" slot-scope="{ item, index }">
                 <td>{{index}}</td>
                 <td>{{item.sendUser}}</td>
+                <td>{{item.revUser}}</td>
                 <td>{{item.title }}</td>
                 <td>
                     <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content.toString().substring(0,20)}}...</a>

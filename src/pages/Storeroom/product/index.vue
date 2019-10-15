@@ -56,7 +56,7 @@
                 <div class="flex">
                     <input-box v-model="form.customerName" class="flex-item ml-10 mr-10" label="客户名称"></input-box>
                     <input-box v-model="form.customerNo" class="flex-item mr-10" label="客户代号"></input-box>
-                    <input-box v-model="form.price" class="flex-item mr-10" label="出库单价（销售单价)"></input-box>
+                    <!--<input-box v-model="form.price" class="flex-item mr-10" label="出库单价（销售单价)"></input-box>-->
                 </div>
                 <div class="flex">
                     <select-box class="flex-item mr-10" :list="form.selectStoreRooms" v-model="form.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
@@ -134,7 +134,7 @@ export default {
                 .get(`/haolifa/store-room/rack/list/${this.form.roomNo}`)
                 .then(res => {
                     this.form.storeRoomRacks = res.map(item => {
-                        return { value: item.rackNo, text: item.rackName };
+                        return {value: item.rackNo, text: item.rackName};
                     });
                     // 默认值
                     this.form.rackNo = this.form.storeRoomRacks[0].value;
@@ -164,10 +164,18 @@ export default {
             this.form.rackNo = item.rackNo;
             this.form.roomNo = item.roomNo;
             this.$http
+                .get(`/haolifa/order-product/details?orderNo=${this.form.orderNo}`)
+                .then(res => {
+                    this.form.customerName = res.demandName;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+            this.$http
                 .get(`/haolifa/store-room/listInfo?type=2`)
                 .then(res => {
                     this.form.selectStoreRooms = res.map(item => {
-                        return { value: item.roomNo, text: item.name };
+                        return {value: item.roomNo, text: item.name};
                     });
                     this.form.roomNo = this.form.selectStoreRooms[0].value;
                     this.$http
@@ -241,9 +249,9 @@ export default {
                 "href",
                 `/haolifa/export/product-out?startDate=${
                     this.exportForm.startDate
-                }&endDate=${this.exportForm.endDate}&orderNo=${
+                    }&endDate=${this.exportForm.endDate}&orderNo=${
                     this.exportForm.orderNo
-                }&operationType=1`
+                    }&operationType=1`
             );
             a.click();
             this.exportLayer = false;

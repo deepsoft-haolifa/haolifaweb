@@ -10,7 +10,7 @@
                     <p>{{item.roleName}}</p>
                     <p :class="item.auditResult == 4 ? 'button ccc' : 'button'">{{item.stepName}}</p>
                     <span v-if="index<list.length-1">-----></span>
-                    <p>{{status[item.auditResult]}} {{item.createTime}}</p>
+                    <p>{{status[item.auditResult]}} {{item.auditTime}}</p>
                     <!-- <p>{{item.createTime}}</p> -->
                     <div class="approve" style="position: absolute;top: 123px" v-if="item.child.length>0">
                         <div class="height-line"></div>
@@ -19,7 +19,7 @@
                         <p :class="item.child[0].auditResult == 4 ? 'button ccc' : 'button'">{{item.child[0].stepName}}</p>
                         <!-- <p>测试</p>
                         <p :class="item.child[0].auditResult == 4 ? 'button ccc' : 'button'">测试</p>-->
-                        <p>{{status[item.child[0].auditResult]}}{{item.createTime}}</p>
+                        <p>{{status[item.child[0].auditResult]}}{{item.auditTime}}</p>
                         <div class="right-height-line"></div>
                         <div class="top-arrows"></div>
                     </div>

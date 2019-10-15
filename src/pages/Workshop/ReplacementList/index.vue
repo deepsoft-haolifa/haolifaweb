@@ -25,6 +25,7 @@
                     <th>责任人</th>
                     <th>审核状态</th>
                     <th>审核时间</th>
+                    <th>审核意见</th>
                     <th>创建时间</th>
                     <th class="t-right" style="width: 80px;">操作</th>
                 </tr>
@@ -39,6 +40,7 @@
                     <td>{{item.responsiblePerson}}</td>
                     <td>{{statusList[item.auditResult].name}}</td>
                     <td>{{item.auditTime}}</td>
+                    <td>{{item.auditInfo}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.auditResult == 0" style="margin-right: 3px" class="blue" @click="auditLayerM(item)">审核</a>

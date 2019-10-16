@@ -7,11 +7,6 @@
                 <input type="text" class="flex-item" v-model="filter.name" @change="$refs.list.update(true)" placeholder="零件名称" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="型号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="规格" style="width: 200px;">
-                <!-- <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
-                    <option value="-1">全部</option>
-                    <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
-                </select>-->
-                <!-- <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i> -->
             </div>
             <div class="flex-item"></div>
             <btn class="b" flat color="#008eff" @click="edit">新增</btn>
@@ -31,6 +26,7 @@
                     <th>吨价(元)</th>
                     <th>税率</th>
                     <th>毛坯费不含税(元)</th>
+                    <th>毛坯费含税(元)</th>
                     <th>喷涂费(元)</th>
                     <th>加工费(元)</th>
                     <th>成品价不含税(元)</th>
@@ -51,6 +47,7 @@
                     <td>{{item.tonPrice}}</td>
                     <td>{{item.taxRate}}</td>
                     <td>{{item.blankCost}}</td>
+                    <td>{{item.blankCostTax}}</td>
                     <td>{{item.sprayCost}}</td>
                     <td>{{item.processCost}}</td>
                     <td>{{item.price}}</td>
@@ -76,6 +73,7 @@
                 <input-box v-model="form.processCost" label="加工费(元)" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.taxRate" label="税率" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.blankCost" label="毛坯费(不含税)" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.blankCostTax" label="毛坯费(含税)" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.sprayCost" label="喷涂费" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.price" label="成品价(不含税)" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.priceTax" label="成品价(含税)" class="input-width" style="width:24%;"></input-box>
@@ -162,7 +160,7 @@ export default {
         del(item) {
             this.$confirm({
                 title: "删除确认",
-                text: `您确定要删除以下成品吗？<br>${item.name}`,
+                text: `您确定要删除以下零件价格吗？<br>${item.name}`,
                 color: "red",
                 btns: ["取消", "删除"],
                 yes: () => {

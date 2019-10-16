@@ -3,10 +3,14 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.name" @change="$refs.list.update(true)" placeholder="零件名称" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="型号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="规格" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)"
+                       placeholder="图号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.name" @change="$refs.list.update(true)"
+                       placeholder="零件名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)"
+                       placeholder="型号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)"
+                       placeholder="规格" style="width: 200px;">
                 <!-- <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
                     <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
@@ -29,10 +33,13 @@
                     <th>单位</th>
                     <th>单重</th>
                     <th>吨价(元)</th>
-                    <th>毛坯费(元)</th>
+                    <th>税率</th>
+                    <th>毛坯费不含税(元)</th>
+                    <th>毛坯费含税(元)</th>
+                    <th>喷涂费(元)</th>
                     <th>加工费(元)</th>
-                    <th>成品价(元)</th>
-                    <!-- <th class="t-right" style="width: 80px;">操作</th> -->
+                    <th>成品价不含税(元)</th>
+                    <th>成品价含税(元)</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -46,13 +53,13 @@
                     <td>{{item.unit}}</td>
                     <td>{{item.actualWeight}}</td>
                     <td>{{item.tonPrice}}</td>
+                    <td>{{item.taxRate}}</td>
                     <td>{{item.blankCost}}</td>
+                    <td>{{item.blankCostTax}}</td>
+                    <td>{{item.sprayCost}}</td>
                     <td>{{item.processCost}}</td>
-                    <td>{{item.productPrice}}</td>
-                    <!-- <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑|</a>
-                        <a href="javascript:;" class="red" @click="del(item)" style="margin-right: 3px;">删除</a>
-                    </td>-->
+                    <td>{{item.price}}</td>
+                    <td>{{item.priceTax}}</td>
                 </template>
             </data-list>
         </div>
@@ -62,14 +69,16 @@
                 <input-box v-model="form.name" label="零件名称" class="input-width" style="width:48%;"></input-box>
                 <input-box v-model="form.model" label="型号" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.specifications" label="规格" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.materialClassifyName" label="零件分类名称" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.materialClassifyName" label="零件分类名称" class="input-width"
+                           style="width:24%;"></input-box>
                 <input-box v-model="form.material" label="材料" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.unit" label="单位" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.actualWeight" label="单重" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.tonPrice" label="吨价(元)" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.blankCost" label="毛坯费(元)" class="input-width" style="width:24%;"></input-box>
                 <input-box v-model="form.processCost" label="加工费(元)" class="input-width" style="width:24%;"></input-box>
-                <input-box v-model="form.productPrice" label="成品价(元)" class="input-width" style="width:24%;"></input-box>
+                <input-box v-model="form.productPrice" label="成品价(元)" class="input-width"
+                           style="width:24%;"></input-box>
             </div>
             <div class="layer-btns">
                 <btn flat @click="layer = false">取消</btn>
@@ -80,123 +89,51 @@
 </template>
 
 <script>
-import DataList from "@/components/datalist";
+    import DataList from "@/components/datalist";
 
-export default {
-    name: "finished-price-list",
-    components: { DataList },
-    data() {
-        return {
-            layer: false,
-            form: {},
-            filter: {
-                graphNo: "",
-                model: "",
-                name: "",
-                specifications: ""
-            }
-        };
-    },
-    created() {},
-    methods: {
-        edit(item) {
-            // this.$router.push(`/order/info?orderNo=${item.orderNo}`);
-            if (item) {
-                this.form = item;
-            } else {
-                this.form = {};
-            }
-            this.layer = true;
-            // this.getInfo(item.orderNo);
-            // this.getOrderStatusList();
-        },
-        vertify() {
-            for (let key in this.form) {
-                let item = this.form[key];
-                if (!item && item !== 0 && key !== "id") {
-                    this.$toast("请输入完整信息" + key);
-                    return false;
+    export default {
+        name: "finished-price-list",
+        components: {DataList},
+        data() {
+            return {
+                layer: false,
+                form: {},
+                filter: {
+                    graphNo: "",
+                    model: "",
+                    name: "",
+                    specifications: ""
                 }
-            }
-            return true;
-        },
-        submit() {
-            // if (!this.vertify()) return;
-            const { form } = this;
-            if (form.id) {
-                this.$http
-                    .put("/haolifa/price/material/update", form)
-                    .then(res => {
-                        this.$refs.list.update();
-                        this.layer = false;
-                        this.$toast("保存成功");
-                    })
-                    .catch(e => {
-                        this.$toast(e.message || e.meg);
-                    });
-            } else {
-                this.$http
-                    .post("/haolifa/price/material/save", form)
-                    .then(res => {
-                        this.$refs.list.update();
-                        this.layer = false;
-                        this.$toast("保存成功");
-                    })
-                    .catch(e => {
-                        this.$toast(e.message || e.meg);
-                    });
-            }
-        },
-        close() {
-            this.layer = false;
-        },
-        del(item) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除以下成品吗？<br>${item.name}`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
-                    this.$http
-                        .delete(`/haolifa/price/material/delete/${item.id}`)
-                        .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update();
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg);
-                        });
-                }
-            });
+            };
         }
-    }
-};
+    };
 </script>
 
 <style lang="less">
-.page-orders-list {
-    select {
-        background: none;
-        border: none;
-        outline: none;
-        padding: 5px 20px 5px 10px;
-        appearance: none;
-    }
-    .scroll-y {
-        padding-bottom: 40px;
-    }
-}
+    .page-orders-list {
+        select {
+            background: none;
+            border: none;
+            outline: none;
+            padding: 5px 20px 5px 10px;
+            appearance: none;
+        }
 
-.fixed-length {
-    width: 100px;
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
+        .scroll-y {
+            padding-bottom: 40px;
+        }
+    }
 
-.input-width {
-    display: inline-block;
-    margin-left: 2px;
-}
+    .fixed-length {
+        width: 100px;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .input-width {
+        display: inline-block;
+        margin-left: 2px;
+    }
 </style>

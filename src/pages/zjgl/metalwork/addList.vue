@@ -4,6 +4,7 @@
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.entrustNo" @change="$refs.list.update(true)" placeholder="机加工单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;">
                 状态：
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option v-for="item in statusList" :value="item.status" v-bind:key="item.id">{{item.name}}</option>

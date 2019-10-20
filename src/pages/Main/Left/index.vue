@@ -49,7 +49,8 @@ export default {
                 "view_module",
                 "art_track",
                 "gesture",
-                "dashboard"
+                "dashboard",
+                "assessment"
             ]
         };
     },
@@ -460,7 +461,8 @@ export default {
                         name: "新增站内信",
                         url: "/message/add",
                         id: "xzznx"
-                    },{
+                    },
+                    {
                         name: "已发站内信",
                         url: "/message/sent",
                         id: "yfznx"

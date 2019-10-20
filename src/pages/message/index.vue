@@ -135,9 +135,12 @@ export default {
     },
     created() {
         this.account = this.$store.state.account;
+        console.log(this.account);
         if (this.account.roles) {
             if (
-                this.account.roles[0].role == "ROLE_ADMIN"
+                this.account.roles[0].role == "ROLE_ADMIN" ||
+                this.account.username == "SXHL001" ||
+                this.account.username == "HLJG-01"
                 // this.account.roles[0].role == "ROLE_ZG"
             ) {
                 this.url = "/haolifa/hlmail/getMails";

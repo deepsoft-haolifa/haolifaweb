@@ -3,10 +3,13 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.supplierName" placeholder="供应商名称"
+                <input type="text" class="flex-item" v-model.trim="filter.supplierName" placeholder="供应商名称"
                        @change="$refs.list.update(true)" style="width: 200px;">
-                <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.supplierNo" placeholder="供应商编号"
+                <input type="text" class="flex-item" v-model.trim="filter.supplierNo" placeholder="供应商编号"
+                       @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.materialGraphNo" placeholder="图号"
+                       @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.materialName" placeholder="产品名称"
                        @change="$refs.list.update(true)" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
@@ -21,6 +24,7 @@
                     <th>供货物料图号</th>
                     <th>产品名称</th>
                     <th>产品类型</th>
+                    <th>图号分类</th>
                     <th>供应商</th>
                     <th>供应商编号</th>
                     <th class="t-center" style="width: 80px;">操作</th>
@@ -31,6 +35,7 @@
                     <td>{{item.materialGraphNo}}</td>
                     <td>{{item.materialName}}</td>
                     <td>{{materialTypeList[item.materialType]}}</td>
+                    <td>{{item.materialClassifyName}}</td>
                     <td>{{item.supplierName}}</td>
                     <td>{{item.supplierNo}}</td>
                     <td>

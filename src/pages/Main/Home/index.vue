@@ -233,10 +233,11 @@ export default {
         },
         getMessageList() {
             this.account = this.$store.state.account;
-            if (this.account.roles) {
+            if (this.account.roles || this.account.username) {
                 if (
                     this.account.roles[0].role == "ROLE_ADMIN" ||
-                    this.account.roles[0].role == "ROLE_ZG"
+                    this.account.username == "SXHL001" ||
+                    this.account.username == "HLJG-01"
                 ) {
                     this.url = "/haolifa/hlmail/getMails";
                 } else {

@@ -1,6 +1,10 @@
 <template>
     <div class="page-notification">
         <div class="flex-v-center tool-bar">
+            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+                <i class="icon f-20 c-8">search</i>
+                <input type="text" class="flex-item" v-model="filter.userName" @change="$refs.list.update(true)" placeholder="发件人" style="width: 200px;">
+            </div>
             <div class="flex-item"></div>
         </div>
         <data-list ref="list" :param="filter" :url="url">
@@ -16,8 +20,11 @@
                 <td>{{index}}</td>
                 <td>{{item.sendUser}}</td>
                 <td>{{item.title }}</td>
-                <td>
+                <td v-if="item.content.toString().length>20">
                     <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content.toString().substring(0,20)}}...</a>
+                </td>
+                <td v-else>
+                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content}}</a>
                 </td>
                 <td>{{item.createTime}}</td>
                 <td class="t-right">
@@ -111,7 +118,8 @@ export default {
             layer: false,
             relayer: false,
             filter: {
-                userId: ""
+                userId: "",
+                userName: ""
             },
             form: {
                 id: "",

@@ -5,7 +5,8 @@
             <avatar v-if="logined" @click="accountShow=!accountShow" class="account-avatar-sm" size="36" :src="account.avatar"/>
             <btn v-else @click="toLogin">登录</btn>
             <!-- <div class="abs" v-if="!logined" v-tooltip:bottom="'未登录'"></div> -->
-            <bubble v-if="accountShow && logined" pos="bottom" align="end" @close="accountShow=false" class="account-bubble">
+            <!-- <bubble v-if="accountShow && logined" pos="bottom" align="end" @close="accountShow=false" class="account-bubble"> -->
+            <bubble v-if="accountShow && logined" pos="bottom" align="end" class="account-bubble">
                 <div class="account-ctn t-center">
                     <avatar class="account-avatar-big" size="80" :src="account.avatar"/>
                     <div class="f-18 account-name">{{account.realName}}</div>

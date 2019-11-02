@@ -13,6 +13,7 @@
                 <input-box v-model="form.processedGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
                 <select-box class="flex-item mr-20" :list="batchNumberList" v-model="form.batchNumber" label="批次号"></select-box>
                 <input-box v-model="form.number" class="flex-item mr-20" label="数量"></input-box>
+                <select-box class="flex-item mr-20" :list="busTypeList" v-model="form.busType" label="类别"></select-box>
             </div>
             <div class="flex">
                 <btn big class="mr-20" @click="submit">提交</btn>
@@ -34,7 +35,8 @@ export default {
                 number: 0,
                 actionType: 1,
                 processedGraphNo: "",
-                batchNumber: ""
+                batchNumber: "",
+                busType: "1"
                 // batchNumber:new Date().getTime()
             },
             entrustNo: "",
@@ -42,7 +44,11 @@ export default {
             materialClassify: [],
             materialGraphNoList: [],
             reg: /M$/,
-            batchNumberList: []
+            batchNumberList: [],
+            busTypeList: [
+                { value: "1", text: "订单需求" },
+                { value: "2", text: "生产库存" }
+            ]
         };
     },
     created() {

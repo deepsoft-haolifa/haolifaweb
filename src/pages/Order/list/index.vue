@@ -48,7 +48,8 @@
                     <td :class="new Date(item.deliveryDate).getTime()<new Date().getTime() ?'cell-color':''">{{orderStatusList[item.orderStatus].text}}</td>
                     <td>{{item.createTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a>
+                        <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus !=0" style="margin-right: 3px;">审批进度|</a>
+                        <!-- <a href="javascript:;" class="blue" @click="approveProgress(item)" v-if="item.orderStatus==1" style="margin-right: 3px;">审批进度|</a> -->
                         <a href="javascript:;" class="blue" @click="infoShow(item)" style="margin-right: 3px;">详情</a>
                     </td>
                 </template>
@@ -89,11 +90,7 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
                                 <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
@@ -109,11 +106,7 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -209,11 +202,7 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
                             </td>
                         </tr>
                     </table>

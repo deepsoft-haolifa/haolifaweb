@@ -38,18 +38,19 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="storeRoom.layerShow" :title="'入库'" width="450px">
+        <layer v-if="storeRoom.layerShow" :title="'入库'" width="50%">
             <div>
                 <div class="flex">
-                    <input-box disabled v-model="storeRoom.materialGraphNo" class="mr-10 ml-20" label="物料图号"></input-box>
-                    <input-box disabled v-model="storeRoom.quantity" type="number" class="mr-10" label="入库数量"></input-box>
+                    <input-box disabled v-model="storeRoom.materialGraphNo" class="mr-10 ml-20" style="width: 50%" label="物料图号"></input-box>
+                    <input-box disabled v-model="storeRoom.quantity" type="number" class="mr-10" style="width: 50%" label="入库数量"></input-box>
                 </div>
                 <div class="flex">
-                    <input-box disabled v-model="storeRoom.orderNo" class="ml-20 mr-10" label="喷涂加工单号"></input-box>
+                    <input-box disabled v-model="storeRoom.orderNo" class="ml-20 mr-10" style="width: 50%" label="喷涂加工单号"></input-box>
+                    <input-box disabled v-model="storeRoom.materialBatchNo" class="ml-20 mr-10" style="width: 50%" label="批次号"></input-box>
                 </div>
                 <div class="flex">
-                    <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
-                    <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
+                    <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" style="width: 50%" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
+                    <select-box class="mr-10" :list="storeRoom.storeRoomRacks" style="width: 50%" v-model="storeRoom.rackNo" label="库位"></select-box>
                 </div>
             </div>
             <div class="layer-btns">
@@ -222,6 +223,7 @@ export default {
                     this.storeRoom.materialGraphNo = item.materialGraphNo;
                     this.storeRoom.orderNo = item.sprayNo;
                     this.storeRoom.quantity = item.qualifiedNumber;
+                    this.storeRoom.materialBatchNo = item.batchNumber;
                     this.storeRoom.layerShow = true;
                 })
                 .catch(e => {

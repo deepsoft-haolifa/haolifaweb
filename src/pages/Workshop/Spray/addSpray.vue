@@ -11,8 +11,15 @@
                 <div class="flex-item">
                     <div class="flex">
                         <!-- <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box> -->
-                        <select-box :list="classifyNameList" v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></select-box>
-                        <input-box v-model="item.materialGraphNo" @blur="getBatchNumber(i,item.materialGraphNo)" class="flex-item mr-10" label="零件图号"></input-box>
+                        <select-box :list="classifyNameList" @change="nameChange(i)" v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></select-box>
+                        <select-box
+                            :list="item.tuhaoList"
+                            @change="getBatchNumber(i,item.materialGraphNo)"
+                            v-model="item.materialGraphNo"
+                            class="flex-item mr-10"
+                            label="零件图号"
+                        ></select-box>
+                        <!-- <input-box v-model="item.materialGraphNo" @blur="getBatchNumber(i,item.materialGraphNo)" class="flex-item mr-10" label="零件图号"></input-box> -->
                         <input-box v-model="item.model" class="flex-item mr-10" label="型号"></input-box>
                     </div>
                     <div class="flex">
@@ -21,9 +28,13 @@
                         <input-box v-model="item.material" class="flex-item mr-10" label="材质"></input-box>
                     </div>
                     <div class="flex">
-                        <select-box :list="sprayColorList" v-model="item.relationNo" class="flex-item mr-10" label="喷涂颜色"></select-box>
+                        <select-box :list="item.sprayColorList" @change="createTuhao(i)" v-model="item.relationNo" class="flex-item mr-10" label="喷涂颜色"></select-box>
                         <input-box v-model="item.number" type="number" class="flex-item mr-10" label="数量"></input-box>
                         <date-picker v-model="item.completeTime" class="flex-item" label="完成时间" style="margin-right: 20px;"></date-picker>
+                    </div>
+                    <div class="flex">
+                        <select-box :list="arrList" v-model="item.busType" class="flex-item mr-10" label="类别"></select-box>
+                        <input-box v-model="item.sprayedGraphNo" type="text" class="flex-item mr-10" label="完成后图号"></input-box>
                     </div>
                     <div class="flex">
                         <input-box v-model="item.specialRequires" class="flex-item" label="特殊要求" multi-line></input-box>
@@ -55,10 +66,15 @@ export default {
         return {
             supplierInfoList: [],
             supplierList: [],
-            sprayColorList: [],
+            sprayFtColorList: [],
+            sprayFbColorList: [],
             classifyNameList: [
                 { value: "阀体", text: "阀体" },
                 { value: "阀板", text: "阀板" }
+            ],
+            arrList: [
+                { value: "1", text: "订单需求" },
+                { value: "2", text: "生产库存" }
             ],
             form: {
                 id: null,
@@ -73,11 +89,15 @@ export default {
                         specifications: "",
                         sprayColor: "",
                         specialRequires: "",
+                        busType: "",
+                        sprayedGraphNo: "",
                         remark: "",
                         number: "",
                         relationNo: "",
                         batchNumber: "",
-                        batchNumberList: []
+                        batchNumberList: [],
+                        sprayColorList: [],
+                        tuhaoList: []
                     }
                 ]
             },
@@ -126,6 +146,8 @@ export default {
                         specifications: "",
                         sprayColor: "",
                         specialRequires: "",
+                        busType: "",
+                        sprayedGraphNo: "",
                         remark: "",
                         number: "",
                         relationNo: ""
@@ -136,14 +158,41 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        nameChange(index) {
+            let data = { classifyId: "", materialName: "", type: 3 };
+            if (this.form.items[index].materialClassifyName == "阀板") {
+                this.form.items[index].sprayColorList = this.sprayFbColorList;
+                data.classifyId = "3";
+            } else {
+                data.classifyId = "1";
+                this.form.items[index].sprayColorList = this.sprayFtColorList;
+            }
+            this.$http
+                .post(`/haolifa/material/graphNo-list`, data)
+                .then(res => {
+                    this.form.items[index].tuhaoList = res.map(item => {
+                        return { value: item, text: item };
+                    });
+                });
+        },
+        createTuhao(index) {
+            let tuhao = this.form.items[index].materialGraphNo;
+            let color = this.form.items[index].relationNo;
+            this.form.items[index].sprayedGraphNo =
+                tuhao.slice(
+                    0,
+                    tuhao.length - this.form.items[index].relationNo.length
+                ) + color;
+        },
         submit() {
             this.form.items.map(item => {
                 delete item.batchNumberList;
+                delete item.sprayColorList;
+                delete item.tuhaoList;
                 if (item.relationNo) {
                     item.sprayColor = this.getColor(item.relationNo);
                 }
             });
-            console.log(this.form);
             if (this.isAdd) {
                 this.$http
                     .post(`/haolifa/spray/form`, this.form)
@@ -189,9 +238,22 @@ export default {
             this.$http
                 .get(`/haolifa/spray/color/all`)
                 .then(res => {
-                    this.sprayColorList = res.map(item => {
-                        return { value: item.relationNo, text: item.color };
+                    res.map(item => {
+                        if (item.relationNo.length === 3) {
+                            this.sprayFtColorList.push({
+                                value: item.relationNo,
+                                text: item.color
+                            });
+                        } else if (item.relationNo.length === 2) {
+                            this.sprayFbColorList.push({
+                                value: item.relationNo,
+                                text: item.color
+                            });
+                        }
                     });
+                    console.log(this.sprayFtColorList);
+                    console.log(this.sprayFbColorList);
+                    this.sprayColorList = this.sprayFtColorList;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

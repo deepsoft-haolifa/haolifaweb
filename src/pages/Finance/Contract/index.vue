@@ -1,9 +1,9 @@
 <template>
     <div class="page-contract flex-col">
         <div class="flex-v-center tool-bar">
-            <button class="btn btn-small" @click="toProcOrder">采购合同</button>
+            <!-- <button class="btn btn-small" @click="toProcOrder">采购合同</button>
             <span style="height: 22px;margin: 0 5px;border: 2px solid #ccc"></span>
-            <button class="btn btn-small" style="background:#ccc" @click="toProdOrder">生产合同</button>
+            <button class="btn btn-small" style="background:#ccc" @click="toProdOrder">生产合同</button>-->
             <div class="flex-v-center search-bar" style="margin-right: 20px;margin-left: 80px;">
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">

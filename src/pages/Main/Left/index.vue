@@ -390,13 +390,13 @@ export default {
                         url: "/cost",
                         id: "fygl"
                     },
-                    /*, {
-                  name: '报表管理',
-                  url: '/report',
-                  id: 'bbgl'
-                }*/
                     {
-                        name: "合同管理",
+                        name: "生产合同管理",
+                        url: "/production",
+                        id: "schtgl"
+                    },
+                    {
+                        name: "采购合同管理",
                         url: "/contract",
                         id: "htgl"
                     },

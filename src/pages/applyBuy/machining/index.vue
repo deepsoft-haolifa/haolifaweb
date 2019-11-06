@@ -27,6 +27,7 @@
                     <th>物料名称</th>
                     <th>物料图号</th>
                     <th>加工后图号</th>
+                    <th>类别</th>
                     <th>数量</th>
                     <th>发起时间</th>
                     <th>状态</th>
@@ -44,6 +45,7 @@
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
                     <td>{{item.processedGraphNo}}</td>
+                    <td>{{busTypeList[item.busType]}}</td>
                     <td>{{item.number}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{statusList[item.status+1].name}}</td>
@@ -92,7 +94,8 @@ export default {
                 { status: 1, name: "内部车间1" },
                 { status: 2, name: "外部" },
                 { status: 3, name: "内部车间2" }
-            ]
+            ],
+            busTypeList: ["未选择", "订单需求", "生产库存"]
         };
     },
     methods: {

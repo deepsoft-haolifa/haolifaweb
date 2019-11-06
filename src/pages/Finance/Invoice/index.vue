@@ -17,7 +17,7 @@
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
-            <div class="flex-item"></div>
+            <div class="flex-item" style="text-align:right;color:#0f95ff">发票总金额（元）:{{priceTotal}}</div>
             <btn class="b" flat color="#008eff" @click="layer=true">添加发票</btn>
         </div>
         <div class="flex-item scroll-y">
@@ -51,7 +51,7 @@
         </div>
 
         <layer v-if="layer" :title="form.id ? '编辑发票' : '新增发票'" width="60%">
-            <div class="layer-text" >
+            <div class="layer-text">
                 <input-box v-model="form.invoiceNo" label="发票编号"></input-box>
                 <input-box v-model="form.orderNo" label="订单编号"></input-box>
                 <select-box :list="allStatusAdd" v-model="form.status" label="发票状态"></select-box>
@@ -88,6 +88,7 @@ export default {
     components: { DataList },
     data() {
         return {
+            priceTotal: "",
             filter: {
                 type: 0,
                 status: 0,
@@ -125,10 +126,13 @@ export default {
                 status: 1,
                 totalAmount: "",
                 type: 1,
-                invoiceIssuing:'',
-                invoiceCompany:''
+                invoiceIssuing: "",
+                invoiceCompany: ""
             }
         };
+    },
+    mounted() {
+        this.getPriceTotal();
     },
     methods: {
         billing(item) {
@@ -147,6 +151,16 @@ export default {
                     this.$toast("开票成功");
                     this.$refs.list.update();
                     this.bill.layerbill = false;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getPriceTotal() {
+            this.$http
+                .get(`/haolifa/statistics/money/invoice/2`)
+                .then(res => {
+                    this.priceTotal = res.totalAmount;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

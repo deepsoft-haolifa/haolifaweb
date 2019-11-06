@@ -24,6 +24,10 @@
                     <th>计划人</th>
                     <th>总数量</th>
                     <th>检验合格数量</th>
+                    <th>原图号</th>
+                    <th>加工后图号</th>
+                    <th>批次号</th>
+                    <th>类别</th>
                     <th>状态</th>
                     <th>质检状态</th>
                     <th>发起时间</th>
@@ -36,6 +40,10 @@
                     <td>{{item.planner}}</td>
                     <td>{{item.totalNumber}}</td>
                     <td>{{item.qualifiedNumber}}</td>
+                    <td>{{item.orignGraphNo}}</td>
+                    <td>{{item.sprayedGraphNo}}</td>
+                    <td>{{item.batchNumber}}</td>
+                    <td>{{busTypeList[item.busType]}}</td>
                     <td>{{rowStatusList[item.status].name}}</td>
                     <td>{{inspectStatusList[item.inspectStatus]}}</td>
                     <td>{{item.createTime}}</td>
@@ -156,10 +164,12 @@
                 <div class="flex">
                     <input-box v-model="inspectHistoryAdd.sprayNo" class="flex-item mr-20 ml-20" label="喷涂委托单号"></input-box>
                     <select-box class="flex-item mr-20" :list="nameList" v-model="inspectHistoryAdd.materialGraphName" label="零件名称"></select-box>
+                    <select-box class="flex-item mr-20" :list="arrList" v-model="inspectHistoryAdd.busType" disabled label="类型"></select-box>
                 </div>
                 <div class="flex mt-15">
                     <select-box class="flex-item mr-20 ml-20" :list="tuhaoList" v-model="inspectHistoryAdd.originalGraphNo" label="原图号"></select-box>
                     <input-box v-model="inspectHistoryAdd.materialGraphNo" class="flex-item mr-20" label="加工后图号"></input-box>
+                    <input-box v-model="inspectHistoryAdd.batchNumber" class="flex-item mr-20" label="批次号"></input-box>
                 </div>
                 <div class="flex mt-15">
                     <input-box v-model="inspectHistoryAdd.testNumber" class="flex-item mr-20 ml-20 mt-15" label="检测数量"></input-box>
@@ -328,6 +338,7 @@ export default {
                 { status: 4, name: "暂停加工" }
             ],
             inspectStatusList: { 0: "待质检", 1: "质检中", 2: "质检完成" },
+            busTypeList: ["未选择", "订单需求", "生产库存"],
             statusList: [
                 { status: 0, name: "待审批" },
                 { status: 1, name: "加工中" },
@@ -335,6 +346,11 @@ export default {
                 { status: 3, name: "加工完成" },
                 { status: 4, name: "暂停加工" },
                 { status: -1, name: "全部" }
+            ],
+            arrList: [
+                { value: "0", text: "未选择" },
+                { value: "1", text: "订单需求" },
+                { value: "2", text: "生产库存" }
             ],
             inspectHistoryAdd: {},
             spray: {
@@ -356,6 +372,8 @@ export default {
         },
         complete() {
             this.loading = true;
+            delete this.inspectHistoryAdd.busType;
+            delete this.inspectHistoryAdd.batchNumber;
             this.$http
                 .post(`/haolifa/spray/inspect`, this.inspectHistoryAdd)
                 .then(res => {
@@ -373,7 +391,9 @@ export default {
             this.inspectHistoryAdd = {
                 sprayNo: item.sprayNo,
                 originalGraphNo: item.materialGraphNo,
-                materialGraphNo: "",
+                busType: item.busType + "",
+                // materialGraphNo: item.sprayedGraphNo,
+                // batchNumber: item.batchNumber,
                 materialGraphName: "",
                 testNumber: 0,
                 qualifiedNumber: 0,
@@ -404,6 +424,10 @@ export default {
                             value: item.materialGraphNo
                         };
                     });
+                    this.inspectHistoryAdd.batchNumber =
+                        res.items[0].batchNumber;
+                    this.inspectHistoryAdd.materialGraphNo =
+                        res.items[0].sprayedGraphNo;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -469,7 +493,7 @@ export default {
                 .then(res => {
                     this.inspectHistory = res;
                     this.inspectHistory.map(item => {
-                         return (item.reasonArr = item.reasonList.map(obj => {
+                        return (item.reasonArr = item.reasonList.map(obj => {
                             if (obj.number)
                                 return (
                                     "数量:" +

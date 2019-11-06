@@ -1,9 +1,9 @@
 <template>
     <div class="page-notification">
         <div class="flex-v-center tool-bar">财务报表统计图</div>
-        <div style="height:510px;width:90%;border:1px solid #ccc;margin:0 auto;border-top:0">
+        <!-- <div style="height:510px;width:90%;border:1px solid #ccc;margin:0 auto;border-top:0">
             <div id="chartOne" style="width:80%;height:500px;margin:0 auto"></div>
-        </div>
+        </div>-->
         <div style="width:90%;border:1px solid #ccc;display:flex;margin:30px auto">
             <div id="chartTwo" style="width:50%;height:300px;margin-top:20px;"></div>
             <div id="chartTwoDetail" style="width:50%;height:300px;margin-top:20px;"></div>
@@ -23,7 +23,7 @@ export default {
         };
     },
     mounted() {
-        this.getAllData();
+        // this.getAllData();
         this.getDepart();
         this.getType();
     },

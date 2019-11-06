@@ -3,7 +3,8 @@
         <div class="content">
             <div class="title b f-18 mb-10">{{!isAdd ? '编辑' : '新增'}}喷涂委托</div>
             <div class="flex">
-                <input-box v-model="form.planner" class="flex-item" label="计划人" style="margin-right: 20px;"></input-box>
+                <input-box v-model="form.planner" class="flex-item mr-10" label="计划人" style="margin-right: 20px;"></input-box>
+                <select-box :list="arrList" v-model="form.busType" class="flex-item mr-10" label="类别"></select-box>
             </div>
 
             <div class="b" style="margin: 20px 0 10px;">喷涂零件项</div>
@@ -12,13 +13,7 @@
                     <div class="flex">
                         <!-- <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box> -->
                         <select-box :list="classifyNameList" @change="nameChange(i)" v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></select-box>
-                        <select-box
-                            :list="item.tuhaoList"
-                            @change="getBatchNumber(i,item.materialGraphNo)"
-                            v-model="item.materialGraphNo"
-                            class="flex-item mr-10"
-                            label="零件图号"
-                        ></select-box>
+                        <select-box :list="item.tuhaoList" @change="getBatchNumber(i,item.materialGraphNo)" v-model="item.materialGraphNo" class="flex-item mr-10" label="零件图号"></select-box>
                         <!-- <input-box v-model="item.materialGraphNo" @blur="getBatchNumber(i,item.materialGraphNo)" class="flex-item mr-10" label="零件图号"></input-box> -->
                         <input-box v-model="item.model" class="flex-item mr-10" label="型号"></input-box>
                     </div>
@@ -33,7 +28,6 @@
                         <date-picker v-model="item.completeTime" class="flex-item" label="完成时间" style="margin-right: 20px;"></date-picker>
                     </div>
                     <div class="flex">
-                        <select-box :list="arrList" v-model="item.busType" class="flex-item mr-10" label="类别"></select-box>
                         <input-box v-model="item.sprayedGraphNo" type="text" class="flex-item mr-10" label="完成后图号"></input-box>
                     </div>
                     <div class="flex">
@@ -41,16 +35,16 @@
                         <input-box v-model="item.remark" class="flex-item" label="备注" multi-line></input-box>
                     </div>
                 </div>
-                <div v-if="form.items.length > 1">
+                <!-- <div v-if="form.items.length > 1">
                     <icon-btn small @click="form.items.splice(i, 1)">close</icon-btn>
-                </div>
+                </div>-->
             </div>
-            <div class="card a flex-center" @click="addItem()">
+            <!-- <div class="card a flex-center" @click="addItem()">
                 <div class="flex-v-center">
                     <i class="icon mr-10">add</i>
                     <span>添加喷涂零件项</span>
                 </div>
-            </div>
+            </div>-->
             <div class="flex">
                 <btn big class="mr-20" @click="submit()">提交</btn>
                 <btn big flat @click="$router.back()">取消</btn>
@@ -79,6 +73,7 @@ export default {
             form: {
                 id: null,
                 planner: "",
+                busType: "",
                 items: [
                     {
                         materialClassifyName: "",
@@ -89,7 +84,6 @@ export default {
                         specifications: "",
                         sprayColor: "",
                         specialRequires: "",
-                        busType: "",
                         sprayedGraphNo: "",
                         remark: "",
                         number: "",
@@ -146,7 +140,6 @@ export default {
                         specifications: "",
                         sprayColor: "",
                         specialRequires: "",
-                        busType: "",
                         sprayedGraphNo: "",
                         remark: "",
                         number: "",

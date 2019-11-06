@@ -12,7 +12,7 @@
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
-            <div class="flex-item"></div>
+            <div class="flex-item" style="text-align:right;color:#0f95ff">发票总金额(元):{{priceTotal}}</div>
             <!-- <router-link to="/jgzx-invoice/add">
       <btn class="b" flat color="#008eff">新增发票申请</btn>
             </router-link>-->
@@ -56,6 +56,7 @@ export default {
     components: { DataList },
     data() {
         return {
+            priceTotal: "",
             statusList: [
                 { status: 0, name: "全部" },
                 { status: 1, name: "待开票" },
@@ -65,13 +66,26 @@ export default {
                 type: 1,
                 status: 0,
                 orderNo: "",
-                constractParty:''
+                constractParty: ""
             }
         };
+    },
+    mounted() {
+        this.getPriceTotal();
     },
     methods: {
         edit(item) {
             this.$router.push(`/jgzx-invoice/edit?id=${item.id}`);
+        },
+        getPriceTotal() {
+            this.$http
+                .get(`/haolifa/statistics/money/invoice/1`)
+                .then(res => {
+                    this.priceTotal = res.totalAmount;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         remove(item) {
             this.$confirm({

@@ -27,6 +27,7 @@
                     <th>物料名称</th>
                     <th>物料图号</th>
                     <th>加工后图号</th>
+                    <th>类别</th>
                     <th>数量</th>
                     <th>发起时间</th>
                     <th>状态</th>
@@ -44,17 +45,12 @@
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
                     <td>{{item.processedGraphNo}}</td>
+                    <td>{{busTypeList[item.busType]}}</td>
                     <td>{{item.number}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{statusList[item.status+1].name}}</td>
                     <td class="t-right">
-                        <a
-                            href="javascript:;"
-                            v-if="item.workshopType == '2' && (item.status == 2 ||item.status == 6 )"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="machining(item.entrustNo, 4)"
-                        >处理完成</a>
+                        <a href="javascript:;" v-if="item.workshopType == '2' && (item.status == 2 ||item.status == 6 )" style="margin-right: 3px" class="blue" @click="machining(item.entrustNo, 4)">处理完成</a>
                         <a href="javascript:;" v-if="item.status == 0 || item.status==5" style="margin-right: 3px" class="blue" @click="remove(item)">删除</a>
                         <a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="initApprove(item.entrustNo, 1)">发起审批</a>
                     </td>
@@ -92,7 +88,8 @@ export default {
                 { status: 1, name: "内部车间1" },
                 { status: 2, name: "外部" },
                 { status: 3, name: "内部车间2" }
-            ]
+            ],
+            busTypeList: ["未选择", "订单需求", "生产库存"]
         };
     },
     methods: {

@@ -20,6 +20,7 @@
                     <th>零件名称</th>
                     <th>原图号</th>
                     <th>加工后图号</th>
+                    <th>类别</th>
                     <th>入库数量</th>
                     <th>入库状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -30,6 +31,7 @@
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.originalGraphNo}}</td>
                     <td>{{item.materialGraphNo}}</td>
+                    <td>{{busTypeList[item.busType]}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.status==1?'待入库':'已入库'}}</td>
                     <td class="t-right">
@@ -107,6 +109,7 @@ export default {
                 orderNo: "",
                 price: 0
             },
+            busTypeList: ["未选择", "订单需求", "生产库存"],
             itemId: 0,
             exportLayer: false,
             exportForm: {

@@ -1,20 +1,25 @@
 <template>
     <div class="page-product-add abs scroll-y">
         <div class="form-content">
-            <div class="title b f-18">{{form.id ? '编辑' : '新增'}}供应商产品</div>
-            <!-- <div class="flex-v-center">
+            <div class="title b f-18">{{form[0].id ? '编辑' : '新增'}}供应商产品</div>
+            <div v-for="(item,i) in form" :key="i">
+                <!-- <div class="flex-v-center">
                 <input-box v-model="form.annualProduction" class="flex-item mr-10" label="年产量"></input-box>
                 <input-box v-model="form.mainCustomer" class="flex-item mr-10" label="主要客户"></input-box>
-            </div>-->
-            <div class="flex-v-center">
-                <input-box v-model="form.materialGraphNo" class="flex-item mr-10" label="供货物料图号"></input-box>
-                <input-box v-model="form.materialName" class="flex-item mr-10" label="产品名称"></input-box>
+                </div>-->
+                <div class="flex-v-center">
+                    <input-box v-model="item.materialGraphNo" class="flex-item mr-10" label="供货物料图号"></input-box>
+                    <input-box v-model="item.materialName" class="flex-item mr-10" label="产品名称"></input-box>
+                </div>
+                <div class="flex-v-center">
+                    <select-box v-model="item.materialType" :list="materialTypeList" style="width: 25%" label="产品类型"></select-box>
+                    <select-box :list="supplierList" v-model="item.supplierNo" label="供应商" class="flex-item ml-10 mr-10"></select-box>
+                    <!-- <input-box v-model="form.supplierNo" class="flex-item ml-10 mr-10" label="供应商编号"></input-box> -->
+                </div>
+                <icon-btn small v-if="form.length > 1" @click="removeForm(i)">close</icon-btn>
             </div>
-            <div class="flex-v-center">
-                <select-box v-model="form.materialType" :list="materialTypeList" style="width: 25%" label="产品类型"></select-box>
-                <select-box :list="supplierList" v-model="form.supplierNo" label="供应商" class="flex-item ml-10 mr-10"></select-box>
-
-                <!-- <input-box v-model="form.supplierNo" class="flex-item ml-10 mr-10" label="供应商编号"></input-box> -->
+            <div>
+                <btn big class="mr-20" @click="addPro">添加产品</btn>
             </div>
             <div class="flex-v-center" style="margin: 20px 0;">
                 <btn big class="mr-20" @click="submit" :disabled="!canSubmit">提交</btn>
@@ -29,18 +34,27 @@ export default {
     name: "page-product-add",
     data() {
         return {
-            form: {
-                id: "",
-                annualProduction: "",
-                mainCustomer: "",
-                materialGraphNo: "",
-                materialName: "",
-                materialType: "",
-                supplierNo: ""
-            },
+            form: [
+                {
+                    id: "",
+                    annualProduction: "",
+                    mainCustomer: "",
+                    materialGraphNo: "",
+                    materialName: "",
+                    materialType: "",
+                    supplierNo: ""
+                }
+            ],
             materialTypeList: [
                 { text: "供货原料", value: 0 },
                 { text: "其他原料", value: 1 }
+                // { text: "阀体", value: 2 },
+                // { text: "阀座", value: 3 },
+                // { text: "阀板", value: 4 },
+                // { text: "阀杆", value: 5 },
+                // { text: "通用零件", value: 6 },
+                // { text: "驱动", value: 7 },
+                // { text: "标准件", value: 8 }
             ],
             supplierList: []
         };
@@ -48,13 +62,17 @@ export default {
     computed: {
         canSubmit() {
             const { form } = this;
-            return form.materialName && form.supplierNo;
+            let flag = false;
+            form.map(item => {
+                flag = item.materialName && item.supplierNo;
+            });
+            return flag;
         }
     },
     created() {
-        let { id } = this.$route.query;
-        if (id !== undefined && this.$route.name === "supplierproduct-edit")
-            this.getInfo(id);
+        // let { id } = this.$route.query;
+        // if (id !== undefined && this.$route.name === "supplierproduct-edit")
+        //     this.getInfo(id);
         this.getSupplierList();
     },
     methods: {
@@ -72,7 +90,7 @@ export default {
                 });
         },
         getSupplierList() {
-            this.$http.get("/haolifa/supplier/list-all/").then(res => {
+            this.$http.get("/haolifa/supplier/list-all").then(res => {
                 this.supplierList = res.map(item => {
                     return { value: item.suppilerNo, text: item.suppilerName };
                 });
@@ -89,15 +107,27 @@ export default {
                 }
             });
         },
+        removeForm(index) {
+            this.form.splice(index, 1);
+        },
+        addPro() {
+            this.form.push({
+                id: "",
+                annualProduction: "",
+                mainCustomer: "",
+                materialGraphNo: "",
+                materialName: "",
+                materialType: "",
+                supplierNo: ""
+            });
+        },
         submit() {
             const { form } = this;
             this.loading = true;
             this.$http
-                .post(
-                    `/haolifa/supplier-pro/${form.id ? "update" : "save"}`,
-                    form
-                )
+                .post(`/haolifa/supplier-pro/save`, form)
                 .then(res => {
+                    this.$toast("添加成功");
                     this.loading = false;
                     this.$router.replace("/supplierproduct/addList");
                 })

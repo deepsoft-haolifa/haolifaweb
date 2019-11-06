@@ -31,7 +31,7 @@ export default [{
 }, {
   path: '/supplierproduct/edit',
   name: 'supplierproduct-edit',
-  component: () => import( /* webpackChunkName: "supplierproductedit" */ './add.vue'),
+  component: () => import( /* webpackChunkName: "supplierproductedit" */ './edit.vue'),
   meta: {
     level: 2,
     title: '编辑供应商产品',

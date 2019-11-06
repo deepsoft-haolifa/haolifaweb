@@ -15,6 +15,7 @@
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
+            <div class="flex-item" style="text-align:right;color:#0f95ff">合同总金额（元）:{{priceTotal}}</div>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="get" :page-size="20" :param="filter" url="/haolifa/purchase-order/list/-1">
@@ -59,6 +60,7 @@ export default {
     data() {
         return {
             natureList: ["国有", "三资", "集体", "联营", "私营"],
+            priceTotal: "",
             statusList: [
                 { status: 1, name: "待审批" },
                 { status: 2, name: "审批中" },
@@ -74,6 +76,9 @@ export default {
             }
         };
     },
+    mounted() {
+        this.getPriceTotal();
+    },
     methods: {
         toProcOrder() {
             this.$router.push(`/contract`);
@@ -83,6 +88,16 @@ export default {
         },
         info(formId) {
             this.$router.push(`/contract/info?formId=${formId}`);
+        },
+        getPriceTotal() {
+            this.$http
+                .get(`/haolifa/statistics/money/purchase`)
+                .then(res => {
+                    this.priceTotal = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
     }
 };

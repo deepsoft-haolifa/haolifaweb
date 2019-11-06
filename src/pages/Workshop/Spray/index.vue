@@ -20,6 +20,10 @@
                     <th>计划人</th>
                     <th>总数量</th>
                     <th>检验合格数量</th>
+                    <th>原图号</th>
+                    <th>加工后图号</th>
+                    <th>批次号</th>
+                    <th>类别</th>
                     <th>状态</th>
                     <th>质检状态</th>
                     <th>发起时间</th>
@@ -32,6 +36,10 @@
                     <td>{{item.planner}}</td>
                     <td>{{item.totalNumber}}</td>
                     <td>{{item.qualifiedNumber}}</td>
+                    <td>{{item.orignGraphNo}}</td>
+                    <td>{{item.sprayedGraphNo}}</td>
+                    <td>{{item.batchNumber}}</td>
+                    <td>{{busTypeList[item.busType]}}</td>
                     <td>{{rowStatusList[item.status].name}}</td>
                     <td>{{inspectStatusList[item.inspectStatus]}}</td>
                     <td>{{item.createTime}}</td>
@@ -181,6 +189,7 @@ export default {
                 { status: -1, name: "全部" }
             ],
             inspectHistory: [],
+            busTypeList: ["未选择", "订单需求", "生产库存"],
             spray: {
                 planner: "",
                 sprayNo: "",

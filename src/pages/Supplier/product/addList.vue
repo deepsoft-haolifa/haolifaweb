@@ -3,14 +3,10 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model.trim="filter.supplierName" placeholder="供应商名称"
-                       @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.supplierNo" placeholder="供应商编号"
-                       @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.materialGraphNo" placeholder="图号"
-                       @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.materialName" placeholder="产品名称"
-                       @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.supplierName" placeholder="供应商名称" @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.supplierNo" placeholder="供应商编号" @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.materialGraphNo" placeholder="图号" @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.materialName" placeholder="产品名称" @change="$refs.list.update(true)" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
             <router-link to="/supplierproduct/add">
@@ -49,51 +45,61 @@
 </template>
 
 <script>
-    import DataList from "@/components/datalist";
+import DataList from "@/components/datalist";
 
-    export default {
-        name: "page-product-list",
-        components: {DataList},
-        data() {
-            return {
-                filter: {supplierName: '', supplierNo: ''},
-                materialTypeList: ["供货原料", "其他原料"]
-            };
+export default {
+    name: "page-product-list",
+    components: { DataList },
+    data() {
+        return {
+            filter: { supplierName: "", supplierNo: "" },
+            materialTypeList: [
+                "供货原料",
+                "其他原料",
+                "阀体",
+                "阀座",
+                "阀板",
+                "阀杆",
+                "通用零件",
+                "驱动",
+                "标准件"
+            ]
+        };
+    },
+    created() {
+        console.log("");
+    },
+    methods: {
+        edit(item) {
+            this.$router.push(`/supplierproduct/edit?id=${item.id}`);
         },
-        created() {
-            console.log("");
-        },
-        methods: {
-            edit(item) {
-                this.$router.push(`/supplierproduct/edit?id=${item.id}`);
-            },
-            remove(item) {
-                this.$confirm({
-                    title: "删除确认",
-                    text: `您确定要删除以下供应商产品吗？<br><b>${
-                        item.materialName
-                        }</b>`,
-                    color: "red",
-                    btns: ["取消", "删除"],
-                    yes: () => {
-                        this.$http
-                            .get(`/haolifa/supplier-pro/delete/${item.id}`)
-                            .then(res => {
-                                this.$toast("删除成功");
-                                this.$refs.list.update();
-                            })
-                            .catch(e => {
-                                this.$toast(e.msg);
-                            });
-                    }
-                });
-            }
+        remove(item) {
+            this.$confirm({
+                title: "删除确认",
+                text: `您确定要删除以下供应商产品吗？<br><b>${
+                    item.materialName
+                }</b>`,
+                color: "red",
+                btns: ["取消", "删除"],
+                yes: () => {
+                    this.$http
+                        .get(`/haolifa/supplier-pro/delete/${item.id}`)
+                        .then(res => {
+                            this.$toast("删除成功");
+                            this.$refs.list.update();
+                        })
+                        .catch(e => {
+                            this.$toast(e.msg);
+                        });
+                }
+            });
         }
-    };
+    }
+};
 </script>
 
 <style lang="less">
-    .page-product-list {
-        //
-    }
+.page-product-list {
+    //
+}
 </style>

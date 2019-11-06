@@ -22,6 +22,7 @@
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
+            <div class="flex-item" style="text-align:right;color:#0f95ff">发票总金额（元）:{{priceTotal}}</div>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :page-size="20" :param="filter" url="/haolifa/order-product/pageInfo">
@@ -80,6 +81,7 @@ export default {
                 { value: 1, text: "部分发货" },
                 { value: 2, text: "发货完成" }
             ],
+            priceTotal: "",
             statusList: [
                 { value: 0, text: "创建" },
                 { value: 1, text: "审批中" },
@@ -123,6 +125,9 @@ export default {
             }
         };
     },
+    mounted() {
+        this.getPriceTotal();
+    },
     methods: {
         toProcOrder() {
             this.$router.push(`/contract`);
@@ -132,6 +137,16 @@ export default {
         },
         info(orderNo) {
             this.$router.push(`/production/info?orderNo=${orderNo}`);
+        },
+        getPriceTotal() {
+            this.$http
+                .get(`/haolifa/statistics/money/orders`)
+                .then(res => {
+                    this.priceTotal = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
     }
 };

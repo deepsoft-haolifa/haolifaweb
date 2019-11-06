@@ -3,14 +3,10 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model.trim="filter.supplierName" placeholder="供应商名称"
-                       @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.supplierNo" placeholder="供应商编号"
-                       @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.materialGraphNo" placeholder="图号"
-                       @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.materialName" placeholder="产品名称"
-                       @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.supplierName" placeholder="供应商名称" @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.supplierNo" placeholder="供应商编号" @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.materialGraphNo" placeholder="图号" @change="$refs.list.update(true)" style="width: 200px;">
+                <input type="text" class="flex-item" v-model.trim="filter.materialName" placeholder="产品名称" @change="$refs.list.update(true)" style="width: 200px;">
             </div>
             <div class="flex-item"></div>
         </div>
@@ -52,8 +48,18 @@ export default {
     components: { DataList },
     data() {
         return {
-            filter: {supplierName: '', supplierNo: ''},
-            materialTypeList: ["供货原料", "其他原料"]
+            filter: { supplierName: "", supplierNo: "" },
+            materialTypeList: [
+                "供货原料",
+                "其他原料",
+                "阀体",
+                "阀座",
+                "阀板",
+                "阀杆",
+                "通用零件",
+                "驱动",
+                "标准件"
+            ]
         };
     },
     created() {

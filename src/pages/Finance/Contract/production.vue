@@ -22,7 +22,7 @@
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
             </div>
-            <div class="flex-item" style="text-align:right;color:#0f95ff">发票总金额（元）:{{priceTotal}}</div>
+            <div class="flex-item" style="text-align:right;color:#0f95ff">合同总金额（元）:{{priceTotal}}</div>
         </div>
         <div class="flex-item scroll-y">
             <data-list ref="list" method="post" :page-size="20" :param="filter" url="/haolifa/order-product/pageInfo">

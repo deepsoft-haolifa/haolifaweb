@@ -51,7 +51,14 @@
                     <input-box disabled v-model="storeRoom.materialBatchNo" class="ml-20 mr-10" style="width: 50%" label="批次号"></input-box>
                 </div>
                 <div class="flex">
-                    <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" style="width: 50%" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
+                    <select-box
+                        class="ml-20 mr-10"
+                        :list="storeRoom.selectStoreRooms"
+                        style="width: 50%"
+                        v-model="storeRoom.roomNo"
+                        @change="loadStoreRocks()"
+                        label="库房"
+                    ></select-box>
                     <select-box class="mr-10" :list="storeRoom.storeRoomRacks" style="width: 50%" v-model="storeRoom.rackNo" label="库位"></select-box>
                 </div>
             </div>
@@ -157,6 +164,7 @@ export default {
                 rackNo: this.storeRoom.rackNo,
                 quantity: this.storeRoom.quantity,
                 orderNo: this.storeRoom.orderNo,
+                materialBatchNo: this.storeRoom.materialBatchNo,
                 price: 0
             };
             this.loading = true;

@@ -13,7 +13,13 @@
                     <div class="flex">
                         <!-- <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box> -->
                         <select-box :list="classifyNameList" @change="nameChange(i)" v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></select-box>
-                        <select-box :list="item.tuhaoList" @change="getBatchNumber(i,item.materialGraphNo)" v-model="item.materialGraphNo" class="flex-item mr-10" label="零件图号"></select-box>
+                        <select-box
+                            :list="item.tuhaoList"
+                            @change="getBatchNumber(i,item.materialGraphNo)"
+                            v-model="item.materialGraphNo"
+                            class="flex-item mr-10"
+                            label="零件图号"
+                        ></select-box>
                         <!-- <input-box v-model="item.materialGraphNo" @blur="getBatchNumber(i,item.materialGraphNo)" class="flex-item mr-10" label="零件图号"></input-box> -->
                         <input-box v-model="item.model" class="flex-item mr-10" label="型号"></input-box>
                     </div>
@@ -95,7 +101,8 @@ export default {
                     }
                 ]
             },
-            isAdd: true
+            isAdd: true,
+            sprayColorList: []
         };
     },
     created() {
@@ -243,10 +250,12 @@ export default {
                                 text: item.color
                             });
                         }
+                        this.sprayColorList.push({
+                            value: item.relationNo,
+                            text: item.color
+                        });
                     });
-                    console.log(this.sprayFtColorList);
-                    console.log(this.sprayFbColorList);
-                    this.sprayColorList = this.sprayFtColorList;
+                    // this.sprayColorList = this.sprayFtColorList;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

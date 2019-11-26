@@ -8,15 +8,7 @@
                 <i class="icon">arrow_drop_{{item.open ? 'up' : 'down'}}</i>
             </div>
             <div v-if="item.open" class="openMenu">
-                <router-link
-                    class="nav-item flex-v-center c-6"
-                    v-for="m in item.children"
-                    v-if="menus.includes(m.id)"
-                    :key="m.id"
-                    :title="m.name"
-                    :to="m.url"
-                    :class="{'on': $route.meta.id === m.id}"
-                >{{m.name}}</router-link>
+                <router-link class="nav-item flex-v-center c-6" v-for="m in item.children" v-if="menus.includes(m.id)" :key="m.id" :title="m.name" :to="m.url" :class="{'on': $route.meta.id === m.id}">{{m.name}}</router-link>
             </div>
         </div>
     </div>
@@ -579,9 +571,24 @@ export default {
                 id: "parent-bjgl",
                 children: [
                     {
-                        name: "财务报表",
+                        name: "费用报表",
                         url: "/report-forms/list",
                         id: "bjcwbj"
+                    },
+                    {
+                        name: "销售报表",
+                        url: "/report-forms/xsList",
+                        id: "xsbj"
+                    },
+                    {
+                        name: "采购报表",
+                        url: "/report-forms/cgList",
+                        id: "cgbj"
+                    },
+                    {
+                        name: "质量报表",
+                        url: "/report-forms/zlList",
+                        id: "zlbj"
                     }
                 ]
             }

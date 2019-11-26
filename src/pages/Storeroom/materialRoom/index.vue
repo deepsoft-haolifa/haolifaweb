@@ -21,6 +21,7 @@
                     <th>供应商</th>
                     <th>物料名称</th>
                     <th>物料图号</th>
+                    <th>类别</th>
                     <th>入库数量</th>
                     <th>入库状态</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -34,6 +35,7 @@
                     <td>{{item.supplierName}}</td>
                     <td>{{item.materialGraphName}}</td>
                     <td>{{item.materialGraphNo}}</td>
+                    <td>{{busTypeList[item.busType]}}</td>
                     <td>{{item.qualifiedNumber}}</td>
                     <td>{{item.status==1?'待入库':'已入库'}}</td>
                     <td class="t-right">
@@ -43,24 +45,30 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="storeRoom.layerShow" :title="'入库'" width="450px">
+        <layer v-if="storeRoom.layerShow" :title="'入库'" width="50%">
             <div>
                 <div class="flex">
-                    <input-box disabled v-model="storeRoom.materialGraphNo" class="mr-10 ml-20" label="物料图号"></input-box>
-                    <input-box disabled v-model="storeRoom.quantity" type="number" class="mr-10" label="入库数量"></input-box>
-                    <input-box v-model="storeRoom.price" type="number" class="mr-10" label="采购价格"></input-box>
+                    <input-box disabled v-model="storeRoom.materialGraphNo" style="width:30%" class="mr-10 ml-20" label="物料图号"></input-box>
+                    <input-box disabled v-model="storeRoom.quantity" type="number" style="width:30%" class="mr-10" label="入库数量"></input-box>
+                    <input-box v-model="storeRoom.price" type="number" class="mr-10" style="width:30%" label="采购价格"></input-box>
                 </div>
                 <div class="flex">
-                    <input-box disabled v-model="storeRoom.materialBatchNo" class="mr-10 ml-20" label="批次号"></input-box>
-                    <input-box disabled v-model="storeRoom.orderNo" class="mr-10" label="采购合同号"></input-box>
+                    <input-box disabled v-model="storeRoom.materialBatchNo" style="width:30%" class="mr-10 ml-20" label="批次号"></input-box>
+                    <input-box disabled v-model="storeRoom.orderNo" style="width:30%" class="mr-10" label="采购合同号"></input-box>
+                    <input-box v-model="storeRoom.supplier" disabled class="mr-10 ml-20" style="width:30%" label="供应商"></input-box>
                 </div>
                 <div class="flex">
-                    <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
-                    <select-box class="mr-10" :list="storeRoom.storeRoomRacks" v-model="storeRoom.rackNo" label="库位"></select-box>
+                    <select-box
+                        class="ml-20 mr-10"
+                        :list="storeRoom.selectStoreRooms"
+                        style="width:50%"
+                        v-model="storeRoom.roomNo"
+                        @change="loadStoreRocks()"
+                        label="库房"
+                    ></select-box>
+                    <select-box class="mr-10" :list="storeRoom.storeRoomRacks" style="width:50%" v-model="storeRoom.rackNo" label="库位"></select-box>
                 </div>
-                <div class="flex">
-                    <input-box v-model="storeRoom.supplier" disabled class="mr-10 ml-20" label="供应商"></input-box>
-                </div>
+                <div class="flex"></div>
             </div>
             <div class="layer-btns">
                 <btn flat @click="storeRoom.layerShow=false">取消</btn>
@@ -100,6 +108,7 @@ export default {
                 { status: 1, name: "待入库" },
                 { status: 2, name: "已入库" }
             ],
+            busTypeList: ["未选择", "订单需求", "生产库存"],
             storeRoom: {
                 layerShow: false,
                 selectStoreRooms: [],
@@ -163,7 +172,9 @@ export default {
                 supplier: this.storeRoom.supplier,
                 materialBatchNo: this.storeRoom.materialBatchNo,
                 orderNo: this.storeRoom.orderNo,
-                price: Number(this.storeRoom.price)
+                price: Number(this.storeRoom.price),
+                busType: this.storeRoom.busType,
+                busNo: this.storeRoom.inspectNo
             };
             this.loading = true;
             this.$http
@@ -244,6 +255,8 @@ export default {
                     this.storeRoom.orderNo = item.purchaseNo;
                     this.storeRoom.quantity = item.qualifiedNumber;
                     this.storeRoom.layerShow = true;
+                    this.storeRoom.busType = item.busType;
+                    this.storeRoom.inspectNo = item.inspectNo;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

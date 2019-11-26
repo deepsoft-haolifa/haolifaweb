@@ -5,6 +5,7 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.materialName" @change="$refs.list.update(true)" placeholder="名称" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.materialGraphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
 
                 <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                     <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
@@ -54,6 +55,7 @@ export default {
                 type: 0,
                 status: -1,
                 materialName: "",
+                orderNo: "",
                 materialGraphNo: ""
             },
             allStatus: [

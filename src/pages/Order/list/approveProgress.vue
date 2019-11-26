@@ -19,7 +19,7 @@
                         <p :class="item.child[0].auditResult == 4 ? 'button ccc' : 'button'">{{item.child[0].stepName}}</p>
                         <!-- <p>测试</p>
                         <p :class="item.child[0].auditResult == 4 ? 'button ccc' : 'button'">测试</p>-->
-                        <p>{{status[item.child[0].auditResult]}}{{item.auditTime}}</p>
+                        <p>{{status[item.child[0].auditResult]}}{{item.child[0].auditTime}}</p>
                         <div class="right-height-line"></div>
                         <div class="top-arrows"></div>
                     </div>

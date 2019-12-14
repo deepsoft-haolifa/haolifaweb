@@ -36,11 +36,12 @@
                     <td>{{item.orderNo}}</td>
                     <td>{{item.constractParty}}</td>
                     <td>{{item.totalAmount}}</td>
-                    <td>{{statusList[item.status].name}}</td>
+                    <td>{{statusArr[item.status].name}}</td>
                     <td>{{item.remark}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{item.updateTime}}</td>
                     <td class="t-right">
+                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="add(item)">开票申请 |</a>
                         <a href="javascript:;" v-if="item.status == 1" class="blue" @click="remove(item)">删除</a>
                     </td>
                 </template>
@@ -58,13 +59,19 @@ export default {
         return {
             priceTotal: "",
             statusList: [
-                { status: 0, name: "全部" },
+                { status: -1, name: "全部" },
+                { status: 0, name: "已申请" },
+                { status: 1, name: "待开票" },
+                { status: 2, name: "已开票" }
+            ],
+            statusArr: [
+                { status: 0, name: "已申请" },
                 { status: 1, name: "待开票" },
                 { status: 2, name: "已开票" }
             ],
             filter: {
                 type: 1,
-                status: 0,
+                status: -1,
                 orderNo: "",
                 constractParty: ""
             }
@@ -105,6 +112,29 @@ export default {
                         });
                 }
             });
+        },
+        add(item) {
+            let data = {};
+            data.id = item.id;
+            // data.invoiceCompany = item.invoiceCompany;
+            // data.invoiceIssuing = item.invoiceIssuing;
+            data.invoiceNo = item.orderNo;
+            // data.orderNo = item.orderNo;
+            // data.remark = item.remark;
+            // data.status = item.status;
+            // data.totalAmount = item.totalAmount;
+            // data.type = item.type;
+            data.status = 0;
+            this.$http
+                // .post("/haolifa/invoice/save", data)
+                .post("/haolifa/invoice/updateStatus", data)
+                .then(res => {
+                    this.$toast("开票申请成功");
+                    this.$refs.list.update();
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         }
     }
 };

@@ -180,6 +180,11 @@ export default {
                         name: "核替换料表",
                         url: "/nuclear-material/list",
                         id: "kghl"
+                    },
+                    {
+                        name: "零件待出库",
+                        url: "/part/list",
+                        id: "ljdck"
                     }
                 ]
             },

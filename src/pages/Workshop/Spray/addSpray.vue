@@ -11,15 +11,9 @@
             <div class="card flex" style="margin-top: 0;" v-for="(item, i) in form.items" :key="i">
                 <div class="flex-item">
                     <div class="flex">
-                        <!-- <input-box v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></input-box> -->
-                        <select-box :list="classifyNameList" @change="nameChange(i)" v-model="item.materialClassifyName" class="flex-item mr-10" label="零件名称"></select-box>
-                        <select-box
-                            :list="item.tuhaoList"
-                            @change="getBatchNumber(i,item.materialGraphNo)"
-                            v-model="item.materialGraphNo"
-                            class="flex-item mr-10"
-                            label="零件图号"
-                        ></select-box>
+                        <!-- <input-box v-model="item.materialName" class="flex-item mr-10" label="零件名称"></input-box> -->
+                        <select-box :list="classifyNameList" @change="nameChange(i)" v-model="item.materialName" class="flex-item mr-10" label="零件名称"></select-box>
+                        <select-box :list="item.tuhaoList" @change="getBatchNumber(i,item.materialGraphNo)" v-model="item.materialGraphNo" class="flex-item mr-10" label="零件图号"></select-box>
                         <!-- <input-box v-model="item.materialGraphNo" @blur="getBatchNumber(i,item.materialGraphNo)" class="flex-item mr-10" label="零件图号"></input-box> -->
                         <input-box v-model="item.model" class="flex-item mr-10" label="型号"></input-box>
                     </div>
@@ -69,8 +63,8 @@ export default {
             sprayFtColorList: [],
             sprayFbColorList: [],
             classifyNameList: [
-                { value: "阀体", text: "阀体" },
-                { value: "阀板", text: "阀板" }
+                { value: "阀体半成品", text: "阀体半成品" },
+                { value: "阀板半成品", text: "阀板半成品" }
             ],
             arrList: [
                 { value: "1", text: "订单需求" },
@@ -82,7 +76,7 @@ export default {
                 busType: "",
                 items: [
                     {
-                        materialClassifyName: "",
+                        materialName: "",
                         materialGraphNo: "",
                         completeTime: "",
                         material: "",
@@ -139,7 +133,7 @@ export default {
                         };
                     });
                     this.form.items.push({
-                        materialClassifyName: "",
+                        materialName: "",
                         materialGraphNo: "",
                         completeTime: "",
                         material: "",
@@ -160,7 +154,7 @@ export default {
         },
         nameChange(index) {
             let data = { classifyId: "", materialName: "", type: 3 };
-            if (this.form.items[index].materialClassifyName == "阀板") {
+            if (this.form.items[index].materialName == "阀板半成品") {
                 this.form.items[index].sprayColorList = this.sprayFbColorList;
                 data.classifyId = "3";
             } else {
@@ -221,7 +215,7 @@ export default {
                 return;
             }
             this.form.items.push({
-                materialClassifyName: "",
+                materialName: "",
                 materialGraphNo: "",
                 completeTime: "",
                 material: "",

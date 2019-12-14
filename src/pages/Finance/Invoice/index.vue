@@ -40,10 +40,11 @@
                     <td>￥ {{item.totalAmount}}</td>
                     <td>{{item.invoiceNo}}</td>
                     <td>{{allTypes[item.type].text}}</td>
-                    <td>{{allStatus[item.status].text}}</td>
+                    <td>{{statusArr[item.status].text}}</td>
                     <td>{{item.remark}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="billing(item)">开票</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status ==0" class="blue" @click="billing(item)">开票</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status ==0" class="blue" @click="exportExcel(item)">| 出库记录下载</a>
                         <a href="javascript:;" v-if="item.status == 2" class="blue" @click="edit(item)">编辑</a>
                     </td>
                 </template>
@@ -77,6 +78,23 @@
                 <btn flat color="#008eff" @click="billInvoice()">开票</btn>
             </div>
         </layer>
+        <layer v-if="exportLayer" :title="'导出'" width="30%">
+            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportForm.startDate" hint="必填" class="flex-item" label="开始时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportForm.endDate" hint="必填" class="flex-item" label="结束时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="exportForm.orderNo" class="flex-item" label="订单号"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="exportLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="download()">确定</btn>
+            </div>
+        </layer>
     </div>
 </template>
 
@@ -91,11 +109,17 @@ export default {
             priceTotal: "",
             filter: {
                 type: 0,
-                status: 0,
+                status: -1,
                 orderNo: ""
             },
             allStatus: [
-                { value: 0, text: "全部" },
+                { value: -1, text: "全部" },
+                { value: 0, text: "已申请" },
+                { value: 1, text: "待开票" },
+                { value: 2, text: "已开票" }
+            ],
+            statusArr: [
+                { value: 0, text: "已申请" },
                 { value: 1, text: "待开票" },
                 { value: 2, text: "已开票" }
             ],
@@ -128,6 +152,12 @@ export default {
                 type: 1,
                 invoiceIssuing: "",
                 invoiceCompany: ""
+            },
+            exportLayer: false,
+            exportForm: {
+                startDate: "",
+                endDate: "",
+                orderNo: ""
             }
         };
     },
@@ -138,6 +168,7 @@ export default {
         billing(item) {
             this.bill.orderNo = item.orderNo;
             this.bill.layerbill = true;
+            this.bill.billInvoiceNo = "";
             this.bill.id = item.id;
         },
         billInvoice() {
@@ -230,6 +261,39 @@ export default {
                         });
                 }
             });
+        },
+        out(item) {
+            this.$router.push(`/invoice-out?orderNo=${item.orderNo}`);
+        },
+        exportExcel(item) {
+            this.exportLayer = true;
+            this.exportForm = {
+                orderNo: item.orderNo,
+                startDate: "",
+                endDate: ""
+            };
+        },
+        download() {
+            if (!this.exportForm.startDate) {
+                this.$toast("请选择开始时间");
+                return;
+            }
+            if (!this.exportForm.endDate) {
+                this.$toast("请选择结束时间");
+                return;
+            }
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                `/haolifa/export/product-out?startDate=${
+                    this.exportForm.startDate
+                }&endDate=${this.exportForm.endDate}&orderNo=${
+                    this.exportForm.orderNo
+                }&operationType=1`
+            );
+            a.click();
+            this.exportLayer = false;
         }
     }
 };

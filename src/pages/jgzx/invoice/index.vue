@@ -36,7 +36,7 @@
                     <td>{{item.orderNo}}</td>
                     <td>{{item.constractParty}}</td>
                     <td>{{item.totalAmount}}</td>
-                    <td>{{statusList[item.status].name}}</td>
+                    <td>{{statusArr[item.status].name}}</td>
                     <td>{{item.remark}}</td>
                     <td>{{item.createTime}}</td>
                     <td>{{item.updateTime}}</td>
@@ -58,13 +58,19 @@ export default {
         return {
             priceTotal: "",
             statusList: [
-                { status: 0, name: "全部" },
+                { status: -1, name: "全部" },
+                { status: 0, name: "已申请" },
+                { status: 1, name: "待开票" },
+                { status: 2, name: "已开票" }
+            ],
+            statusArr: [
+                { status: 0, name: "已申请" },
                 { status: 1, name: "待开票" },
                 { status: 2, name: "已开票" }
             ],
             filter: {
                 type: 1,
-                status: 0,
+                status: -1,
                 orderNo: "",
                 constractParty: ""
             }

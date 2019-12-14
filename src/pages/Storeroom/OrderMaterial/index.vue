@@ -37,17 +37,14 @@
                     <td>{{item.finishFeedbackTime}}</td>
                     <td>
                         <a target="_blank" v-if="(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.orderContractUrl">预览</a>
-                        <a
-                            target="_blank"
-                            v-if="!(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                            :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractUrl"
-                        >预览</a>
+                        <a target="_blank" v-if="!(item.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.orderContractUrl">预览</a>
                     </td>
                     <td class="t-right">
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
                         <icon-btn small @click="remove(item)">delete</icon-btn>-->
-                        <a href="javascript:;" class="blue" @click="getInfo(item.orderNo)">详情 |</a>
-                        <a :href="`/haolifa/export/requisition/${item.orderNo}`" download style="margin-right: 3px" class="blue">下载领料单</a>
+                        <a href="javascript:;" class="blue" v-if="item.genPickingList === 0" @click="getInfo(item.orderNo)">核料单详情 |</a>
+                        <a :href="`/haolifa/export/requisition/${item.orderNo}`" download style="margin-right: 3px" class="blue">下载领料单 |</a>
+                        <a href="javascript:;" class="blue" @click="getDetail(item.orderNo)">领料单详情</a>
                         <!--  <a href="javascript:;" class="blue" @click="entryList(item)">入库详情</a> |
                         <a href="javascript:;" class="blue" @click="outList(item)">出库详情</a>-->
                     </td>
@@ -57,41 +54,72 @@
         <layer v-if="layer" title="详情" width="70%">
             <div class="layer-text" style="padding-bottom: 50px;">
                 <div class="form-content metalwork-info">
-                    <table class="f-14">
-                        <tr>
-                            <td style="width: 15%;"></td>
-                            <td style="width: 15%;"></td>
-                            <td style="width: 14%;"></td>
-                            <td style="width: 14%;"></td>
-                            <td style="width: 14%;"></td>
-                            <td style="width: 14%;"></td>
-                            <td style="width: 14%;"></td>
-                        </tr>
+                    <table class="f-14" ref="tableList">
                         <tr>
                             <th>订单号</th>
                             <th>零件图号</th>
                             <th>零件名称</th>
-                            <th>价格</th>
-                            <!-- <th>是否可替换零件</th> -->
+                            <!-- <th>价格</th> -->
                             <th>需要零件数量</th>
-                            <th>缺少零件数量</th>
-                            <th>状态</th>
+                            <!-- <th>缺少零件数量</th> -->
+                            <!-- <th>状态</th> -->
+                            <th>操作</th>
                         </tr>
-                        <tr v-for="item in infoList" :key="item.id">
+                        <tr v-for="(item,i) in infoList" :key="item.id">
                             <td>{{item.orderNo}}</td>
-                            <td>{{item.materialGraphNo}}</td>
-                            <td>{{item.materialName}}</td>
-                            <td>{{item.price}}</td>
-                            <!-- <td>{{item.isReplace == 0 ?'否':'是'}}</td> -->
-                            <td>{{item.materialCount}}</td>
-                            <td>{{item.lackMaterialCount}}</td>
-                            <td>{{statusList[item.checkStatus-1].name}}</td>
+                            <td :class="editFlag?'bgc':''">
+                                <div :contenteditable="editFlag">{{item.materialGraphNo}}</div>
+                            </td>
+                            <td :class="editFlag?'bgc':''">
+                                <div :contenteditable="editFlag">{{item.materialName}}</div>
+                            </td>
+                            <!-- <td>{{item.price}}</td> -->
+                            <td :class="editFlag?'bgc':''">
+                                <div :contenteditable="editFlag">{{item.materialCount}}</div>
+                            </td>
+                            <!-- <td>{{item.lackMaterialCount}}</td>
+                            <td>{{statusList[item.checkStatus-1].name}}</td>-->
+                            <td>
+                                <btn flat color="red" @click="delItem(i)">删除</btn>
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="layer-btns">
+                <btn flat color="#008eff" v-if="!editFlag" @click="editFlag=true">编辑</btn>
+                <btn flat color="#008eff" v-if="editFlag" @click="submit">保存</btn>
                 <btn flat color="#008eff" @click="layer=false">关闭</btn>
+            </div>
+        </layer>
+        <layer v-if="detailLayer" title="领料单详情" width="70%">
+            <div class="layer-text" style="padding-bottom: 50px;">
+                <div class="form-content metalwork-info">
+                    <table class="f-14">
+                        <tr>
+                            <th>订单号</th>
+                            <th>零件图号</th>
+                            <th>零件名称</th>
+                            <th>零件数量</th>
+                            <th>出库状态</th>
+                            <th>时间</th>
+                        </tr>
+                        <tr v-for="item in detailList" :key="item.id">
+                            <td>{{item.orderNo}}</td>
+                            <td>{{item.graphNo}}</td>
+                            <td>{{item.materialName}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{outTypeList[item.outRoomStatus]}}</td>
+                            <td>{{item.updateTime}}</td>
+                        </tr>
+                        <tr v-if="detailList.length===0">
+                            <td colspan="6" style="text-align:center">无数据</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat color="#008eff" @click="detailLayer=false">关闭</btn>
             </div>
         </layer>
     </div>
@@ -110,6 +138,7 @@ export default {
                 orderStatus: "7"
             },
             loading: false,
+            detailLayer: false,
             infoList: {},
             statusList: [
                 { status: 1, name: "核料成功" },
@@ -123,6 +152,7 @@ export default {
                 { value: 1, text: "部分发货" },
                 { value: 2, text: "发货完成" }
             ],
+            editForm: [],
             orderStatusList: [
                 { value: 0, text: "创建" },
                 { value: 1, text: "审批中" },
@@ -146,7 +176,10 @@ export default {
                 { value: 9, text: "生产完成" },
                 { value: 10, text: "质检中" },
                 { value: 11, text: "已入库" }
-            ]
+            ],
+            outTypeList: ["", "未出库", "出库完成"],
+            editFlag: false,
+            detailList: []
         };
     },
     methods: {
@@ -155,6 +188,7 @@ export default {
         // },
         getInfo(orderNo) {
             this.layer = true;
+            this.editFlag = false;
             this.$http
                 .get(`/haolifa/order-product/order-material?orderNo=${orderNo}`)
                 .then(res => {
@@ -163,6 +197,63 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg);
                 });
+        },
+        // '
+        getDetail(orderNo) {
+            this.detailLayer = true;
+            this.$http
+                .get(`/haolifa/material-requisition/info?orderNo=${orderNo}`)
+                .then(res => {
+                    this.detailList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.message);
+                });
+        },
+        delItem(index) {
+            this.$confirm({
+                title: "删除确认",
+                text: `您确定要删除该条数据吗？`,
+                color: "red",
+                btns: ["取消", "删除"],
+                yes: () => {
+                    this.infoList.splice(index, 1);
+                    this.editFlag = true;
+                }
+            });
+        },
+        submit() {
+            this.$confirm({
+                title: "保存确认",
+                text: `您确定修改完毕了吗？`,
+                color: "red",
+                btns: ["取消", "确定"],
+                yes: () => {
+                    let rows = this.$refs["tableList"].rows;
+                    this.editForm = [];
+                    for (let i = 1; i < rows.length; i++) {
+                        let obj = {};
+                        obj.orderNo = rows[i].cells[0].innerText;
+                        obj.graphNo = rows[i].cells[1].innerText;
+                        obj.materialName = rows[i].cells[2].innerText;
+                        obj.quantity = rows[i].cells[3].innerText;
+                        this.editForm.push(obj);
+                    }
+                    this.$http
+                        .post(
+                            "/haolifa/material-requisition/save",
+                            this.editForm
+                        )
+                        .then(res => {
+                            this.$toast("保存成功");
+                            this.editFlag = false;
+                            this.$refs.list.update(true);
+                        })
+                        .catch(e => {
+                            this.$toast(e.message);
+                        });
+                }
+            });
         }
     }
 };
@@ -179,6 +270,13 @@ export default {
     }
     .scroll-y {
         padding-bottom: 40px;
+    }
+    // div[contenteditable="true"] {
+    //     height: 100%;
+    //     background: #ccc;
+    // }
+    .bgc {
+        background: #ccc;
     }
 }
 </style>

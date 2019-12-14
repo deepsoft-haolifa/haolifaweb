@@ -6,7 +6,12 @@
                 <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
                 <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;">
-             </div>
+            </div>状态：
+            <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+                <option value="0">全部</option>
+                <option value="2">质检中</option>
+                <option value="3">质检完成</option>
+            </select>
             <div class="flex-item"></div>
             <!-- <router-link to="/applyBuy-material/add">
                 <btn class="b" flat color="#008eff">创建送检单</btn>
@@ -189,7 +194,7 @@ export default {
         return {
             filter: {
                 type: 0,
-                status: 0,
+                status: 2,
                 inspectNo: "",
                 purchaseOrderNo: ""
             },

@@ -12,7 +12,8 @@ import {
   Button,
   Dialog,
   Select,
-  Option
+  Option,
+  DatePicker
 } from 'element-ui'
 import './common'
 
@@ -21,6 +22,7 @@ Vue.use(Button)
 Vue.use(Dialog)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(DatePicker)
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 Vue.prototype.$http = axios
@@ -54,7 +56,7 @@ axios.interceptors.response.use(function (response) {
       router.replace('/login')
       return Promise.reject("用户会话超时，请重新登录");
     } else {
-      return Promise.reject(e.response.data.msg)
+      return Promise.reject(e.response.data.msg || e.response.data.message)
     }
   }
   return Promise.reject(e)

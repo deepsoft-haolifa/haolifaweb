@@ -760,7 +760,9 @@ export default {
                                 });
                         } else if (this.dealStepId == 52) {
                             // 技术总工
-                            status = 2;
+                            if(this.orderInfo.isCheckMaterial == 1){
+                                status = 2;
+                            }
                         } else if (this.dealStepId == 54) {
                             // 采购反馈
                             this.$http
@@ -780,7 +782,9 @@ export default {
                                 });
                         } else if (this.dealStepId == 55) {
                             // 综合计划
-                            status = 5;
+                            if(this.orderInfo.isCheckMaterial == 1){
+                                status = 5;
+                            }
                             this.$http
                                 .post(
                                     `/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${
@@ -798,7 +802,9 @@ export default {
                                 });
                         } else if (this.dealStepId == 56) {
                             // 生产调度
-                            status = 6;
+                            if(this.orderInfo.isCheckMaterial == 1){
+                                status = 6;
+                            }
                             this.$http
                                 .post(
                                     `/haolifa/order-product/updateInfo`,
@@ -835,8 +841,11 @@ export default {
                             status = 4;
                         }
                         if (this.handleStep.backStepId == 56) {
-                            // 待生产
-                            status = 5;
+                            if(this.orderInfo.isCheckMaterial == 1){
+                                // 待生产
+                                status = 5;
+                            }
+
                         }
                         if (this.handleStep.backStepId < 53) {
                             this.$http.post(

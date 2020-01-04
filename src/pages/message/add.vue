@@ -8,14 +8,16 @@
             <div class="flex-v-center">
                 <input-box v-model="form.title" hint="必填" class="flex-item mr-10" label="标题"></input-box>
             </div>
-            <div class="flex-v-center">
-                <input-box v-model="form.content" hint="必填" multi-line class="flex-item mr-10" label="内容"></input-box>
+            <div class="flex-v-center;" style="margin-top:30px;">
+                <Editor style="width:100%" id="tinymce" v-model="form.content" :init="editorInit"></Editor>
+                <!-- <input-box v-model="form.content" hint="必填" multi-line class="flex-item mr-10" label="内容"></input-box> -->
             </div>
             <div class="flex">
                 <btn big class="mr-20" @click="submit()">提交</btn>
                 <btn big flat @click="reset">重置</btn>
             </div>
         </div>
+
         <layer v-if="loading">
             <div class="abs t-center" style="padding: 20px;">
                 <loading size="30"/>
@@ -26,6 +28,14 @@
 </template>
 
 <script>
+import tinymce from "tinymce";
+import "tinymce/themes/silver/theme";
+import Editor from "@tinymce/tinymce-vue";
+import "tinymce/plugins/image"; // 插入上传图片插件
+import "tinymce/plugins/media"; // 插入视频插件
+import "tinymce/plugins/table"; // 插入表格插件
+import "tinymce/plugins/lists"; // 列表插件
+import "tinymce/plugins/wordcount"; // 字数统计插件
 export default {
     name: "order-create",
     data() {
@@ -34,15 +44,34 @@ export default {
             form: {
                 users: "",
                 title: "",
-                content: ""
+                content:
+                    '<table style="border-collapse: collapse; height: 466px;" width="849" cellspacing="0" cellpadding="8"><colgroup><col width="94" /><col width="521" /></colgroup><tbody><tr style="height: 23.85pt;"><td style="width: 461pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" colspan="2" valign="top" width="615" height="32"><p style="text-align: center; line-height: 100%; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: 宋体;">当日工作内容</span></span></p></td></tr><tr style="height: 63.65pt;"><td style="width: 461pt; height: 63.65pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" colspan="2" valign="top" width="615" height="85"><p style="text-align: justify; line-height: 100%; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 14pt;"><span style="font-family: Calibri;">&nbsp;</span></span></p></td></tr><tr style="height: 23.85pt;"><td style="width: 461pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" colspan="2" valign="top" width="615" height="32"><p style="text-align: center; line-height: 100%; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: 宋体;">当日工作反馈</span></span></p></td></tr><tr style="height: 23.85pt;"><td style="width: 70.5pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" valign="top" width="95" height="32"><p style="text-align: center; line-height: 100%; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: 宋体;">问题</span><span style="font-family: Calibri;">：</span></span></p></td><td style="width: 390.55pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" valign="top" width="521" height="32"><p style="line-height: 100%; margin-top: 0pt; margin-bottom: 0pt; text-align: left;"></p></td></tr><tr style="height: 23.85pt;"><td style="width: 70.5pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" valign="top" width="95" height="32"><p style="text-align: center; line-height: 100%; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: 宋体;">建议</span><span style="font-family: Calibri;">：</span></span></p></td><td style="width: 390.55pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" valign="top" width="521" height="32"><p style="line-height: 100%; margin-top: 0pt; margin-bottom: 0pt; text-align: left;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: Calibri;">&nbsp;</span></span></p></td></tr><tr style="height: 23.85pt;"><td style="width: 70.5pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" valign="top" width="95" height="32"><p style="text-align: center; line-height: 100%; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: 宋体;">信息</span><span style="font-family: Calibri;">：</span></span></p></td><td style="width: 390.55pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" valign="top" width="521" height="32"><p style="line-height: 100%; margin-top: 0pt; margin-bottom: 0pt; text-align: left;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: Calibri;">&nbsp;</span></span></p></td></tr><tr style="height: 23.85pt;"><td style="width: 461pt; height: 23.85pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" colspan="2" valign="top" width="615" height="32"><p style="text-align: center; line-height: 100%; margin-top: 0pt; margin-bottom: 0pt;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: 宋体;">下一日工作计划</span></span></p></td></tr><tr style="height: 78.35pt;"><td style="width: 461pt; height: 78.35pt; border: solid black .5pt; mso-border-alt: solid black .5pt; padding-left: 1.91mm; padding-right: 1.91mm;" colspan="2" valign="top" width="615" height="105"><p style="line-height: 100%; margin-top: 0pt; margin-bottom: 0pt; text-align: left;"><span style="font-size: 14pt; font-weight: bold;"><span style="font-family: Calibri;">&nbsp;</span></span></p></td></tr></tbody></table>'
             },
-            userList: []
+            userList: [],
+            val: "",
+            editorInit: {
+                language_url: "/zh_CN.js",
+                language: "zh_CN",
+                skin_url: "/skins/ui/oxide",
+                height: 600,
+                fontsize_formats: "12px 14px 16px 18px 24px 36px 48px 56px 72px"
+            }
         };
     },
     mounted() {
         this.getUserList();
+        this.init();
     },
+    components: { Editor },
     methods: {
+        init() {
+            this.editorInit = {
+                language_url: "/zh_CN.js",
+                language: "zh_CN",
+                skin_url: "/skins/ui/oxide",
+                height: 300
+            };
+        },
         submit() {
             if (!this.form.users || !this.form.title || !this.form.content) {
                 this.$toast("请输入必填项");

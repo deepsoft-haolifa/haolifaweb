@@ -34,8 +34,8 @@
                 </template>
             </data-list>
         </div>
-        <layer v-if="layer" title="关联角色" width="450px">
-            <div class="layer-text" style="padding-bottom: 50px;height:500px">
+        <layer v-if="layer" title="关联角色" width="45%">
+            <div class="layer-text" style="padding-bottom: 300px;height:800px">
                 <select-box :list="roles" v-model="roleId" label="请选择角色"></select-box>
                 <!-- <el-select v-model="roleIds" placeholder="请选择角色">
                     <el-option v-for="item in roles" :key="item.value" :label="item.text" :value="item.value"></el-option>
@@ -51,7 +51,6 @@
 
 <script>
 import DataList from "@/components/datalist";
-
 export default {
     name: "page-user",
     components: { DataList },

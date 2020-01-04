@@ -9,6 +9,7 @@ import echarts from 'echarts'
 // import obj2FormData from './utils/obj2FormData'
 import {
   Tree,
+  Radio,
   Button,
   Dialog,
   Select,
@@ -23,6 +24,7 @@ Vue.use(Dialog)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(DatePicker)
+Vue.use(Radio)
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 Vue.prototype.$http = axios

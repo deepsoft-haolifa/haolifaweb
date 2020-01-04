@@ -24,7 +24,7 @@
                     <td>{{item.createTime}}</td>
                     <td>
                         <a
-                            v-if="item.flowId == 1"
+                            v-if="item.flowId == 1 || item.flowId==6"
                             href="javascript:;"
                             style="margin-right: 3px"
                             class="blue"

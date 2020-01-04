@@ -23,41 +23,11 @@
                     <td>{{item.formNo}}</td>
                     <td>{{item.createTime}}</td>
                     <td>
-                        <a
-                            v-if="item.flowId == 1"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 2"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 3"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 4"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
-                        <a
-                            v-if="item.flowId == 5"
-                            href="javascript:;"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})"
-                        >详情</a>
+                        <a v-if="item.flowId == 1 || item.flowId == 6" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/produce',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
+                        <a v-if="item.flowId == 2" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
+                        <a v-if="item.flowId == 3" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/supplierAudit',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
+                        <a v-if="item.flowId == 4" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/replace',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
+                        <a v-if="item.flowId == 5" href="javascript:;" style="margin-right: 3px" class="blue" @click="$router.push({path:'/purchase',query:{instanceId:item.instanceId,stepId:item.stepId}})">详情</a>
                     </td>
                 </template>
             </data-list>

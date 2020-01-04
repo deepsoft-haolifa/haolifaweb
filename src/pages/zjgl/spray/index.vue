@@ -92,7 +92,7 @@
                         </tr>
                         <tr v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
-                            <td colspan="1">{{item.materialClassifyName}}</td>
+                            <td colspan="1">{{item.materialName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
                             <td colspan="1">{{item.model}}</td>
                             <td colspan="1">{{item.specifications}}</td>

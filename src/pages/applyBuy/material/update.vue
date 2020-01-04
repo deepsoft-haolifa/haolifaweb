@@ -9,15 +9,7 @@
                 <input-box v-model="form.purchaseNo" class="flex-item ml-20 mr-20" label="合同号"></input-box>
             </div>
             <div class="flex">
-                <upload-box
-                    btnText="质量保证书"
-                    :fileShow="false"
-                    :fileList="fileList"
-                    :onchange="uploadFile"
-                    :onremove="removeFile"
-                    :multiple="multiple"
-                    style="width: 50%"
-                ></upload-box>
+                <upload-box btnText="质量保证书" :fileShow="false" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" :multiple="multiple" style="width: 50%"></upload-box>
             </div>
             <div v-for="(item,i) in resFileList" :key="i" style="margin-left:20px;margin-top:5px;">
                 <div class="flex">
@@ -58,7 +50,7 @@
             <div class="flex ml-20 mt-20">
                 <btn big class="mr-20" @click="submit(1)">保存</btn>
                 <btn big class="mr-20" @click="submit(2)">保存并发起</btn>
-                <btn big flat @click="$router.back()">取消</btn>
+                <btn big flat @click="back">取消</btn>
             </div>
         </div>
     </div>
@@ -182,6 +174,13 @@ export default {
                 resolve();
             });
         },
+        back() {
+            this.$http
+                .get(`/haolifa/material-inspect/delete/${this.id}`)
+                .then(res => {
+                    this.$router.back();
+                });
+        },
         submit(status) {
             // alert(this.form.id)
             // alert(this.form.inspectNo)
@@ -193,7 +192,7 @@ export default {
                 purchaseNumber: "采购数量",
                 requirements: "材质要求",
                 specification: "规格",
-                unit: "单位",
+                unit: "单位"
                 // purchaseNo: "合同编号"
             };
             const { items, arrivalTime } = this.form;

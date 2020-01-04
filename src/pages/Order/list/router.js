@@ -68,4 +68,14 @@ export default [{
     open: false,
     id: 'ddsc'
   }
+}, {
+  path: '/order/lack',
+  name: 'order-lack',
+  component: () => import( /* webpackChunkName: "orderlist" */ './lack.vue'),
+  meta: {
+    level: 2,
+    title: '订单缺料表',
+    open: false,
+    id: 'ddqlb'
+  }
 }]

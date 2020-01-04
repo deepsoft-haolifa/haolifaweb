@@ -98,7 +98,7 @@
                         </tr>
                         <tr style="border:thin" v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
-                            <td colspan="1">{{item.materialClassifyName}}</td>
+                            <td colspan="1">{{item.materialName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
                             <td colspan="1">{{item.model}}</td>
                             <td colspan="1">{{item.specifications}}</td>
@@ -185,15 +185,7 @@
                     <icon-btn bg small v-tooltip="'更多不合格数量及因'" @click="addReason">add</icon-btn>
                 </div>
                 <div class="flex">
-                    <upload-box
-                        class="ml-20 mb-10"
-                        btnText="上传附件"
-                        :fileList="fileList"
-                        :onchange="uploadFile"
-                        :multiple="true"
-                        :onremove="removeFile"
-                        style="width: 50%"
-                    ></upload-box>
+                    <upload-box class="ml-20 mb-10" btnText="上传附件" :fileList="fileList" :onchange="uploadFile" :multiple="true" :onremove="removeFile" style="width: 50%"></upload-box>
                 </div>
                 <div class="layer-btns">
                     <btn flat @click="completeLayer=false">取消</btn>
@@ -244,7 +236,7 @@
                         </tr>
                         <tr style="border:thin" v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
-                            <td colspan="1">{{item.materialClassifyName}}</td>
+                            <td colspan="1">{{item.materialName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
                             <td colspan="1">{{item.model}}</td>
                             <td colspan="1">{{item.specifications}}</td>

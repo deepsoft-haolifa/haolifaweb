@@ -19,8 +19,11 @@
                 <td>{{item.revUser}}</td>
                 <td>{{item.title }}</td>
                 <td>
-                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content.toString().substring(0,20)}}...</a>
+                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">工作日志</a>
                 </td>
+                <!-- <td>
+                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content.toString().substring(0,20)}}...</a>
+                </td>-->
                 <td>{{item.createTime}}</td>
                 <td class="t-right">
                     <!-- <a href="javascript:;" v-if="reserveFlag" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a> -->
@@ -90,7 +93,7 @@
                         </tr>
                         <tr>
                             <th>内容</th>
-                            <td style="word-break:break-all;white-space: inherit">{{infoDet.content}}</td>
+                            <td style="word-break:break-all;white-space: inherit" v-html="infoDet.content">{{infoDet.content}}</td>
                         </tr>
                     </table>
                 </div>

@@ -134,7 +134,7 @@ export default {
                 .get(`/haolifa/store-room/rack/list/${this.form.roomNo}`)
                 .then(res => {
                     this.form.storeRoomRacks = res.map(item => {
-                        return {value: item.rackNo, text: item.rackName};
+                        return { value: item.rackNo, text: item.rackName };
                     });
                     // 默认值
                     this.form.rackNo = this.form.storeRoomRacks[0].value;
@@ -157,6 +157,7 @@ export default {
             //     roomNo: "",
             //     productModel: ""
             // };
+            this.form.quantity = "";
             this.form.productNo = item.productNo;
             this.form.orderNo = item.orderNo;
             this.form.productModel = item.productModel;
@@ -164,7 +165,11 @@ export default {
             this.form.rackNo = item.rackNo;
             this.form.roomNo = item.roomNo;
             this.$http
-                .get(`/haolifa/order-product/details?orderNo=${this.form.orderNo}`)
+                .get(
+                    `/haolifa/order-product/details?orderNo=${
+                        this.form.orderNo
+                    }`
+                )
                 .then(res => {
                     this.form.customerName = res.demandName;
                 })
@@ -175,7 +180,7 @@ export default {
                 .get(`/haolifa/store-room/listInfo?type=2`)
                 .then(res => {
                     this.form.selectStoreRooms = res.map(item => {
-                        return {value: item.roomNo, text: item.name};
+                        return { value: item.roomNo, text: item.name };
                     });
                     this.form.roomNo = this.form.selectStoreRooms[0].value;
                     this.$http
@@ -249,9 +254,9 @@ export default {
                 "href",
                 `/haolifa/export/product-out?startDate=${
                     this.exportForm.startDate
-                    }&endDate=${this.exportForm.endDate}&orderNo=${
+                }&endDate=${this.exportForm.endDate}&orderNo=${
                     this.exportForm.orderNo
-                    }&operationType=1`
+                }&operationType=1`
             );
             a.click();
             this.exportLayer = false;

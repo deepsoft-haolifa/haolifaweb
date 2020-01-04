@@ -194,7 +194,7 @@ export default {
         return {
             filter: {
                 type: 0,
-                status: 2,
+                status: 0,
                 inspectNo: "",
                 purchaseOrderNo: ""
             },

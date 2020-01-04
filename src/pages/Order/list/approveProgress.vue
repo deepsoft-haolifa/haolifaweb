@@ -32,7 +32,7 @@
 <script>
 // import parseJson from '@/utils/parseJson'
 export default {
-    name: "metalwork-info",
+    name: "order-approveProgress",
     data() {
         return {
             list: [],

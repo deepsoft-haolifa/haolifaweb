@@ -6,6 +6,10 @@
         <input-box v-model='form.orderContractNo' class='flex-item' label='成品合同订单号(上传订单合同附件上面)'></input-box>
             </div>-->
             <div class="flex" style="margin:50px 0;">
+                <el-radio v-model="isCheckMaterial" label="1">走核料</el-radio>
+                <el-radio v-model="isCheckMaterial" label="0">不走核料</el-radio>
+            </div>
+            <div class="flex" style="margin:50px 0;">
                 <upload-box btnText="上传订单合同" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" style="width: 100%"></upload-box>
             </div>
 
@@ -67,7 +71,8 @@ export default {
             form: {
                 orderContractUrl: ""
                 // orderProductAssociates: []
-            }
+            },
+            isCheckMaterial: "1"
         };
     },
     mounted() {
@@ -104,7 +109,8 @@ export default {
                 this.$http
                     .post("/haolifa/order-product/uploadContract", {
                         base64Source: base64Str,
-                        fileName: file.name
+                        fileName: file.name,
+                        isCheckMaterial: this.isCheckMaterial
                     })
                     .then(res => {
                         this.$toast(!this.form.id ? "上传成功" : "更新成功");

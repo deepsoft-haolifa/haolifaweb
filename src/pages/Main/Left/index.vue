@@ -114,6 +114,11 @@ export default {
                         name: "订单生成",
                         url: "/order/create",
                         id: "ddsc"
+                    },
+                    {
+                        name: "订单缺料表",
+                        url: "/order/lack",
+                        id: "ddqlb"
                     }
                 ]
             },

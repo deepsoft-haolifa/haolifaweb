@@ -136,15 +136,7 @@
                                     </td>
                                     <td colspan="1">
                                         <el-button size="mini" icon="el-icon-circle-plus" type="primary" @click="addTechnicalRequire" circle></el-button>
-                                        <el-button
-                                            v-if="updateInfo.technicalRequire.length>1"
-                                            style="margin-left:0"
-                                            size="mini"
-                                            icon="el-icon-delete"
-                                            type="danger"
-                                            @click="delTechnicalRequire(index)"
-                                            circle
-                                        ></el-button>
+                                        <el-button v-if="updateInfo.technicalRequire.length>1" style="margin-left:0" size="mini" icon="el-icon-delete" type="danger" @click="delTechnicalRequire(index)" circle></el-button>
                                     </td>
                                 </tr>
                             </table>
@@ -386,14 +378,7 @@
                             <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
                         </div>
                         <div class="flex" v-if="dealStepId == 55 && purchaseList.length>0">
-                            <input-box
-                                :disabled="true"
-                                v-model="updateInfo.purchaseFeedbackTime"
-                                hint="必填"
-                                class="flex-item"
-                                label="采购完成时间"
-                                style="margin-right: 20px;"
-                            ></input-box>
+                            <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
                         </div>
                         <div>
                             <div v-if="purchaseList.length>0">
@@ -422,14 +407,7 @@
                             <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
                         </div>
                         <div class="flex">
-                            <upload-box
-                                btnText="附件上传"
-                                :fileList="fileList"
-                                :onchange="uploadFile"
-                                :onremove="removeFile"
-                                :multiple="multiple"
-                                style="width: 50%"
-                            ></upload-box>
+                            <upload-box btnText="附件上传" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" :multiple="multiple" style="width: 50%"></upload-box>
                         </div>
                         <div class="flex" style="margin-top:10px;">
                             <btn @click="handleStepM(1)">同意</btn>
@@ -464,7 +442,8 @@
                             <td>{{auditResults[item.auditResult].name}}</td>
                             <td>{{item.auditInfo}}</td>
                             <td v-if="item.accessories != null">
-                                <a target="_blank" v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a><br/>
+                                <a target="_blank" v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
+                                <br>
                             </td>
                             <td v-else>无</td>
                         </tr>
@@ -503,7 +482,6 @@
 <script>
 import moment from "moment";
 import fileToBase64 from "../../../../utils/fileToBase64";
-
 export default {
     name: "p-p-base",
     data() {
@@ -539,7 +517,6 @@ export default {
                 purchaseFeedbackTime: null,
                 technicalRequire: ""
             },
-
             technicalRequire: [
                 {
                     name: "",
@@ -745,7 +722,7 @@ export default {
                     this.$toast("处理成功");
                     this.handleStep.backStepId = null;
                     this.backStepLayer = false;
-                    this.getData();
+                    // this.getData();
                     let status = 1; // 同意,审批中
                     if (auditResult == 1) {
                         if (this.dealStepId == 51) {
@@ -760,7 +737,7 @@ export default {
                                 });
                         } else if (this.dealStepId == 52) {
                             // 技术总工
-                            if(this.orderInfo.isCheckMaterial == 1){
+                            if (this.orderInfo.isCheckMaterial == 1) {
                                 status = 2;
                             }
                         } else if (this.dealStepId == 54) {
@@ -782,7 +759,7 @@ export default {
                                 });
                         } else if (this.dealStepId == 55) {
                             // 综合计划
-                            if(this.orderInfo.isCheckMaterial == 1){
+                            if (this.orderInfo.isCheckMaterial == 1) {
                                 status = 5;
                             }
                             this.$http
@@ -802,7 +779,7 @@ export default {
                                 });
                         } else if (this.dealStepId == 56) {
                             // 生产调度
-                            if(this.orderInfo.isCheckMaterial == 1){
+                            if (this.orderInfo.isCheckMaterial == 1) {
                                 status = 6;
                             }
                             this.$http
@@ -841,11 +818,10 @@ export default {
                             status = 4;
                         }
                         if (this.handleStep.backStepId == 56) {
-                            if(this.orderInfo.isCheckMaterial == 1){
+                            if (this.orderInfo.isCheckMaterial == 1) {
                                 // 待生产
                                 status = 5;
                             }
-
                         }
                         if (this.handleStep.backStepId < 53) {
                             this.$http.post(

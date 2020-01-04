@@ -88,6 +88,10 @@ export default {
     },
     methods: {
         updateStatus(item, status) {
+            if (item.outRoomStatus != 2) {
+                this.$toast("该批零件还未出库，请及时办理出库手续！");
+                return;
+            }
             this.$confirm({
                 title: "状态变更提示",
                 text: status == 3 ? "确认开始加工？" : "确认加工完成？",

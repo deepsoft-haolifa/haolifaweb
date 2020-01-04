@@ -20,12 +20,15 @@
                 <td>{{index}}</td>
                 <td>{{item.sendUser}}</td>
                 <td>{{item.title }}</td>
-                <td v-if="item.content.toString().length>20">
-                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content.toString().substring(0,20)}}...</a>
+                <td>
+                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">工作日志</a>
+                </td>
+                <!-- <td v-if="item.content.toString().length>20">
+                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)" v-html="item.content">{{item.content.toString().substring(0,20)}}...</a>
                 </td>
                 <td v-else>
-                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)">{{item.content}}</a>
-                </td>
+                    <a href="javascript:;" style="color:#555" @click="infoDetail(item)" v-html="item.content">{{item.content}}</a>
+                </td>-->
                 <td>{{item.createTime}}</td>
                 <td class="t-right">
                     <!-- <a href="javascript:;" v-if="reserveFlag" style="margin-right: 3px" class="blue" @click="reserve(item)">回执 |</a> -->
@@ -57,7 +60,7 @@
                         </tr>
                         <tr v-for="item in info" :key="item.id">
                             <td colspan="2">{{item.userName}}</td>
-                            <td colspan="6">{{item.content}}</td>
+                            <td colspan="6" v-html="item.content">{{item.content}}</td>
                             <td colspan="2">{{item.createTime}}</td>
                         </tr>
                     </table>
@@ -95,7 +98,7 @@
                         </tr>
                         <tr>
                             <th>内容</th>
-                            <td style="word-break:break-all;white-space: inherit">{{infoDet.content}}</td>
+                            <td style="word-break:break-all;white-space: inherit" v-html="infoDet.content">{{infoDet.content}}</td>
                         </tr>
                     </table>
                 </div>

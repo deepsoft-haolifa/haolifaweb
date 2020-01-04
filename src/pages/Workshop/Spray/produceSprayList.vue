@@ -53,13 +53,7 @@
                         <!--<a href="javascript:;" v-if="item.status == 0" style="margin-right: 3px" class="blue" @click="deleteInfo(item)">删除</a>-->
                         <a href="javascript:;" v-if="item.status == 0 || item.status == 4" style="margin-right: 3px" class="blue" @click="machine(item)">开始加工</a>
                         <!--<a href="javascript:;" v-if="item.status == 1" style="margin-right: 3px" class="blue" @click="stopMachine(item)">暂停</a>-->
-                        <a
-                            href="javascript:;"
-                            v-if="item.status == 1 || item.status == 2"
-                            style="margin-right: 3px"
-                            class="blue"
-                            @click="completeMachine(item)"
-                        >加工完成</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status == 2" style="margin-right: 3px" class="blue" @click="completeMachine(item)">加工完成</a>
                         <a :href="`/haolifa/export/spray/excel/${item.sprayNo}`" download style="margin-right: 3px" class="blue">下载委托单</a>
                     </td>
                 </template>
@@ -108,7 +102,7 @@
                         </tr>
                         <tr style="border:thin" v-for="(item,i) in spray.items" :key="i">
                             <td colspan="1">{{i+1}}</td>
-                            <td colspan="1">{{item.materialClassifyName}}</td>
+                            <td colspan="1">{{item.materialName}}</td>
                             <td colspan="1">{{item.materialGraphNo}}</td>
                             <td colspan="1">{{item.model}}</td>
                             <td colspan="1">{{item.specifications}}</td>
@@ -234,6 +228,10 @@ export default {
         },
         //开始加工
         machine(item) {
+            if (item.outRoomStatus != 2) {
+                this.$toast("该批零件还未出库，请及时办理出库手续！");
+                return;
+            }
             this.updateStatus(item.sprayNo, 1);
         },
         // 暂停加工

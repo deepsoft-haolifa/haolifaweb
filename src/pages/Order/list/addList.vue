@@ -161,11 +161,7 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
                                 <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
@@ -181,11 +177,7 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -281,11 +273,7 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
                             </td>
                         </tr>
                     </table>
@@ -522,11 +510,14 @@ export default {
             let id = "";
             this.$http
                 .post("/haolifa/flowInstance/create", {
-                    flowId: 1,
+                    flowId: item.isCheckMaterial == 0 ? 6 : 1,
                     formId: item.id,
                     formType: 1,
                     formNo: item.orderNo,
-                    summary: "生产订单审批"
+                    summary:
+                        item.isCheckMaterial == 0
+                            ? "不核料订单审批"
+                            : "生产订单审批"
                 })
                 .then(res => {
                     id = res.instanceId;
@@ -540,6 +531,7 @@ export default {
                         .then(res => {
                             this.loading = false;
                             this.$toast(`发起流程成功,流程ID: ${id}`);
+                            this.$refs.list.update();
                         });
                 });
         },

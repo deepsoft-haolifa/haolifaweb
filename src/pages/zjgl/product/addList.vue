@@ -78,11 +78,7 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -97,11 +93,7 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -197,11 +189,7 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
                             </td>
                         </tr>
                     </table>
@@ -268,15 +256,7 @@
                     <input-box v-model="order.qualifiedNumber" class="flex-item mr-20" label="合格数量"></input-box>
                 </div>
                 <div class="flex">
-                    <upload-box
-                        class="ml-20 mb-10"
-                        btnText="上传附件"
-                        :fileList="fileList"
-                        :onchange="uploadFile"
-                        :multiple="true"
-                        :onremove="removeFile"
-                        style="width: 50%"
-                    ></upload-box>
+                    <upload-box class="ml-20 mb-10" btnText="上传附件" :fileList="fileList" :onchange="uploadFile" :multiple="true" :onremove="removeFile" style="width: 50%"></upload-box>
                 </div>
                 <div class="flex" v-for="(item,index) in order.unqualifiedList" :key="index">
                     <input-box v-model="item.number" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
@@ -329,11 +309,7 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -348,11 +324,7 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -448,11 +420,7 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a
-                                    target="_blank"
-                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
-                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
-                                >预览</a>
+                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
                             </td>
                         </tr>
                     </table>
@@ -719,7 +687,7 @@ export default {
                 .then(res => {
                     this.recordList = res.list;
                     this.recordList.map(item => {
-                         return (item.reasonArr = item.reasonList.map(obj => {
+                        return (item.reasonArr = item.reasonList.map(obj => {
                             if (obj.number)
                                 return (
                                     "数量:" +
@@ -764,6 +732,7 @@ export default {
                     this.$toast("添加成功");
                     this.loading = false;
                     this.completeLayer = false;
+                    this.$refs.list.update(true);
                 })
                 .catch(e => {
                     this.loading = false;

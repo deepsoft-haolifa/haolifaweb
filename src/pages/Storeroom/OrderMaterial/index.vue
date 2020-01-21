@@ -43,7 +43,7 @@
                         <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
                         <icon-btn small @click="remove(item)">delete</icon-btn>-->
                         <a href="javascript:;" class="blue" v-if="item.genPickingList === 0" @click="getInfo(item.orderNo)">核料单详情 |</a>
-                        <a :href="`/haolifa/export/requisition/${item.orderNo}`" download style="margin-right: 3px" class="blue">下载领料单 |</a>
+                        <a :href="`/haolifa/export/requisition?orderNo=${item.orderNo}`" download style="margin-right: 3px" class="blue">下载领料单 |</a>
                         <a href="javascript:;" class="blue" @click="getDetail(item.orderNo)">领料单详情</a>
                         <!--  <a href="javascript:;" class="blue" @click="entryList(item)">入库详情</a> |
                         <a href="javascript:;" class="blue" @click="outList(item)">出库详情</a>-->

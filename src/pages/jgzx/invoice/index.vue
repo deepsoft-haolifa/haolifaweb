@@ -59,13 +59,13 @@ export default {
             priceTotal: "",
             statusList: [
                 { status: -1, name: "全部" },
-                { status: 0, name: "已申请" },
-                { status: 1, name: "待开票" },
+                { status: 0, name: "待开票" },
+                { status: 1, name: "已申请" },
                 { status: 2, name: "已开票" }
             ],
             statusArr: [
-                { status: 0, name: "已申请" },
-                { status: 1, name: "待开票" },
+                { status: 0, name: "待开票" },
+                { status: 1, name: "已申请" },
                 { status: 2, name: "已开票" }
             ],
             filter: {

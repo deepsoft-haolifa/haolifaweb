@@ -41,8 +41,8 @@
                     <td>{{item.createTime}}</td>
                     <td>{{item.updateTime}}</td>
                     <td class="t-right">
-                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="add(item)">开票申请 |</a>
-                        <a href="javascript:;" v-if="item.status == 1" class="blue" @click="remove(item)">删除</a>
+                        <a href="javascript:;" v-if="item.status == 0" class="blue" @click="add(item)">开票申请 |</a>
+                        <a href="javascript:;" v-if="item.status == 0" class="blue" @click="remove(item)">删除</a>
                     </td>
                 </template>
             </data-list>
@@ -60,13 +60,13 @@ export default {
             priceTotal: "",
             statusList: [
                 { status: -1, name: "全部" },
-                { status: 0, name: "已申请" },
-                { status: 1, name: "待开票" },
+                { status: 0, name: "待开票" },
+                { status: 1, name: "已申请" },
                 { status: 2, name: "已开票" }
             ],
             statusArr: [
-                { status: 0, name: "已申请" },
-                { status: 1, name: "待开票" },
+                { status: 0, name: "待开票" },
+                { status: 1, name: "已申请" },
                 { status: 2, name: "已开票" }
             ],
             filter: {
@@ -124,7 +124,7 @@ export default {
             // data.status = item.status;
             // data.totalAmount = item.totalAmount;
             // data.type = item.type;
-            data.status = 0;
+            data.status = 1;
             this.$http
                 // .post("/haolifa/invoice/save", data)
                 .post("/haolifa/invoice/updateStatus", data)

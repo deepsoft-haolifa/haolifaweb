@@ -117,7 +117,8 @@ export default {
                 productSpecifications: "",
                 rackNo: "",
                 roomNo: "",
-                productModel: ""
+                productModel: "",
+                id: ""
             },
             loading: false,
             exportLayer: false,
@@ -157,6 +158,7 @@ export default {
             //     roomNo: "",
             //     productModel: ""
             // };
+            this.form.id = item.id;
             this.form.quantity = "";
             this.form.productNo = item.productNo;
             this.form.orderNo = item.orderNo;
@@ -207,6 +209,7 @@ export default {
         },
         outSave() {
             let save = {
+                id: this.form.id,
                 orderNo: this.form.orderNo,
                 productNo: this.form.productNo,
                 productModel: this.form.productModel,

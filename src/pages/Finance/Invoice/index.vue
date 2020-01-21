@@ -7,7 +7,7 @@
                 <i class="icon f-20 c-8">search</i>
                 <input type="text" class="flex-item" v-model="filter.constractParty" @change="$refs.list.update(true)" placeholder="合同方" style="width: 200px;">
                 开票状态：
-                <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
+                <select v-model="filter.status" class="f-14" @change="statusChange">
                     <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
                 </select>
                 <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i>
@@ -110,17 +110,18 @@ export default {
             filter: {
                 type: 0,
                 status: -1,
+                statusList: [1, 2],
                 orderNo: ""
             },
             allStatus: [
                 { value: -1, text: "全部" },
-                { value: 0, text: "已申请" },
-                { value: 1, text: "待开票" },
+                // { value: 0, text: "待开票" },
+                { value: 1, text: "已申请" },
                 { value: 2, text: "已开票" }
             ],
             statusArr: [
-                { value: 0, text: "已申请" },
-                { value: 1, text: "待开票" },
+                { value: 0, text: "待开票" },
+                { value: 1, text: "已申请" },
                 { value: 2, text: "已开票" }
             ],
             allTypes: [
@@ -170,6 +171,9 @@ export default {
             this.bill.layerbill = true;
             this.bill.billInvoiceNo = "";
             this.bill.id = item.id;
+        },
+        statusChange() {
+            this.$refs.list.update(true);
         },
         billInvoice() {
             this.$http

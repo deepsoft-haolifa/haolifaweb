@@ -8,7 +8,15 @@
                 <i class="icon">arrow_drop_{{item.open ? 'up' : 'down'}}</i>
             </div>
             <div v-if="item.open" class="openMenu">
-                <router-link class="nav-item flex-v-center c-6" v-for="m in item.children" v-if="menus.includes(m.id)" :key="m.id" :title="m.name" :to="m.url" :class="{'on': $route.meta.id === m.id}">{{m.name}}</router-link>
+                <router-link
+                    class="nav-item flex-v-center c-6"
+                    v-for="m in item.children"
+                    v-if="menus.includes(m.id)"
+                    :key="m.id"
+                    :title="m.name"
+                    :to="m.url"
+                    :class="{'on': $route.meta.id === m.id}"
+                >{{m.name}}</router-link>
             </div>
         </div>
     </div>
@@ -190,6 +198,11 @@ export default {
                         name: "零件待出库",
                         url: "/part/list",
                         id: "ljdck"
+                    },
+                    {
+                        name: "零星物资管理",
+                        url: "/scattered/list",
+                        id: "lxwzgl"
                     }
                 ]
             },

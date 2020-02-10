@@ -3,9 +3,9 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;" />
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.constractParty" @change="$refs.list.update(true)" placeholder="合同方" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.constractParty" @change="$refs.list.update(true)" placeholder="合同方" style="width: 200px;" />
                 开票状态：
                 <select v-model="filter.status" class="f-14" @change="statusChange">
                     <option v-for="item in allStatus" :value="item.value" v-bind:key="item.id">{{item.text}}</option>
@@ -69,9 +69,10 @@
         </layer>
 
         <layer v-if="bill.layerbill" :title="'开票'" width="450px">
-            <div class="layer-text" style="padding-bottom: 50px;">
+            <div class="layer-text" style="padding-bottom: 250px;">
                 <input-box v-model="bill.orderNo" label="合同编号"></input-box>
                 <input-box v-model="bill.billInvoiceNo" label="发票编号"></input-box>
+                <date-picker v-model="bill.invoiceDate" class="flex-item" label="开票时间" style="margin-right: 20px;"></date-picker>
             </div>
             <div class="layer-btns">
                 <btn flat @click="cancel">取消</btn>
@@ -141,6 +142,7 @@ export default {
             bill: {
                 layerbill: false,
                 billInvoiceNo: "",
+                invoiceDate: "",
                 orderNo: ""
             },
             layer: false,
@@ -170,6 +172,7 @@ export default {
             this.bill.orderNo = item.orderNo;
             this.bill.layerbill = true;
             this.bill.billInvoiceNo = "";
+            this.bill.invoiceDate = "";
             this.bill.id = item.id;
         },
         statusChange() {
@@ -177,10 +180,14 @@ export default {
         },
         billInvoice() {
             this.$http
-                .get(
-                    `/haolifa/invoice/updateInvoiceNo/${this.bill.id}/${
-                        this.bill.billInvoiceNo
-                    }`
+                .post(
+                    // `/haolifa/invoice/updateInvoiceNo/${this.bill.id}/${this.bill.billInvoiceNo}`,
+                    `/haolifa/invoice/updateInvoiceNo`,
+                    {
+                        id: this.bill.id,
+                        invoiceNo: this.bill.billInvoiceNo,
+                        invoiceDate: this.bill.invoiceDate
+                    }
                 )
                 .then(res => {
                     this.$toast("开票成功");
@@ -290,11 +297,7 @@ export default {
             a.setAttribute("download", ""); // download属性
             a.setAttribute(
                 "href",
-                `/haolifa/export/product-out?startDate=${
-                    this.exportForm.startDate
-                }&endDate=${this.exportForm.endDate}&orderNo=${
-                    this.exportForm.orderNo
-                }&operationType=1`
+                `/haolifa/export/product-out?startDate=${this.exportForm.startDate}&endDate=${this.exportForm.endDate}&orderNo=${this.exportForm.orderNo}&operationType=1`
             );
             a.click();
             this.exportLayer = false;

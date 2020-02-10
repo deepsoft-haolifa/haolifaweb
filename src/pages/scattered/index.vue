@@ -1,0 +1,334 @@
+<template>
+    <div class="page-material-list">
+        <div class="flex-v-center tool-bar">
+            <div class="flex-v-center search-bar" style="margin-right: 20px;">
+                <i class="icon f-20 c-8">search</i>
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.materialName"
+                    @change="$refs.list.update(true);getMoney()"
+                    placeholder="名称"
+                    style="width: 200px;"
+                />
+                <input type="text" class="flex-item" v-model="filter.model" @change="$refs.list.update(true)" placeholder="型号" style="width: 100px;" />
+                <input type="text" class="flex-item" v-model="filter.specifications" @change="$refs.list.update(true)" placeholder="规格" style="width: 100px;" />
+                <input type="text" class="flex-item" v-model="filter.classifyName" @change="$refs.list.update(true)" placeholder="分类名称" style="width: 100px;" />
+                <!-- <i class="icon" style="margin-left: -20px;pointer-events:none;">arrow_drop_down</i> -->
+            </div>
+            <div class="flex-item"></div>
+            <!-- <btn class="b" flat color="#008eff" @click="exportExcelIn">零件待入库导出</btn> -->
+            <!-- <btn class="b" flat color="#008eff" @click="exportExcelIn">入库导出</btn>
+            <btn class="b" flat color="#008eff" @click="exportExcelOut">出库导出</btn>
+            <a class="b" style="color:rgb(0, 142, 255)" href="/haolifa/export/material/surplus">零件结存导出</a>-->
+            <btn class="b" flat color="#008eff" @click="$router.push('/scattered/add')">新增</btn>
+        </div>
+        <div class="flex-item scroll-y">
+            <data-list ref="list" page-num-str="pageNum" :param="filter" url="/haolifa/sporadic/page" method="post">
+                <tr slot="header">
+                    <th style="width: 60px;">序号</th>
+                    <th>名称</th>
+                    <th>分类名称</th>
+                    <th>型号</th>
+                    <th>规格</th>
+                    <th>单价</th>
+                    <th>当前库存</th>
+                    <th>金额</th>
+                    <th class="t-center" style="width: 80px;">操作</th>
+                </tr>
+                <!-- item: 当前行数据; index: 当前行数 -->
+                <template slot="item" slot-scope="{ item, index }">
+                    <td class="c-a">{{index}}</td>
+                    <td>{{item.materialName}}</td>
+                    <td>{{item.classifyName}}</td>
+                    <td>{{item.model}}</td>
+                    <td>{{item.specifications}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.quantity * item.price}}</td>
+                    <td>
+                        <!-- <icon-btn small @click="edit(item)">edit</icon-btn>
+                        <icon-btn small @click="remove(item)">delete</icon-btn>-->
+                        <a href="javascript:;" class="blue" @click="entryMaterial(item)">入库</a> |
+                        <a href="javascript:;" class="blue" @click="outMaterial(item)">出库</a> |
+                        <a href="javascript:;" class="blue" @click="entryInfo(item)">入库详情</a> |
+                        <a href="javascript:;" class="blue" @click="outInfo(item)">出库详情</a>
+                    </td>
+                </template>
+            </data-list>
+        </div>
+        <layer v-if="exportInLayer" :title="'导出'" width="30%">
+            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportInForm.startDate" class="flex-item" label="开始时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportInForm.endDate" class="flex-item" label="结束时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="exportInForm.materialName" class="flex-item" label="物料名称"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="exportInLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="downloadIn()">确定</btn>
+            </div>
+        </layer>
+        <layer v-if="exportOutLayer" :title="'导出'" width="30%">
+            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportOutForm.startDate" class="flex-item" label="开始时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <date-picker v-model="exportOutForm.endDate" class="flex-item" label="结束时间"></date-picker>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="exportOutForm.materialGraphNo" class="flex-item" label="零件图号"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="exportOutLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="downloadOut()">确定</btn>
+            </div>
+        </layer>
+        <layer v-if="outLayer" :title="'出库'" width="30%">
+            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="outObj.quantity" type="number" class="flex-item" label="数量"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="outLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="outScattered()">确定</btn>
+            </div>
+        </layer>
+        <layer v-if="inLayer" :title="'入库'" width="30%">
+            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="inObj.quantity" type="number" class="flex-item" label="数量"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="inLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="inScattered()">确定</btn>
+            </div>
+        </layer>
+    </div>
+</template>
+
+<script>
+import DataList from "@/components/datalist";
+
+export default {
+    name: "scattered-list",
+    components: { DataList },
+    data() {
+        return {
+            exportOutLayer: false,
+            exportInLayer: false,
+            classifyList: [],
+            filter: {
+                classifyName: "",
+                materialName: "",
+                model: "",
+                specifications: ""
+            },
+            exportInForm: {
+                entryStatus: "1",
+                startDate: "",
+                endDate: ""
+            },
+            exportOutForm: {
+                operationType: "1",
+                startDate: "",
+                endDate: "",
+                materialGraphNo: ""
+            },
+            statusList: [
+                { value: 1, text: "待入库" },
+                { value: 2, text: "已入库" }
+            ],
+            money: "",
+            outLayer: false,
+            outObj: {
+                graphNo: "",
+                type: 1,
+                sporadicId: "",
+                quantity: 0
+            },
+            inObj: {
+                graphNo: "",
+                type: 1,
+                sporadicId: "",
+                quantity: 0
+            },
+            inLayer: false
+        };
+    },
+    created() {
+        this.getClassifyList();
+        this.getMoney();
+    },
+    methods: {
+        getMoney() {
+            this.$http.get("/haolifa/statistics/money/inventory").then(res => {
+                this.money = parseFloat(res).toLocaleString();
+            });
+        },
+        getClassifyList() {
+            this.$http.get("/haolifa/material/classify/list").then(res => {
+                this.classifyList = res.map(item => {
+                    return { value: item.id, text: item.classifyName };
+                });
+            });
+        },
+        entryMaterial(item) {
+            this.inLayer = true;
+            this.inObj.graphNo = item.graphNo;
+            this.inObj.sporadicId = item.id;
+            this.inObj.quantity = 0;
+        },
+        outMaterial(item) {
+            this.outLayer = true;
+            this.outObj.graphNo = item.graphNo;
+            this.outObj.sporadicId = item.id;
+            this.outObj.quantity = 0;
+        },
+        outScattered() {
+            if (!this.outObj.quantity) {
+                this.$toast("请输入出库数量");
+                return;
+            }
+            if (this.outObj.quantity > 0) {
+                this.outObj.quantity = 0 - this.outObj.quantity;
+            }
+
+            this.$http
+                .post("/haolifa/sporadic/out", this.outObj)
+                .then(res => {
+                    this.$toast("出库成功");
+                    this.outLayer = false;
+                    this.$refs.list.update();
+                })
+                .catch(e => {
+                    this.$toast(e.msg);
+                });
+        },
+        inScattered() {
+            if (!this.inObj.quantity) {
+                this.$toast("请输入入库数量");
+                return;
+            }
+            this.$http
+                .post("/haolifa/sporadic/entry", this.inObj)
+                .then(res => {
+                    this.$toast("入库成功");
+                    this.inLayer = false;
+                    this.$refs.list.update();
+                })
+                .catch(e => {
+                    this.$toast(e.msg);
+                });
+        },
+        entryInfo(item) {
+            this.$router.push(`/scattered/entry?id=${item.id}`);
+        },
+        outInfo(item) {
+            this.$router.push(`/scattered/out?id=${item.id}`);
+        },
+        edit(item) {
+            this.$router.push(`/material/edit?id=${item.id}`);
+        },
+        remove(item) {
+            this.$confirm({
+                title: "删除确认",
+                text: `您确定要删除以下库房吗？<br><b>${item.name}</b>`,
+                color: "red",
+                btns: ["取消", "删除"],
+                yes: () => {
+                    this.$http
+                        .delete(`/haolifa/material/delete/${item.id}`)
+                        .then(res => {
+                            this.$toast("删除成功");
+                            this.$refs.list.update();
+                        })
+                        .catch(e => {
+                            this.$toast(e.msg);
+                        });
+                }
+            });
+        },
+        exportExcelIn() {
+            this.exportInLayer = true;
+            this.exportInForm = {
+                startDate: "",
+                endDate: "",
+                materialName: "",
+                sporadicId: "",
+                type: 1,
+                pageNum: 1,
+                pageSize: 1000
+            };
+        },
+        exportExcelOut() {
+            this.exportOutLayer = true;
+            this.exportOutForm = {
+                startDate: "",
+                endDate: "",
+                materialName: "",
+                sporadicId: "",
+                type: 1,
+                pageNum: 1,
+                pageSize: 1000
+            };
+        },
+        downloadOut() {
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                // `/haolifa/export/product-out?startDate=${
+                `/haolifa/export/material/record?startDate=${this.exportOutForm.startDate}&endDate=${this.exportOutForm.endDate}&materialGraphNo=${this.exportOutForm.materialGraphNo}&operationType=1`
+            );
+            a.click();
+            this.exportInLayer = false;
+            this.exportOutLayer = false;
+        },
+        downloadIn() {
+            const a = document.createElement("a"); // 创建a标签
+            a.setAttribute("download", ""); // download属性
+            a.setAttribute(
+                "href",
+                `/haolifa/export/product-out?startDate=${this.exportOutForm.startDate}&endDate=${this.exportOutForm.endDate}&entryStatus=${this.exportOutForm.entryStatus}`
+            );
+            a.click();
+            this.exportInLayer = false;
+        }
+    },
+    filters: {
+        numFilter(value) {
+            // 截取当前数据到小数点后两位
+
+            let realVal = parseFloat(value).toFixed(2);
+
+            return realVal;
+        }
+    }
+};
+</script>
+
+<style lang="less">
+.page-material-list {
+    select {
+        background: none;
+        border: none;
+        outline: none;
+        padding: 5px 20px 5px 10px;
+        appearance: none;
+    }
+
+    .scroll-y {
+        padding-bottom: 40px;
+    }
+}
+</style>

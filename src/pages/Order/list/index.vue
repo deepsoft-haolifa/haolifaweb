@@ -3,7 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;" />
                 订单状态：
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
@@ -90,7 +90,11 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                >预览</a>
                                 <a href="javascript:;" @click="getPreCheckMater(info.orderNo)" style="margin-left: 15px;">核料清单</a>
                             </td>
                             <!-- <td colspan="6" class="b">
@@ -106,7 +110,11 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -202,8 +210,31 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
                             </td>
+                        </tr>
+                        <tr>
+                            <td colspan="14" class="b">审核信息</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="b">流程节点</td>
+                            <td colspan="2" class="b">角色</td>
+                            <td colspan="1" class="b">审核人</td>
+                            <td colspan="2" class="b">审核状态</td>
+                            <td colspan="4" class="b">审核意见</td>
+                            <td colspan="2" class="b">审核时间</td>
+                        </tr>
+                        <tr v-for="pro in processList" :key="pro.stepName">
+                            <td colspan="3">{{pro.stepName}}</td>
+                            <td colspan="2">{{pro.roleName}}</td>
+                            <td colspan="1">{{pro.auditUserName}}</td>
+                            <td colspan="2">{{statusList[pro.auditResult]}}</td>
+                            <td colspan="4">{{pro.info}}</td>
+                            <td colspan="2">{{pro.auditTime}}</td>
                         </tr>
                     </table>
                 </div>
@@ -237,10 +268,10 @@
                         </tr>
                         <tr>
                             <th>物料名称</th>
-                            <th colspan="2">物料图号</th>
+                            <th colspan="3">物料图号</th>
                             <th colspan="2">型号</th>
                             <th>规格</th>
-                            <th>单价</th>
+                            <!-- <th>单价</th> -->
                             <th>单位</th>
                             <th>需要数量</th>
                             <th>缺少数量</th>
@@ -251,10 +282,10 @@
                         </tr>
                         <tr v-for="(item, i) in preCheckMaterList" :key="i">
                             <td>{{item.materialName}}</td>
-                            <td colspan="2">{{item.materialGraphNo}}</td>
+                            <td colspan="3">{{item.materialGraphNo}}</td>
                             <td colspan="2">{{item.model}}</td>
                             <td>{{item.specifications}}</td>
-                            <td>{{item.price}}</td>
+                            <!-- <td>{{item.price}}</td> -->
                             <td>{{item.unit}}</td>
                             <td>{{item.materialCount}}</td>
                             <td>{{item.lackMaterialCount}}</td>
@@ -356,7 +387,14 @@ export default {
                 { value: 2, text: "待采购" },
                 { value: 3, text: "可替换" }
             ],
-            fileDetailList: []
+            fileDetailList: [],
+            processList: [],
+            statusList: {
+                0: "审核不通过",
+                1: "审核通过",
+                3: "流程初始化",
+                4: "未审核"
+            }
         };
     },
     created() {
@@ -436,11 +474,24 @@ export default {
             this.layer = true;
             this.getInfo(item.orderNo);
             this.getAccessory(item.orderNo);
+            this.getProcess(item);
             // this.getOrderStatusList();
             this.$http
                 .get(`/haolifa/order-product/accessory/${item.orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getProcess(item) {
+            this.$http
+                .get(
+                    `/haolifa/flowInstance/flow/progress/?formNo=${item.orderNo}`
+                )
+                .then(res => {
+                    this.processList = res;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

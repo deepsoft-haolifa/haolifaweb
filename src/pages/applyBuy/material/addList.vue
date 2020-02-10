@@ -3,9 +3,16 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;" />
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.purchaseOrderNo"
+                    @change="$refs.list.update(true)"
+                    placeholder="采购合同号"
+                    style="width: 200px;"
+                />
+                <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;" />
             </div>状态：
             <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                 <option value="0">全部</option>
@@ -271,9 +278,7 @@ export default {
         getInspectHistory() {
             this.$http
                 .get(
-                    `/haolifa/material-inspect/history/list/${
-                        this.inspect.inspectNo
-                    }`
+                    `/haolifa/material-inspect/history/list/${this.inspect.inspectNo}`
                 )
                 .then(res => {
                     this.inspectHistory = res;

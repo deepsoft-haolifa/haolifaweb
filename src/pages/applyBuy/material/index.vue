@@ -3,9 +3,16 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.purchaseOrderNo" @change="$refs.list.update(true)" placeholder="采购合同号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.inspectNo" @change="$refs.list.update(true)" placeholder="送检单号" style="width: 200px;" />
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model="filter.purchaseOrderNo"
+                    @change="$refs.list.update(true)"
+                    placeholder="采购合同号"
+                    style="width: 200px;"
+                />
+                <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;" />
             </div>状态：
             <select v-model="filter.status" class="f-14" @change="$refs.list.update(true)">
                 <option value="0">全部</option>
@@ -59,31 +66,35 @@
                     <table class="f-14">
                         <tr>
                             <!--  -->
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
                             <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
-                            <td style="width: 10%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
+                            <td style="width: 9%;"></td>
                         </tr>
                         <tr>
-                            <td colspan="11" class="b">零件送检单</td>
+                            <td colspan="3" class="b">零件送检单</td>
+                            <td colspan="9" class="b">
+                                <a :href="'/haolifa/export/material-inspect/'+inspect.id" style="margin-right: 3px" class="blue">下载</a>
+                            </td>
                         </tr>
                         <tr>
-                            <th colspan="5">送检单号：{{inspect.inspectNo}}</th>
+                            <th colspan="6">送检单号：{{inspect.inspectNo}}</th>
                             <td colspan="6">发起日期：{{inspect.createTime}}</td>
                         </tr>
                         <tr>
-                            <th colspan="5">采购合同号：{{inspect.purchaseNo}}</th>
+                            <th colspan="6">采购合同号：{{inspect.purchaseNo}}</th>
                             <td colspan="6">批次号：{{inspect.batchNumber}}</td>
                         </tr>
                         <tr>
-                            <th colspan="5">供应商：{{inspect.supplierName}}</th>
+                            <th colspan="6">供应商：{{inspect.supplierName}}</th>
                             <td colspan="6">到货日期：{{inspect.arrivalTime}}</td>
                         </tr>
                         <tr>
@@ -96,6 +107,7 @@
                             <td colspan="1" class="b">单位</td>
                             <td colspan="1" class="b">采购数</td>
                             <td colspan="1" class="b">送货数</td>
+                            <td colspan="1" class="b">合格数</td>
                             <td colspan="1" class="b">不合格数量</td>
                             <td colspan="1" class="b">备注</td>
                         </tr>
@@ -109,6 +121,7 @@
                             <td colspan="1">{{item.unit}}</td>
                             <td colspan="1">{{item.purchaseNumber}}</td>
                             <td colspan="1">{{item.deliveryNumber}}</td>
+                            <td colspan="1">{{item.qualifiedNumber}}</td>
                             <td colspan="1">{{item.unqualifiedNumber}}</td>
                             <td colspan="1">{{item.remark}}</td>
                         </tr>
@@ -271,9 +284,7 @@ export default {
         getInspectHistory() {
             this.$http
                 .get(
-                    `/haolifa/material-inspect/history/list/${
-                        this.inspect.inspectNo
-                    }`
+                    `/haolifa/material-inspect/history/list/${this.inspect.inspectNo}`
                 )
                 .then(res => {
                     this.inspectHistory = res;

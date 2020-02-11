@@ -18,9 +18,9 @@
             </div>
             <div class="flex-item"></div>
             <!-- <btn class="b" flat color="#008eff" @click="exportExcelIn">零件待入库导出</btn> -->
-            <!-- <btn class="b" flat color="#008eff" @click="exportExcelIn">入库导出</btn>
+            <btn class="b" flat color="#008eff" @click="exportExcelIn">入库导出</btn>
             <btn class="b" flat color="#008eff" @click="exportExcelOut">出库导出</btn>
-            <a class="b" style="color:rgb(0, 142, 255)" href="/haolifa/export/material/surplus">零件结存导出</a>-->
+            <a class="b" style="color:rgb(0, 142, 255)" href="/haolifa/sporadic/material/surplus">结存导出</a>
             <btn class="b" flat color="#008eff" @click="$router.push('/scattered/add')">新增</btn>
         </div>
         <div class="flex-item scroll-y">
@@ -83,7 +83,7 @@
                     <date-picker v-model="exportOutForm.endDate" class="flex-item" label="结束时间"></date-picker>
                 </div>
                 <div class="flex ml-20 mr-20">
-                    <input-box v-model="exportOutForm.materialGraphNo" class="flex-item" label="零件图号"></input-box>
+                    <input-box v-model="exportOutForm.materialName" class="flex-item" label="零件图号"></input-box>
                 </div>
             </div>
             <div class="layer-btns">
@@ -134,15 +134,14 @@ export default {
                 specifications: ""
             },
             exportInForm: {
-                entryStatus: "1",
+                materialName: "",
                 startDate: "",
                 endDate: ""
             },
             exportOutForm: {
-                operationType: "1",
                 startDate: "",
                 endDate: "",
-                materialGraphNo: ""
+                materialName: ""
             },
             statusList: [
                 { value: 1, text: "待入库" },
@@ -165,23 +164,8 @@ export default {
             inLayer: false
         };
     },
-    created() {
-        this.getClassifyList();
-        this.getMoney();
-    },
+    created() {},
     methods: {
-        getMoney() {
-            this.$http.get("/haolifa/statistics/money/inventory").then(res => {
-                this.money = parseFloat(res).toLocaleString();
-            });
-        },
-        getClassifyList() {
-            this.$http.get("/haolifa/material/classify/list").then(res => {
-                this.classifyList = res.map(item => {
-                    return { value: item.id, text: item.classifyName };
-                });
-            });
-        },
         entryMaterial(item) {
             this.inLayer = true;
             this.inObj.graphNo = item.graphNo;
@@ -236,38 +220,15 @@ export default {
         outInfo(item) {
             this.$router.push(`/scattered/out?id=${item.id}`);
         },
-        edit(item) {
-            this.$router.push(`/material/edit?id=${item.id}`);
-        },
-        remove(item) {
-            this.$confirm({
-                title: "删除确认",
-                text: `您确定要删除以下库房吗？<br><b>${item.name}</b>`,
-                color: "red",
-                btns: ["取消", "删除"],
-                yes: () => {
-                    this.$http
-                        .delete(`/haolifa/material/delete/${item.id}`)
-                        .then(res => {
-                            this.$toast("删除成功");
-                            this.$refs.list.update();
-                        })
-                        .catch(e => {
-                            this.$toast(e.msg);
-                        });
-                }
-            });
-        },
+        // edit(item) {
+        //     this.$router.push(`/material/edit?id=${item.id}`);
+        // },
         exportExcelIn() {
             this.exportInLayer = true;
             this.exportInForm = {
                 startDate: "",
                 endDate: "",
-                materialName: "",
-                sporadicId: "",
-                type: 1,
-                pageNum: 1,
-                pageSize: 1000
+                materialName: ""
             };
         },
         exportExcelOut() {
@@ -275,31 +236,34 @@ export default {
             this.exportOutForm = {
                 startDate: "",
                 endDate: "",
-                materialName: "",
-                sporadicId: "",
-                type: 1,
-                pageNum: 1,
-                pageSize: 1000
+                materialName: ""
             };
         },
         downloadOut() {
+            if (!this.exportOutForm.startDate || !this.exportOutForm.endDate) {
+                this.$toast("请输入开始时间和结束时间");
+                return;
+            }
             const a = document.createElement("a"); // 创建a标签
             a.setAttribute("download", ""); // download属性
             a.setAttribute(
                 "href",
                 // `/haolifa/export/product-out?startDate=${
-                `/haolifa/export/material/record?startDate=${this.exportOutForm.startDate}&endDate=${this.exportOutForm.endDate}&materialGraphNo=${this.exportOutForm.materialGraphNo}&operationType=1`
+                `/haolifa/sporadic/material-out-record?startDate=${this.exportOutForm.startDate}&endDate=${this.exportOutForm.endDate}&materialName=${this.exportOutForm.materialName}`
             );
             a.click();
-            this.exportInLayer = false;
             this.exportOutLayer = false;
         },
         downloadIn() {
+            if (!this.exportInForm.startDate || !this.exportInForm.endDate) {
+                this.$toast("请输入开始时间和结束时间");
+                return;
+            }
             const a = document.createElement("a"); // 创建a标签
             a.setAttribute("download", ""); // download属性
             a.setAttribute(
                 "href",
-                `/haolifa/export/product-out?startDate=${this.exportOutForm.startDate}&endDate=${this.exportOutForm.endDate}&entryStatus=${this.exportOutForm.entryStatus}`
+                `/haolifa/sporadic/material-entry-record?startDate=${this.exportInForm.startDate}&endDate=${this.exportInForm.endDate}&materialName=${this.exportInForm.materialName}`
             );
             a.click();
             this.exportInLayer = false;

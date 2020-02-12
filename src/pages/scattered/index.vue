@@ -52,7 +52,8 @@
                         <a href="javascript:;" class="blue" @click="entryMaterial(item)">入库</a> |
                         <a href="javascript:;" class="blue" @click="outMaterial(item)">出库</a> |
                         <a href="javascript:;" class="blue" @click="entryInfo(item)">入库详情</a> |
-                        <a href="javascript:;" class="blue" @click="outInfo(item)">出库详情</a>
+                        <a href="javascript:;" class="blue" @click="outInfo(item)">出库详情</a> |
+                        <a href="javascript:;" class="blue" @click="editInfo(item)">价格修改</a>
                     </td>
                 </template>
             </data-list>
@@ -96,10 +97,35 @@
                 <div class="flex ml-20 mr-20">
                     <input-box v-model="outObj.quantity" type="number" class="flex-item" label="数量"></input-box>
                 </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="outObj.receiveDepartment" class="flex-item" label="领料部门"></input-box>
+                </div>
             </div>
             <div class="layer-btns">
                 <btn flat @click="outLayer=false">取消</btn>
                 <btn flat color="#008eff" @click="outScattered()">确定</btn>
+            </div>
+        </layer>
+        <layer v-if="inLayer" :title="'入库'" width="30%">
+            <div class="layer-text" style="padding-bottom: 50px;min-height:380px;">
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="inObj.quantity" type="number" class="flex-item" label="数量"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="inLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="inScattered()">确定</btn>
+            </div>
+        </layer>
+        <layer v-if="editLayer" :title="'价格修改'" width="30%">
+            <div class="layer-text" style="padding-bottom: 20px;min-height:40px;">
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="editForm.price" type="number" class="flex-item" label="价格"></input-box>
+                </div>
+            </div>
+            <div class="layer-btns">
+                <btn flat @click="editLayer=false">取消</btn>
+                <btn flat color="#008eff" @click="saveScattered()">确定</btn>
             </div>
         </layer>
         <layer v-if="inLayer" :title="'入库'" width="30%">
@@ -153,7 +179,8 @@ export default {
                 graphNo: "",
                 type: 1,
                 sporadicId: "",
-                quantity: 0
+                quantity: 0,
+                receiveDepartment: ""
             },
             inObj: {
                 graphNo: "",
@@ -161,7 +188,9 @@ export default {
                 sporadicId: "",
                 quantity: 0
             },
-            inLayer: false
+            inLayer: false,
+            editLayer: false,
+            editForm: {}
         };
     },
     created() {},
@@ -177,10 +206,15 @@ export default {
             this.outObj.graphNo = item.graphNo;
             this.outObj.sporadicId = item.id;
             this.outObj.quantity = 0;
+            this.outObj.receiveDepartment = "";
         },
         outScattered() {
             if (!this.outObj.quantity) {
                 this.$toast("请输入出库数量");
+                return;
+            }
+            if (!this.outObj.receiveDepartment) {
+                this.$toast("请输入领料部门");
                 return;
             }
             if (this.outObj.quantity > 0) {
@@ -267,6 +301,30 @@ export default {
             );
             a.click();
             this.exportInLayer = false;
+        },
+        editInfo(item) {
+            this.editForm = JSON.parse(JSON.stringify(item));
+            this.editLayer = true;
+        },
+        saveScattered() {
+            if (!this.editForm.price) {
+                this.$toast("价格不能为空");
+                return;
+            }
+            if (this.editForm.price < 0) {
+                this.$toast("请输入正确的价格");
+                return;
+            }
+            this.$http
+                .post("/haolifa/sporadic/update", this.editForm)
+                .then(res => {
+                    this.$toast("修改成功");
+                    this.editLayer = false;
+                    this.$refs.list.update();
+                })
+                .catch(e => {
+                    this.$toast(e.msg);
+                });
         }
     },
     filters: {

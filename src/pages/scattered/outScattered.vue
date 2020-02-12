@@ -10,8 +10,9 @@
                     <th>型号</th>
                     <th>图号</th>
                     <th>规格</th>
-                    <th>入库数量（负数）</th>
-                    <th>入库时间</th>
+                    <th>出库数量（负数）</th>
+                    <th>领料部门</th>
+                    <th>出库时间</th>
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -22,6 +23,7 @@
                     <td>{{item.graphNo}}</td>
                     <td>{{item.specifications}}</td>
                     <td>{{item.quantity}}</td>
+                    <td>{{item.receiveDepartment}}</td>
                     <td>{{item.updateTime}}</td>
                 </template>
             </data-list>

@@ -29,6 +29,7 @@
                     <th>金额</th>
                     <th>发票号</th>
                     <th>类型</th>
+                    <th>开票日期</th>
                     <th>状态</th>
                     <th>备注</th>
                     <th class="t-right" style="width: 80px;">操作</th>
@@ -40,6 +41,7 @@
                     <td>￥ {{item.totalAmount}}</td>
                     <td>{{item.invoiceNo}}</td>
                     <td>{{allTypes[item.type].text}}</td>
+                    <td>{{item.invoiceDate}}</td>
                     <td>{{statusArr[item.status].text}}</td>
                     <td>{{item.remark}}</td>
                     <td class="t-right">
@@ -52,7 +54,7 @@
         </div>
 
         <layer v-if="layer" :title="form.id ? '编辑发票' : '新增发票'" width="60%">
-            <div class="layer-text">
+            <div class="layer-text" style="margin-bottom:80px">
                 <input-box v-model="form.invoiceNo" label="发票编号"></input-box>
                 <input-box v-model="form.orderNo" label="订单编号"></input-box>
                 <select-box :list="allStatusAdd" v-model="form.status" label="发票状态"></select-box>
@@ -60,6 +62,7 @@
                 <input-box v-model="form.invoiceIssuing" label="开票单位"></input-box>
                 <input-box v-model="form.invoiceCompany" label="收票单位"></input-box>
                 <input-box type="number" v-model="form.totalAmount" label="发票金额"></input-box>
+                <date-picker v-model="form.invoiceDate" class="flex-item" label="开票时间" style="margin-right: 20px;"></date-picker>
                 <input-box :multi-line="true" type="text" v-model="form.remark" label="备注"></input-box>
             </div>
             <div class="layer-btns">
@@ -154,7 +157,8 @@ export default {
                 totalAmount: "",
                 type: 1,
                 invoiceIssuing: "",
-                invoiceCompany: ""
+                invoiceCompany: "",
+                invoiceDate: ""
             },
             exportLayer: false,
             exportForm: {

@@ -3,7 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;" />
                 <select v-model="filter.orderStatus" disabled class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
                     <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
@@ -276,6 +276,47 @@
                         </table>
                     </div>
                 </div>
+                <div class="mt-15 ml-20 mr-20" style="overflow-x: auto">
+                    <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
+                        <div class="flex-item" style="text-align: center;line-height: 24px;">审核信息</div>
+                    </div>
+                    <div class="flex-item scroll-y page-supplier-info" style="overflow-x: auto">
+                        <table class="data-table">
+                            <tr>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 8%;"></td>
+                                <td style="width: 8%;"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b">流程节点</td>
+                                <td colspan="2" class="b">角色</td>
+                                <td colspan="1" class="b">审核人</td>
+                                <td colspan="2" class="b">审核状态</td>
+                                <td colspan="4" class="b">审核意见</td>
+                                <td colspan="2" class="b">审核时间</td>
+                            </tr>
+                            <tr v-for="pro in processList" :key="pro.stepName">
+                                <td colspan="3">{{pro.stepName}}</td>
+                                <td colspan="2">{{pro.roleName}}</td>
+                                <td colspan="1">{{pro.auditUserName}}</td>
+                                <td colspan="2">{{statusList[pro.auditResult]}}</td>
+                                <td colspan="4">{{pro.info}}</td>
+                                <td colspan="2">{{pro.auditTime}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="layer-btns">
                 <btn flat color="#008eff" @click="closeLayer()">关闭</btn>
@@ -336,7 +377,14 @@ export default {
             reasonList: [],
             recordList: [],
             //附件详情数组
-            fileDetailList: []
+            fileDetailList: [],
+            processList: [],
+            statusList: {
+                0: "审核不通过",
+                1: "审核通过",
+                3: "流程初始化",
+                4: "未审核"
+            }
         };
     },
     created() {
@@ -461,7 +509,7 @@ export default {
                 .then(res => {
                     this.recordList = res.list;
                     this.recordList.map(item => {
-                         return (item.reasonArr = item.reasonList.map(obj => {
+                        return (item.reasonArr = item.reasonList.map(obj => {
                             if (obj.number)
                                 return (
                                     "数量:" +
@@ -472,6 +520,17 @@ export default {
                                 );
                         }));
                     });
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+            this.getProcess(orderNo);
+        },
+        getProcess(orderNo) {
+            this.$http
+                .get(`/haolifa/flowInstance/flow/progress/?formNo=${orderNo}`)
+                .then(res => {
+                    this.processList = res;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

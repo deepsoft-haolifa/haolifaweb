@@ -3,7 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;" />
                 <select v-model="filter.orderStatus" disabled class="f-14" @change="$refs.list.update(true)">
                     <option value="-1">全部</option>
                     <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
@@ -78,7 +78,11 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                >预览</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -93,7 +97,11 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -189,7 +197,11 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                     </table>
@@ -256,7 +268,15 @@
                     <input-box v-model="order.qualifiedNumber" class="flex-item mr-20" label="合格数量"></input-box>
                 </div>
                 <div class="flex">
-                    <upload-box class="ml-20 mb-10" btnText="上传附件" :fileList="fileList" :onchange="uploadFile" :multiple="true" :onremove="removeFile" style="width: 50%"></upload-box>
+                    <upload-box
+                        class="ml-20 mb-10"
+                        btnText="上传附件"
+                        :fileList="fileList"
+                        :onchange="uploadFile"
+                        :multiple="true"
+                        :onremove="removeFile"
+                        style="width: 50%"
+                    ></upload-box>
                 </div>
                 <div class="flex" v-for="(item,index) in order.unqualifiedList" :key="index">
                     <input-box v-model="item.number" class="flex-item mr-20 ml-20" label="不合格数量"></input-box>
@@ -309,7 +329,11 @@
                                 订单合同:
                                 <a :href="info.orderContractUrl" style="margin-right: 15px;">下载</a>
                                 <a target="_blank" v-if="(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="info.orderContractUrl">预览</a>
-                                <a target="_blank" v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(info.orderContractUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
+                                >预览</a>
                             </td>
                             <!-- <td colspan="6" class="b">
                         订单备份合同:
@@ -324,7 +348,11 @@
                             <td colspan="3" class="b">{{item.fileName}}</td>
                             <td colspan="12" class="b">
                                 <a target="_blank" v-if="(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$') " :href="item.fileUrl">预览</a>
-                                <a target="_blank" v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="!(item.fileUrl).match('\.(pdf|jpe?g|png|bmp)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ item.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                         <tr>
@@ -420,7 +448,11 @@
                             <td colspan="6">{{accessory.fileUrl}}</td>
                             <td colspan="2">
                                 <a target="_blank" v-if="!(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$') " :href="accessory.fileUrl">预览</a>
-                                <a target="_blank" v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')" :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl">预览</a>
+                                <a
+                                    target="_blank"
+                                    v-if="(accessory.fileUrl).match('\.(doc|docx|xls|xlsx)$')"
+                                    :href="'http://view.officeapps.live.com/op/view.aspx?src='+ accessory.fileUrl"
+                                >预览</a>
                             </td>
                         </tr>
                     </table>
@@ -469,6 +501,47 @@
                                 </td>
                                 <td>{{item.storageStatus == 1?'待入库':'已入库'}}</td>
                                 <td>{{item.createTime}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-15 ml-20 mr-20" style="overflow-x: auto">
+                    <div class="b f-18 flex-v-center ml-20" style="margin-bottom: 20px;">
+                        <div class="flex-item" style="text-align: center;line-height: 24px;">审核信息</div>
+                    </div>
+                    <div class="flex-item scroll-y page-supplier-info" style="overflow-x: auto">
+                        <table class="data-table">
+                            <tr>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 7%;"></td>
+                                <td style="width: 8%;"></td>
+                                <td style="width: 8%;"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b">流程节点</td>
+                                <td colspan="2" class="b">角色</td>
+                                <td colspan="1" class="b">审核人</td>
+                                <td colspan="2" class="b">审核状态</td>
+                                <td colspan="4" class="b">审核意见</td>
+                                <td colspan="2" class="b">审核时间</td>
+                            </tr>
+                            <tr v-for="pro in processList" :key="pro.stepName">
+                                <td colspan="3">{{pro.stepName}}</td>
+                                <td colspan="2">{{pro.roleName}}</td>
+                                <td colspan="1">{{pro.auditUserName}}</td>
+                                <td colspan="2">{{statusList[pro.auditResult]}}</td>
+                                <td colspan="4">{{pro.info}}</td>
+                                <td colspan="2">{{pro.auditTime}}</td>
                             </tr>
                         </table>
                     </div>
@@ -536,7 +609,14 @@ export default {
             reasonList: [],
             recordList: [],
             fileList: [],
-            fileDetailList: []
+            fileDetailList: [],
+            processList: [],
+            statusList: {
+                0: "审核不通过",
+                1: "审核通过",
+                3: "流程初始化",
+                4: "未审核"
+            }
         };
     },
     created() {
@@ -706,6 +786,17 @@ export default {
                 .get(`/haolifa/order-product/accessory/${orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+            this.getProcess(orderNo);
+        },
+        getProcess(orderNo) {
+            this.$http
+                .get(`/haolifa/flowInstance/flow/progress/?formNo=${orderNo}`)
+                .then(res => {
+                    this.processList = res;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);

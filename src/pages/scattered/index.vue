@@ -53,7 +53,8 @@
                         <a href="javascript:;" class="blue" @click="outMaterial(item)">出库</a> |
                         <a href="javascript:;" class="blue" @click="entryInfo(item)">入库详情</a> |
                         <a href="javascript:;" class="blue" @click="outInfo(item)">出库详情</a> |
-                        <a href="javascript:;" class="blue" @click="editInfo(item)">价格修改</a>
+                        <a href="javascript:;" class="blue" @click="editInfo(item)">编辑</a> |
+                        <a href="javascript:;" class="blue" @click="delInfo(item)">删除</a>
                     </td>
                 </template>
             </data-list>
@@ -117,7 +118,7 @@
                 <btn flat color="#008eff" @click="inScattered()">确定</btn>
             </div>
         </layer>
-        <layer v-if="editLayer" :title="'价格修改'" width="30%">
+        <layer v-if="editLayer" :title="'编辑'" width="30%">
             <div class="layer-text" style="padding-bottom: 20px;min-height:40px;">
                 <div class="flex ml-20 mr-20">
                     <input-box v-model="editForm.price" type="number" class="flex-item" label="价格"></input-box>
@@ -325,6 +326,25 @@ export default {
                 .catch(e => {
                     this.$toast(e.msg);
                 });
+        },
+        delInfo(item) {
+            this.$confirm({
+                title: "删除确认",
+                text: `您确定要删除吗？`,
+                color: "red",
+                btns: ["取消", "删除"],
+                yes: () => {
+                    this.$http
+                        .post(`/haolifa/sporadic/del/${item.id}`)
+                        .then(res => {
+                            this.$toast("删除成功");
+                            this.$refs.list.update();
+                        })
+                        .catch(e => {
+                            this.$toast(e.msg);
+                        });
+                }
+            });
         }
     },
     filters: {

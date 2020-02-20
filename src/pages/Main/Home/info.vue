@@ -42,10 +42,6 @@
                             :href="'http://view.officeapps.live.com/op/view.aspx?src='+ info.orderContractUrl"
                         >预览</a>
                     </td>
-                    <!-- <td colspan="6" class="b">
-                        订单备份合同:
-                        <a :href="info.orderContractExtendUrl">下载</a>
-                    </td>-->
                 </tr>
                 <tr>
                     <td colspan="14" class="b" v-if="fileDetailList.length">订单附件:</td>
@@ -207,7 +203,7 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
             this.$http
-                .get(`/haolifa/order-product/accessory/${orderNo}`)
+                .get(`/haolifa/order-product/accessory?orderNo=${orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
                 })

@@ -170,7 +170,7 @@
                 <tr>
                     <td colspan="12">
                         <span class="b">4、付款条件</span>交货验收合格后，本公司于收到发票之日起60日内结清货款，每月25日以后交付货品拨归次月账项，
-                        <br>请于本月30日前将对账单快递至本公司采购部，逾期送单将延至次月对账；
+                        <br />请于本月30日前将对账单快递至本公司采购部，逾期送单将延至次月对账；
                     </td>
                 </tr>
                 <tr>
@@ -275,7 +275,7 @@ export default {
             this.detailFlag = false;
             this.payFlag = true;
             this.$http
-                .get(`/haolifa/payment/list/${orderNo}`)
+                .get(`/haolifa/payment/list?orderNo=${orderNo}`)
                 .then(res => {
                     this.payList = res;
                 })

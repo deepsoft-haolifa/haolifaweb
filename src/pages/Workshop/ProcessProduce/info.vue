@@ -190,7 +190,7 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
             this.$http
-                .get(`/haolifa/order-product/accessory/${orderNo}`)
+                .get(`/haolifa/order-product/accessory?orderNo=${orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
                 })

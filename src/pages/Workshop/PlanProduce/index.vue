@@ -416,7 +416,7 @@ export default {
                 });
             this.getAccessory(orderNo);
             this.$http
-                .get(`/haolifa/order-product/accessory/${orderNo}`)
+                .get(`/haolifa/order-product/accessory?orderNo=${orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
                 })

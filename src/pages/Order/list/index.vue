@@ -477,7 +477,7 @@ export default {
             this.getProcess(item);
             // this.getOrderStatusList();
             this.$http
-                .get(`/haolifa/order-product/accessory/${item.orderNo}`)
+                .get(`/haolifa/order-product/accessory?orderNo=${item.orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
                 })

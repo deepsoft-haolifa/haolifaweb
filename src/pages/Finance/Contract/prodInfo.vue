@@ -97,7 +97,7 @@ export default {
             this.detailFlag = false;
             this.payFlag = true;
             this.$http
-                .get(`/haolifa/payment/list/${orderNo}`)
+                .get(`/haolifa/payment/list?orderNo=${orderNo}`)
                 .then(res => {
                     this.payList = res;
                 })

@@ -480,7 +480,7 @@ export default {
             this.getAccessory(item.orderNo);
             // this.getOrderStatusList();
             this.$http
-                .get(`/haolifa/order-product/accessory/${item.orderNo}`)
+                .get(`/haolifa/order-product/accessoryorderNo=${item.orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
                 })

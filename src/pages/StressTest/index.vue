@@ -3,7 +3,7 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.orderNo" @change="$refs.list.update(true)" placeholder="订单号" style="width: 200px;" />
                 <select v-model="filter.orderStatus" class="f-14" @change="$refs.list.update(true)">
                     <!-- <option value="-1">全部</option> -->
                     <option v-for="item in orderStatusList" :value="item.value" v-bind:key="item.value">{{item.text}}</option>
@@ -404,7 +404,7 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
             this.$http
-                .get(`/haolifa/order-product/accessory/${orderNo}`)
+                .get(`/haolifa/order-product/accessory?orderNo=${orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
                 })

@@ -473,7 +473,7 @@ export default {
             this.fileForm.orderNo = item.orderNo;
             this.fileList = [];
             this.$http
-                .get(`/haolifa/order-product/accessory/${item.orderNo}`)
+                .get(`/haolifa/order-product/accessory?orderNo=${item.orderNo}`)
                 .then(res => {
                     this.fileForm.orderUploadDTOs = res;
                     res.forEach(item => {
@@ -497,7 +497,8 @@ export default {
             this.loading = true;
             this.$http
                 .post(
-                    `/haolifa/order-product/accessory/${this.fileForm.orderNo}`,
+                    // `/haolifa/order-product/accessory/${this.fileForm.orderNo}`,
+                    `/haolifa/order-product/accessory-upload?orderNo=${this.fileForm.orderNo}`,
                     this.fileForm.orderUploadDTOs
                 )
                 .then(res => {
@@ -584,7 +585,7 @@ export default {
             this.getAccessory(item.orderNo);
             this.getProcess(item);
             this.$http
-                .get(`/haolifa/order-product/accessory/${item.orderNo}`)
+                .get(`/haolifa/order-product/accessory?orderNo=${item.orderNo}`)
                 .then(res => {
                     this.fileDetailList = res;
                 })

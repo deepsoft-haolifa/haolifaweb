@@ -9,6 +9,9 @@
             <div id="chartThree" style="width:50%;height:300px;margin-top:20px;"></div>
             <div id="chartFour" style="width:50%;height:300px;margin-top:20px;"></div>
         </div>
+        <div style="height:700px;width:90%;margin:100px auto;">
+            <div id="chartFive" style="width:80%;height:700px;margin:0 auto"></div>
+        </div>
     </div>
 </template>
 <script>
@@ -22,6 +25,7 @@ export default {
         this.getChartTwo();
         this.getChartThree();
         this.getChartFour();
+        this.getSupplier();
     },
     methods: {
         getChartOne() {
@@ -414,6 +418,121 @@ export default {
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
+                });
+        },
+        //供应商合格率统计
+        getSupplier() {
+            this.$http
+                .get(`/haolifa/report/quality/getInspectBysupplierName`)
+                .then(res => {
+                    let maxNum = 0,
+                        nameData = [],
+                        qNumData = [],
+                        perData = [],
+                        unqNumData = [];
+                    res.map(item => {
+                        nameData.push(item.supplierName);
+                        qNumData.push(item.qualifiedNumber);
+                        unqNumData.push(item.unqualifiedNumber);
+                        maxNum =
+                            maxNum > item.totalNum ? maxNum : item.totalNum;
+                        let num = (
+                            (item.qualifiedNumber / item.totalNum) *
+                            100
+                        ).toFixed(2);
+                        perData.push(num);
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("chartFive")
+                    );
+                    let option = {
+                        color: ["#3398DB", "#FF6666", "#66CCCC"],
+                        title: {
+                            text: "供应商产品质量统计图",
+                            // subtext: "纯属虚构",
+                            x: "left"
+                        },
+                        tooltip: {
+                            trigger: "axis",
+                            axisPointer: {
+                                type: "cross",
+                                crossStyle: {
+                                    color: "#999"
+                                }
+                            }
+                        },
+                        toolbox: {
+                            feature: {
+                                dataView: { show: true, readOnly: false },
+                                magicType: {
+                                    show: true,
+                                    type: ["line", "bar"]
+                                },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        legend: {
+                            data: ["合格数", "不合格数", "合格率"]
+                        },
+                        grid: {
+                            left: "18%",
+                            bottom: "30%"
+                        },
+                        xAxis: [
+                            {
+                                type: "category",
+                                data: nameData,
+                                axisPointer: {
+                                    type: "shadow"
+                                },
+                                axisLabel: {
+                                    rotate: 60
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: "value",
+                                name: "数量",
+                                min: 0,
+                                max: maxNum + 2000,
+                                // interval: 500,
+                                axisLabel: {
+                                    formatter: "{value} "
+                                }
+                            },
+                            {
+                                type: "value",
+                                name: "合格率",
+                                min: 0,
+                                max: 120,
+                                // interval: 5,
+                                axisLabel: {
+                                    formatter: "{value} %"
+                                }
+                            }
+                        ],
+                        series: [
+                            {
+                                name: "合格数",
+                                type: "bar",
+                                data: qNumData
+                            },
+                            {
+                                name: "不合格数",
+                                type: "bar",
+                                data: unqNumData
+                            },
+                            {
+                                name: "合格率",
+                                type: "line",
+                                yAxisIndex: 1,
+                                data: perData
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
                 });
         }
     }

@@ -3,12 +3,28 @@
         <div class="flex-v-center tool-bar">销售报表统计图</div>
         <div style="width:90%;margin:0 auto;display:flex">
             <!-- <el-date-picker v-model="yearDate" :clearable="false" @change="getYearTotal" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker> -->
-            <div style="display: flex;padding-left: 20px; margin-left: 12px;color:#008eff;font-size:24px;">
-                <p>生产总数：{{totalNum}}</p>
+            <div style="display: flex;padding-left: 20px; margin-left: 12px;color:#008eff;font-size:22px;">
+                <p>生产总数量：{{totalNum}}台</p>
                 <p style="margin-left:20px;">产值总额：{{totalPrice}}元</p>
-                <p style="margin-left:20px;">合同总数：{{contractTotalNum}}</p>
-                <p style="margin-left:20px;">合同总额：{{contractTotalPrice}}元</p>
+                <p style="margin-left:20px;">合同订货总数量：{{contractTotalNum}}台</p>
+                <p style="margin-left:20px;">合同订货总金额：{{contractTotalPrice}}元</p>
             </div>
+        </div>
+        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
+            <el-date-picker v-model="fiveYearDate" :clearable="false" @change="getSaleFive" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker>
+            <el-date-picker
+                style="margin-left:50%"
+                v-model="sixYearDate"
+                :clearable="false"
+                @change="getSaleSix"
+                value-format="yyyy"
+                type="year"
+                placeholder="选择年"
+            ></el-date-picker>
+        </div>
+        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
+            <div id="saleFive" style="width:50%;height:300px;margin-top:20px;"></div>
+            <div id="saleSix" style="width:50%;height:300px;margin-top:20px;"></div>
         </div>
         <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
             <el-date-picker v-model="yearDate" :clearable="false" @change="getYearTotal" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker>
@@ -38,14 +54,18 @@ export default {
             chartOneList: [],
             yearDate: new Date().getFullYear() + "",
             cYearDate: new Date().getFullYear() + "",
+            fiveYearDate: new Date().getFullYear() + "",
+            sixYearDate: new Date().getFullYear() + "",
             totalNum: "",
             totalPrice: "",
             contractTotalNum: "",
             contractTotalPrice: ""
         };
     },
-    mounted() {
+    created() {
         this.getTotal();
+        this.getSaleFive();
+        this.getSaleSix();
         this.getContractTotal();
         this.getSaleTwo();
         this.getSaleFour();
@@ -58,6 +78,120 @@ export default {
                 this.totalNum = res[0].totalNum;
                 this.totalPrice = res[0].totalPrice;
             });
+        },
+        //需方总额饼图
+        getSaleFive() {
+            this.$http
+                .get(
+                    `/haolifa/report/sale/selectContractByDemandName?year=${this.fiveYearDate}`
+                )
+                .then(res => {
+                    let nameData = [],
+                        valueData = [];
+                    res.map(item => {
+                        nameData.push(item.demandName),
+                            valueData.push({
+                                name: item.demandName,
+                                value: item.totalPrice
+                            });
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("saleFive")
+                    );
+                    let option = {
+                        title: {
+                            text: "销售总额按需方分类",
+                            // subtext: "纯属虚构",
+                            x: "center"
+                        },
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: "vertical",
+                            left: "left",
+                            data: nameData
+                        },
+                        series: [
+                            {
+                                name: "",
+                                type: "pie",
+                                radius: "55%",
+                                center: ["50%", "60%"],
+                                data: valueData,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: "rgba(0, 0, 0, 0.5)"
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        //需方回款总额饼图
+        getSaleSix() {
+            this.$http
+                .get(
+                    `/haolifa/report/sale/selectshouhuiContractByDemandName?year=${this.sixYearDate}`
+                )
+                .then(res => {
+                    let nameData = [],
+                        valueData = [];
+                    res.map(item => {
+                        nameData.push(item.demandName),
+                            valueData.push({
+                                name: item.demandName,
+                                value: item.totalPrice
+                            });
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("saleSix")
+                    );
+                    let option = {
+                        title: {
+                            text: "回款总额按需方分类",
+                            // subtext: "纯属虚构",
+                            x: "center"
+                        },
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: "vertical",
+                            left: "left",
+                            data: nameData
+                        },
+                        series: [
+                            {
+                                name: "",
+                                type: "pie",
+                                radius: "55%",
+                                center: ["50%", "60%"],
+                                data: valueData,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: "rgba(0, 0, 0, 0.5)"
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
         },
         getContractTotal() {
             this.$http

@@ -58,7 +58,14 @@
                     <input-box v-model="storeRoom.supplier" disabled class="mr-10 ml-20" style="width:30%" label="供应商"></input-box>
                 </div>
                 <div class="flex">
-                    <select-box class="ml-20 mr-10" :list="storeRoom.selectStoreRooms" style="width:50%" v-model="storeRoom.roomNo" @change="loadStoreRocks()" label="库房"></select-box>
+                    <select-box
+                        class="ml-20 mr-10"
+                        :list="storeRoom.selectStoreRooms"
+                        style="width:50%"
+                        v-model="storeRoom.roomNo"
+                        @change="loadStoreRocks()"
+                        label="库房"
+                    ></select-box>
                     <select-box class="mr-10" :list="storeRoom.storeRoomRacks" style="width:50%" v-model="storeRoom.rackNo" label="库位"></select-box>
                 </div>
                 <div class="flex"></div>
@@ -206,9 +213,7 @@ export default {
                             }
                             this.$http
                                 .get(
-                                    `/haolifa/store-room/rack/list/${
-                                        this.storeRoom.roomNo
-                                    }`
+                                    `/haolifa/store-room/rack/list/${this.storeRoom.roomNo}`
                                 )
                                 .then(res => {
                                     console.log("库位", res);
@@ -242,7 +247,6 @@ export default {
                         this.storeRoom.materialGraphNo = item.materialGraphNo;
                     }
 
-                    this.storeRoom.price = item.purchasePrice;
                     this.storeRoom.supplier = item.supplierName;
                     this.storeRoom.materialBatchNo = item.batchNumber;
                     this.storeRoom.orderNo = item.purchaseNo;
@@ -250,6 +254,16 @@ export default {
                     this.storeRoom.layerShow = true;
                     this.storeRoom.busType = item.busType;
                     this.storeRoom.inspectNo = item.inspectNo;
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+            this.$http
+                .get(
+                    `/haolifa/material/getInfoByNo?graphNo=${item.materialGraphNo}`
+                )
+                .then(res => {
+                    this.storeRoom.price = res.price;
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
@@ -276,11 +290,7 @@ export default {
             a.setAttribute("download", ""); // download属性
             a.setAttribute(
                 "href",
-                `/haolifa/export/material-entry?startDate=${
-                    this.form.startDate
-                }&endDate=${this.form.endDate}&entryStatus=${
-                    this.form.entryStatus
-                }`
+                `/haolifa/export/material-entry?startDate=${this.form.startDate}&endDate=${this.form.endDate}&entryStatus=${this.form.entryStatus}`
             );
             a.click();
             this.exportLayer = false;

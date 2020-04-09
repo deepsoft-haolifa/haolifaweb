@@ -46,7 +46,7 @@
                     <td>{{item.remark}}</td>
                     <td class="t-right">
                         <a href="javascript:;" v-if="item.status == 1 || item.status ==0" class="blue" @click="billing(item)">开票</a>
-                        <a href="javascript:;" v-if="item.status == 1 || item.status ==0" class="blue" @click="exportExcel(item)">| 出库记录下载</a>
+                        <a href="javascript:;" v-if="item.status == 1 || item.status ==0" class="blue" @click="download(item.orderNo)">| 出库记录下载</a>
                         <a href="javascript:;" v-if="item.status == 2" class="blue" @click="edit(item)">编辑</a>
                     </td>
                 </template>
@@ -288,23 +288,27 @@ export default {
                 endDate: ""
             };
         },
-        download() {
-            if (!this.exportForm.startDate) {
-                this.$toast("请选择开始时间");
-                return;
-            }
-            if (!this.exportForm.endDate) {
-                this.$toast("请选择结束时间");
-                return;
-            }
+        download(orderNo) {
+            // if (!this.exportForm.startDate) {
+            //     this.$toast("请选择开始时间");
+            //     return;
+            // }
+            // if (!this.exportForm.endDate) {
+            //     this.$toast("请选择结束时间");
+            //     return;
+            // }
             const a = document.createElement("a"); // 创建a标签
             a.setAttribute("download", ""); // download属性
+            // a.setAttribute(
+            //     "href",
+            //     `/haolifa/export/product-out?startDate=${this.exportForm.startDate}&endDate=${this.exportForm.endDate}&orderNo=${this.exportForm.orderNo}&operationType=1`
+            // );
             a.setAttribute(
                 "href",
-                `/haolifa/export/product-out?startDate=${this.exportForm.startDate}&endDate=${this.exportForm.endDate}&orderNo=${this.exportForm.orderNo}&operationType=1`
+                `/haolifa/export/product-out?orderNo=${orderNo}&operationType=1`
             );
             a.click();
-            this.exportLayer = false;
+            // this.exportLayer = false;
         }
     }
 };

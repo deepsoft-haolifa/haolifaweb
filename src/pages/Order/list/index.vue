@@ -233,7 +233,7 @@
                             <td colspan="2">{{pro.roleName}}</td>
                             <td colspan="1">{{pro.auditUserName}}</td>
                             <td colspan="2">{{statusList[pro.auditResult]}}</td>
-                            <td colspan="4">{{pro.info}}</td>
+                            <td colspan="4">{{pro.auditInfo}}</td>
                             <td colspan="2">{{pro.auditTime}}</td>
                         </tr>
                     </table>

@@ -136,7 +136,15 @@
                                     </td>
                                     <td colspan="1">
                                         <el-button size="mini" icon="el-icon-circle-plus" type="primary" @click="addTechnicalRequire" circle></el-button>
-                                        <el-button v-if="updateInfo.technicalRequire.length>1" style="margin-left:0" size="mini" icon="el-icon-delete" type="danger" @click="delTechnicalRequire(index)" circle></el-button>
+                                        <el-button
+                                            v-if="updateInfo.technicalRequire.length>1"
+                                            style="margin-left:0"
+                                            size="mini"
+                                            icon="el-icon-delete"
+                                            type="danger"
+                                            @click="delTechnicalRequire(index)"
+                                            circle
+                                        ></el-button>
                                     </td>
                                 </tr>
                             </table>
@@ -378,7 +386,14 @@
                             <date-picker v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></date-picker>
                         </div>
                         <div class="flex" v-if="dealStepId == 55 && purchaseList.length>0">
-                            <input-box :disabled="true" v-model="updateInfo.purchaseFeedbackTime" hint="必填" class="flex-item" label="采购完成时间" style="margin-right: 20px;"></input-box>
+                            <input-box
+                                :disabled="true"
+                                v-model="updateInfo.purchaseFeedbackTime"
+                                hint="必填"
+                                class="flex-item"
+                                label="采购完成时间"
+                                style="margin-right: 20px;"
+                            ></input-box>
                         </div>
                         <div>
                             <div v-if="purchaseList.length>0">
@@ -407,7 +422,14 @@
                             <input-box v-model="handleStep.auditInfo" :multi-line="true" class="flex-item" label="审批意见" style="margin-right: 20px;"></input-box>
                         </div>
                         <div class="flex">
-                            <upload-box btnText="附件上传" :fileList="fileList" :onchange="uploadFile" :onremove="removeFile" :multiple="multiple" style="width: 50%"></upload-box>
+                            <upload-box
+                                btnText="附件上传"
+                                :fileList="fileList"
+                                :onchange="uploadFile"
+                                :onremove="removeFile"
+                                :multiple="multiple"
+                                style="width: 50%"
+                            ></upload-box>
                         </div>
                         <div class="flex" style="margin-top:10px;">
                             <btn @click="handleStepM(1)">同意</btn>
@@ -441,9 +463,13 @@
                             <td>{{item.auditUserName}}</td>
                             <td>{{auditResults[item.auditResult].name}}</td>
                             <td>{{item.auditInfo}}</td>
-                            <td v-if="item.accessories != null">
+                            <td v-if="i<data.historyInfos.length-1">
                                 <a target="_blank" v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
-                                <br>
+                                <br />
+                            </td>
+                            <td v-else-if="fileDetailList.length>0">
+                                <a target="_blank" style="display:block" v-for="(f,index) in fileDetailList" :key="index" :href="f.fileUrl">{{f.fileName}}</a>
+                                <br />
                             </td>
                             <td v-else>无</td>
                         </tr>
@@ -540,7 +566,8 @@ export default {
             purchaseList: [],
             fileList: [],
             fileName: "",
-            multiple: true
+            multiple: true,
+            fileDetailList: []
         };
     },
     created() {
@@ -571,9 +598,7 @@ export default {
         getData() {
             this.$http
                 .get(
-                    `/haolifa/flowInstance/flow-history/${
-                        this.$route.query.instanceId
-                    }`
+                    `/haolifa/flowInstance/flow-history/${this.$route.query.instanceId}`
                 )
                 .then(res => {
                     res.createTime = moment(res.createTime).format(
@@ -586,12 +611,21 @@ export default {
                         this.handleStep.stepId = res.dealStep.stepId;
                         this.dealStepId = res.dealStep.stepId;
                     }
+                    //获取订单上传附件
+                    this.$http
+                        .get(
+                            `/haolifa/order-product/accessory?orderNo=${this.data.formNo}`
+                        )
+                        .then(res => {
+                            this.fileDetailList = res;
+                        })
+                        .catch(e => {
+                            this.$toast(e.msg || e.message);
+                        });
                     // 获取订单详情
                     this.$http
                         .get(
-                            `/haolifa/order-product/details?orderNo=${
-                                this.data.formNo
-                            }`
+                            `/haolifa/order-product/details?orderNo=${this.data.formNo}`
                         )
                         .then(res => {
                             this.orderUrl = res.orderContractUrl;
@@ -623,9 +657,7 @@ export default {
                                         // 查看是否需要采购
                                         this.$http
                                             .get(
-                                                `/haolifa/applyBuy/product/list?orderNo=${
-                                                    this.data.formNo
-                                                }`
+                                                `/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`
                                             )
                                             .then(res => {
                                                 res.length > 0
@@ -639,9 +671,7 @@ export default {
                             } else if (this.dealStepId == 54) {
                                 this.$http
                                     .get(
-                                        `/haolifa/applyBuy/product/list?orderNo=${
-                                            this.data.formNo
-                                        }`
+                                        `/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`
                                     )
                                     .then(res => {
                                         this.purchaseList = JSON.parse(
@@ -651,9 +681,7 @@ export default {
                             } else if (this.dealStepId == 55) {
                                 this.$http
                                     .get(
-                                        `/haolifa/applyBuy/product/list?orderNo=${
-                                            this.data.formNo
-                                        }`
+                                        `/haolifa/applyBuy/product/list?orderNo=${this.data.formNo}`
                                     )
                                     .then(res => {
                                         this.purchaseList = JSON.parse(
@@ -684,9 +712,7 @@ export default {
                         btns: ["稍后再说", "现在核料"],
                         yes: () => {
                             this.$router.push(
-                                `/nuclear-material?orderNo=${
-                                    this.orderInfo.orderNo
-                                }`
+                                `/nuclear-material?orderNo=${this.orderInfo.orderNo}`
                             );
                         }
                     });
@@ -700,9 +726,7 @@ export default {
                         btns: ["取消", "查看"],
                         yes: () => {
                             this.$router.push(
-                                `/nuclear-replace-form?orderNo=${
-                                    this.orderInfo.orderNo
-                                }`
+                                `/nuclear-replace-form?orderNo=${this.orderInfo.orderNo}`
                             );
                         }
                     });
@@ -744,9 +768,7 @@ export default {
                             // 采购反馈
                             this.$http
                                 .post(
-                                    `/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${
-                                        this.updateInfo.purchaseFeedbackTime
-                                    }&orderNo=${this.updateInfo.orderNo}`
+                                    `/haolifa/applyBuy/updateStatusByOrderNo?arriveTime=${this.updateInfo.purchaseFeedbackTime}&orderNo=${this.updateInfo.orderNo}`
                                 )
                                 .then(res => {});
                             this.$http
@@ -764,9 +786,7 @@ export default {
                             }
                             this.$http
                                 .post(
-                                    `/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${
-                                        this.updateInfo.orderNo
-                                    }`
+                                    `/haolifa/applyBuy/updateStatusByOrderNo/2?orderNo=${this.updateInfo.orderNo}`
                                 )
                                 .then(res => {});
                             this.$http
@@ -825,9 +845,7 @@ export default {
                         }
                         if (this.handleStep.backStepId < 53) {
                             this.$http.post(
-                                `/haolifa/order-product/release-material?orderNo=${
-                                    this.data.formNo
-                                }`
+                                `/haolifa/order-product/release-material?orderNo=${this.data.formNo}`
                             );
                         }
                         let updateStatus = {
@@ -852,15 +870,11 @@ export default {
                         if (this.dealStepId == 55) {
                             // 释放料
                             this.$http.post(
-                                `/haolifa/order-product/release-material?orderNo=${
-                                    updateStatus.orderNo
-                                }`
+                                `/haolifa/order-product/release-material?orderNo=${updateStatus.orderNo}`
                             );
                             this.$http
                                 .post(
-                                    `/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${
-                                        this.updateInfo.orderNo
-                                    }/4`
+                                    `/haolifa/applyBuy/updateStatusByOrderNo?orderNo=${this.updateInfo.orderNo}/4`
                                 )
                                 .then(res => {});
                         }

@@ -3,10 +3,10 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model="filter.busNo" @change="$refs.list.update(true)" placeholder="单号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;">
-                <input type="text" class="flex-item" v-model="filter.materialName" @change="$refs.list.update(true)" placeholder="零件名称" style="width: 200px;">
+                <input type="text" class="flex-item" v-model="filter.busNo" @change="$refs.list.update(true)" placeholder="单号" style="width: 200px;" />
+                <input type="text" class="flex-item" v-model="filter.batchNumber" @change="$refs.list.update(true)" placeholder="批次号" style="width: 200px;" />
+                <input type="text" class="flex-item" v-model="filter.graphNo" @change="$refs.list.update(true)" placeholder="图号" style="width: 200px;" />
+                <input type="text" class="flex-item" v-model="filter.materialName" @change="$refs.list.update(true)" placeholder="零件名称" style="width: 200px;" />
                 类型：
                 <select v-model="filter.type" class="f-14" @change="$refs.list.update(true)">
                     <option value>全部</option>
@@ -171,9 +171,7 @@ export default {
                 let graphNo = encodeURI(this.form.materialGraphNo);
                 this.$http
                     .get(
-                        `/haolifa/store-room/material-batch-nos?roomNo=${
-                            this.form.roomNo
-                        }&rackNo=${storeRoomRackNo}&graphNo=${graphNo}`
+                        `/haolifa/store-room/material-batch-nos?roomNo=${this.form.roomNo}&rackNo=${storeRoomRackNo}&graphNo=${graphNo}`
                     )
                     .then(res => {
                         this.materialBatchNoList = res.map(item => {
@@ -252,6 +250,18 @@ export default {
                 });
         },
         submit() {
+            if (!this.form.receiveDepartment) {
+                this.$toast("请填入领料部门");
+                return;
+            }
+            if (
+                !this.form.materialBatchNo ||
+                !this.form.roomNo ||
+                !this.form.rackNo
+            ) {
+                this.$toast("请选择库房、库位及批次号");
+                return;
+            }
             const { form } = this;
             this.loading = true;
             delete form.name;

@@ -1,16 +1,32 @@
 <template>
     <div class="page-notification">
         <div class="flex-v-center tool-bar">质量报表统计图</div>
+        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
+            <el-date-picker v-model="oneYearDate" :clearable="false" type="year" value-format="yyyy" @change="getBuyOne" placeholder="选择年月"></el-date-picker>
+        </div>
+        <div style="height:500px;width:90%;margin:20px auto;">
+            <div id="buyOne" style="width:100%;height:600px;margin:0 auto"></div>
+        </div>
         <div style="width:90%;display:flex;margin:30px auto">
             <div id="chartOne" style="width:50%;height:300px;margin-top:20px;"></div>
             <div id="chartTwo" style="width:50%;height:300px;margin-top:20px;"></div>
         </div>
         <div style="height:310px;width:90%;display:flex;margin:30px auto">
             <div id="chartThree" style="width:50%;height:300px;margin-top:20px;"></div>
+            <div id="chartNine" style="width:50%;height:300px;margin-top:20px;"></div>
+        </div>
+        <div style="height:310px;width:90%;display:flex;margin:30px auto">
+            <div id="chartEight" style="width:50%;height:300px;margin-top:20px;"></div>
             <div id="chartFour" style="width:50%;height:300px;margin-top:20px;"></div>
+        </div>
+        <div style="height:310px;width:90%;display:flex;margin:30px auto">
+            <div id="chartSeven" style="width:50%;height:300px;margin-top:20px;"></div>
         </div>
         <div style="height:700px;width:90%;margin:100px auto;">
             <div id="chartFive" style="width:80%;height:700px;margin:0 auto"></div>
+        </div>
+        <div style="height:700px;width:90%;margin:100px auto;">
+            <div id="chartSix" style="width:80%;height:700px;margin:0 auto"></div>
         </div>
     </div>
 </template>
@@ -18,14 +34,22 @@
 export default {
     name: "report-form",
     data() {
-        return {};
+        return {
+            yearDate: new Date().getFullYear() + "",
+            oneYearDate: new Date().getFullYear() + ""
+        };
     },
     mounted() {
         this.getChartOne();
         this.getChartTwo();
         this.getChartThree();
         this.getChartFour();
+        this.getChartSeven();
         this.getSupplier();
+        this.getChartSix();
+        this.getBuyOne();
+        this.getChartEight();
+        this.getChartNine();
     },
     methods: {
         getChartOne() {
@@ -98,14 +122,25 @@ export default {
                 .then(res => {
                     let nameData = ["合格数", "不合格数"],
                         valueData = [];
-                    valueData.push({
-                        name: "合格数",
-                        value: res.qualifiedNumber
-                    });
-                    valueData.push({
-                        name: "不合格数",
-                        value: res.unqualifiedNumber
-                    });
+                    if (res) {
+                        valueData.push({
+                            name: "合格数",
+                            value: res.qualifiedNumber
+                        });
+                        valueData.push({
+                            name: "不合格数",
+                            value: res.unqualifiedNumber
+                        });
+                    } else {
+                        valueData.push({
+                            name: "合格数",
+                            value: 0
+                        });
+                        valueData.push({
+                            name: "不合格数",
+                            value: 0
+                        });
+                    }
                     let chart = this.$echarts.init(
                         document.getElementById("chartThree")
                     );
@@ -151,6 +186,100 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        getChartEight() {
+            let nameArr = [],
+                dataArr = [],
+                oneDepartArr = [];
+            this.$http
+                .get(`/haolifa/report/quality/getInspectByType?type=1`)
+                .then(res => {
+                    let nameData = ["合格数", "不合格数"],
+                        valueData = [];
+                    valueData.push({
+                        name: "合格数",
+                        value: res.qualifiedNumber
+                    });
+                    valueData.push({
+                        name: "不合格数",
+                        value: res.unqualifiedNumber
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("chartEight")
+                    );
+                    let option = this.getOption(
+                        "机加工质量报表",
+                        nameData,
+                        valueData
+                    );
+                    chart.setOption(option);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+
+        //质量报表-成品检验质量报表
+        getChartNine() {
+            let nameArr = [],
+                dataArr = [];
+            this.$http
+                .get(`/haolifa/report/quality/getProduct`)
+                .then(res => {
+                    let nameData = ["合格数", "不合格数"],
+                        valueData = [];
+                    valueData.push({
+                        name: "合格数",
+                        value: res.qualifiedNumber
+                    });
+                    valueData.push({
+                        name: "不合格数",
+                        value: res.unqualifiedNumber
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("chartNine")
+                    );
+                    let option = this.getOption(
+                        "成品检验质量报表",
+                        nameData,
+                        valueData
+                    );
+                    chart.setOption(option);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        //质量报表-阀门装配不合格原因
+        getChartSeven() {
+            let nameArr = [],
+                dataArr = [],
+                oneDepartArr = [];
+            this.$http
+                .get(`/haolifa/report/quality/assemblingReason`)
+                .then(res => {
+                    let nameData = [],
+                        valueData = [];
+                    res.map(item => {
+                        nameData.push(item.reason),
+                            valueData.push({
+                                name: item.reason,
+                                value: item.qty
+                            });
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("chartSeven")
+                    );
+                    let option = this.getOption(
+                        "阀门装配质量报表",
+                        nameData,
+                        valueData
+                    );
+                    chart.setOption(option);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
         getOption(title, nameArr, dataArr) {
             return {
                 title: {
@@ -166,8 +295,13 @@ export default {
                     left: "left",
                     data: nameArr
                 },
+
                 series: [
                     {
+                        label: {
+                            show: false,
+                            position: "center"
+                        },
                         name: "",
                         type: "pie",
                         radius: "55%",
@@ -529,6 +663,257 @@ export default {
                                 type: "line",
                                 yAxisIndex: 1,
                                 data: perData
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                });
+        },
+        //供应商合格率统计
+        getChartSix() {
+            this.$http
+                .get(`/haolifa/report/quality/selectInspectByMaterialName`)
+                .then(res => {
+                    let maxNum = 0,
+                        nameData = [],
+                        qNumData = [],
+                        perData = [],
+                        unqNumData = [];
+                    res.map(item => {
+                        nameData.push(item.materialGraphName);
+                        qNumData.push(item.qualifiedNumber);
+                        unqNumData.push(item.unqualifiedNumber);
+                        maxNum =
+                            maxNum > item.totalNum ? maxNum : item.totalNum;
+                        let num = (
+                            (item.qualifiedNumber / item.totalNum) *
+                            100
+                        ).toFixed(2);
+                        perData.push(num);
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("chartSix")
+                    );
+                    let option = {
+                        color: ["#3398DB", "#FF6666", "#66CCCC"],
+                        title: {
+                            text: "产品类型质量统计图",
+                            // subtext: "纯属虚构",
+                            x: "left"
+                        },
+                        tooltip: {
+                            trigger: "axis",
+                            axisPointer: {
+                                type: "cross",
+                                crossStyle: {
+                                    color: "#999"
+                                }
+                            }
+                        },
+                        toolbox: {
+                            feature: {
+                                dataView: { show: true, readOnly: false },
+                                magicType: {
+                                    show: true,
+                                    type: ["line", "bar"]
+                                },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        legend: {
+                            data: ["合格数", "不合格数", "合格率"]
+                        },
+                        grid: {
+                            left: "18%",
+                            bottom: "30%"
+                        },
+                        xAxis: [
+                            {
+                                type: "category",
+                                data: nameData,
+                                axisPointer: {
+                                    type: "shadow"
+                                },
+                                axisLabel: {
+                                    rotate: 60
+                                }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: "value",
+                                name: "数量",
+                                min: 0,
+                                max: maxNum + 2000,
+                                // interval: 500,
+                                axisLabel: {
+                                    formatter: "{value} "
+                                }
+                            },
+                            {
+                                type: "value",
+                                name: "合格率",
+                                min: 0,
+                                max: 120,
+                                // interval: 5,
+                                axisLabel: {
+                                    formatter: "{value} %"
+                                }
+                            }
+                        ],
+                        series: [
+                            {
+                                name: "合格数",
+                                type: "bar",
+                                data: qNumData
+                            },
+                            {
+                                name: "不合格数",
+                                type: "bar",
+                                data: unqNumData
+                            },
+                            {
+                                name: "合格率",
+                                type: "line",
+                                yAxisIndex: 1,
+                                data: perData
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                });
+        },
+        //质量统计总图
+        getBuyOne() {
+            this.$http
+                .get(
+                    `/haolifa/report/quality/getAllQuality?year=${this.oneYearDate}`
+                )
+                .then(res => {
+                    let xData = [],
+                        purchasePass = [],
+                        inspectPass = [],
+                        sprayPass = [],
+                        proInspectPass = [];
+                    res.map(item => {
+                        xData.push(item.createTime);
+                        if (item.purchasePass) {
+                            purchasePass.push(
+                                item.purchasePass.qualifiedNumber
+                                    ? (item.purchasePass.qualifiedNumber /
+                                          item.purchasePass.totalNum) *
+                                          100
+                                    : 0
+                            );
+                        } else {
+                            purchasePass.push(0);
+                        }
+                        if (item.inspectPass) {
+                            inspectPass.push(
+                                item.inspectPass.qualifiedNumber
+                                    ? (item.inspectPass.qualifiedNumber /
+                                          item.inspectPass.totalNum) *
+                                          100
+                                    : 0
+                            );
+                        } else {
+                            purchasePass.push(0);
+                        }
+                        if (item.sprayPass) {
+                            sprayPass.push(
+                                item.sprayPass.qualifiedNumber
+                                    ? (item.sprayPass.qualifiedNumber /
+                                          item.sprayPass.totalNum) *
+                                          100
+                                    : 0
+                            );
+                        } else {
+                            purchasePass.push(0);
+                        }
+                        if (item.proInspectPass) {
+                            proInspectPass.push(
+                                item.proInspectPass.qualifiedNumber
+                                    ? (item.proInspectPass.qualifiedNumber /
+                                          item.proInspectPass.totalNum) *
+                                          100
+                                    : 0
+                            );
+                        } else {
+                            purchasePass.push(0);
+                        }
+                    });
+                    let that = this;
+                    let chart = this.$echarts.init(
+                        document.getElementById("buyOne")
+                    );
+                    const option = {
+                        title: {
+                            text: "质量合格率统计总图（百分比）",
+                            x: "left"
+                        },
+                        tooltip: {
+                            trigger: "axis",
+                            axisPointer: {
+                                // 坐标轴指示器，坐标轴触发有效
+                                type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: [
+                                "零件采购合格率",
+                                "零件加工合格率",
+                                "喷涂加工合格率",
+                                "阀门装配合格率"
+                            ]
+                        },
+                        grid: {
+                            left: "3%",
+                            right: "4%",
+                            bottom: "10%",
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
+                                type: "category",
+                                data: xData
+                                // axisLabel: {
+                                //     rotate: 60
+                                // }
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: "value"
+                            }
+                        ],
+                        series: [
+                            {
+                                name: "零件采购合格率",
+                                type: "bar",
+                                barWidth: "10%",
+                                data: purchasePass
+                            },
+                            {
+                                name: "零件加工合格率",
+                                type: "bar",
+                                color: "#3398DB",
+                                barWidth: "10%",
+                                data: inspectPass
+                            },
+                            {
+                                name: "喷涂加工合格率",
+                                type: "bar",
+                                color: "#e6a23c",
+                                barWidth: "10%",
+                                data: sprayPass
+                            },
+                            {
+                                name: "阀门装配合格率",
+                                type: "bar",
+                                color: "#67c23a",
+                                barWidth: "10%",
+                                data: proInspectPass
                             }
                         ]
                     };

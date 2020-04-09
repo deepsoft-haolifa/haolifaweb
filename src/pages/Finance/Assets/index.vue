@@ -44,7 +44,7 @@
                     <date-picker v-model="form.purchaseTime" class="flex-item mr-10" label="采购时间"></date-picker>
                 </div>
                 <input-box type="text" v-model="form.productFactory" label="生产厂家"></input-box>
-                <input-box type="number" v-model="form.servicedYears" label="服役年限"/>
+                <input-box type="number" v-model="form.servicedYears" label="服役年限" />
             </div>
             <div class="layer-btns">
                 <btn flat @click="layer=false">取消</btn>
@@ -121,7 +121,7 @@ export default {
                 equipmentNo: "",
                 equipmentStatus: 0,
                 productFactory: "",
-                serviceYears: ""
+                servicedYears: ""
             };
             this.layer = false;
         },

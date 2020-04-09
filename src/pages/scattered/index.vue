@@ -121,6 +121,18 @@
         <layer v-if="editLayer" :title="'编辑'" width="30%">
             <div class="layer-text" style="padding-bottom: 20px;min-height:40px;">
                 <div class="flex ml-20 mr-20">
+                    <input-box v-model="editForm.materialName" class="flex-item" label="名称"></input-box>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="editForm.classifyName" class="flex-item" label="分类名称"></input-box>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="editForm.model" class="flex-item" label="型号"></input-box>
+                </div>
+                <div class="flex ml-20 mr-20">
+                    <input-box v-model="editForm.specifications" class="flex-item" label="规格"></input-box>
+                </div>
+                <div class="flex ml-20 mr-20">
                     <input-box v-model="editForm.price" type="number" class="flex-item" label="价格"></input-box>
                 </div>
             </div>

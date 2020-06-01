@@ -3,10 +3,38 @@
         <div class="flex-v-center tool-bar">
             <div class="flex-v-center search-bar" style="margin-right: 20px;">
                 <i class="icon f-20 c-8">search</i>
-                <input type="text" class="flex-item" v-model.trim="filter.supplierName" placeholder="供应商名称" @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.supplierNo" placeholder="供应商编号" @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.materialGraphNo" placeholder="图号" @change="$refs.list.update(true)" style="width: 200px;">
-                <input type="text" class="flex-item" v-model.trim="filter.materialName" placeholder="产品名称" @change="$refs.list.update(true)" style="width: 200px;">
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model.trim="filter.supplierName"
+                    placeholder="供应商名称"
+                    @change="$refs.list.update(true)"
+                    style="width: 200px;"
+                />
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model.trim="filter.supplierNo"
+                    placeholder="供应商编号"
+                    @change="$refs.list.update(true)"
+                    style="width: 200px;"
+                />
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model.trim="filter.materialGraphNo"
+                    placeholder="图号"
+                    @change="$refs.list.update(true)"
+                    style="width: 200px;"
+                />
+                <input
+                    type="text"
+                    class="flex-item"
+                    v-model.trim="filter.materialName"
+                    placeholder="产品名称"
+                    @change="$refs.list.update(true)"
+                    style="width: 200px;"
+                />
             </div>
             <div class="flex-item"></div>
         </div>
@@ -20,7 +48,7 @@
                     <th>图号分类</th>
                     <th>供应商</th>
                     <th>供应商编号</th>
-                    <th class="t-center" style="width: 80px;">操作</th>
+                    <!-- <th class="t-center" style="width: 80px;">操作</th> -->
                 </tr>
                 <!-- item: 当前行数据; index: 当前行数 -->
                 <template slot="item" slot-scope="{ item, index }">
@@ -31,10 +59,10 @@
                     <td>{{item.materialClassifyName}}</td>
                     <td>{{item.supplierName}}</td>
                     <td>{{item.supplierNo}}</td>
-                    <td>
+                    <!-- <td>
                         <a href="javascript:;" class="blue" @click="edit(item)" style="margin-right: 3px;">编辑</a> |
                         <a href="javascript:;" class="red" @click="remove(item)" style="margin-right: 3px;">删除</a>
-                    </td>
+                    </td>-->
                 </template>
             </data-list>
         </div>
@@ -72,9 +100,7 @@ export default {
         remove(item) {
             this.$confirm({
                 title: "删除确认",
-                text: `您确定要删除以下供应商产品吗？<br><b>${
-                    item.materialName
-                }</b>`,
+                text: `您确定要删除以下供应商产品吗？<br><b>${item.materialName}</b>`,
                 color: "red",
                 btns: ["取消", "删除"],
                 yes: () => {

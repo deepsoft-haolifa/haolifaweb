@@ -1,29 +1,53 @@
 <template>
     <div class="page-notification">
         <div class="flex-v-center tool-bar">销售报表统计图</div>
-        <div style="width:90%;margin:20px auto;display:flex;padding-left:12px">
+        <div style="width:98%;margin:20px auto;display:flex;padding-left:12px">
             <el-date-picker v-model="oneYearDate" :clearable="false" @change="oneYearChange" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker>
         </div>
-        <div style="width:90%;margin:0 auto;display:flex">
+        <div style="width:98%;margin:0 auto;display:flex">
             <!-- <el-date-picker v-model="yearDate" :clearable="false" @change="getYearTotal" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker> -->
             <div style="display: flex;padding-left: 20px; margin-left: 12px;color:#008eff;font-size:22px;">
                 <p>生产总数量：{{totalNum}}台</p>
                 <p style="margin-left:20px;">产值总额：{{totalPrice}}元</p>
                 <p style="margin-left:20px;">合同订货总数量：{{contractTotalNum}}台</p>
-                <p style="margin-left:20px;">合同订货总金额：{{contractTotalPrice}}元</p>
+                <p style="margin-left:20px;">当年累计订货额：{{contractTotalPrice}}元</p>
             </div>
         </div>
-        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
+        <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
             <el-date-picker v-model="fiveYearDate" :clearable="false" @change="getSaleFive" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker>
+            <p style="color:#008eff">当年累计订货额:{{saleFiveNum}}元</p>
+            <el-date-picker
+                v-model="fiveYear2Date"
+                :clearable="false"
+                @change="getSale2Five"
+                style="left:20%"
+                value-format="yyyy-MM"
+                type="month"
+                placeholder="选择年月"
+            ></el-date-picker>
+            <p style="position: relative;left:23%;color:#008eff">当月累计订货额:{{saleFive2Num}}元</p>
         </div>
-        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
-            <div id="saleFive" style="width:80%;height:300px;margin-top:20px;"></div>
+        <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
+            <div id="saleFive" style="width:50%;height:300px;margin-top:20px;"></div>
+            <div id="sale2Five" style="width:50%;height:300px;margin-top:20px;"></div>
         </div>
-        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
+        <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
             <el-date-picker v-model="sixYearDate" :clearable="false" @change="getSaleSix" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker>
+            <p style="color:#008eff">当年累计回款总额:{{salSixNum}}元</p>
+            <el-date-picker
+                v-model="sixYear2Date"
+                :clearable="false"
+                style="left:20%"
+                @change="getSale2Six"
+                value-format="yyyy-MM"
+                type="month"
+                placeholder="选择年月"
+            ></el-date-picker>
+            <p style="position: relative;left:23%;color:#008eff">当月累计回款总额:{{salSix2Num}}元</p>
         </div>
-        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
-            <div id="saleSix" style="width:80%;height:300px;margin-top:20px;"></div>
+        <div style="width:98%;margin:20px auto;display:flex;padding-left:1%">
+            <div id="saleSix" style="width:50%;height:300px;margin-top:20px;"></div>
+            <div id="sale2Six" style="width:50%;height:300px;margin-top:20px;"></div>
         </div>
 
         <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
@@ -39,12 +63,12 @@
         <div style="height:500px;width:90%;margin:0 auto;">
             <div id="saleOne" style="width:80%;height:500px;margin:0 auto"></div>
         </div>
-        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
+        <!-- <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
             <el-date-picker v-model="cYearDate" :clearable="false" @change="getCYearTotal" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker>
         </div>
         <div style="height:500px;width:90%;margin:0 auto;">
             <div id="saleThree" style="width:80%;height:500px;margin:0 auto"></div>
-        </div>
+        </div>-->
         <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
             <el-date-picker v-model="twoYear" :clearable="false" @change="getSaleTwo" value-format="yyyy" type="year" placeholder="选择年"></el-date-picker>
         </div>
@@ -69,27 +93,44 @@ export default {
             sixYearDate: new Date().getFullYear() + "",
             twoYear: new Date().getFullYear() + "",
             sevenYearDate: new Date().getFullYear() + "",
+            fiveYear2Date:
+                new Date().getFullYear() +
+                "-" +
+                this.addRezo(new Date().getMonth() + 1),
+            sixYear2Date:
+                new Date().getFullYear() +
+                "-" +
+                this.addRezo(new Date().getMonth() + 1),
             totalNum: "",
             totalPrice: "",
             contractTotalNum: "",
-            contractTotalPrice: ""
+            contractTotalPrice: "",
+            saleFiveNum: 0,
+            saleFive2Num: 0,
+            salSixNum: 0,
+            salSix2Num: 0
         };
     },
     created() {
         this.getTotal();
         this.getSaleFive();
+        this.getSale2Five();
         this.getSaleSix();
+        this.getSale2Six();
         this.getContractTotal();
         this.getSaleTwo(this.twoYear);
         // this.getSaleFour();
         this.getSaleOne(this.yearDate);
-        this.getCSaleOne(this.cYearDate);
+        // this.getCSaleOne(this.cYearDate);
         this.getBuyOne();
     },
     methods: {
         oneYearChange() {
             this.getTotal();
             this.getContractTotal();
+        },
+        addRezo(string) {
+            return string > 9 ? string : "0" + string;
         },
         getTotal() {
             this.$http
@@ -101,6 +142,7 @@ export default {
         },
         //需方总额饼图
         getSaleFive() {
+            this.saleFiveNum = 0;
             this.$http
                 .get(
                     `/haolifa/report/sale/selectContractByDemandName?year=${this.fiveYearDate}`
@@ -109,18 +151,86 @@ export default {
                     let nameData = [],
                         valueData = [];
                     res.map(item => {
-                        nameData.push(item.demandName),
-                            valueData.push({
-                                name: item.demandName,
-                                value: item.totalPrice
-                            });
+                        nameData.push(item.demandName);
+                        valueData.push({
+                            name: item.demandName,
+                            value: item.totalPrice
+                        });
+                        this.saleFiveNum = this.saleFiveNum + +item.totalPrice;
                     });
                     let chart = this.$echarts.init(
                         document.getElementById("saleFive")
                     );
                     let option = {
                         title: {
-                            text: "销售总额按需方分类",
+                            text: "年度订货总额分类统计图",
+                            // subtext: "纯属虚构",
+                            x: "center"
+                        },
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: "vertical",
+                            left: "left",
+                            data: nameData
+                        },
+                        series: [
+                            {
+                                name: "",
+                                type: "pie",
+                                radius: "55%",
+                                center: ["50%", "60%"],
+                                label: {
+                                    show: false,
+                                    position: "center"
+                                },
+                                data: valueData,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: "rgba(0, 0, 0, 0.5)"
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getSale2Five() {
+            let arr = this.fiveYear2Date.split("-");
+            console.log(this.fiveYear2Date, arr);
+            let year = arr[0],
+                month = arr[1];
+            this.saleFive2Num = 0;
+            this.$http
+                .get(
+                    `/haolifa/report/sale/selectContractByDemandName?year=${year}&month=${month}`
+                )
+                .then(res => {
+                    let nameData = [],
+                        valueData = [];
+                    res.map(item => {
+                        nameData.push(item.demandName);
+                        valueData.push({
+                            name: item.demandName,
+                            value: item.totalPrice
+                        });
+                        this.saleFive2Num =
+                            this.saleFive2Num + +item.totalPrice;
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("sale2Five")
+                    );
+                    let option = {
+                        title: {
+                            text: "月份客户订货额统计图",
                             // subtext: "纯属虚构",
                             x: "center"
                         },
@@ -162,6 +272,7 @@ export default {
         },
         //需方回款总额饼图
         getSaleSix() {
+            this.salSixNum = 0;
             this.$http
                 .get(
                     `/haolifa/report/sale/selectshouhuiContractByDemandName?year=${this.sixYearDate}`
@@ -170,18 +281,84 @@ export default {
                     let nameData = [],
                         valueData = [];
                     res.map(item => {
-                        nameData.push(item.demandName),
-                            valueData.push({
-                                name: item.demandName,
-                                value: item.totalPrice
-                            });
+                        nameData.push(item.demandName);
+                        valueData.push({
+                            name: item.demandName,
+                            value: item.totalPrice
+                        });
+                        this.salSixNum = this.salSixNum + +item.totalPrice;
                     });
                     let chart = this.$echarts.init(
                         document.getElementById("saleSix")
                     );
                     let option = {
                         title: {
-                            text: "回款总额按需方分类",
+                            text: "年度回款总额分类统计图",
+                            // subtext: "纯属虚构",
+                            x: "center"
+                        },
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: "vertical",
+                            left: "left",
+                            data: nameData
+                        },
+                        series: [
+                            {
+                                name: "",
+                                type: "pie",
+                                radius: "55%",
+                                center: ["50%", "60%"],
+                                data: valueData,
+                                label: {
+                                    show: false,
+                                    position: "center"
+                                },
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: "rgba(0, 0, 0, 0.5)"
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
+                })
+                .catch(e => {
+                    this.$toast(e.msg || e.message);
+                });
+        },
+        getSale2Six() {
+            this.salSix2Num = 0;
+            let arr = this.sixYear2Date.split("-");
+            let year = arr[0],
+                month = arr[1];
+            this.$http
+                .get(
+                    `/haolifa/report/sale/selectshouhuiContractByDemandName?year=${year}&month=${month}`
+                )
+                .then(res => {
+                    let nameData = [],
+                        valueData = [];
+                    res.map(item => {
+                        nameData.push(item.demandName);
+                        valueData.push({
+                            name: item.demandName,
+                            value: item.totalPrice
+                        });
+                        this.salSix2Num = this.salSix2Num + +item.totalPrice;
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("sale2Six")
+                    );
+                    let option = {
+                        title: {
+                            text: "月份回款额统计图",
                             // subtext: "纯属虚构",
                             x: "center"
                         },
@@ -245,7 +422,7 @@ export default {
                         yData = [];
                     Object.keys(res).forEach(key => {
                         xData.push(key + "月");
-                        yData.push(res[key][0].totalPrice);
+                        yData.push(res[key]);
                     });
                     let chart = this.$echarts.init(
                         document.getElementById("saleOne")
@@ -270,7 +447,7 @@ export default {
                         },
                         series: [
                             {
-                                name: "销售额",
+                                name: "产值额",
                                 barWidth: "30%",
                                 data: yData,
                                 type: "bar"
@@ -451,7 +628,7 @@ export default {
                         },
                         legend: {
                             data: [
-                                "销售总金额",
+                                "订货总金额",
                                 "开票总金额",
                                 "发货总金额",
                                 "回款总金额"
@@ -479,7 +656,7 @@ export default {
                         ],
                         series: [
                             {
-                                name: "销售总金额",
+                                name: "订货总金额",
                                 type: "bar",
                                 barWidth: "10%",
                                 data: payTotal

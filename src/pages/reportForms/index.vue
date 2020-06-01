@@ -1,10 +1,6 @@
 <template>
     <div class="page-notification">
         <div class="flex-v-center tool-bar">费用报表统计图</div>
-        <!-- <div style="height:510px;width:90%;border:1px solid #ccc;margin:0 auto;border-top:0">
-            <div id="chartOne" style="width:80%;height:500px;margin:0 auto"></div>
-            haolifa/expenses/list?pageSize=20&pageNum=1&classifyName=%E7%AE%A1%E7%90%86%E8%B4%B9%E7%94%A8&department=&secondClassifyName=%E8%81%8C%E5%B7%A5%E7%A6%8F%E5%88%A9%E8%B4%B9
-        </div>-->
         <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
             <el-date-picker v-model="twoYearDate" :clearable="false" type="month" value-format="yyyy-MM" @change="getTwo" :editable="false" placeholder="选择年月"></el-date-picker>
         </div>
@@ -26,7 +22,12 @@
         </div>
         <div style="height:310px;width:90%;display:flex;margin:60px auto">
             <div id="chartThree" style="width:80%;height:300px;margin-top:20px;"></div>
-            <!-- <div id="chartThreeDetail" style="width:50%;height:300px;margin-top:20px;"></div> -->
+        </div>
+        <div style="width:90%;margin:20px auto;display:flex;padding-left:9%">
+            <el-date-picker v-model="fourYearDate" :clearable="false" type="year" value-format="yyyy" @change="getFour" :editable="false" placeholder="选择年月"></el-date-picker>
+        </div>
+        <div style="height:500px;width:90%;margin:0 auto;">
+            <div id="chartFour" style="width:80%;height:500px;margin:0 auto"></div>
         </div>
         <layer v-if="layer" title="详情" width="80%">
             <div class="layer-text" style="padding-bottom: 50px;">
@@ -95,6 +96,7 @@ export default {
                 this.addRezo(new Date().getMonth()),
             chartOneList: [],
             yearDate: new Date().getFullYear() + "",
+            fourYearDate: new Date().getFullYear() + "",
             totalNum: "",
             totalPrice: "",
             layer: false,
@@ -111,6 +113,7 @@ export default {
             this.threeYearDate.split("-")[0],
             this.threeYearDate.split("-")[1]
         );
+        this.getFour();
     },
     methods: {
         addRezo(string) {
@@ -396,6 +399,52 @@ export default {
                 })
                 .catch(e => {
                     this.$toast(e.msg || e.message);
+                });
+        },
+        getFour() {
+            this.$http
+                .get(
+                    "/haolifa/report/expense/total-by-month?year=" +
+                        this.fourYearDate
+                )
+                .then(res => {
+                    let xData = [],
+                        yData = [];
+                    res.map(item => {
+                        xData.push(item.dataMonth + "月");
+                        yData.push(item.totalAmount);
+                    });
+                    let chart = this.$echarts.init(
+                        document.getElementById("chartFour")
+                    );
+                    let option = {
+                        color: ["#3398DB"],
+                        title: {
+                            text: "年度费用按月统计",
+                            // subtext: "纯属虚构",
+                            x: "left"
+                        },
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{a} <br/>{b} : {c}元"
+                        },
+                        xAxis: {
+                            type: "category",
+                            data: xData
+                        },
+                        yAxis: {
+                            type: "value"
+                        },
+                        series: [
+                            {
+                                name: "费用",
+                                barWidth: "30%",
+                                data: yData,
+                                type: "bar"
+                            }
+                        ]
+                    };
+                    chart.setOption(option);
                 });
         }
     }

@@ -801,9 +801,11 @@ export default {
                         if (item.purchasePass) {
                             purchasePass.push(
                                 item.purchasePass.qualifiedNumber
-                                    ? (item.purchasePass.qualifiedNumber /
-                                          item.purchasePass.totalNum) *
-                                          100
+                                    ? Math.round(
+                                          (item.purchasePass.qualifiedNumber /
+                                              item.purchasePass.totalNum) *
+                                              10000
+                                      ) / 100
                                     : 0
                             );
                         } else {
@@ -812,9 +814,11 @@ export default {
                         if (item.inspectPass) {
                             inspectPass.push(
                                 item.inspectPass.qualifiedNumber
-                                    ? (item.inspectPass.qualifiedNumber /
-                                          item.inspectPass.totalNum) *
-                                          100
+                                    ? Math.round(
+                                          (item.inspectPass.qualifiedNumber /
+                                              item.inspectPass.totalNum) *
+                                              10000
+                                      ) / 100
                                     : 0
                             );
                         } else {
@@ -823,9 +827,11 @@ export default {
                         if (item.sprayPass) {
                             sprayPass.push(
                                 item.sprayPass.qualifiedNumber
-                                    ? (item.sprayPass.qualifiedNumber /
-                                          item.sprayPass.totalNum) *
-                                          100
+                                    ? Math.round(
+                                          (item.sprayPass.qualifiedNumber /
+                                              item.sprayPass.totalNum) *
+                                              10000
+                                      ) / 100
                                     : 0
                             );
                         } else {
@@ -834,9 +840,11 @@ export default {
                         if (item.proInspectPass) {
                             proInspectPass.push(
                                 item.proInspectPass.qualifiedNumber
-                                    ? (item.proInspectPass.qualifiedNumber /
-                                          item.proInspectPass.totalNum) *
-                                          100
+                                    ? Math.round(
+                                          (item.proInspectPass.qualifiedNumber /
+                                              item.proInspectPass.totalNum) *
+                                              10000
+                                      ) / 100
                                     : 0
                             );
                         } else {
@@ -884,7 +892,8 @@ export default {
                         ],
                         yAxis: [
                             {
-                                type: "value"
+                                type: "value",
+                                min: 30
                             }
                         ],
                         series: [

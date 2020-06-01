@@ -23,7 +23,8 @@
             </div>
             <div class="flex">
                 <input-box v-model="form.orderNo" class="flex-item" label="采购合同编号"></input-box>
-                <input-box v-model="form.payType" class="flex-item" label="付款方式"></input-box>
+                <!-- <input-box v-model="form.payType" class="flex-item" label="付款方式"></input-box> -->
+                <select-box :list="payTypeList" v-model="form.payType" label="付款方式" class="flex-item"></select-box>
             </div>
 
             <div class="b" style="margin: 20px 0 10px;">采购物料项</div>
@@ -107,14 +108,26 @@ export default {
             },
             isAdd: true,
             nameList: [],
-            tuhaoList: []
+            tuhaoList: [],
+            payTypeList: [
+                { value: "款到发货", text: "款到发货" },
+                { value: "月结", text: "月结" },
+                {
+                    value: "先预付30%，发货前付清剩余货款",
+                    text: "先预付30%，发货前付清剩余货款"
+                },
+                {
+                    value: "收到发票后60天内付清货款",
+                    text: "收到发票后60天内付清货款"
+                }
+            ]
         };
     },
     mounted() {
         let { formId } = this.$route.query;
         this.form.id = formId;
         // console.log(this.form.id)
-        this.$http.get("/haolifa/supplier/list-all/").then(res => {
+        this.$http.get("/haolifa/supplier/list-all").then(res => {
             this.supplierList = res.map(item => {
                 return { value: item.suppilerNo, text: item.suppilerName };
             });
@@ -174,7 +187,7 @@ export default {
         }
     },
     methods: {
-        materialInfo: function(item){
+        materialInfo: function(item) {
             // this.$http.get(`/haolifa/price/material/getInfo/0?materialGraphNo=${item.materialGraphNo}`).then(res=>{
             //    item.specifications = res.specifications;
             //    item.material = res.material;

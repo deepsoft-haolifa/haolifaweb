@@ -4,20 +4,21 @@
             <div class="title b f-18">{{form.id ? '编辑' : '新增'}}零件</div>
             <div class="flex-v-center">
                 <input-box v-model="form.name" class="mr-10" label="名称" style="width: 50%"></input-box>
-                <select-box v-model="form.materialClassifyName" @change="typeId" :list="parttypeList" label="分类名称"></select-box>
+                <select-box v-model="form.materialClassifyName" @change="typeId" :list="parttypeList" style="width: 25%" label="分类名称"></select-box>
+                <input-box v-model="form.unit" class="mr-10" label="单位(如：根，个)" style="width: 25%"></input-box>
                 <!-- <input-box v-model="form.materialClassifyName" class="mr-10" label="分类名称" style="width: 25%"></input-box> -->
                 <!-- <input-box v-model="form.materialClassifyId" class="mr-10" label="分类Id" style="width: 25%"></input-box> -->
             </div>
             <div class="flex-v-center">
-                <input-box v-model="form.graphNo" class="mr-10" label="图号" style="width: 50%"></input-box>
-                <input-box v-model="form.model" class="mr-10" label="型号" style="width: 25%"></input-box>
-                <input-box v-model="form.unit" class="mr-10" label="单位(如：根，个)" style="width: 25%"></input-box>
+                <input-box v-model="form.graphNo" class="mr-10" label="图号" style="width: 35%"></input-box>
+                <input-box v-model="form.replaceGraphNos" class="mr-10" label="可替换图号" style="width: 35%"></input-box>
+                <input-box v-model="form.model" class="mr-10" label="型号" style="width: 30%"></input-box>
             </div>
             <div class="flex-v-center">
                 <!--<input-box v-model="form.currentQuantity" class="mr-10" label="当前库存数量" style="width: 25%"></input-box>-->
-                <input-box v-model="form.supportQuantity" class="mr-10" label="配套数量" style="width: 25%"></input-box>
-                <input-box v-model="form.safeQuantity" class="mr-10" label="安全库存" style="width: 25%"></input-box>
-                <input-box v-model="form.safetyFactor" class="mr-10" label="安全库存系数" style="width: 25%"></input-box>
+                <input-box v-model="form.supportQuantity" class="mr-10" label="配套数量" style="width: 35%"></input-box>
+                <input-box v-model="form.safeQuantity" class="mr-10" label="安全库存" style="width: 35%"></input-box>
+                <input-box v-model="form.safetyFactor" class="mr-10" label="安全库存系数" style="width: 30%"></input-box>
             </div>
             <div class="flex-v-center">
                 <input-box v-model="form.specifications" class="mr-10" label="规格" style="width: 25%"></input-box>
@@ -50,6 +51,7 @@ export default {
                 id: "",
                 actualWeight: "",
                 // currentQuantity: "",
+                replaceGraphNos: "",
                 graphNo: "",
                 material: "",
                 materialClassifyId: "",

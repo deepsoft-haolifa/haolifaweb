@@ -466,6 +466,8 @@
                             <td v-if="i<data.historyInfos.length-1">
                                 <a target="_blank" v-for="(file,index) in item.accessories" :key="index" :href="file.fileUrl">{{file.fileName}}</a>
                                 <br />
+                                <!--只有技术员节点才有删除附件的权限-->
+                                <a href="javascript:;" v-if="item.stepId == 51" style="margin-right: 3px" class="blue" @click="removeAccessory(item.historyId)">删除</a>
                             </td>
                             <td v-else-if="fileDetailList.length>0">
                                 <a target="_blank" style="display:block" v-for="(f,index) in fileDetailList" :key="index" :href="f.fileUrl">{{f.fileName}}</a>
@@ -935,6 +937,24 @@ export default {
                     this.$toast(e.msg || e.message);
                 });
         },
+        removeAccessory(historyId){
+            this.$confirm({
+            title: "删除确认",
+            text: `您确定要删除吗？`,
+            color: "red",
+            btns: ["取消", "删除"],
+            yes: () => {
+                this.$http
+                    .get(`/haolifa/flowInstance/remove-history-accessory/${historyId}`)
+                    .then(res => {
+                        this.$toast("删除成功");
+                    })
+                    .catch(e => {
+                        this.$toast(e.msg || e.message);
+                    });
+            }
+        });
+},
         complete() {
             this.handleStepM(2);
         },
